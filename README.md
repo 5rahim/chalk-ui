@@ -1,8 +1,3 @@
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-
 <br>
 <div align="center">
   <img alt="Chalk Logo" src="https://media.discordapp.net/attachments/932762343987879966/1109161027356082257/Chalk_Logo.png" height="250"/>
@@ -46,7 +41,6 @@ https://chalk.rahim.app
 - [ ] Accordion
 - [ ] Card
 - [ ] Tabs
-- [ ] Color Picker
 - [ ] Stats
 - [ ] Charts
 - [ ] Typography
@@ -76,15 +70,15 @@ https://chalk.rahim.app
   - [x] Date Picker
   - [x] Date Range Picker
   - [x] Time Input
-  - [x] JSON Input
-  - [x] Transfer List
+  - [ ] Color Picker
+  - [ ] JSON Input
+  - [ ] Transfer List
   - [ ] Typesafe Form
     - [ ] SegmentedControl
-- [ ] Tests
 - [ ] i18n (For certain components)
     - [x] English
     - [x] French
-    - [ ] Other
+- [ ] Tests
 
 ## Acknowledgements
 
