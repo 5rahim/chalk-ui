@@ -1,4 +1,5 @@
 {
-  "ui": "UI",
-  "typesafe-form": "Typesafe Form"
+  "index": "Introduction",
+  "installation": "Installation",
+  "components": "Components"
 }

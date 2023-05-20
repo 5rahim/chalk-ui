@@ -1,7 +1,7 @@
 "use client"
 
-import { customizeStyleLibrary, cva, defineStyleAnatomy, UIProvider } from "ui"
 import React from "react"
+import { UIProvider } from "ui"
 
 interface ClientProvidersProps {
    children?: React.ReactNode

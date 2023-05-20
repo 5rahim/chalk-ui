@@ -2,11 +2,11 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "build:ui": "turbo run build --filter=ui",
     "dev": "turbo run dev",
-    "dev:apps": "turbo run dev --filter=docs --filte=web",
-    "dev:cli": "turbo run dev --filter=chalk",
-    "dev:ui": "turbo run dev --filter=ui --filter=workshop",
+    "dev:docs": "turbo run dev --filter=docs",
+    "dev:ui": "turbo run dev --filter=ui --filter=chalk --filter=workshop",
+    "build:ui": "turbo run build --filter=ui",
+    "build:storybook": "turbo run build --filter=workshop",
     "version-packages": "changeset version",
     "release": "turbo run build --filter ui --filter chalk && changeset publish"
   },
