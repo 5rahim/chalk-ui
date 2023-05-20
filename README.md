@@ -1,6 +1,6 @@
 <br>
 <div align="center">
-  <img alt="Chalk Logo" src="https://media.discordapp.net/attachments/932762343987879966/1109161027356082257/Chalk_Logo.png" height="250"/>
+  <img alt="Chalk Logo" src="https://github.com/5rahim/chalk-ui/blob/main/images/Chalk_Logo2.png?raw=true" height="250"/>
 <br>
 
 </div>
