@@ -1,0 +1,54 @@
+import Preview       from "../../components/Preview";
+import {BasicField}  from "ui";
+import {OptionTable} from "../../components/table/option-table";
+
+# BasicField
+
+`BasicField` is a primitive component upon which every form component is made.
+
+<Preview>
+    <BasicField
+        label="Field label"
+        className={"w-full gap-1"}
+        help="Help text"
+        error="Error!"
+    >
+        <div>{`<Component/>`}</div>
+    </BasicField>
+</Preview>
+
+```tsx
+import {BasicField} from "ui";
+
+<BasicField
+    label="Field label"
+    className={"w-full gap-1"}
+    help="Help text"
+    error="Error!"
+>
+    <div>{`<Component/>`}</div>
+</BasicField>
+```
+
+## BasicFieldProps
+
+<OptionTable options={[['className', 'string']]} />
+
+## BasicFieldOptions
+
+<OptionTable
+    options={[
+        ['id', 'string?'],
+        ['name', 'string?'],
+        ['label', 'string?'],
+        ['labelProps', 'HTMLLabelElement'],
+        ['error', 'string'],
+        ['help', 'string'],
+        ['isDisabled', 'boolean'],
+        ['isRequired', 'boolean'],
+        ['isReadOnly', 'boolean'],
+        ['fieldClassName', 'string?', "The field's container div"],
+        ['fieldLabelClassName', 'string?'],
+        ['fieldDetailsClassName', 'string?'],
+    ]}
+/>

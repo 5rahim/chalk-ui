@@ -1,0 +1,86 @@
+import {Drawer}   from "ui";
+import Preview    from "../../components/Preview";
+import {useState} from "react";
+import {Button}   from "nextra/components";
+
+# Drawer
+
+`DrawerProps`
+
+export const Highlight = ({children}) => {
+
+    const [test, setTest] = useState(false)
+    const [left, setLeft] = useState(false)
+    const [bottom, setBottom] = useState(false)
+    const [top, setTop] = useState(false)
+
+    return (
+        <>
+            <div>
+                <Button onClick={() => setTest(true)}>Open right drawer</Button>
+            </div>
+
+            <div>
+                <Button onClick={() => setLeft(true)}>Open left drawer</Button>
+            </div>
+
+            <div>
+                <Button onClick={() => setBottom(true)}>Open bottom drawer</Button>
+            </div>
+
+            <div>
+                <Button onClick={() => setTop(true)}>Open top drawer</Button>
+            </div>
+
+            <Drawer isOpen={test} onClose={() => setTest(false)} title="Drawer" placement="right" withCloseButton>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
+                quaerat quis quod saepe sit ullam voluptate!
+            </Drawer>
+            <Drawer isOpen={left} onClose={() => setLeft(false)} title="Drawer" placement="left" withCloseButton>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
+                quaerat quis quod saepe sit ullam voluptate!
+            </Drawer>
+            <Drawer isOpen={bottom} onClose={() => setBottom(false)} title="Drawer" placement="bottom" withCloseButton>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
+                quaerat quis quod saepe sit ullam voluptate!
+            </Drawer>
+            <Drawer isOpen={top} onClose={() => setTop(false)} title="Drawer" placement="top" withCloseButton>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
+                quaerat quis quod saepe sit ullam voluptate!
+            </Drawer>
+        </>
+    )
+};
+
+<Preview>
+    <Highlight />
+</Preview>
+
+
+```tsx copy
+import {Button, Drawer} from "ui"
+import {useState} from 'react'
+
+export const Component = ({children}) => {
+    
+    const [isOpen, setIsOpen] = useState(false)
+    
+    return (
+        <>
+            <Button onClick={() => setIsOpen(true)}>Open drawer</Button>
+            <Drawer
+               isOpen={isOpen}
+               onClose={() => setIsOpen(false)}
+               placement="left"
+               title="Drawer"
+               withCloseButton
+            >
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores.
+            </Drawer>
+        </>
+    )
+}
+
+<Drawer />
+```
+

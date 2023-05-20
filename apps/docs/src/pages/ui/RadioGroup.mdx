@@ -1,0 +1,30 @@
+import {RadioGroup} from "ui";
+import Preview      from "../../components/Preview";
+
+# RadioGroup
+
+`RadioGroupProps` `HTMLDivElement` `BasicFieldOptions`
+
+<Preview>
+    <RadioGroup
+        label="RadioGroup" help="Help text" options={[
+        {value: '1', label: 'Option 1'},
+        {value: '2', label: 'Option 2'},
+    ]}
+    />
+    <RadioGroup
+        label="RadioGroup" help="Help text" options={[
+        {value: '1', label: 'Option 1'},
+        {value: '2', label: 'Option 2'},
+    ]}
+        isDisabled
+    />
+</Preview>
+
+
+```tsx copy
+import {RadioGroup} from "ui";
+
+<RadioGroup label="RadioGroup" />
+```
+

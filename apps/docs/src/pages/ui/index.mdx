@@ -1,0 +1,103 @@
+# UI Library
+
+## Prerequisites
+
+Your application should be configured with Tailwind.
+
+## Installation
+
+```
+npm install ui @rahimstack/typesafe-form class-variance-authority
+```
+
+### Peer dependencies
+
+```
+npm install -d @tailwindcss/typography @tailwindcss/forms @headlessui/tailwindcss
+```
+
+### UI Context
+
+UI Context is useful for localization.
+
+```tsx
+'use client'
+
+import { UIProvider } from 'ui'
+
+interface ClientProvidersProps {
+   children?: React.ReactNode
+}
+
+export const ClientProviders: React.FC<ClientProvidersProps> = (props) => {
+   
+   const { children, ...rest } = props
+   
+   return (
+      <UIProvider config={{ locale: 'fr' }}>
+          {children}
+      </UIProvider>
+   )
+   
+}
+```
+
+### Tailwind Config
+
+```js
+const {colors} = require("tailwindcss/colors")
+const {fontFamily} = require("tailwindcss/defaultTheme")
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    `src/**/*.{js,ts,jsx,tsx}`,
+  ],
+  safelist: [
+    'text-2xl',
+    'text-3xl',
+  ],
+  theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: '1rem',
+        sm: '2rem',
+        lg: '4rem',
+        xl: '5rem',
+        '2xl': '6rem',
+      },
+    },
+    data: {
+      checked: 'checked',
+      selected: 'selected',
+      disabled: 'disabled',
+      highlighted: 'highlighted',
+    },
+    extend: {
+      boxShadow: {
+        'md': '0 1px 3px 0 rgba(0, 0, 0, 0.1),0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+      },
+      fontFamily: {
+        sans: ["var(--font-inter)", ...fontFamily.sans],
+      },
+      colors: {
+        ...colors,
+        brand: {
+          50: '#f2f0ff',
+          100: '#eeebff',
+          300: '#c7c2ff',
+          400: '#9f92ff',
+          500: '#6152df',
+          600: '#5243cb',
+          700: '#3f2eb2',
+          800: '#312887',
+          900: "#231c6b",
+          DEFAULT: "#6152df",
+        },
+      },
+    },
+  },
+  plugins: [require("@tailwindcss/typography"), require('@tailwindcss/forms'), require('@headlessui/tailwindcss')],
+}
+```

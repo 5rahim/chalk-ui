@@ -1,0 +1,10 @@
+# test
+src/app
+src/components
+src/styles
+tailwind.config.js
+
+
+dist
+.turbo
+node_modules

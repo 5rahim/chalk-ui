@@ -1,0 +1,41 @@
+import {Select} from "ui";
+import Preview  from "../../components/Preview";
+
+# Select
+
+`SelectProps` `HTMLSelectElement` `BasicFieldOptions` `InputStyling`
+
+<Preview>
+    <Select
+        label="Country"
+        placeholder="Select a country"
+        options={[
+            {value: 'ci', label: "Côte d'ivoire"},
+            {value: 'tg', label: "Togo"},
+        ]}
+    />
+    <Select
+        label="Country"
+        placeholder="Select a country"
+        isDisabled
+        options={[
+            {value: 'ci', label: "Côte d'ivoire"},
+            {value: 'tg', label: "Togo"},
+        ]}
+    />
+</Preview>
+
+
+```tsx copy
+import {Select} from "ui";
+
+<Select
+    label="Country"
+    placeholder="Select a country"
+    options={[
+        { value: 'ci', label: "Côte d'ivoire" },
+        { value: 'tg', label: "Togo" },
+    ]}
+/>
+```
+

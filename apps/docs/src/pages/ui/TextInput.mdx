@@ -1,0 +1,85 @@
+import {TextInput} from "ui";
+import Preview     from "../../components/Preview";
+
+# TextInput
+
+`TextInputProps` `HTMLInputElement` `BasicFieldOptions` `InputStyling`
+
+<Preview>
+    <TextInput label="Text input" placeholder="Placeholder" help="Help text" />
+</Preview>
+
+
+```tsx copy
+import {TextInput} from "ui";
+
+<TextInput
+   label="Text input"
+   placeholder="Placeholder"
+   help="Help text"
+/>
+```
+
+
+<Preview>
+    <TextInput
+        label="Text input"
+        placeholder="Placeholder"
+        error="Oops!"
+    />
+    <TextInput
+        label="Text input"
+        placeholder="Placeholder"
+        leftAddon="Addon"
+    />
+    <TextInput
+        label="Text input"
+        placeholder="Placeholder"
+        rightAddon="Addon"
+    />
+    <TextInput
+        label="Text input"
+        placeholder="Placeholder"
+        leftAddon="Addon"
+        leftIcon={<span>@</span>}
+    />
+</Preview>
+
+
+```tsx copy
+import {TextInput} from "ui";
+
+<TextInput
+    label="Text input"
+    placeholder="Placeholder"
+    error="Oops!"
+/>
+<TextInput
+    label="Text input"
+    placeholder="Placeholder"
+    error="Oops!"
+/>
+<TextInput
+    label="Text input"
+    placeholder="Placeholder"
+    leftAddon="Addon"
+    leftIcon={<span>@</span>}
+/>
+```
+
+<Preview>
+    <TextInput placeholder="Placeholder" size="sm" intent="filled" />
+    <TextInput placeholder="Placeholder" size="md" intent="filled" />
+    <TextInput placeholder="Placeholder" size="lg" intent="filled" />
+</Preview>
+
+
+```tsx copy
+import {TextInput} from "ui";
+
+<TextInput
+   placeholder="Placeholder"
+   size="lg"
+   intent="filled"
+/>
+```

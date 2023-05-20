@@ -1,0 +1,67 @@
+{
+  "name": "ui",
+  "version": "0.6.3",
+  "author": {
+    "name": "5rahim",
+    "url": "https://github.com/5rahim"
+  },
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/5rahim/rahimstack.git",
+    "directory": "packages/ui"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "check-types": "tsc --noEmit",
+    "release": "changeset version"
+  },
+  "dependencies": {
+    "@googlemaps/js-api-loader": "^1.15.1",
+    "@headlessui/react": "^1.7.14",
+    "@internationalized/date": "^3.2.0",
+    "@rahimstack/tailwind-utils": "^0.3.0",
+    "@zag-js/checkbox": "^0.7.0",
+    "@zag-js/combobox": "^0.7.0",
+    "@zag-js/number-input": "^0.7.0",
+    "@zag-js/radio-group": "^0.7.0",
+    "@zag-js/react": "^0.7.0",
+    "date-fns": "^2.30.0",
+    "dinero.js": "^1.9.1",
+    "jotai": "^2.1.0",
+    "jotai-immer": "^0.2.0",
+    "libphonenumber-js": "^1.10.30",
+    "lodash": "^4.17.21",
+    "react-aria": "^3.24.0",
+    "react-phone-number-input": "^3.2.22",
+    "react-stately": "^3.22.0",
+    "use-debounce": "^9.0.4"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/dinero.js": "^1.9.0",
+    "@types/google.maps": "^3.53.1",
+    "@types/lodash": "^4.14.194",
+    "@types/react": "^18.2.6",
+    "class-variance-authority": "^0.6.0",
+    "eslint": "^7.32.0",
+    "postcss": "^8.4.23",
+    "react": "^18.2.0",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

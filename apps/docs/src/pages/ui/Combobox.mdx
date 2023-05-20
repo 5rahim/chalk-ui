@@ -1,0 +1,47 @@
+import {Combobox} from "ui";
+import Preview    from "../../components/Preview";
+
+# Combobox
+
+`ComboboxProps` `HTMLInputElement` `BasicFieldOptions` `InputStyling`
+
+<Preview>
+    <Combobox
+        label="Combobox" options={[
+        {value: '1', label: 'Option 1'},
+        {value: '2', label: 'Option 2'},
+        {value: '3', label: 'Option 3'},
+    ]}
+    />
+    <Combobox
+        label="Combobox" withFiltering={false} options={[
+        {value: '1', label: 'Option 1'},
+        {value: '2', label: 'Option 2'},
+        {value: '3', label: 'Option 3'},
+    ]}
+    />
+    <Combobox
+        label="Combobox" isDisabled options={[
+        {value: '1', label: 'Option 1'},
+        {value: '2', label: 'Option 2'},
+        {value: '3', label: 'Option 3'},
+    ]}
+    />
+</Preview>
+
+
+```tsx copy
+import {Combobox} from "ui";
+
+<Combobox label="Combobox" options={[
+    { value: '1', label: 'Option 1' },
+    { value: '2', label: 'Option 2' },
+    { value: '3', label: 'Option 3' },
+]} />
+<Combobox label="Combobox" withFiltering={false} options={[
+    { value: '1', label: 'Option 1' },
+    { value: '2', label: 'Option 2' },
+    { value: '3', label: 'Option 3' },
+]} />
+```
+

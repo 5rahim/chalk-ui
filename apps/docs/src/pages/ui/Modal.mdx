@@ -1,0 +1,50 @@
+import {Modal}    from "ui";
+import Preview    from "../../components/Preview";
+import {useState} from "react";
+import {Button}   from "nextra/components";
+
+# Modal
+
+`ModalProps`
+
+export const Highlight = ({children}) => {
+
+    const [test, setTest] = useState(false)
+
+    return (
+        <>
+            <Button onClick={() => setTest(true)}>Open modal</Button>
+            <Modal isOpen={test} onClose={() => setTest(false)} title="Modal" withCloseButton>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
+                quaerat quis quod saepe sit ullam voluptate!
+            </Modal>
+        </>
+    )
+};
+
+<Preview>
+    <Highlight />
+</Preview>
+
+
+```tsx copy
+import {Modal, Button} from "ui";
+import { useState } from 'react';
+
+export const Component = ({children}) => {
+    
+    const [isOpen, setIsOpen] = useState(false)
+    
+    return (
+        <>
+            <Button onClick={() => setIsOpen(true)}>Open modal</Button>
+            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Modal" withCloseButton>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores.
+            </Modal>
+        </>
+    )
+}
+
+<Modal />
+```
+

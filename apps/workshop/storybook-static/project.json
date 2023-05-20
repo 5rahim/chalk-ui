@@ -1,0 +1,59 @@
+{
+  "generatedAt": 1684556480992,
+  "hasCustomBabel": false,
+  "hasCustomWebpack": false,
+  "hasStaticDirs": false,
+  "hasStorybookEslint": false,
+  "refCount": 0,
+  "monorepo": "Turborepo",
+  "packageManager": {
+    "type": "pnpm",
+    "version": "8.3.1"
+  },
+  "framework": {
+    "name": "@storybook/react-vite",
+    "options": {}
+  },
+  "builder": "@storybook/builder-vite",
+  "renderer": "@storybook/react",
+  "storybookVersion": "7.0.11",
+  "storybookVersionSpecifier": "^7.0.11",
+  "language": "typescript",
+  "storybookPackages": {
+    "@storybook/addon-styling": {
+      "version": "1.0.8"
+    },
+    "@storybook/blocks": {
+      "version": "7.0.11"
+    },
+    "@storybook/cli": {
+      "version": "7.0.11"
+    },
+    "@storybook/react": {
+      "version": "7.0.11"
+    },
+    "@storybook/react-vite": {
+      "version": "7.0.11"
+    },
+    "@storybook/testing-library": {
+      "version": "0.0.14-next.2"
+    },
+    "storybook": {
+      "version": "7.0.11"
+    }
+  },
+  "addons": {
+    "@storybook/addon-links": {
+      "version": "7.0.11"
+    },
+    "@storybook/addon-essentials": {
+      "version": "7.0.11"
+    },
+    "@storybook/addon-interactions": {
+      "version": "7.0.11"
+    },
+    "storybook-tailwind-dark-mode": {
+      "version": "1.0.22"
+    }
+  }
+}

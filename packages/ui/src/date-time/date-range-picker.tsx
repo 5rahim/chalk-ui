@@ -1,0 +1,124 @@
+"use client"
+
+import { cn } from "@rahimstack/tailwind-utils"
+import { cva } from "class-variance-authority"
+import React, { useId, useRef } from "react"
+import { useDateRangePicker } from "react-aria"
+import { DateRangePickerStateOptions, useDateRangePickerState } from "react-stately"
+import {
+   BasicField, BasicFieldOptions, defineStyleAnatomy, extractBasicFieldProps, IconButton, InputAddon, inputContainerStyle, InputIcon, InputStyling,
+   Modal, RangeCalendar, useStyleLibrary,
+} from ".."
+import { ComponentWithAnatomy } from "../core"
+import { DateField } from "./date-field"
+
+export const DateRangePickerAnatomy = defineStyleAnatomy({
+   input: cva([
+      "UI-DateRangePicker__input",
+      "relative flex flex-wrap items-center gap-1 cursor-text",
+      "group-focus-within:border-brand-500 group-focus-within:ring-1 group-focus-within:ring-brand-500",
+      "justify-between text-sm sm:text-base",
+   ]),
+   iconButton: cva([
+      "UI-DateRangePicker__iconButton",
+      "w-5 h-5 group-focus-within:text-brand-700",
+   ]),
+})
+
+export interface DateRangePickerProps extends Omit<DateRangePickerStateOptions, "label">,
+   ComponentWithAnatomy<typeof DateRangePickerAnatomy>,
+   BasicFieldOptions,
+   InputStyling {
+}
+
+export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerProps>((props, ref) => {
+   
+   const [{
+      size,
+      intent,
+      leftAddon,
+      leftIcon,
+      rightIcon,
+      rightAddon,
+      inputClassName,
+      iconButtonClassName,
+      ...datePickerProps
+   }, basicFieldProps] = extractBasicFieldProps<DateRangePickerProps>(props, useId())
+   
+   const StyleLibrary = useStyleLibrary()
+   
+   let state = useDateRangePickerState(datePickerProps)
+   let _ref = useRef<HTMLDivElement>(null)
+   let {
+      groupProps,
+      labelProps,
+      startFieldProps,
+      endFieldProps,
+      buttonProps,
+      dialogProps,
+      calendarProps,
+   } = useDateRangePicker(datePickerProps, state, _ref)
+   
+   let { onPress, ...restButtonProps } = buttonProps
+   
+   return (
+      <BasicField
+         {...basicFieldProps}
+         labelProps={labelProps}
+      >
+         <div {...groupProps} ref={_ref} className={cn("flex group", inputContainerStyle())}>
+            
+            <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
+            <InputIcon icon={leftIcon} size={size} side={"left"} />
+            
+            <div
+               className={cn(
+                  "form-input",
+                  StyleLibrary.Input.input({
+                     size,
+                     intent,
+                     hasError: !!basicFieldProps.error,
+                     untouchable: !!basicFieldProps.isDisabled,
+                     hasRightAddon: !!rightAddon,
+                     hasRightIcon: !!rightIcon,
+                     hasLeftAddon: !!leftAddon,
+                     hasLeftIcon: !!leftIcon,
+                  }),
+                  StyleLibrary.DateRangePicker.input(),
+                  inputClassName,
+               )}
+            >
+               <div className="flex">
+                  <DateField {...startFieldProps} /> <span aria-hidden="true" className="px-1"> – </span> <DateField {...endFieldProps} />
+               </div>
+               <IconButton
+                  intent="gray-basic"
+                  size="xs"
+                  {...restButtonProps}
+                  icon={<svg
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="currentColor"
+                     viewBox="0 0 24 24"
+                     className={cn(StyleLibrary.DateRangePicker.iconButton(), iconButtonClassName)}
+                  >
+                     <path d="M3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7v2H5a2 2 0 0 0-2 2zm16 14H5V8h14z"></path>
+                  </svg>}
+                  onClick={e => onPress && onPress(e as any)}
+               />
+            
+            
+            </div>
+            
+            <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
+            <InputIcon icon={rightIcon} size={size} side={"right"} />
+            
+            <Modal
+               size="xl" isOpen={state.isOpen} onClose={state.close} withCloseButton
+               {...dialogProps}
+            >
+               <div className="flex justify-center"><RangeCalendar {...calendarProps} /></div>
+            </Modal>
+         
+         </div>
+      </BasicField>)
+})

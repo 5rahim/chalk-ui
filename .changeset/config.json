@@ -1,0 +1,21 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "5rahim/rahimstack"
+    }
+  ],
+  "commit": false,
+  "fixed": [],
+  "linked": [],
+  "access": "public",
+  "updateInternalDependencies": "patch",
+  "ignore": [
+    "web",
+    "docs",
+    "workshop",
+    "typesafe-form",
+    "ui"
+  ]
+}

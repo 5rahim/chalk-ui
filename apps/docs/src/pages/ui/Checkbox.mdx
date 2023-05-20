@@ -1,0 +1,46 @@
+import {Checkbox, CheckboxGroup} from "ui";
+import Preview                   from "../../components/Preview";
+
+# Checkbox
+
+`CheckboxProps` `HTMLInputElement` `BasicFieldOptions`
+
+<Preview>
+    <Checkbox label="Checkbox" help="Help text" />
+    <Checkbox label="Checkbox" help="Help text" defaultChecked />
+    <Checkbox label="Checkbox" help="Help text" isDisabled />
+    <Checkbox label="Checkbox" help="Help text" defaultChecked isDisabled />
+</Preview>
+
+
+```tsx copy
+import {Checkbox} from "ui";
+
+<Checkbox label="Checkbox" />
+```
+
+# CheckboxGroup
+
+`CheckboxGroupProps` `HTMLInputElement` `BasicFieldOptions`
+
+<Preview>
+    <CheckboxGroup
+        label="Checkbox" options={[
+        {value: '1', label: 'Option 1'},
+        {value: '2', label: 'Option 2'},
+        {value: '3', label: 'Option 3'},
+    ]}
+    />
+</Preview>
+
+
+```tsx copy
+import {CheckboxGroup} from "ui";
+
+<CheckboxGroup label="Checkbox" options={[
+    { value: '1', label: 'Option 1' },
+    { value: '2', label: 'Option 2' },
+    { value: '3', label: 'Option 3' },
+]} />
+```
+

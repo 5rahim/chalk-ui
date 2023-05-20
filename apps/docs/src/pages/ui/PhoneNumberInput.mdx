@@ -1,0 +1,22 @@
+import {PhoneNumberInput} from "ui";
+import Preview            from "../../components/Preview";
+
+# PhoneNumberInput
+
+`PhoneNumberInputProps` `TextInputProps` `HTMLInputElement` `BasicFieldOptions` `InputStyling`
+
+Supports only 2 numbers after decimal.
+
+<Preview>
+    <PhoneNumberInput label="PhoneNumberInput" rightAddon="International" />
+    <PhoneNumberInput label="PhoneNumberInput" leftAddon="Mobile" />
+    <PhoneNumberInput label="PhoneNumberInput" isDisabled={true} />
+</Preview>
+
+
+```tsx copy
+import {PhoneNumberInput} from "ui";
+
+<PhoneNumberInput label="PhoneNumberInput" />
+```
+

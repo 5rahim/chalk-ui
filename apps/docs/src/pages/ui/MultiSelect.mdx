@@ -1,0 +1,29 @@
+import {MultiSelect} from "ui";
+import Preview       from "../../components/Preview";
+
+# MultiSelect
+
+`MultiSelectProps` `HTMLDivElement` `BasicFieldOptions` `InputStyling`
+
+<Preview>
+    <MultiSelect
+        label="MultiSelect" options={[
+        {value: '1', label: 'Option 1'},
+        {value: '2', label: 'Option 2'},
+    ]}
+    />
+    <MultiSelect
+        leftAddon="Addon" label="MultiSelect" isDisabled options={[
+        {value: '1', label: 'Option 1'},
+        {value: '2', label: 'Option 2'},
+    ]}
+    />
+</Preview>
+
+
+```tsx copy
+import {MultiSelect} from "ui";
+
+<MultiSelect label="MultiSelect" />
+```
+
