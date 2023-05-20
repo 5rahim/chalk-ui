@@ -4,9 +4,9 @@
     "build": "turbo run build",
     "build:ui": "turbo run build --filter=ui",
     "dev": "turbo run dev",
-    "dev:apps": "turbo run dev --filter docs --filter web",
-    "dev:cli": "turbo run dev --filter chalk",
-    "story:ui": "turbo run dev --filter ui --filter workshop",
+    "dev:apps": "turbo run dev --filter=docs --filte=web",
+    "dev:cli": "turbo run dev --filter=chalk",
+    "dev:ui": "turbo run dev --filter=ui --filter=workshop",
     "version-packages": "changeset version",
     "release": "turbo run build --filter ui --filter chalk && changeset publish"
   },
