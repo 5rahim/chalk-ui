@@ -1,5 +1,5 @@
-import { NumberInput } from "ui"
 import type { Meta, StoryObj } from "@storybook/react"
+import { NumberInput } from "ui"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
@@ -8,6 +8,16 @@ const meta = {
    tags: ["autodocs"],
    args: {
       label: "Label",
+      defaultValue: 20,
+      value: 20,
+      min: 0,
+      max: 50,
+      minFractionDigits: 0,
+      maxFractionDigits: 4,
+      precision: 2,
+      step: 2,
+      allowMouseWheel: true,
+      discrete: false,
    },
 } satisfies Meta<typeof NumberInput>
 

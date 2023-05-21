@@ -47,3 +47,4 @@ export function RangeCalendar({ locale, ...props }: Omit<RangeCalendarStateOptio
    )
 }
 
+RangeCalendar.displayName = "RangeCalendar"

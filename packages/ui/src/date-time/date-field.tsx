@@ -6,7 +6,7 @@ import { cva } from "class-variance-authority"
 import { useRef } from "react"
 import { useDateField, useDateSegment } from "react-aria"
 import { DateFieldState, DateFieldStateOptions, DateSegment, useDateFieldState } from "react-stately"
-import { defineStyleAnatomy, useStyleLibrary, useUILocaleConfig } from "../core"
+import { defineStyleAnatomy, useUILocaleConfig } from "../core"
 
 export function DateField({ locale, ...props }: Omit<DateFieldStateOptions, "locale" | "createCalendar"> & { locale?: string }) {
    let { countryLocale } = useUILocaleConfig()
@@ -41,11 +41,11 @@ export const DateSegmentAnatomy = defineStyleAnatomy({
    input: cva("UI-DateSegment__input block w-full text-center italic text-gray-500 group-focus:text-brand-500 dark:group-focus:text-white group-focus:font-semibold"),
 })
 
+DateField.displayName = "DateField"
+
 export function DateSegmentComponent({ segment, state }: { segment: DateSegment, state: DateFieldState }) {
    let ref = useRef<HTMLDivElement>(null)
    let { segmentProps } = useDateSegment(segment, state, ref)
-   
-   const StyleLibrary = useStyleLibrary()
    
    return (
       <div
@@ -54,11 +54,11 @@ export function DateSegmentComponent({ segment, state }: { segment: DateSegment,
          style={{
             ...segmentProps.style,
          }}
-         className={cn(StyleLibrary.DateSegment.segment({ isEditable: segment.isEditable }))}
+         className={cn(DateSegmentAnatomy.segment({ isEditable: segment.isEditable }))}
          suppressHydrationWarning
       >
          <span
-            aria-hidden="true" className={cn(StyleLibrary.DateSegment.input())} style={{
+            aria-hidden="true" className={cn(DateSegmentAnatomy.input())} style={{
             display: segment.isPlaceholder ? undefined : "none", height: segment.isPlaceholder ? undefined : 0,
             pointerEvents: "none",
          }}
@@ -69,3 +69,5 @@ export function DateSegmentComponent({ segment, state }: { segment: DateSegment,
       </div>
    )
 }
+
+DateSegmentComponent.displayName = "DateSegmentComponent"

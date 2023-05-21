@@ -1,7 +1,7 @@
 import { cn } from "@rahimstack/tailwind-utils"
 import { cva, VariantProps } from "class-variance-authority"
 import React from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy, useStyleLibrary } from "../core"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 export const PageHeaderAnatomy = defineStyleAnatomy({
    body: cva("UI-PageHeader__body md:flex md:items-center md:justify-between md:space-x-5"),
@@ -57,36 +57,30 @@ export const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>((pro
       ...rest
    } = props
    
-   const StyleLibrary = useStyleLibrary()
-   
    return (
       <>
          <header
             aria-label={title}
             className={cn(
-               StyleLibrary.PageHeader.body(),
+               PageHeaderAnatomy.body(),
                bodyClassName,
                className,
             )}
          >
-            <div className={cn(StyleLibrary.PageHeader.detailsContainer(), detailsContainerClassName)}>
+            <div className={cn(PageHeaderAnatomy.detailsContainer(), detailsContainerClassName)}>
                {image && <div className="flex-shrink-0">
                    <div className="relative">
                       {image}
                    </div>
                </div>}
-               {/*
-                Use vertical padding to simulate center alignment when both lines of text are one line,
-                but preserve the same layout if the text wraps without making the image jump around.
-                */}
                <div className="">
-                  <h1 className={cn(StyleLibrary.PageHeader.title({ size }), titleClassName)}>{title}</h1>
-                  {description && <p className={cn(StyleLibrary.PageHeader.description(), descriptionClassName)}>
+                  <h1 className={cn(PageHeaderAnatomy.title({ size }), titleClassName)}>{title}</h1>
+                  {description && <p className={cn(PageHeaderAnatomy.description(), descriptionClassName)}>
                      {description}
                   </p>}
                </div>
             </div>
-            <div className={cn(StyleLibrary.PageHeader.actionContainer(), actionContainerClassName)}>
+            <div className={cn(PageHeaderAnatomy.actionContainer(), actionContainerClassName)}>
                {action}
             </div>
          </header>
@@ -94,3 +88,5 @@ export const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>((pro
    )
    
 })
+
+PageHeader.displayName = "PageHeader"

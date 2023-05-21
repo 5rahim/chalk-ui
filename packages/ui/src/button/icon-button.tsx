@@ -1,19 +1,18 @@
 import { cn } from "@rahimstack/tailwind-utils"
 import { cva, VariantProps } from "class-variance-authority"
 import React from "react"
-import { Button, ButtonProps, defineStyleAnatomy, useStyleLibrary } from ".."
-import { ComponentWithAnatomy } from "../core"
-
+import { Button, ButtonProps } from "."
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 export const IconButtonAnatomy = defineStyleAnatomy({
    iconButton: cva("UI-IconButton__icon-button p-0", {
       variants: {
          size: {
-            xs: `text-xl h-6 w-6`,
-            sm: `text-xl h-8 w-8`,
-            md: `text-2xl h-10 w-10`,
-            lg: `text-3xl h-12 w-12`,
-            xl: `text-4xl h-14 w-14`,
+            xs: "text-xl h-6 w-6",
+            sm: "text-xl h-8 w-8",
+            md: "text-2xl h-10 w-10",
+            lg: "text-3xl h-12 w-12",
+            xl: "text-4xl h-14 w-14",
          },
       },
       defaultVariants: {
@@ -39,13 +38,11 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>((
       ...rest
    } = props
    
-   const StyleLibrary = useStyleLibrary()
-   
    return (
       <>
          <Button
             className={cn(
-               StyleLibrary.IconButton.iconButton({ size }),
+               IconButtonAnatomy.iconButton({ size }),
                iconButtonClassName,
                className,
             )}

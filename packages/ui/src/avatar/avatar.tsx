@@ -3,7 +3,7 @@
 import { cn } from "@rahimstack/tailwind-utils"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { useRef, useState } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy, useStyleLibrary } from "../core"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 
 export const AvatarAnatomy = defineStyleAnatomy({
@@ -64,15 +64,13 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>((props, ref)
    
    const [displayImage, setDisplayImage] = useState(!!src && src?.length > 0)
    
-   const StyleLibrary = useStyleLibrary()
-   
    const imgRef = useRef<HTMLImageElement>(null)
    
    return (
       <>
          <div
             className={cn(
-               StyleLibrary.Avatar.body({ size }),
+               AvatarAnatomy.body({ size }),
                bodyClassName,
                className,
             )}
@@ -80,7 +78,7 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>((props, ref)
             ref={ref}
          >
             {(!displayImage && !placeholder) &&
-                <svg viewBox="0 0 128 128" className={cn(StyleLibrary.Avatar.fallbackIcon(), fallbackIconClassName)} role="img" aria-label="avatar">
+                <svg viewBox="0 0 128 128" className={cn(AvatarAnatomy.fallbackIcon(), fallbackIconClassName)} role="img" aria-label="avatar">
                     <path
                         className="fill-gray-200"
                         d="M103,102.1388 C93.094,111.92 79.3504,118 64.1638,118 C48.8056,118 34.9294,111.768 25,101.7892 L25,95.2 C25,86.8096 31.981,80 40.6,80 L87.4,80 C96.019,80 103,86.8096 103,95.2 L103,102.1388 Z"
@@ -91,11 +89,11 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>((props, ref)
                     ></path>
                 </svg>}
             {(!displayImage && placeholder) &&
-                <span className={cn(StyleLibrary.Avatar.placeholder({ size }), placeholderClassName)}>{placeholder}</span>}
+                <span className={cn(AvatarAnatomy.placeholder({ size }), placeholderClassName)}>{placeholder}</span>}
             {displayImage && <img
                 ref={imgRef}
                 src={src ?? ""}
-                className={cn(StyleLibrary.Avatar.image(), imageClassName)}
+                className={cn(AvatarAnatomy.image(), imageClassName)}
                 onError={e => {
                    e.currentTarget.style.display = "none"
                    setDisplayImage(false)

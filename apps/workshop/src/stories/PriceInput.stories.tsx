@@ -1,5 +1,5 @@
-import { PriceInput } from "ui"
 import type { Meta, StoryObj } from "@storybook/react"
+import { PriceInput } from "ui"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
@@ -8,6 +8,8 @@ const meta = {
    tags: ["autodocs"],
    args: {
       label: "Label",
+      defaultValue: 20000,
+      currency: "USD",
    },
 } satisfies Meta<typeof PriceInput>
 
@@ -17,59 +19,4 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
    args: {},
-}
-export const Disabled: Story = {
-   args: {
-      isDisabled: true,
-   },
-}
-
-export const Error: Story = {
-   args: {
-      error: "Oops!",
-   },
-}
-
-export const Help: Story = {
-   args: {
-      help: "Help text",
-   },
-}
-
-export const Large: Story = {
-   args: {
-      size: "lg",
-   },
-}
-
-export const LeftAddon: Story = {
-   args: {
-      leftAddon: "Addon",
-   },
-}
-
-export const RightAddon: Story = {
-   args: {
-      rightAddon: "Addon",
-   },
-}
-
-
-export const LeftIcon: Story = {
-   args: {
-      leftIcon: <span>@</span>,
-   },
-}
-
-export const RightIcon: Story = {
-   args: {
-      rightIcon: <span>@</span>,
-   },
-}
-
-export const IconWithAddon: Story = {
-   args: {
-      leftAddon: "Addon",
-      leftIcon: <span>@</span>,
-   },
 }

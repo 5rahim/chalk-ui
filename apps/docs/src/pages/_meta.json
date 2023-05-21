@@ -5,6 +5,7 @@
   },
   "index": "Introduction",
   "installation": "Installation",
+  "dive-deeper": "Dive deeper",
   "--": {
     "type": "separator",
     "title": "References"

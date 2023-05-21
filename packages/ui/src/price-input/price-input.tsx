@@ -14,7 +14,6 @@ export interface PriceInputProps extends Omit<TextInputProps, "value" | "onChang
    onChange?: (value: number) => void
    locale?: string
    currency?: Currency
-   leftAddon?: string | undefined
 }
 
 export const PriceInput = React.forwardRef<HTMLInputElement, PriceInputProps>((props, ref) => {
@@ -30,8 +29,8 @@ export const PriceInput = React.forwardRef<HTMLInputElement, PriceInputProps>((p
    
    const { locale: lng, country } = useUILocaleConfig()
    
-   const locale = useMemo(() => _locale ?? lng, [])
-   const currency = useMemo(() => _currency ?? currencies[country], [])
+   const locale = useMemo(() => _locale ?? lng, [_locale, lng])
+   const currency = useMemo(() => _currency ?? currencies[country], [_currency, country])
    
    const [amount, setAmount] = useState<number>(value ?? defaultValue)
    const [isEditing, setIsEditing] = useState(false)
@@ -94,8 +93,6 @@ export const PriceInput = React.forwardRef<HTMLInputElement, PriceInputProps>((p
    )
    
 })
-
-PriceInput.displayName = "PriceInput"
 
 function extractFloat(input: string): number {
    // Use a regular expression to remove any non-numeric characters

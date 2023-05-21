@@ -1,7 +1,7 @@
 import { cn } from "@rahimstack/tailwind-utils"
 import { cva } from "class-variance-authority"
 import React from "react"
-import { defineStyleAnatomy, useStyleLibrary } from "../core"
+import { defineStyleAnatomy } from "../core"
 import { LoadingSpinner } from "./loading-spinner"
 
 export const LoadingOverlayAnatomy = defineStyleAnatomy({
@@ -17,16 +17,16 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps & React.ComponentProps
    
    const { children, show = true, className, ...rest } = props
    
-   const StyleLibrary = useStyleLibrary()
-   
    if (!show) return null
    
    return (
       <>
-         <div className={cn(StyleLibrary.LoadingOverlay.overlay(), className)} {...rest}>
+         <div className={cn(LoadingOverlayAnatomy.overlay(), className)} {...rest}>
             <LoadingSpinner className="justify-auto" />
          </div>
       </>
    )
    
 }
+
+LoadingOverlay.displayName = "LoadingOverlay"

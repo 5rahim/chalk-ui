@@ -6,7 +6,7 @@ import { cva } from "class-variance-authority"
 import { useRef } from "react"
 import { mergeProps, useCalendarCell, useFocusRing } from "react-aria"
 import { CalendarState, RangeCalendarState } from "react-stately"
-import { defineStyleAnatomy, useStyleLibrary, useUILocaleConfig } from "../core"
+import { defineStyleAnatomy, useUILocaleConfig } from "../core"
 
 export const CalendarCellAnatomy = defineStyleAnatomy({
    cell: cva("UI-CalendarCell__cell relative", {
@@ -48,8 +48,6 @@ interface CalendarCellProps {
 
 export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
    
-   const StyleLibrary = useStyleLibrary()
-   
    let ref = useRef<HTMLDivElement>(null)
    let {
       cellProps,
@@ -88,16 +86,16 @@ export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
    return (
       <td
          {...cellProps}
-         className={cn(StyleLibrary.CalendarCell.cell({ isFocusVisible }))}
+         className={cn(CalendarCellAnatomy.cell({ isFocusVisible }))}
       >
          <div
             {...mergeProps(buttonProps, focusProps)}
             ref={ref}
             hidden={isOutsideMonth}
-            className={cn(StyleLibrary.CalendarCell.button({ isDisabled, isSelected, isUnavailable, isRoundedLeft, isRoundedRight }))}
+            className={cn(CalendarCellAnatomy.button({ isDisabled, isSelected, isUnavailable, isRoundedLeft, isRoundedRight }))}
          >
             <div
-               className={cn(StyleLibrary.CalendarCell.date({
+               className={cn(CalendarCellAnatomy.date({
                   isSelected, isSelectionEnd, isSelectionStart, isUnavailable, isDisabled, isFocusVisible,
                }))}
             >
@@ -108,3 +106,4 @@ export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
    )
 }
 
+CalendarCell.displayName = "CalendarCell"

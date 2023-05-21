@@ -149,6 +149,8 @@ export const useUILocaleConfig = (): UILocaleConfig => {
    return React.useContext(__LocaleConfigContext)
 }
 
+useUILocaleConfig.displayName = "useUILocaleConfig"
+
 // ------------------------------------------------------------------------------------------------------------------ //
 
 export interface UIProviderProps {
@@ -167,10 +169,9 @@ export interface UIProviderProps {
  * </UIProvider>
  * @param children
  * @param config
- * @param styleLibrary
  * @constructor
  */
-export const UIProvider: React.FC<UIProviderProps> = ({ children, config, styleLibrary }) => {
+export const UIProvider: React.FC<UIProviderProps> = ({ children, config }) => {
    
    let localeConfig: UILocaleConfig = {
       ...__LocaleConfigDefaultValue,
@@ -184,7 +185,9 @@ export const UIProvider: React.FC<UIProviderProps> = ({ children, config, styleL
          </SSRProvider>
       </__LocaleConfigContext.Provider>
    )
-}`
+}
+
+UIProvider.displayName = "UIProvider"`
 
 // ------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------- //

@@ -1,7 +1,7 @@
 import { cn } from "@rahimstack/tailwind-utils"
 import { cva, VariantProps } from "class-variance-authority"
 import React from "react"
-import { defineStyleAnatomy, useStyleLibrary } from "../core"
+import { defineStyleAnatomy } from "../core"
 
 export const InputAnatomy = defineStyleAnatomy({
    input: cva([
@@ -36,8 +36,7 @@ export const InputAnatomy = defineStyleAnatomy({
          },
          untouchable: {
             false: null,
-            true: "bg-gray-50 border-gray-200 text-gray-500 shadow-none pointer-events-none dark:bg-gray-800 dark:border-gray-800", // Repeat from
-                                                                                                                                    // above
+            true: "bg-gray-50 border-gray-200 text-gray-500 shadow-none pointer-events-none dark:bg-gray-800 dark:border-gray-800",
          },
          hasLeftAddon: { true: null, false: null },
          hasRightAddon: { true: null, false: null },
@@ -136,10 +135,8 @@ export const InputIcon = ({ icon, size = "md", side, props }: {
    },
 ) => {
    
-   const StyleLibrary = useStyleLibrary()
-   
    if (!!icon) return <span
-      className={cn(StyleLibrary.InputAddons.icon({ isRightIcon: side === "right", isLeftIcon: side === "left", size }))}
+      className={cn(InputAddonsAnatomy.icon({ isRightIcon: side === "right", isLeftIcon: side === "left", size }))}
       {...props}
    >
       {icon}
@@ -158,11 +155,9 @@ export const InputAddon = ({ addon, leftIcon, rightIcon, size = "md", side, prop
    },
 ) => {
    
-   const StyleLibrary = useStyleLibrary()
-   
    if (!!addon) return (
       <span
-         className={cn(StyleLibrary.InputAddons.addon({
+         className={cn(InputAddonsAnatomy.addon({
             isRightAddon: side === "right",
             isLeftAddon: side === "left",
             hasRightIcon: !!rightIcon,

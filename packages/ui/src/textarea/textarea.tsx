@@ -1,8 +1,7 @@
 import { cn } from "@rahimstack/tailwind-utils"
 import React, { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { useStyleLibrary } from "../core"
-import { InputStyling } from "../input"
+import { InputAnatomy, InputStyling } from "../input"
 
 export interface TextareaProps extends React.ComponentPropsWithRef<"textarea">, InputStyling, BasicFieldOptions {
 }
@@ -16,8 +15,6 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((pr
       ...rest
    }, basicFieldProps] = extractBasicFieldProps(props, useId())
    
-   const StyleLibrary = useStyleLibrary()
-   
    return (
       <>
          <BasicField
@@ -29,7 +26,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((pr
                id={basicFieldProps.id}
                className={cn(
                   "form-textarea",
-                  StyleLibrary.Input.input({
+                  InputAnatomy.input({
                      intent,
                      hasError: !!basicFieldProps.error,
                      untouchable: !!basicFieldProps.isDisabled,

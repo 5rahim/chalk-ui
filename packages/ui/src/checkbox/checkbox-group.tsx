@@ -2,7 +2,7 @@
 
 import { cn } from "@rahimstack/tailwind-utils"
 import React, { createContext, useCallback, useContext, useEffect, useId, useState } from "react"
-import { BasicField, BasicFieldOptions, extractBasicFieldProps } from ".."
+import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { Checkbox, CheckboxProps } from "./checkbox"
 
 interface CheckboxGroupContextValue {
@@ -15,7 +15,6 @@ interface CheckboxGroupContextValue {
 const CheckboxGroupContext = createContext<CheckboxGroupContextValue | null>(null)
 export const CheckboxGroupProvider = CheckboxGroupContext.Provider
 export const useCheckboxGroupContext = () => useContext(CheckboxGroupContext)
-
 
 export interface CheckboxGroupProps extends BasicFieldOptions {
    defaultValues?: string[]

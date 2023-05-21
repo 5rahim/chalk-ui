@@ -1,6 +1,7 @@
 import { cn } from "@rahimstack/tailwind-utils"
 import React, { useId } from "react"
-import { BasicField, BasicFieldOptions, extractBasicFieldProps, InputAddon, inputContainerStyle, InputIcon, InputStyling, useStyleLibrary } from ".."
+import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
+import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
 
 export interface TextInputProps extends Omit<React.ComponentPropsWithRef<"input">, "size">,
    Omit<InputStyling, "hasError" | "isDisabled">,
@@ -21,8 +22,6 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
       ...rest
    }, basicFieldProps] = extractBasicFieldProps<TextInputProps>(props, useId())
    
-   const StyleLibrary = useStyleLibrary()
-   
    return (
       <>
          <BasicField
@@ -39,7 +38,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
                   name={basicFieldProps.name}
                   className={cn(
                      "form-input",
-                     StyleLibrary.Input.input({
+                     InputAnatomy.input({
                         size,
                         intent,
                         hasError: !!basicFieldProps.error,

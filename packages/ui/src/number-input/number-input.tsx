@@ -5,8 +5,10 @@ import * as numberInput from "@zag-js/number-input"
 import { normalizeProps, useMachine } from "@zag-js/react"
 import { cva } from "class-variance-authority"
 import React, { useEffect, useId } from "react"
-import { BasicField, extractBasicFieldProps, InputAddon, inputContainerStyle, InputIcon, InputStyling, TextInputProps, useStyleLibrary } from ".."
+import { BasicField, extractBasicFieldProps } from "../basic-field"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
+import type { TextInputProps } from "../text-input"
 
 
 export const NumberInputAnatomy = defineStyleAnatomy({
@@ -98,8 +100,6 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       ...rest
    }, { id, ...basicFieldProps }] = extractBasicFieldProps<NumberInputProps>(props, useId())
    
-   const StyleLibrary = useStyleLibrary()
-   
    const [state, send] = useMachine(numberInput.machine({
       id: useId(), // /!\ Zag.js id prop for the NumberInput Machine doesn't work
       name: basicFieldProps.name,
@@ -137,7 +137,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                
                {!discrete && (
                   <button
-                     className={cn(StyleLibrary.NumberInput.control({
+                     className={cn(NumberInputAnatomy.control({
                         size,
                         position: "left",
                         hasLeftAddon: !!leftAddon || !!leftIcon,
@@ -152,7 +152,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                   name={basicFieldProps.name}
                   className={cn(
                      "form-input",
-                     StyleLibrary.Input.input({
+                     InputAnatomy.input({
                         size,
                         intent,
                         hasError: !!basicFieldProps.error,
@@ -162,7 +162,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                         hasLeftAddon: !!leftAddon || !discrete,
                         hasLeftIcon: !!leftIcon,
                      }),
-                     StyleLibrary.NumberInput.input({ discrete }),
+                     NumberInputAnatomy.input({ discrete }),
                      inputClassName,
                      className,
                   )}
@@ -174,7 +174,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                
                {!discrete && (
                   <button
-                     className={cn(StyleLibrary.NumberInput.control({
+                     className={cn(NumberInputAnatomy.control({
                         size,
                         position: "right",
                         hasRightAddon: !!rightAddon || !!rightIcon,

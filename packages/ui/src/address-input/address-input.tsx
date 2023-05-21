@@ -3,7 +3,9 @@
 import { LoaderOptions } from "@googlemaps/js-api-loader"
 import _isEmpty from "lodash/isEmpty"
 import React, { useId } from "react"
-import { Combobox, ComboboxProps, extractBasicFieldProps, useUILocaleConfig } from ".."
+import { extractBasicFieldProps } from "../basic-field"
+import { Combobox, ComboboxProps } from "../combobox"
+import { useUILocaleConfig } from "../core"
 import locales from "./locales.json"
 import { GoogleMapsAutocompletionRequest, useGoogleMapsAutocomplete } from "./use-address-autocomplete"
 

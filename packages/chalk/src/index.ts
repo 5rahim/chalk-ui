@@ -2,13 +2,14 @@
 import { Component, getAvailableComponents } from "@/src/helpers/components"
 import { addDependencies, dependencyVersionArray } from "@/src/helpers/dependencies"
 import { getProjectInfo } from "@/src/helpers/project"
+import { createJSONSnapshot } from "@/src/helpers/snapshot"
 import { CORE_INDEX, CORE_STYLE_ANATOMY, CORE_STYLE_PROVIDER, STYLES, TAILWIND_CONFIG } from "@/src/templates/files"
 import { logger } from "@/src/utils/logger"
 import { getPackageInfo, getPackageManager } from "@/src/utils/package"
 /**/
 import { Command } from "commander"
 import { execa } from "execa"
-import { existsSync, promises as fs } from "fs"
+import { existsSync, mkdirSync, promises as fs, writeFileSync } from "fs"
 import ora from "ora"
 import path from "path"
 import * as process from "process"
@@ -29,6 +30,30 @@ async function main() {
          "-v, --version",
          "display the version number",
       )
+   
+   /**
+    * @Internal
+    */
+   program.command("snapshot")
+          .description("Copy files and directories under \"./src/\" and transform them into JSON format.")
+          .action(() => {
+             
+             // Create the "snapshot" directory if it doesn't exist
+             const snapshotDir = path.resolve("snapshot")
+             if (!existsSync(snapshotDir)) {
+                mkdirSync(snapshotDir)
+             }
+             
+             // Generate the timestamp for the snapshot file name
+             const timestamp = new Date().toISOString().replace(/:/g, "-")
+             const snapshotFilename = `snapshot_${timestamp}.json`
+             const snapshotPath = path.join(snapshotDir, snapshotFilename)
+             
+             const jsonData = createJSONSnapshot()
+             const jsonOutput = JSON.stringify(jsonData, null, 2)
+             writeFileSync(snapshotPath, jsonOutput)
+             logger.info(`Snapshot created: ${snapshotFilename}`)
+          })
    
    program.command("clean")
           .action(async () => {
@@ -286,6 +311,7 @@ async function main() {
             componentSpinner.succeed(component.name)
          }
       })
+   
    
    program.parse()
 }

@@ -5,8 +5,8 @@ import * as radio from "@zag-js/radio-group"
 import { normalizeProps, useMachine } from "@zag-js/react"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { useEffect, useId } from "react"
-import { BasicField, BasicFieldOptions, defineStyleAnatomy, extractBasicFieldProps, useStyleLibrary } from ".."
-import { ComponentWithAnatomy } from "../core"
+import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 export const RadioGroupAnatomy = defineStyleAnatomy({
    stack: cva("UI-RadioGroup__stack w-full space-y-1"),
@@ -95,8 +95,6 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
       checkedIcon,
    }, basicFieldProps] = extractBasicFieldProps<RadioGroupProps>(props, useId())
    
-   const StyleLibrary = useStyleLibrary()
-   
    const [state, send] = useMachine(radio.machine({
       id: basicFieldProps.id,
       value,
@@ -126,7 +124,7 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
             {...basicFieldProps}
             ref={ref}
          >
-            <div className={cn(StyleLibrary.RadioGroup.stack(), stackClassName)} {...api.rootProps}>
+            <div className={cn(RadioGroupAnatomy.stack(), stackClassName)} {...api.rootProps}>
                
                {options.map((opt) => (
                   
@@ -134,20 +132,20 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
                      key={opt.value}
                      {...api.getRadioProps({ value: opt.value })}
                      className={cn(
-                        StyleLibrary.RadioGroup.radioWrapper(),
+                        RadioGroupAnatomy.radioWrapper(),
                         radioWrapperClassName,
                      )}
                   >
                      
                      <div
                         className={cn(
-                           StyleLibrary.RadioGroup.radioControl({ size, hasError: !!basicFieldProps.error }),
+                           RadioGroupAnatomy.radioControl({ size, hasError: !!basicFieldProps.error }),
                            radioControlClassName,
                         )}
                         {...api.getRadioControlProps({ value: opt.value })}>
                         {checkedIcon ? checkedIcon :
                            <span
-                              className={cn(StyleLibrary.RadioGroup.radioIcon({
+                              className={cn(RadioGroupAnatomy.radioIcon({
                                  untouchable: !!basicFieldProps.isDisabled, isChecked: api.value === opt.value,
                               }), radioIconClassName)}
                            >
@@ -166,7 +164,7 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
                      
                      <div
                         className={cn(
-                           StyleLibrary.RadioGroup.radioLabel({ size }),
+                           RadioGroupAnatomy.radioLabel({ size }),
                            radioLabelClassName,
                         )}
                         {...api.getRadioLabelProps({ value: opt.value })}
@@ -176,7 +174,7 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
                      
                      {!!opt.help && <div
                          className={cn(
-                            StyleLibrary.RadioGroup.radioLabel(),
+                            RadioGroupAnatomy.radioLabel(),
                             radioHelpClassName,
                          )}
                          {...api.getRadioLabelProps({ value: opt.value })}

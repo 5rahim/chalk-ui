@@ -1,6 +1,6 @@
 import { cn } from "@rahimstack/tailwind-utils"
 import React from "react"
-import { IconButton, IconButtonProps } from ".."
+import { IconButton, IconButtonProps } from "."
 
 export interface CloseButtonProps extends IconButtonProps {
    icon?: React.ReactElement<any, string | React.JSXElementConstructor<any>>

@@ -4,7 +4,9 @@ import { cn } from "@rahimstack/tailwind-utils"
 import { CountryCode, E164Number } from "libphonenumber-js"
 import React, { useId } from "react"
 import PhoneInput from "react-phone-number-input"
-import { BasicField, extractBasicFieldProps, InputAddon, inputContainerStyle, InputIcon, TextInputProps, useStyleLibrary } from ".."
+import { BasicField, extractBasicFieldProps } from "../basic-field"
+import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon } from "../input"
+import type { TextInputProps } from "../text-input"
 
 export interface PhoneNumberInputProps extends Omit<TextInputProps, "value" | "onChange"> {
    value?: string | null | undefined
@@ -31,8 +33,6 @@ export const PhoneNumberInput = React.forwardRef<HTMLInputElement, PhoneNumberIn
       countrySelectRef,
    }, basicFieldProps] = extractBasicFieldProps<PhoneNumberInputProps>(props, useId())
    
-   const StyleLibrary = useStyleLibrary()
-   
    return (
       <>
          <BasicField
@@ -58,7 +58,7 @@ export const PhoneNumberInput = React.forwardRef<HTMLInputElement, PhoneNumberIn
                   countrySelectProps={{
                      className: cn(
                         "form-select",
-                        StyleLibrary.Input.input({
+                        InputAnatomy.input({
                            size,
                            intent,
                            hasError: !!basicFieldProps.error,
@@ -76,7 +76,7 @@ export const PhoneNumberInput = React.forwardRef<HTMLInputElement, PhoneNumberIn
                   numberInputProps={{
                      className: cn(
                         "form-input",
-                        StyleLibrary.Input.input({
+                        InputAnatomy.input({
                            size,
                            intent,
                            hasError: !!basicFieldProps.error,

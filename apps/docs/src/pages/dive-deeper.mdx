@@ -1,0 +1,218 @@
+import {Callout}            from "nextra-theme-docs";
+import Preview              from "../components/Preview";
+import {RadioGroup, Switch} from "ui";
+
+# Dive deeper
+
+## Theming
+
+- In our design system, most components are designed to utilize the -brand-* color variant provided by Tailwind CSS.
+By customizing the brand color, you can ensure that these components align with your desired visual identity and branding/
+To customize the brand color, you can modify the configuration in the `tailwind.config.js` file.
+
+- Some components such as Button, Badge and Alert have a `intent` property, which features different colors in their styling such as `primary` with features the brand color.
+They also have other intents like `success`, `alert` and `warning`.
+
+
+## Styling
+
+<Callout>
+    You should be familiar with Tailwind before using these components.
+</Callout>
+
+### Using Anatomy
+
+Most components have what is called an `anatomy` function that defines the main parts of the styling.
+The anatomy approach defines the main parts of the component's styling using a function called defineStyleAnatomy.
+Each part is represented by a distinct class-variance-authority (CVA) object. These CVAs define the CSS classes associated with each part of the component. [Learn more about CVA](https://cva.style/docs/getting-started).
+
+In the following example, the PageHeader component has several parts such as body, title, actionContainer, description, and detailsContainer, each with its own styling.
+By using CVAs, you can easily and directly change the styles of different parts of the component. Variants can also be added, allowing for different styles based on specific properties (e.g., size in the title part).
+This gives you more flexibility to customize the component's styling based on your requirements.
+
+
+```tsx /cva/
+import { defineStyleAnatomy } from "../core"
+
+export export const PageHeaderAnatomy = defineStyleAnatomy({
+   body: cva("UI-PageHeader__body md:flex md:items-center md:justify-between md:space-x-5"),
+   title: cva("UI-PageHeader__title font-bold text-gray-900 dark:text-gray-200", {
+      variants: {
+         size: {
+            sm: "text-lg sm:text-xl",
+            md: "text-xl sm:text-2xl",
+            lg: "text-2xl sm:text-3xl",
+            xl: "text-2xl sm:text-4xl",
+         },
+      },
+      defaultVariants: {
+         size: "xl",
+      },
+   }),
+   actionContainer: cva("UI-PageHeader__actionContainer justify-stretch mt-6 flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3"),
+   description: cva("UI-PageHeader__description text-sm font-medium text-gray-500 dark:text-gray-400"),
+   detailsContainer: cva("UI-PageHeader__detailsContainer block sm:flex items-start sm:space-x-5", {
+      variants: {
+         withImage: {
+            true: "flex-col gap-2 sm:flex-row sm:gap-6",
+            false: null,
+         },
+      },
+   }),
+})
+
+...
+```
+
+In this example, since we want the title to have multiple size variants, we added a helper type from `class-variance-authority`.
+This provides the **PageHeader** component with a `size` property that we can pass to the specific CVA function.
+
+```tsx /VariantProps<typeof PageHeaderAnatomy.title>/ /PageHeaderAnatomy.title({ size })/ /size/
+interface PageHeaderProps extends VariantProps<typeof PageHeaderAnatomy.title>, ...
+
+// Component
+export const PageHeader = (props) => {
+   const { size, titleClassName, ...rest } = props
+    return <>
+       ...
+       <h1 className={cn(PageHeaderAnatomy.title({ size }), titleClassName)}>{title}</h1>
+       ...
+    </>
+}
+```
+
+### Using className props
+
+The alternative approach involves passing className props to the component, allowing indirect customization using Tailwind classes.
+In this approach, the PageHeader component accepts className props for each part, such as `titleClassName`, `bodyClassName`, `actionContainerClassName`, and so on.
+These className props can be used to apply specific Tailwind classes to the corresponding parts of the component to expand or overwrite the pre-defined anatomy classes.
+
+We infer the className props from the anatomy using the `defineStyleAnatomy` function paired with the `ComponentWithAnatomy` helper type. We then merge the classes in the corresponding space using
+`cn` from a utils dependency.
+
+```tsx {2} /titleClassName/
+export interface PageHeaderProps extends React.ComponentPropsWithRef<"div">,
+   ComponentWithAnatomy<typeof PageHeaderAnatomy>, // Provides classname props
+   VariantProps<typeof PageHeaderAnatomy.title>
+{
+   title?: string
+   description?: string
+   action?: React.ReactNode
+   image?: React.ReactNode
+}
+
+// Component
+export const PageHeader = (props) => {
+   const { size, titleClassName, ...rest } = props
+    return <>
+       ...
+       <h1 className={cn(PageHeaderAnatomy.title({ size }), titleClassName)}>{title}</h1>
+       ...
+    </>
+}
+```
+
+The component can now easily be expanded upon using Tailwind classes.
+
+```tsx
+import { PageHeader } from "@/components/ui/page-header";
+
+<PageHeader
+   titleClassName=""
+   bodyClassName=""
+   actionContainerClassName=""
+   descriptionClassName=""
+   detailsContainerClassName=""
+/>
+```
+
+<Callout>
+    One trick is to use the Element Inspector on your browser to get a general view of how the different parts of a component are composed together by looking at the `UI-Component__*` classes.
+</Callout>
+
+#### Example
+
+```tsx
+import { Switch } from "@/components/ui/switch" ;
+
+<Switch
+    label="Customized"
+    controlClassName="rounded-md data-checked:bg-yellow-500 data-checked:border-yellow-500
+                     dark:data-checked:bg-yellow-500 dark:data-checked:border-yellow-500"
+    controlKnobClassName="rounded-md"
+/>
+```
+
+<Preview>
+    <Switch label="Default" />
+    <Switch
+        label="Customized"
+        controlClassName="rounded-md data-checked:bg-yellow-500 data-checked:border-yellow-500 dark:data-checked:bg-yellow-500 dark:data-checked:border-yellow-500"
+        controlKnobClassName="rounded-md"
+    />
+</Preview>
+
+### Difference
+
+<Callout>
+    Note that you can use both approaches depending on your needs.
+</Callout>
+
+#### Anatomy
+
+The anatomy approach using CVAs provides a structured and organized way to define and manage component styles. It allows for more direct control over the component's styles.
+
+- **Structured Styling**: The anatomy approach provides a clear separation of styles for different parts of the component, making it easier to understand and maintain the codebase.
+- **Variant Handling**: CVAs enable you to define variants for different styling options based on specific properties, allowing you to easily adapt the component's appearance to different scenarios.
+- **Flexible Props**: The use of CVAs provides type inference for customization props, making it easier to extend and maintain the component while ensuring type safety.
+
+- By using the className props, you can easily apply additional Tailwind CSS classes to modify the component's styling according to your specific requirements.
+The className props approach is useful when you want to make localized changes to a component without affecting its main styles.
+
+#### classNames
+
+- **Customization Flexibility**: By using the className props, you can easily apply additional Tailwind CSS classes to modify the component's styling according to your specific requirements.
+- **Localization of Changes**: The className props approach is useful when you want to make localized changes to a component without affecting its global styles.
+Although it is less flexible, since you cannot customize variant classes. It allows you to create different versions of the same component by applying different classes, without the need to replicate the component's code or modify its base anatomy.
+
+TLDR; Use the anatomy approach when you want permanent changes for all subsequent uses of the component. Use the className approach if you want to localize changes.
+
+### Advanced example
+
+<Preview>
+    <RadioGroup
+        label="Customized"
+        fieldClassName="w-full"
+        fieldLabelClassName="text-md"
+        stackClassName="flex flex-col md:flex-row gap-2 space-y-0"
+        radioWrapperClassName="block w-full p-4 cursor-pointer transition border border-gray-200 rounded-md data-checked:bg-white data-checked:ring-2 data-checked:ring-brand-500"
+        radioControlClassName="absolute right-2 top-2 h-5 w-5 text-xs"
+        radioLabelClassName="font-semibold flex-none flex"
+        radioHelpClassName="text-sm"
+        defaultValue="1"
+        options={[
+            {value: "1", label: "Option 1"},
+            {value: "2", label: "Option 2"},
+            {value: "3", label: "Option 3"},
+        ]}
+    />
+</Preview>
+
+```tsx
+import { RadioGroup, RadioGroupProps } from "@/ui/components/radio-group"
+
+export const RadioCards: React.FC<RadioGroupProps> = (props) => {
+   return (
+      <RadioGroup
+        fieldClassName="w-full"
+        fieldLabelClassName="text-md"
+        stackClassName="flex flex-col md:flex-row gap-2 space-y-0"
+        radioWrapperClassName="block w-full p-4 cursor-pointer transition border border-gray-200 rounded-md data-checked:bg-white data-checked:ring-2 data-checked:ring-brand-500"
+        radioControlClassName="absolute right-2 top-2 h-5 w-5 text-xs"
+        radioLabelClassName="font-semibold flex-none flex"
+        radioHelpClassName="text-sm"
+        {...props}
+    />
+   )
+}
+```

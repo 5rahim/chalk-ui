@@ -1,13 +1,7 @@
-import enUS from "date-fns/locale/en-US"
-import fr from "date-fns/locale/fr"
-
-export const getDateLocaleLibrary = (locale: string) => locale.includes("fr") ? fr : enUS
-
 /**
- *
- * Change the useUILocale() hook to implement a different locale system
- *
+ * /!\ NOT USED BY CHALK CLI
  */
+
 
 
 export type LocaleDefinition = {

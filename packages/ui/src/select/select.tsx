@@ -1,6 +1,9 @@
+"use client"
+
 import { cn } from "@rahimstack/tailwind-utils"
 import React, { useId } from "react"
-import { BasicField, BasicFieldOptions, extractBasicFieldProps, InputAddon, inputContainerStyle, InputIcon, InputStyling, useStyleLibrary } from ".."
+import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
+import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
 
 export interface SelectProps extends Omit<React.ComponentPropsWithRef<"select">, "size">, InputStyling, BasicFieldOptions {
    options?: { value: string | number, label?: string }[]
@@ -23,8 +26,6 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>((props, r
       ...rest
    }, basicFieldProps] = extractBasicFieldProps<SelectProps>(props, useId())
    
-   const StyleLibrary = useStyleLibrary()
-   
    return (
       <>
          <BasicField
@@ -41,7 +42,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>((props, r
                   name={basicFieldProps.name}
                   className={cn(
                      "form-select",
-                     StyleLibrary.Input.input({
+                     InputAnatomy.input({
                         size,
                         intent,
                         hasError: !!basicFieldProps.error,

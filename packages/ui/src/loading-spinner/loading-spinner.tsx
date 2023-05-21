@@ -1,7 +1,7 @@
 import { cn } from "@rahimstack/tailwind-utils"
 import { cva } from "class-variance-authority"
 import { ComponentPropsWithRef, forwardRef } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy, useStyleLibrary } from "../core"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 export const LoadingSpinnerAnatomy = defineStyleAnatomy({
    container: cva("UI-LoadingSpinner__container flex w-full items-center h-24 justify-center"),
@@ -21,13 +21,11 @@ export const LoadingSpinner = forwardRef<HTMLDivElement, LoadingSpinnerProps>((p
       ...rest
    } = props
    
-   const StyleLibrary = useStyleLibrary()
-   
    return (
       <>
          <div
             className={cn(
-               StyleLibrary.LoadingSpinner.container(),
+               LoadingSpinnerAnatomy.container(),
                containerClassName,
             )}
             {...rest}
@@ -36,7 +34,7 @@ export const LoadingSpinner = forwardRef<HTMLDivElement, LoadingSpinnerProps>((p
             <svg
                aria-hidden="true"
                className={cn(
-                  StyleLibrary.LoadingSpinner.icon(),
+                  LoadingSpinnerAnatomy.icon(),
                   iconClassName,
                   className,
                )}
@@ -58,3 +56,5 @@ export const LoadingSpinner = forwardRef<HTMLDivElement, LoadingSpinnerProps>((p
    )
    
 })
+
+LoadingSpinner.displayName = "LoadingSpinner"

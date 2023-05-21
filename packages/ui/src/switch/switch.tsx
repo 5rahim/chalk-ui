@@ -5,9 +5,8 @@ import * as checkbox from "@zag-js/checkbox"
 import { normalizeProps, useMachine } from "@zag-js/react"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { useId, useState } from "react"
-import { BasicField, BasicFieldOptions, extractBasicFieldProps } from ".."
-import { ComponentWithAnatomy, defineStyleAnatomy, useStyleLibrary } from "../core"
-
+import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 export const SwitchAnatomy = defineStyleAnatomy({
    controlWrapper: cva("UI-Switch__controlWrapper relative h-8 w-14 overflow-hidden cursor-pointer flex-none", {
@@ -101,8 +100,6 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>((props, re
       controlKnobClassName,
    }, { label, ...basicFieldProps }] = extractBasicFieldProps(props, useId())
    
-   const StyleLibrary = useStyleLibrary()
-   
    const [control, setControl] = useState<boolean>(defaultChecked)
    
    const [state, send] = useMachine(checkbox.machine({
@@ -136,24 +133,24 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>((props, re
             {...basicFieldProps} // We do not include the label
             id={api.inputProps.id}
          >
-            <label className={cn(StyleLibrary.Switch.rootLabel(), rootLabelClassName)} {...api.rootProps}>
+            <label className={cn(SwitchAnatomy.rootLabel(), rootLabelClassName)} {...api.rootProps}>
                <input type="checkbox" {...api.inputProps} ref={ref} />
                
                <div
                   className={cn(
-                     StyleLibrary.Switch.controlWrapper({ size }),
+                     SwitchAnatomy.controlWrapper({ size }),
                      controlWrapperClassName,
                   )}
                >
                   
                   <span
                      className={cn(
-                        StyleLibrary.Switch.control({ hasError: !!basicFieldProps.error }),
+                        SwitchAnatomy.control({ hasError: !!basicFieldProps.error }),
                         controlClassName,
                      )} {...api.controlProps} />
                   <span
                      className={cn(
-                        StyleLibrary.Switch.controlKnob({ size }),
+                        SwitchAnatomy.controlKnob({ size }),
                         controlKnobClassName,
                      )}
                      {...api.controlProps}
@@ -163,7 +160,7 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>((props, re
                
                {(!!label || !!value) && <span
                    className={cn(
-                      StyleLibrary.Switch.label({ size }),
+                      SwitchAnatomy.label({ size }),
                       labelClassName,
                    )}
                    {...api.labelProps}

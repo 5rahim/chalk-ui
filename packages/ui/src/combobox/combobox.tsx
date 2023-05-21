@@ -7,11 +7,10 @@ import { cva } from "class-variance-authority"
 import _find from "lodash/find"
 import _isEmpty from "lodash/isEmpty"
 import React, { useEffect, useId, useMemo, useState } from "react"
-import {
-   BasicField, BasicFieldOptions, defineStyleAnatomy, extractBasicFieldProps, InputAddon, inputContainerStyle, InputIcon, InputStyling,
-   useStyleLibrary,
-} from ".."
-import { ComponentWithAnatomy } from "../core"
+import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
+
 
 export const ComboboxAnatomy = defineStyleAnatomy({
    menuContainer: cva([
@@ -87,8 +86,6 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>((props
       ...rest
    }, { id, ...basicFieldProps }] = extractBasicFieldProps<ComboboxProps>(props, useId())
    
-   const StyleLibrary = useStyleLibrary()
-   
    const [data, setData] = useState(options)
    
    const [selectedValue, setSelectedValue] = useState<string | undefined>(undefined)
@@ -125,7 +122,7 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>((props
                      }
                   },
                )
-               setData(filtered.length > 0 ? filtered : data)
+               setData(filtered.length > 0 ? filtered : noOptionsMessage ? [] : data) // Do not empty options if there is no 'noOptionsMessage'
             }
             onInputChange && onInputChange(value)
          },
@@ -173,7 +170,7 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>((props
                   <input
                      className={cn(
                         "unstyled",
-                        StyleLibrary.Input.input({
+                        InputAnatomy.input({
                            size,
                            intent,
                            hasError: !!basicFieldProps.error,
@@ -216,15 +213,15 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>((props
             <div {...api.positionerProps} className="z-10">
                {(!!noOptionsMessage || list.length > 0) && (
                   <ul
-                     className={cn(StyleLibrary.Combobox.menuContainer(), menuContainerClassName)}
+                     className={cn(ComboboxAnatomy.menuContainer(), menuContainerClassName)}
                      {...api.contentProps}
                   >
                      {(list.length === 0 && !!noOptionsMessage) &&
-                         <div className={cn(StyleLibrary.Combobox.menuNoOptionText(), menuNoOptionTextClassName)}>{noOptionsMessage}</div>}
+                         <div className={cn(ComboboxAnatomy.menuNoOptionText(), menuNoOptionTextClassName)}>{noOptionsMessage}</div>}
                      {list.map((item, index) => (
                         <li
                            className={cn(
-                              StyleLibrary.Combobox.menuItem(),
+                              ComboboxAnatomy.menuItem(),
                               menuItemClassName,
                            )}
                            key={`${item.value}:${index}`}

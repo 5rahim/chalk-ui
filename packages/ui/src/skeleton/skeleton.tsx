@@ -1,7 +1,7 @@
 import { cn } from "@rahimstack/tailwind-utils"
 import { cva, VariantProps } from "class-variance-authority"
 import React from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy, useStyleLibrary } from "../core"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 export const SkeletonAnatomy = defineStyleAnatomy({
    skeleton: cva("UI-Skeleton__skeleton", {
@@ -31,18 +31,16 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>((props, 
       ...rest
    } = props
    
-   const StyleLibrary = useStyleLibrary()
-   
    if (type === "text") {
       return (
          <>
             <div className="flex flex-col gap-3">
-               <div className={cn("w-full", StyleLibrary.Skeleton.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
-               <div className={cn("w-full", StyleLibrary.Skeleton.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
-               <div className={cn("w-full", StyleLibrary.Skeleton.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
-               <div className={cn("w-[98%]", StyleLibrary.Skeleton.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
-               <div className={cn("w-[95%]", StyleLibrary.Skeleton.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
-               <div className={cn("w-[90%]", StyleLibrary.Skeleton.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
+               <div className={cn("w-full", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
+               <div className={cn("w-full", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
+               <div className={cn("w-full", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
+               <div className={cn("w-[98%]", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
+               <div className={cn("w-[95%]", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
+               <div className={cn("w-[90%]", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
             </div>
          </>
       )
@@ -52,7 +50,7 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>((props, 
       <>
          <div
             className={cn(
-               StyleLibrary.Skeleton.skeleton({ type }),
+               SkeletonAnatomy.skeleton({ type }),
                skeletonClassName,
                className,
             )}

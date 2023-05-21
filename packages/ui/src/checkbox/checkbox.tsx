@@ -5,8 +5,8 @@ import * as checkbox from "@zag-js/checkbox"
 import { normalizeProps, useMachine } from "@zag-js/react"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { useId, useMemo, useState } from "react"
-import { BasicField, BasicFieldOptions, defineStyleAnatomy, extractBasicFieldProps, useStyleLibrary } from ".."
-import { ComponentWithAnatomy } from "../core"
+import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { useCheckboxGroupContext } from "./checkbox-group"
 
 export const CheckboxAnatomy = defineStyleAnatomy({
@@ -96,8 +96,6 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>((props
       iconClassName,
    }, { id, error, label, ...basicFieldProps }] = extractBasicFieldProps<CheckboxProps>(props, useId())
    
-   const StyleLibrary = useStyleLibrary()
-   
    const groupContext = useCheckboxGroupContext()
    
    const _default = useMemo(() => {
@@ -151,16 +149,16 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>((props
             error={noErrorMessage ? undefined : error}
             {...basicFieldProps} // We do not include basic id, label and error
          >
-            <label className={cn(StyleLibrary.Checkbox.rootLabel(), rootLabelClassName)} {...api.rootProps}>
+            <label className={cn(CheckboxAnatomy.rootLabel(), rootLabelClassName)} {...api.rootProps}>
                <input type="checkbox" {...api.inputProps} ref={ref} />
                <div
                   className={cn(
-                     StyleLibrary.Checkbox.control({ size: _size, hasError: !!error }),
+                     CheckboxAnatomy.control({ size: _size, hasError: !!error }),
                      controlClassName,
                   )} {...api.controlProps}>
                   <span>
                      <svg
-                        className={cn(StyleLibrary.Checkbox.icon({
+                        className={cn(CheckboxAnatomy.icon({
                            untouchable: !!basicFieldProps.isDisabled, isChecked: api.isChecked,
                         }), iconClassName)}
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" stroke="currentColor"
@@ -175,7 +173,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>((props
                </div>
                {(!!label || !!value) && <span
                    className={cn(
-                      StyleLibrary.Checkbox.label({ size: _size }),
+                      CheckboxAnatomy.label({ size: _size }),
                       labelClassName,
                    )}
                    {...api.labelProps}

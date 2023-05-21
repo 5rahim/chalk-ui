@@ -1,5 +1,5 @@
-import { MultiSelect } from "ui"
 import type { Meta, StoryObj } from "@storybook/react"
+import { MultiSelect } from "ui"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
@@ -8,6 +8,10 @@ const meta = {
    tags: ["autodocs"],
    args: {
       label: "Label",
+      discrete: false,
+      max: 2,
+      value: ["1"],
+      defaultValue: ["1"],
       options: [
          { value: "1", label: "Option 1" },
          { value: "2", label: "Option 2" },

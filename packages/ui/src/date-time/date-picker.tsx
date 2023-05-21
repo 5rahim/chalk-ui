@@ -6,11 +6,12 @@ import { cva } from "class-variance-authority"
 import React, { useId, useRef } from "react"
 import { useDatePicker } from "react-aria"
 import { DatePickerStateOptions, useDatePickerState } from "react-stately"
-import {
-   BasicField, BasicFieldOptions, Calendar, defineStyleAnatomy, extractBasicFieldProps, IconButton, InputAddon, inputContainerStyle, InputIcon,
-   InputStyling, Modal, useStyleLibrary,
-} from ".."
-import { ComponentWithAnatomy } from "../core"
+import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
+import { IconButton } from "../button"
+import { Calendar } from "../calendar"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
+import { Modal } from "../modal"
 import { DateField } from "./date-field"
 
 export const DatePickerAnatomy = defineStyleAnatomy({
@@ -48,8 +49,6 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
       ...datePickerProps
    }, basicFieldProps] = extractBasicFieldProps<DatePickerProps>(props, useId())
    
-   const StyleLibrary = useStyleLibrary()
-   
    let state = useDatePickerState(datePickerProps)
    
    let _ref = useRef<HTMLDivElement>(null)
@@ -77,7 +76,7 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
             <div
                className={cn(
                   "form-input",
-                  StyleLibrary.Input.input({
+                  InputAnatomy.input({
                      size,
                      intent,
                      hasError: !!basicFieldProps.error,
@@ -87,7 +86,7 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
                      hasLeftAddon: !!leftAddon,
                      hasLeftIcon: !!leftIcon,
                   }),
-                  StyleLibrary.DatePicker.input(),
+                  DatePickerAnatomy.input(),
                   inputClassName,
                )}
             >
@@ -103,7 +102,7 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
                      xmlns="http://www.w3.org/2000/svg"
                      fill="currentColor"
                      viewBox="0 0 24 24"
-                     className={cn(StyleLibrary.DatePicker.iconButton(), iconButtonClassName)}
+                     className={cn(DatePickerAnatomy.iconButton(), iconButtonClassName)}
                   >
                      <path d="M3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7v2H5a2 2 0 0 0-2 2zm16 14H5V8h14z"></path>
                   </svg>}
@@ -128,3 +127,5 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
       
       </BasicField>)
 })
+
+DatePicker.displayName = "DatePicker"

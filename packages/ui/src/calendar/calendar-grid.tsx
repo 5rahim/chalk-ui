@@ -7,9 +7,9 @@ import getWeeksInMonth from "date-fns/getWeeksInMonth"
 import { useMemo } from "react"
 import { useCalendarGrid } from "react-aria"
 import { CalendarState, RangeCalendarState } from "react-stately"
-import { defineStyleAnatomy, useStyleLibrary, useUILocaleConfig } from "../core"
-import { getDateLocaleLibrary } from "../utils"
+import { defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { CalendarCell } from "./calendar-cell"
+import { getDateLocaleLibrary } from "./locale"
 
 export const CalendarGridAnatomy = defineStyleAnatomy({
    table: cva("UI-CalendarGrid__table flex-1"),
@@ -23,7 +23,6 @@ interface CalendarGridProps {
 }
 
 export function CalendarGrid({ locale, state, offset = {} }: CalendarGridProps) {
-   const StyleLibrary = useStyleLibrary()
    let { countryLocale } = useUILocaleConfig()
    let startDate = state.visibleRange.start.add(offset)
    let endDate = endOfMonth(startDate)
@@ -52,8 +51,8 @@ export function CalendarGrid({ locale, state, offset = {} }: CalendarGridProps) 
    }, [_locale])
    
    return (
-      <table {...gridProps} cellPadding="0" className={cn(StyleLibrary.CalendarGrid.table())}>
-         <thead {...headerProps} className={cn(StyleLibrary.CalendarGrid.head())}>
+      <table {...gridProps} cellPadding="0" className={cn(CalendarGridAnatomy.table())}>
+         <thead {...headerProps} className={cn(CalendarGridAnatomy.head())}>
          <tr>
             {weekDays.map((day, index) => (
                <th key={index}>{day}</th>
@@ -84,3 +83,4 @@ export function CalendarGrid({ locale, state, offset = {} }: CalendarGridProps) 
    )
 }
 
+CalendarGrid.displayName = "CalendarGrid"

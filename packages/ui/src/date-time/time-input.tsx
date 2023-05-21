@@ -5,11 +5,10 @@ import { cva } from "class-variance-authority"
 import React, { useId, useRef } from "react"
 import { useTimeField } from "react-aria"
 import { TimeFieldStateOptions, useTimeFieldState } from "react-stately"
-import {
-   BasicField, BasicFieldOptions, DateSegmentComponent, defineStyleAnatomy, extractBasicFieldProps, InputAddon, inputContainerStyle, InputIcon,
-   InputStyling,
-} from ".."
-import { ComponentWithAnatomy, useStyleLibrary, useUILocaleConfig } from "../core"
+import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
+import { ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
+import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
+import { DateSegmentComponent } from "./date-field"
 
 export const TimeInputAnatomy = defineStyleAnatomy({
    input: cva([
@@ -45,8 +44,6 @@ export const TimeInput = React.forwardRef<HTMLDivElement, TimeInputProps>((props
       ...datePickerProps
    }, basicFieldProps] = extractBasicFieldProps<TimeInputProps>(props, useId())
    
-   const StyleLibrary = useStyleLibrary()
-   
    const { countryLocale } = useUILocaleConfig()
    let state = useTimeFieldState({
       ...datePickerProps,
@@ -69,7 +66,7 @@ export const TimeInput = React.forwardRef<HTMLDivElement, TimeInputProps>((props
             <div
                className={cn(
                   "form-input",
-                  StyleLibrary.Input.input({
+                  InputAnatomy.input({
                      size,
                      intent,
                      hasError: !!basicFieldProps.error,
@@ -79,7 +76,7 @@ export const TimeInput = React.forwardRef<HTMLDivElement, TimeInputProps>((props
                      hasLeftAddon: !!leftAddon,
                      hasLeftIcon: !!leftIcon,
                   }),
-                  StyleLibrary.TimeInput.input(),
+                  TimeInputAnatomy.input(),
                   inputClassName,
                )}
                {...fieldProps}
@@ -98,3 +95,5 @@ export const TimeInput = React.forwardRef<HTMLDivElement, TimeInputProps>((props
    )
    
 })
+
+TimeInput.displayName = "TimeInput"

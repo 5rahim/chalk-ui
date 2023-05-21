@@ -1,7 +1,36 @@
 import { cn } from "@rahimstack/tailwind-utils"
+import { cva } from "class-variance-authority"
 import React from "react"
-import { BasicFieldAnatomy, ComponentWithAnatomy, useStyleLibrary } from "../core"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { ShowOnly } from "../show-only"
+
+export const BasicFieldAnatomy = defineStyleAnatomy({
+   fieldLabel: cva("UI-BasicField__fieldLabel block text-md sm:text-lg font-semibold self-start", {
+      variants: {
+         hasError: {
+            true: "text-red-500",
+            false: null,
+         },
+      },
+   }),
+   fieldAsterisk: cva("UI-BasicField__fieldAsterisk ml-1 text-red-500 text-sm"),
+   fieldDetails: cva("UI-BasicField__fieldDetails"),
+   field: cva("UI-BasicField__field w-full space-y-1"),
+   fieldHelpText: cva("UI-BasicField__fieldHelpText text-sm text-gray-500"),
+   fieldErrorText: cva("UI-BasicField__fieldErrorText text-sm text-red-500"),
+})
+
+export interface BasicFieldOptions extends ComponentWithAnatomy<typeof BasicFieldAnatomy> {
+   id?: string | undefined
+   name?: string
+   label?: React.ReactNode
+   labelProps?: object
+   help?: React.ReactNode
+   error?: string
+   isRequired?: boolean
+   isDisabled?: boolean
+   isReadOnly?: boolean
+}
 
 export function extractBasicFieldProps<Props extends BasicFieldOptions>(props: Props, id: string) {
    const {
@@ -52,18 +81,6 @@ export function extractBasicFieldProps<Props extends BasicFieldOptions>(props: P
    ]
 }
 
-export interface BasicFieldOptions extends ComponentWithAnatomy<typeof BasicFieldAnatomy> {
-   id?: string | undefined
-   name?: string
-   label?: React.ReactNode
-   labelProps?: object
-   help?: React.ReactNode
-   error?: string
-   isRequired?: boolean
-   isDisabled?: boolean
-   isReadOnly?: boolean
-}
-
 export interface BasicFieldProps extends React.ComponentPropsWithRef<"div">, BasicFieldOptions {
 }
 
@@ -89,14 +106,11 @@ export const BasicField: React.FC<BasicFieldProps> = React.memo(React.forwardRef
       ...rest
    } = props
    
-   const StyleLibrary = useStyleLibrary()
-   
-   
    return (
       <>
          <div
             className={cn(
-               StyleLibrary.BasicField.field(),
+               BasicFieldAnatomy.field(),
                className,
                fieldClassName,
             )}
@@ -106,12 +120,12 @@ export const BasicField: React.FC<BasicFieldProps> = React.memo(React.forwardRef
             <ShowOnly when={!!label}>
                <label
                   htmlFor={isDisabled ? undefined : id}
-                  className={cn(StyleLibrary.BasicField.fieldLabel({ hasError: !!error }), fieldLabelClassName)}
+                  className={cn(BasicFieldAnatomy.fieldLabel({ hasError: !!error }), fieldLabelClassName)}
                   {...labelProps}
                >
                   {label}
                   <ShowOnly when={isRequired}>
-                     <span className={cn(StyleLibrary.BasicField.fieldAsterisk(), fieldAsteriskClassName)}>*</span>
+                     <span className={cn(BasicFieldAnatomy.fieldAsterisk(), fieldAsteriskClassName)}>*</span>
                   </ShowOnly>
                </label>
             </ShowOnly>
@@ -119,9 +133,9 @@ export const BasicField: React.FC<BasicFieldProps> = React.memo(React.forwardRef
             {children}
             
             <ShowOnly when={!!help || !!error}>
-               <div className={cn(StyleLibrary.BasicField.fieldDetails(), fieldDetailsClassName)}>
-                  {!!help && <p className={cn(StyleLibrary.BasicField.fieldHelpText(), fieldHelpTextClassName)}>{help}</p>}
-                  {!!error && <p className={cn(StyleLibrary.BasicField.fieldErrorText(), fieldErrorTextClassName)}>{error}</p>}
+               <div className={cn(BasicFieldAnatomy.fieldDetails(), fieldDetailsClassName)}>
+                  {!!help && <p className={cn(BasicFieldAnatomy.fieldHelpText(), fieldHelpTextClassName)}>{help}</p>}
+                  {!!error && <p className={cn(BasicFieldAnatomy.fieldErrorText(), fieldErrorTextClassName)}>{error}</p>}
                </div>
             </ShowOnly>
          </div>

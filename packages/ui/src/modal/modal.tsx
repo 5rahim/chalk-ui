@@ -4,8 +4,8 @@ import { Dialog, Transition } from "@headlessui/react"
 import { cn } from "@rahimstack/tailwind-utils"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { Fragment } from "react"
-import { CloseButton, defineStyleAnatomy, useStyleLibrary } from ".."
-import { ComponentWithAnatomy } from "../core"
+import { CloseButton } from "../button"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 export const ModalAnatomy = defineStyleAnatomy({
    title: cva("UI-Modal__title text-lg font-medium leading-6"),
@@ -52,8 +52,6 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>((props, ref) =
       ...rest
    } = props
    
-   const StyleLibrary = useStyleLibrary()
-   
    return (
       <>
          <Transition appear show={isOpen} as={Fragment}>
@@ -83,22 +81,22 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>((props, ref) =
                      >
                         <Dialog.Panel
                            className={cn(
-                              StyleLibrary.Modal.panel({ size }),
+                              ModalAnatomy.panel({ size }),
                               panelClassName,
                            )}
                            {...rest}
                         >
                            {title && <Dialog.Title
                                as="h3"
-                               className={cn(StyleLibrary.Modal.title(), titleClassName)}
+                               className={cn(ModalAnatomy.title(), titleClassName)}
                            >
                               {title}
                            </Dialog.Title>}
                            
                            {withCloseButton &&
-                               <CloseButton onClick={onClose} className={cn(StyleLibrary.Modal.closeButton(), closeButtonClassName)} />}
+                               <CloseButton onClick={onClose} className={cn(ModalAnatomy.closeButton(), closeButtonClassName)} />}
                            
-                           <div className={cn(StyleLibrary.Modal.body(), bodyClassName)}>
+                           <div className={cn(ModalAnatomy.body(), bodyClassName)}>
                               {children}
                            </div>
                         

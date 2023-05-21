@@ -4,7 +4,7 @@ import _capitalize from "lodash/capitalize"
 import React from "react"
 import { AriaButtonProps, useDateFormatter, VisuallyHidden } from "react-aria"
 import { CalendarState, RangeCalendarState } from "react-stately"
-import { IconButton } from ".."
+import { IconButton } from "../button"
 import { useUILocaleConfig } from "../core"
 
 interface CalendarHeaderProps {
@@ -31,8 +31,6 @@ export function CalendarHeader({
    
    const { onPress: prevButtonOnPress, ...prevButtonRest } = prevButtonProps
    const { onPress: nextButtonOnPress, ...nextButtonRest } = nextButtonProps
-   
-   // TODO: Add to Style Library
    
    return (
       <div className="flex items-center py-4 text-center">
@@ -94,3 +92,5 @@ export function CalendarHeader({
       </div>
    )
 }
+
+CalendarHeader.displayName = "CalendarHeader"

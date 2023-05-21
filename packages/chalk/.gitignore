@@ -4,7 +4,8 @@ src/components
 src/styles
 tailwind.config.js
 
-
+snapshot.json
+snapshot
 dist
 .turbo
 node_modules

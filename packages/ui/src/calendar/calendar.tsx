@@ -7,8 +7,8 @@ import _capitalize from "lodash/capitalize"
 import { useRef } from "react"
 import { useCalendar } from "react-aria"
 import { CalendarStateOptions, useCalendarState } from "react-stately"
-import { defineStyleAnatomy, IconButton } from ".."
-import { useStyleLibrary, useUILocaleConfig } from "../core"
+import { IconButton } from "../button"
+import { defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { CalendarGrid } from "./calendar-grid"
 
 export const CalendarAnatomy = defineStyleAnatomy({
@@ -18,8 +18,6 @@ export const CalendarAnatomy = defineStyleAnatomy({
 })
 
 export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "createCalendar" | "locale"> & { locale?: string }) {
-   
-   const StyleLibrary = useStyleLibrary()
    
    let { countryLocale } = useUILocaleConfig()
    let state = useCalendarState({
@@ -41,8 +39,8 @@ export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "creat
    )
    
    return (
-      <div {...calendarProps} ref={ref} className={cn(StyleLibrary.Calendar.container())}>
-         <div className={cn(StyleLibrary.Calendar.header())}>
+      <div {...calendarProps} ref={ref} className={cn(CalendarAnatomy.container())}>
+         <div className={cn(CalendarAnatomy.header())}>
             <IconButton
                size="sm"
                intent="primary-subtle"
@@ -56,7 +54,7 @@ export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "creat
                   prevButtonOnPress && prevButtonOnPress(e as any)
                }}
             />
-            <h2 className={cn(StyleLibrary.Calendar.title())}>{_capitalize(Intl.DateTimeFormat(countryLocale, {
+            <h2 className={cn(CalendarAnatomy.title())}>{_capitalize(Intl.DateTimeFormat(countryLocale, {
                month: "long", year: "numeric",
             }).format(state.visibleRange.start.toDate(state.timeZone)))}</h2>
             <IconButton
@@ -77,4 +75,6 @@ export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "creat
       </div>
    )
 }
+
+Calendar.displayName = "Calendar"
 

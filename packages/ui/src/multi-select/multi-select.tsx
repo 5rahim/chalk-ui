@@ -6,11 +6,11 @@ import { cva } from "class-variance-authority"
 import _filter from "lodash/filter"
 import _find from "lodash/find"
 import React, { Fragment, useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
-import {
-   Badge, BasicField, defineStyleAnatomy, extractBasicFieldProps, InputAddon, inputContainerStyle, InputIcon, InputStyling, TextInputProps,
-   useDisclosure, useStyleLibrary,
-} from ".."
-import { ComponentWithAnatomy } from "../core"
+import { Badge } from "../badge"
+import { BasicField, extractBasicFieldProps } from "../basic-field"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
+import type { TextInputProps } from "../text-input"
 
 export const MultiSelectAnatomy = defineStyleAnatomy({
    input: cva("UI-MultiSelect__input relative flex flex-wrap gap-2 cursor-text p-2", {
@@ -42,16 +42,17 @@ export const MultiSelectAnatomy = defineStyleAnatomy({
 
 export type MultiSelectOption = { value: string, label?: string, description?: string, image?: React.ReactNode }
 
+
 export interface MultiSelectProps extends Omit<TextInputProps, "defaultValue" | "onChange">, InputStyling,
    ComponentWithAnatomy<typeof MultiSelectAnatomy> {
    options: MultiSelectOption[]
+   value?: MultiSelectOption["value"][]
    defaultValue?: MultiSelectOption["value"][]
    onChange?: (values: MultiSelectOption["value"][]) => void
    isLoading?: boolean
    discrete?: boolean
    max?: number
 }
-
 
 export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>((props, ref) => {
    
@@ -68,6 +69,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
       options,
       defaultValue,
       placeholder,
+      value,
       onChange,
       max,
       discrete = false,
@@ -77,11 +79,9 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
       ...rest
    }, basicFieldProps] = extractBasicFieldProps<MultiSelectProps>(props, useId())
    
-   const StyleLibrary = useStyleLibrary()
-   
    const inputRef = useRef<HTMLInputElement>(null)
    const ulRef = useRef<HTMLUListElement>(null)
-   const [values, setValues] = useState<MultiSelectOption["value"][]>(defaultValue ?? [])
+   const [values, setValues] = useState<MultiSelectOption["value"][]>((value ?? defaultValue) ?? [])
    const [tagInputValue, setTagInputValue] = useState("")
    const inputFocused = useDisclosure(false)
    const listDisclosure = useDisclosure(false)
@@ -100,6 +100,10 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
    useEffect(() => {
       onChange && onChange(values)
    }, [values])
+   
+   useEffect(() => {
+      if (value) setValues(value)
+   }, [value])
    
    function handleAddValue(value: string) {
       if (!!max) {
@@ -224,7 +228,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                <div
                   className={cn(
                      "form-input",
-                     StyleLibrary.Input.input({
+                     InputAnatomy.input({
                         size,
                         intent,
                         hasError: !!basicFieldProps.error,
@@ -234,7 +238,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                         hasLeftAddon: !!leftAddon,
                         hasLeftIcon: !!leftIcon,
                      }),
-                     StyleLibrary.MultiSelect.input({ isOpen: inputFocused.isOpen }),
+                     MultiSelectAnatomy.input({ isOpen: inputFocused.isOpen }),
                   )}
                   onClick={(e) => {
                      if (!inputFocused.isOpen && !isLoading) {
@@ -303,20 +307,20 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                         leaveTo="opacity-0"
                      >
                         <ul
-                           className={cn(StyleLibrary.MultiSelect.menuContainer(), menuContainerClassName)}
+                           className={cn(MultiSelectAnatomy.menuContainer(), menuContainerClassName)}
                            ref={ulRef}
                         >
                            {selectOptions.map((o, index) => {
                               
                               const imageComponent = o.image ?
-                                 <div className={cn(StyleLibrary.MultiSelect.menuItemImage(), menuItemImageClassName)}>
+                                 <div className={cn(MultiSelectAnatomy.menuItemImage(), menuItemImageClassName)}>
                                     {o.image}
                                  </div> : <></>
                               
                               return (
                                  <li
                                     key={o.value}
-                                    className={cn(StyleLibrary.MultiSelect.menuItem({ highlighted: highlightedOptionIndex === index }), menuItemClassName)}
+                                    className={cn(MultiSelectAnatomy.menuItem({ highlighted: highlightedOptionIndex === index }), menuItemClassName)}
                                     onClick={() => {
                                        handleAddValue(o.value)
                                        setTagInputValue("")
@@ -364,3 +368,30 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
 })
 
 MultiSelect.displayName = "MultiSelect"
+
+function useDisclosure(
+   initialState: boolean,
+   callbacks?: { onOpen?(): void; onClose?(): void },
+) {
+   const [opened, setOpened] = useState(initialState)
+   
+   const open = () => {
+      if (!opened) {
+         setOpened(true)
+         callbacks?.onOpen?.()
+      }
+   }
+   
+   const close = () => {
+      if (opened) {
+         setOpened(false)
+         callbacks?.onClose?.()
+      }
+   }
+   
+   const toggle = () => {
+      opened ? close() : open()
+   }
+   
+   return { isOpen: opened, open, close, toggle } as const
+}

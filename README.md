@@ -97,4 +97,4 @@ Inspired by [shadcn](https://ui.shadcn.com/)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.MD](https://github.com/5rahim/rahimstack/blob/master/packages/chalk/LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE.MD](https://github.com/5rahim/chalk-ui/blob/main/LICENSE.md) file for details.

@@ -1,8 +1,7 @@
 import { cn } from "@rahimstack/tailwind-utils"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { CSSProperties } from "react"
-import { defineStyleAnatomy, useStyleLibrary } from "../core"
-
+import { defineStyleAnatomy } from "../core"
 
 export const ButtonAnatomy = defineStyleAnatomy({
    button: cva([
@@ -109,8 +108,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, r
       ...rest
    } = props
    
-   const StyleLibrary = useStyleLibrary()
-   
    const ButtonContent = <>
       {leftIcon &&
           <span className={cn("inline-flex self-center flex-shrink-0", iconClassName)} style={{ marginInlineEnd: iconSpacing }}>{leftIcon}</span>}
@@ -125,7 +122,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, r
          <button
             type="button"
             className={cn(
-               StyleLibrary.Button.button({
+               ButtonAnatomy.button({
                   size,
                   intent,
                   contentWidth,

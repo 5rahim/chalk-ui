@@ -1,15 +1,12 @@
+"use client"
 import React from "react"
 import { SSRProvider } from "react-aria"
-import type { UIStyleLibrary } from "./style-library"
-import { StyleLibrary } from "./style-library"
 
 // ------------------------------------------------------------------------------------------------------------------ //
 
 /**
  * @internal UI Folder scope
  */
-const __StyleLibraryContext = React.createContext(StyleLibrary)
-
 type Lng = "fr" | "en" // DEVNOTE Add new lang keywords to maintain type safety
 type UILocaleConfig = {
    locale: Lng,
@@ -17,25 +14,16 @@ type UILocaleConfig = {
    country: string
 }
 const __LocaleConfigDefaultValue: UILocaleConfig = { locale: "en", countryLocale: "en-US", country: "us" }
-
-/**
- * @internal UI Folder scope
- */
-const __LocaleContext = React.createContext<UILocaleConfig>(__LocaleConfigDefaultValue)
-
-/**
- * @internal UI Folder scope
- */
-export const useStyleLibrary = (): UIStyleLibrary => {
-   return React.useContext(__StyleLibraryContext)
-}
+const __LocaleConfigContext = React.createContext<UILocaleConfig>(__LocaleConfigDefaultValue)
 
 /**
  * @internal UI Folder scope
  */
 export const useUILocaleConfig = (): UILocaleConfig => {
-   return React.useContext(__LocaleContext)
+   return React.useContext(__LocaleConfigContext)
 }
+
+useUILocaleConfig.displayName = "useUILocaleConfig"
 
 // ------------------------------------------------------------------------------------------------------------------ //
 
@@ -46,7 +34,6 @@ export interface UIProviderProps {
       countryLocale?: string,
       country?: string
    },
-   styleLibrary?: UIStyleLibrary,
 }
 
 /**
@@ -56,10 +43,9 @@ export interface UIProviderProps {
  * </UIProvider>
  * @param children
  * @param config
- * @param styleLibrary
  * @constructor
  */
-export const UIProvider: React.FC<UIProviderProps> = ({ children, config, styleLibrary }) => {
+export const UIProvider: React.FC<UIProviderProps> = ({ children, config }) => {
    
    let localeConfig: UILocaleConfig = {
       ...__LocaleConfigDefaultValue,
@@ -67,12 +53,12 @@ export const UIProvider: React.FC<UIProviderProps> = ({ children, config, styleL
    }
    
    return (
-      <__LocaleContext.Provider value={localeConfig}>
+      <__LocaleConfigContext.Provider value={localeConfig}>
          <SSRProvider>
-            <__StyleLibraryContext.Provider value={styleLibrary ?? StyleLibrary}>
-               {children}
-            </__StyleLibraryContext.Provider>
+            {children}
          </SSRProvider>
-      </__LocaleContext.Provider>
+      </__LocaleConfigContext.Provider>
    )
 }
+
+UIProvider.displayName = "UIProvider"

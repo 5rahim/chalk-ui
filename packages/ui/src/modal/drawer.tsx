@@ -3,7 +3,7 @@ import { cn } from "@rahimstack/tailwind-utils"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { Fragment } from "react"
 import { CloseButton } from "../button"
-import { ComponentWithAnatomy, defineStyleAnatomy, useStyleLibrary } from "../core"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 export const DrawerAnatomy = defineStyleAnatomy({
    panel: cva("UI-Drawer__panel", {
@@ -49,8 +49,6 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
       containerClassName,
       ...rest
    } = props
-   
-   const StyleLibrary = useStyleLibrary()
    
    let animation = {
       enter: "transform transition ease-in-out duration-500 sm:duration-500",
@@ -157,11 +155,11 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                            >
                               
                               {/*Container*/}
-                              <div className={cn(StyleLibrary.Drawer.container(), containerClassName)}>
+                              <div className={cn(DrawerAnatomy.container(), containerClassName)}>
                                  <div
-                                    className={cn(StyleLibrary.Drawer.header(), headerClassName)}
+                                    className={cn(DrawerAnatomy.header(), headerClassName)}
                                  >
-                                    <Dialog.Title className={cn(StyleLibrary.Drawer.title(), titleClassName)}>{title}</Dialog.Title>
+                                    <Dialog.Title className={cn(DrawerAnatomy.title(), titleClassName)}>{title}</Dialog.Title>
                                     
                                     {withCloseButton && (
                                        <CloseButton
@@ -171,7 +169,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                                     )}
                                  
                                  </div>
-                                 <div className={cn(StyleLibrary.Drawer.body(), bodyClassName)}>
+                                 <div className={cn(DrawerAnatomy.body(), bodyClassName)}>
                                     {children}
                                  </div>
                               </div>

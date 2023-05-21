@@ -1,4 +1,7 @@
-export { customizeStyleLibrary } from "./core/define-styles"
+/**
+ * /!\ NOT USED BY CHALK CLI
+ */
+
 export * from "./text-input"
 export * from "./basic-field"
 export * from "./show-only"
@@ -26,8 +29,7 @@ export * from "./page-header"
 export * from "./loading-spinner"
 export { Transition, Dialog } from "@headlessui/react"
 export { cva } from "class-variance-authority"
-export { DangerZoneAnatomy, BasicFieldAnatomy } from "./core/style-library"
-export * from "./core/providers"
+export * from "./core/style-provider"
 export { ComponentWithAnatomy } from "./core/style-anatomy"
 export { defineStyleAnatomy } from "./core/style-anatomy"
 export { Anatomy } from "./core/style-anatomy"
