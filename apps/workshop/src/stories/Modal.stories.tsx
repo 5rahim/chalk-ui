@@ -1,11 +1,10 @@
-import { Modal } from "ui"
-import { Button } from "ui"
-import type { Args, Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "react"
+import { Button, Modal } from "ui"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
-   title: "Components/Overlay/Modal",
+   title: "Components/Overlays/Modal",
    component: (args) => {
       const [open, setOpen] = useState(false)
       

@@ -1,11 +1,12 @@
-import {Drawer}   from "ui";
-import Preview    from "../../components/Preview";
-import {useState} from "react";
-import {Button}   from "nextra/components";
+import {Drawer}        from "ui";
+import Preview         from "../../components/Preview";
+import {useState}      from "react";
+import {Button}        from "nextra/components";
+import StorybookButton from "../../components/StorybookButton";
 
 # Drawer
 
-`DrawerProps`
+<StorybookButton slug="components-overlays-drawer--docs" />
 
 export const Highlight = ({children}) => {
 
@@ -56,31 +57,8 @@ export const Highlight = ({children}) => {
     <Highlight />
 </Preview>
 
+## Installation
 
-```tsx copy
-import {Button, Drawer} from "ui"
-import {useState} from 'react'
-
-export const Component = ({children}) => {
-    
-    const [isOpen, setIsOpen] = useState(false)
-    
-    return (
-        <>
-            <Button onClick={() => setIsOpen(true)}>Open drawer</Button>
-            <Drawer
-               isOpen={isOpen}
-               onClose={() => setIsOpen(false)}
-               placement="left"
-               title="Drawer"
-               withCloseButton
-            >
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores.
-            </Drawer>
-        </>
-    )
-}
-
-<Drawer />
+```shell copy
+npx @rahimstack/chalk add drawer
 ```
-

@@ -1,5 +1,13 @@
 {
+  "-": {
+    "type": "separator",
+    "title": "Getting Started"
+  },
   "index": "Introduction",
   "installation": "Installation",
+  "--": {
+    "type": "separator",
+    "title": "References"
+  },
   "components": "Components"
 }

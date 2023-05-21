@@ -1,24 +1,18 @@
-import {NumberInput} from "ui";
-import Preview       from "../../components/Preview";
+import {NumberInput}   from "ui";
+import Preview         from "../../components/Preview";
+import StorybookButton from "../../components/StorybookButton";
 
 # NumberInput
 
-`NumberInputProps` `HTMLInputElement` `BasicFieldOptions` `InputStyling`
+<StorybookButton slug="components-forms-numberinput--docs" />
 
 <Preview>
     <NumberInput label="Number input" />
-    <NumberInput label="Number input" leftAddon="Addon" />
-    <NumberInput label="Number input" rightAddon="Addon" />
-    <NumberInput label="Number input" leftAddon="Addon" rightAddon="Addon" />
-    <NumberInput label="Number input" isDisabled />
 </Preview>
 
 
-```tsx copy
-import {NumberInput} from "ui";
+## Installation
 
-<NumberInput label="Number input" />
-<NumberInput label="Number input" leftAddon="Addon" />
-<NumberInput label="Number input" rightAddon="Addon" />
-<NumberInput label="Number input" leftAddon="Addon" rightAddon="Addon" />
+```shell copy
+npx @rahimstack/chalk add number-input
 ```

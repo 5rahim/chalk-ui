@@ -1,11 +1,12 @@
-import {Modal}    from "ui";
-import Preview    from "../../components/Preview";
-import {useState} from "react";
-import {Button}   from "nextra/components";
+import {Modal}         from "ui";
+import Preview         from "../../components/Preview";
+import {useState}      from "react";
+import {Button}        from "nextra/components";
+import StorybookButton from "../../components/StorybookButton";
 
 # Modal
 
-`ModalProps`
+<StorybookButton slug="components-overlays-modal--docs" />
 
 export const Highlight = ({children}) => {
 
@@ -26,25 +27,9 @@ export const Highlight = ({children}) => {
     <Highlight />
 </Preview>
 
+## Installation
 
-```tsx copy
-import {Modal, Button} from "ui";
-import { useState } from 'react';
-
-export const Component = ({children}) => {
-    
-    const [isOpen, setIsOpen] = useState(false)
-    
-    return (
-        <>
-            <Button onClick={() => setIsOpen(true)}>Open modal</Button>
-            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Modal" withCloseButton>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores.
-            </Modal>
-        </>
-    )
-}
-
-<Modal />
+```shell copy
+npx @rahimstack/chalk add modal
 ```
 

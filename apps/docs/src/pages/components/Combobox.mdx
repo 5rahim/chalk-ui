@@ -1,9 +1,10 @@
-import {Combobox} from "ui";
-import Preview    from "../../components/Preview";
+import {Combobox}      from "ui";
+import Preview         from "../../components/Preview";
+import StorybookButton from "../../components/StorybookButton";
 
 # Combobox
 
-`ComboboxProps` `HTMLInputElement` `BasicFieldOptions` `InputStyling`
+<StorybookButton slug="components-forms-combobox--docs" />
 
 <Preview>
     <Combobox
@@ -13,35 +14,10 @@ import Preview    from "../../components/Preview";
         {value: '3', label: 'Option 3'},
     ]}
     />
-    <Combobox
-        label="Combobox" withFiltering={false} options={[
-        {value: '1', label: 'Option 1'},
-        {value: '2', label: 'Option 2'},
-        {value: '3', label: 'Option 3'},
-    ]}
-    />
-    <Combobox
-        label="Combobox" isDisabled options={[
-        {value: '1', label: 'Option 1'},
-        {value: '2', label: 'Option 2'},
-        {value: '3', label: 'Option 3'},
-    ]}
-    />
 </Preview>
 
+## Installation
 
-```tsx copy
-import {Combobox} from "ui";
-
-<Combobox label="Combobox" options={[
-    { value: '1', label: 'Option 1' },
-    { value: '2', label: 'Option 2' },
-    { value: '3', label: 'Option 3' },
-]} />
-<Combobox label="Combobox" withFiltering={false} options={[
-    { value: '1', label: 'Option 1' },
-    { value: '2', label: 'Option 2' },
-    { value: '3', label: 'Option 3' },
-]} />
+```shell copy
+npx @rahimstack/chalk add combobox
 ```
-

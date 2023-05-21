@@ -1,9 +1,9 @@
-import { LoadingOverlay } from "ui"
 import type { Args, Meta, StoryObj } from "@storybook/react"
+import { LoadingOverlay } from "ui"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
-   title: "Components/Overlay/LoadingOverlay",
+   title: "Components/Overlays/LoadingOverlay",
    component: LoadingOverlay,
    args: {
       show: true,

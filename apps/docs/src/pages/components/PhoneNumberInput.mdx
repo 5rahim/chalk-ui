@@ -1,22 +1,18 @@
 import {PhoneNumberInput} from "ui";
 import Preview            from "../../components/Preview";
+import StorybookButton    from "../../components/StorybookButton";
 
 # PhoneNumberInput
 
-`PhoneNumberInputProps` `TextInputProps` `HTMLInputElement` `BasicFieldOptions` `InputStyling`
-
-Supports only 2 numbers after decimal.
+<StorybookButton slug="components-forms-phonenumberinput--docs" />
 
 <Preview>
-    <PhoneNumberInput label="PhoneNumberInput" rightAddon="International" />
-    <PhoneNumberInput label="PhoneNumberInput" leftAddon="Mobile" />
-    <PhoneNumberInput label="PhoneNumberInput" isDisabled={true} />
+    <PhoneNumberInput label="PhoneNumberInput" />
 </Preview>
 
 
-```tsx copy
-import {PhoneNumberInput} from "ui";
+## Installation
 
-<PhoneNumberInput label="PhoneNumberInput" />
+```shell copy
+npx @rahimstack/chalk add phone-number-input
 ```
-

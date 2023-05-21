@@ -1,11 +1,10 @@
-import { Drawer } from "ui"
-import { Button } from "ui"
-import type { Args, Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "react"
+import { Button, Drawer } from "ui"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
-   title: "Components/Overlay/Drawer",
+   title: "Components/Overlays/Drawer",
    component: (args) => {
       const [open, setOpen] = useState(false)
       

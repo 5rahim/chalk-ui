@@ -1,9 +1,10 @@
-import {MultiSelect} from "ui";
-import Preview       from "../../components/Preview";
+import {MultiSelect}   from "ui";
+import Preview         from "../../components/Preview";
+import StorybookButton from "../../components/StorybookButton";
 
 # MultiSelect
 
-`MultiSelectProps` `HTMLDivElement` `BasicFieldOptions` `InputStyling`
+<StorybookButton slug="components-forms-multiselect--docs" />
 
 <Preview>
     <MultiSelect
@@ -12,18 +13,10 @@ import Preview       from "../../components/Preview";
         {value: '2', label: 'Option 2'},
     ]}
     />
-    <MultiSelect
-        leftAddon="Addon" label="MultiSelect" isDisabled options={[
-        {value: '1', label: 'Option 1'},
-        {value: '2', label: 'Option 2'},
-    ]}
-    />
 </Preview>
 
+## Installation
 
-```tsx copy
-import {MultiSelect} from "ui";
-
-<MultiSelect label="MultiSelect" />
+```shell copy
+npx @rahimstack/chalk add multi-select
 ```
-
