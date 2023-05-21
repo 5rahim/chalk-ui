@@ -1,12 +1,12 @@
 {
-  "-": {
+  "root-1": {
     "type": "separator",
     "title": "Getting Started"
   },
   "index": "Introduction",
   "installation": "Installation",
   "dive-deeper": "Dive deeper",
-  "--": {
+  "root-2": {
     "type": "separator",
     "title": "References"
   },

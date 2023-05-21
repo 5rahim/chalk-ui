@@ -9,7 +9,7 @@
   "LoadingSpinner": "LoadingSpinner",
   "LoadingOverlay": "LoadingOverlay",
   "PageHeader": "PageHeader",
-  "--": {
+  "comp-1": {
     "type": "separator",
     "title": "Form"
   },
