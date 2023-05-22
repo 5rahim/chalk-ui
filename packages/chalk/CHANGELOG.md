@@ -1,5 +1,11 @@
 # @rahimstack/chalk-ui
 
+## 0.0.2
+
+### Patch Changes
+
+- [`f4e7701`](https://github.com/5rahim/chalk-ui/commit/f4e770198065be2ea0d7c9991fa7a5f7c5ff8f8b) Thanks [@5rahim](https://github.com/5rahim)! - Dependency installation
+
 ## 0.0.1
 
 ### Patch Changes
