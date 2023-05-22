@@ -12,9 +12,7 @@ export const ClientProviders: React.FC<ClientProvidersProps> = (props) => {
    const { children, ...rest } = props
    
    return (
-      <UIProvider
-         config={{ locale: "fr" }}
-      >
+      <UIProvider config={{ locale: "fr" }}>
          {children}
       </UIProvider>
    )

@@ -3,6 +3,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=web",
     "dev:docs": "turbo run dev --filter=docs",
     "dev:chalk": "turbo run dev --filter=chalk",
     "dev:ui": "turbo run dev --filter=ui --filter=chalk --filter=workshop",

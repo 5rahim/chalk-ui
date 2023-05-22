@@ -23,7 +23,7 @@ async function main() {
    const packageManager = getPackageManager()
    
    const program = new Command()
-      .name("@rahimstack/chalk")
+      .name("@rahimstack/chalk-ui")
       .description("React and Tailwind components")
       .version(
          packageInfo.version || "1.0.0",

@@ -1,5 +1,12 @@
 [
   {
+    "component": "alert",
+    "name": "Alert",
+    "dependencies": [],
+    "family": [],
+    "files": []
+  },
+  {
     "component": "button",
     "name": "Button",
     "dependencies": [],

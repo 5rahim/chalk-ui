@@ -4,7 +4,7 @@ import {Callout} from "nextra-theme-docs";
 
 ## Prerequisites
 
-Your application should be configured with Tailwind. You should use `create-next-app` or other templates if your project is new, or install Tailwind [manually](https://tailwindcss.com/docs/installation).
+To ensure proper configuration with Tailwind, it is recommended to set up your application using tools such as create-next-app or other suitable templates for new projects. Alternatively, you can manually install Tailwind by following the instructions provided in the [documentation.](https://tailwindcss.com/docs/installation).
 
 ## CLI
 
@@ -13,8 +13,8 @@ Your application should be configured with Tailwind. You should use `create-next
 </Callout>
 
 
-```
-npx @rahimstack/chalk init
+```shell
+npx @rahimstack/chalk-ui init
 ```
 
 - This command will set up the required files as well as prompt you for which components you want to add.
@@ -83,11 +83,11 @@ export default function RootLayout({
 ## Structure
 
 <Callout type="warning">
-    It is recommended to put all your files under a **src** folder.
+    It is advisable to organize all your files within a dedicated "src" folder.
 </Callout>
 
-- In Next.js, if you use the **app** directory, the CSS file will be under `src/app/styles/globals.css`.
-- If you do not use the **app** directory or Next.js at all, the CSS file will be under `src/styles/globals.css`.
+- In Next.js, when using the **app** directory, the CSS file will be placed at `src/app/styles/globals.css`.
+- If you do not use the **app** directory or Next.js at all, the CSS file will placed at `src/styles/globals.css`.
 
 ```text {4-5,8-13,19}
 ├── src

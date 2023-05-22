@@ -1,5 +1,5 @@
 {
-  "name": "@rahimstack/chalk",
+  "name": "@rahimstack/chalk-ui",
   "version": "0.0.0",
   "description": "React components for modern SaaS applications.",
   "publishConfig": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/5rahim/rahimstack.git",
+    "url": "https://github.com/5rahim/chalk-ui.git",
     "directory": "packages/chalk"
   },
   "files": [

@@ -26,6 +26,7 @@ https://chalk.rahim.app
 <!-- ROADMAP -->
 ## Roadmap
 
+- [x] Alert
 - [x] Avatar
 - [x] Badge
 - [x] Page Header
@@ -39,20 +40,19 @@ https://chalk.rahim.app
 - [x] Loading Spinner
 - [x] Loading Overlay
 - [ ] Accordion
+- [ ] AppShell
+- [ ] Breadcrumbs
 - [ ] Card
-- [ ] Tabs
-- [ ] Stats
 - [ ] Charts
-- [ ] Typography
-- [ ] Alert
-- [ ] Toast
 - [ ] Data Table
 - [ ] Menu
-- [ ] Tooltip
-- [ ] Timeline
 - [ ] Pagination
-- [ ] Breadcrumbs
-- [ ] AppShell
+- [ ] Stats
+- [ ] Tabs
+- [ ] Timeline
+- [ ] Toast
+- [ ] Tooltip
+- [ ] Typography
 - [ ] Form
   - [x] Text Input
   - [x] Textarea

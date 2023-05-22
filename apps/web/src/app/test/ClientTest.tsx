@@ -12,7 +12,7 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
    
    return (
       <div className="mt-10">
-      
+         Hello
       </div>
    )
    
