@@ -73,12 +73,39 @@ https://chalk.rahim.app
   - [ ] Color Picker
   - [ ] JSON Input
   - [ ] Transfer List
+  - [ ] Dropzone
+  - [ ] Image Grid Input
   - [ ] Typesafe Form
     - [ ] SegmentedControl
 - [ ] i18n (For certain components)
     - [x] English
     - [x] French
 - [ ] Tests
+
+## CLI Roadmap
+
+- [x] Init 
+- [x] Add 
+- [ ] Remove 
+- [ ] Update
+- [ ] Migrate (scans the installed components and performs an update) 
+
+## Dev
+
+- Develop the UI
+
+```shell
+pnpm dev:web
+```
+
+- Develop the CLI
+
+```shell
+pnpm dev:chalk
+```
+```shell
+cd packages/chalk && pnpm start:dev [command]
+```
 
 
 ## Contributing

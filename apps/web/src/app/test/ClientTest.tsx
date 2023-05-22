@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import { Badge } from "../../components/ui/badge"
 
 interface ClientTestProps {
    children?: React.ReactNode
@@ -12,7 +13,7 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
    
    return (
       <div className="mt-10">
-         Hello
+         <Badge>Hello</Badge>
       </div>
    )
    

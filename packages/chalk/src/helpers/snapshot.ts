@@ -26,10 +26,10 @@ function addCommentToContent(content: string, filename: string, date: string): s
 }
 
 export function createJSONSnapshot(): DirectoryData[] {
-   const srcPath = path.resolve("../ui/src")
+   const srcPath = path.resolve("../../apps/web/src/components/ui")
    
    if (!existsSync(srcPath)) {
-      console.error("Source directory \"./src\" does not exist.")
+      console.error("Source directory does not exist.")
       process.exit(1)
    }
    
