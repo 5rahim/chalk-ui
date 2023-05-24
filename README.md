@@ -6,17 +6,15 @@
 </div>
 
 # Chalk
-React components for SaaS applications.
 
-## Why?
-
-Speed up productivity by using the CLI to paste components you need into your codebase. 
+Chalk UI is a command-line interface (CLI) tool designed to facilitate the integration of fully-functional,
+pre-made Tailwind components into your project.
 
 ## Features
 
 - 🔥 TailwindCSS
 - 🔥 Useful and [fully customizable](https://chalk.rahim.app) components
-- 🔥 You own the logic
+- 🔥 You own the code
 - 🔥 i18n
 
 ## Documentation
@@ -39,13 +37,13 @@ https://chalk.rahim.app
 - [x] Drawer
 - [x] Loading Spinner
 - [x] Loading Overlay
-- [ ] Accordion
+- [x] Accordion
+- [x] DropdownMenu
 - [ ] AppShell
 - [ ] Breadcrumbs
 - [ ] Card
 - [ ] Charts
 - [ ] Data Table
-- [ ] Menu
 - [ ] Pagination
 - [ ] Stats
 - [ ] Tabs

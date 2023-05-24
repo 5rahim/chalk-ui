@@ -5,12 +5,12 @@
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=web",
     "dev:docs": "turbo run dev --filter=docs",
-    "dev:chalk": "turbo run dev --filter=chalk",
-    "dev:ui": "turbo run dev --filter=ui --filter=chalk --filter=workshop",
+    "dev:chalk": "turbo run dev --filter=chalk-ui",
+    "dev:ui": "turbo run dev --filter=ui --filter=chalk-ui --filter=workshop",
     "build:ui": "turbo run build --filter=ui",
     "build:storybook": "turbo run build --filter=workshop",
     "version-packages": "changeset version",
-    "release": "turbo run build --filter ui --filter chalk && changeset publish"
+    "release": "turbo run build --filter ui --filter chalk-ui && changeset publish"
   },
   "devDependencies": {
     "@headlessui/tailwindcss": "^0.1.3",

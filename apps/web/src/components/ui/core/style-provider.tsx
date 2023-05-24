@@ -2,7 +2,9 @@
 import React from "react"
 import { SSRProvider } from "react-aria"
 
-// ------------------------------------------------------------------------------------------------------------------ //
+/* -------------------------------------------------------------------------------------------------
+ * Locale
+ * -----------------------------------------------------------------------------------------------*/
 
 /**
  * @internal UI Folder scope
@@ -25,7 +27,9 @@ export const useUILocaleConfig = (): UILocaleConfig => {
 
 useUILocaleConfig.displayName = "useUILocaleConfig"
 
-// ------------------------------------------------------------------------------------------------------------------ //
+/* -------------------------------------------------------------------------------------------------
+ * UI Provider
+ * -----------------------------------------------------------------------------------------------*/
 
 export interface UIProviderProps {
    children?: React.ReactNode
@@ -46,12 +50,12 @@ export interface UIProviderProps {
  * @constructor
  */
 export const UIProvider: React.FC<UIProviderProps> = ({ children, config }) => {
-   
+
    let localeConfig: UILocaleConfig = {
       ...__LocaleConfigDefaultValue,
       ...config,
    }
-   
+
    return (
       <__LocaleConfigContext.Provider value={localeConfig}>
          <SSRProvider>

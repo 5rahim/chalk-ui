@@ -1,8 +1,24 @@
 [
   {
+    "component": "core",
+    "name": "Core",
+    "dependencies": [],
+    "family": [],
+    "files": []
+  },
+  {
     "component": "alert",
     "name": "Alert",
     "dependencies": [],
+    "family": [],
+    "files": []
+  },
+  {
+    "component": "accordion",
+    "name": "Accordion",
+    "dependencies": [
+      "@headlessui/react"
+    ],
     "family": [],
     "files": []
   },

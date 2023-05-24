@@ -23,6 +23,11 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true,
     "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
     "plugins": [
       {
         "name": "next"

@@ -5,25 +5,11 @@
 
 </div>
 
-# Chalk
-React components for SaaS applications.
+# Chalk UI
+
+Chalk UI is a command-line interface (CLI) tool designed to facilitate the integration of fully-functional,
+pre-made Tailwind components into your project.
 
 ## Documentation
 
 https://chalk.rahim.app
-
-## Development
-
-```shell
-cd packages/chalk && pnpm start:dev init
-```
-
-### Update components
-
-- Make a snapshot of current components
-
-```shell
-pnpm start:dev snapshot
-```
-
-- Copy the content of the snapshot to `src/templates/component-contents.json`

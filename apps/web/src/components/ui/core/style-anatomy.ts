@@ -1,5 +1,9 @@
 import { cva } from "class-variance-authority"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 /**
  * @internal UI Folder scope
  */
@@ -8,7 +12,7 @@ export type Anatomy = { [key: string]: ReturnType<typeof cva> }
  * @internal
  */
 export type AnatomyClassNames<T extends Anatomy> = {
-   [K in keyof T as `${string & K}ClassName`]?: string
+    [K in keyof T as `${string & K}ClassName`]?: string
 }
 
 /**
