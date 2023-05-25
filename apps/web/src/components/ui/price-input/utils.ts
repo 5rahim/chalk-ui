@@ -1,5 +1,3 @@
-import { removeSeparators } from "@/components/ui/price-input/utils/separators"
-
 interface SanitizeValueProps {
     value: string,
     groupSeparator?: string
@@ -12,6 +10,19 @@ interface SanitizeValueProps {
     transformRawValue?: (raw: string) => string
 }
 
+/**
+ * Remove group separator (eg: 1,000 > 1000)
+ */
+export const removeSeparators = (value: string, separator = ","): string => {
+    const reg = new RegExp(escapeRegExp(separator), "g")
+    return value.replace(reg, "")
+}
+/**
+ * Add group separator (eg: 2000 -> 2,000)
+ */
+export const addSeparators = (value: string, separator = ","): string => {
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, separator)
+}
 /**
  * Remove prefix, separators and extra decimals from value
  * @author https://github.com/cchanxzy/react-currency-input-field/blob/master/src/components/utils/cleanValue.ts

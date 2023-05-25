@@ -6,7 +6,7 @@ import { extractBasicFieldProps } from "../basic-field"
 import { useUILocaleConfig } from "../core"
 import { TextInput, TextInputProps } from "../text-input"
 import { currencies } from "./currencies"
-import { padTrimValue, removeNonNumericCharacters, replaceDecimalSeparator, sanitizeValue } from "@/components/ui/price-input/utils/sanitize-value"
+import { padTrimValue, removeNonNumericCharacters, replaceDecimalSeparator, sanitizeValue } from "./utils"
 import localeConfig from "./locales"
 
 /* -------------------------------------------------------------------------------------------------

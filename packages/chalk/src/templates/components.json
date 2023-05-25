@@ -206,8 +206,7 @@
     "component": "price-input",
     "name": "PriceInput",
     "dependencies": [
-      "dinero.js",
-      "lodash"
+      "dinero.js"
     ],
     "family": [
       "text-input"
