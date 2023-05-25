@@ -79,7 +79,7 @@ export interface RadioGroupProps extends BasicFieldOptions, ComponentWithAnatomy
 }
 
 export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((props, ref) => {
-   
+
    const [{
       size = "md",
       value,
@@ -94,7 +94,7 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
       radioIconClassName,
       checkedIcon,
    }, basicFieldProps] = extractBasicFieldProps<RadioGroupProps>(props, useId())
-   
+
    const [state, send] = useMachine(radio.machine({
       id: basicFieldProps.id,
       value,
@@ -105,30 +105,32 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
          onChange && onChange(details.value)
       },
    }))
-   
+
    const api = radio.connect(state, send, normalizeProps)
-   
+
+   // Set default value
    useEffect(() => {
       if (!value && defaultValue) {
          api.setValue(defaultValue)
       }
    }, [])
-   
+
+   // Control the state
    useEffect(() => {
       value && api.setValue(value)
    }, [value])
-   
+
    return (
-      <>
-         <BasicField
-            {...basicFieldProps}
-            ref={ref}
-         >
+       <>
+          <BasicField
+              {...basicFieldProps}
+              ref={ref}
+          >
             <div className={cn(RadioGroupAnatomy.stack(), stackClassName)} {...api.rootProps}>
-               
+
                {options.map((opt) => (
-                  
-                  <label
+
+                   <label
                      key={opt.value}
                      {...api.getRadioProps({ value: opt.value })}
                      className={cn(
@@ -136,8 +138,8 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
                         radioWrapperClassName,
                      )}
                   >
-                     
-                     <div
+
+                      <div
                         className={cn(
                            RadioGroupAnatomy.radioControl({ size, hasError: !!basicFieldProps.error }),
                            radioControlClassName,
@@ -161,8 +163,8 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
                               </svg>
                            </span>}
                      </div>
-                     
-                     <div
+
+                      <div
                         className={cn(
                            RadioGroupAnatomy.radioLabel({ size }),
                            radioLabelClassName,
@@ -171,8 +173,8 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
                      >
                         {opt.label ?? opt.value}
                      </div>
-                     
-                     {!!opt.help && <div
+
+                      {!!opt.help && <div
                          className={cn(
                             RadioGroupAnatomy.radioLabel(),
                             radioHelpClassName,
@@ -181,18 +183,18 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
                      >
                         {opt.help}
                      </div>}
-                     
-                     <input {...api.getRadioInputProps({ value: opt.value })} ref={ref} />
-                  
-                  </label>
-               
+
+                      <input {...api.getRadioInputProps({ value: opt.value })} ref={ref} />
+
+                   </label>
+
                ))}
-            
+
             </div>
          </BasicField>
       </>
    )
-   
+
 })
 
 RadioGroup.displayName = "RadioGroup"

@@ -6,6 +6,7 @@ import { cva, VariantProps } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
 import { Menu, Transition } from "@headlessui/react"
 import { cm } from "@/components/ui/core/color-theme"
+import { Divider, DividerProps } from "@/components/ui/divider"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -23,13 +24,13 @@ export const DropdownMenuAnatomy = defineStyleAnatomy({
 })
 
 export const DropdownMenuItemAnatomy = defineStyleAnatomy({
-    menuItem: cva(["UI-DropdownMenu__menuItem transition",
-        cm("hover:bg-gray-{{100,700}} text-{{gray-800,gray-200}} hover:text-{{black,white}}"),
+    item: cva(["UI-DropdownMenu__item transition",
+        cm("text-{{gray-800,gray-200}} hover:text-{{black,white}}"),
         "font-medium group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"
     ], {
         variants: {
             active: {
-                true: "bg-brand-500",
+                true: cm("bg-gray-{{100,700}}"),
                 false: null
             }
         },
@@ -42,7 +43,8 @@ export const DropdownMenuGroupAnatomy = defineStyleAnatomy({
         cm("text-{{gray-800,gray-200}}"),
         "group"
     ]),
-    title: cva(["UI-DropdownMenu_title font-semibold px-2 py-2"])
+    title: cva(["UI-DropdownMenu_title font-semibold px-2 py-1"]),
+    content: cva(["UI-DropdownMenu_content"])
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -50,7 +52,8 @@ export const DropdownMenuGroupAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface DropdownMenuProps
-    extends ComponentWithAnatomy<typeof DropdownMenuAnatomy>,
+    extends React.ComponentPropsWithRef<"div">,
+        ComponentWithAnatomy<typeof DropdownMenuAnatomy>,
         ComponentWithAnatomy<typeof DropdownMenuItemAnatomy>,
         VariantProps<typeof DropdownMenuAnatomy.dropdown> {
     children?: React.ReactNode,
@@ -64,25 +67,24 @@ const _DropdownMenu = (props: DropdownMenuProps) => {
         trigger,
         menuClassName,
         dropdownClassName,
-        menuItemClassName,
+        itemClassName,
+        className,
         ...rest
     } = props
 
-    const itemsWithProps = React.Children.map(children, (child) => {
-        // Checking isValidElement is the safe way and avoids a typescript error too.
+    // Pass `itemClassName` to every child
+    const itemsWithProps = React.useMemo(() => React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
-            return React.cloneElement(child, { menuItemClassName } as any)
+            return React.cloneElement(child, { itemClassName } as any)
         }
         return child
-    })
+    }), [children])
 
     return (
-        <Menu as="div" className={cn(DropdownMenuAnatomy.menu(), menuClassName)}>
-            <div>
-                <Menu.Button as={Fragment}>
-                    {trigger}
-                </Menu.Button>
-            </div>
+        <Menu as="div" className={cn(DropdownMenuAnatomy.menu(), menuClassName, className)} {...rest}>
+            <Menu.Button as={Fragment}>
+                {trigger}
+            </Menu.Button>
             <Transition
                 as={Fragment}
                 enter="transition ease-out duration-100"
@@ -107,19 +109,20 @@ _DropdownMenu.displayName = "DropdownMenu"
  * DropdownMenu.Item
  * -----------------------------------------------------------------------------------------------*/
 
-interface DropdownMenuItemProps extends ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
+interface DropdownMenuItemProps extends React.ComponentPropsWithRef<"button">, ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
     children?: React.ReactNode
 }
 
 const DropdownMenuItem: React.FC<DropdownMenuItemProps> = React.forwardRef<HTMLButtonElement, DropdownMenuItemProps>((props, ref) => {
 
-    const { children, menuItemClassName, ...rest } = props
+    const { children, itemClassName, className, ...rest } = props
 
-    return <Menu.Item>
+    return <Menu.Item as={Fragment}>
         {({ active }) => (
             <button
-                className={cn(DropdownMenuItemAnatomy.menuItem(), menuItemClassName)}
+                className={cn(DropdownMenuItemAnatomy.item({ active }), itemClassName, className)}
                 ref={ref}
+                {...rest}
             >
                 {children}
             </button>
@@ -134,21 +137,22 @@ DropdownMenuItem.displayName = "DropdownMenuItem"
  * DropdownMenu.Link
  * -----------------------------------------------------------------------------------------------*/
 
-interface DropdownMenuLinkProps extends ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
+interface DropdownMenuLinkProps extends React.ComponentPropsWithRef<"a">, ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
     children?: React.ReactNode
     href: string
 }
 
 const DropdownMenuLink: React.FC<DropdownMenuLinkProps> = React.forwardRef<HTMLAnchorElement, DropdownMenuLinkProps>((props, ref) => {
 
-    const { children, menuItemClassName, href, ...rest } = props
+    const { children, className, itemClassName, href, ...rest } = props
 
-    return <Menu.Item>
+    return <Menu.Item as={Fragment}>
         {({ active }) => (
             <a
                 href={href}
-                className={cn(DropdownMenuItemAnatomy.menuItem(), menuItemClassName)}
+                className={cn(DropdownMenuItemAnatomy.item({ active }), itemClassName, className)}
                 ref={ref}
+                {...rest}
             >
                 {children}
             </a>
@@ -163,33 +167,58 @@ DropdownMenuLink.displayName = "DropdownMenuLink"
  * DropdownMenu.Group
  * -----------------------------------------------------------------------------------------------*/
 
-interface DropdownMenuGroupProps extends ComponentWithAnatomy<typeof DropdownMenuGroupAnatomy> {
+interface DropdownMenuGroupProps extends React.ComponentPropsWithRef<"div">,
+    ComponentWithAnatomy<typeof DropdownMenuGroupAnatomy>,
+    ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
     children?: React.ReactNode
     title?: string
 }
 
 const DropdownMenuGroup: React.FC<DropdownMenuGroupProps> = React.forwardRef<HTMLDivElement, DropdownMenuGroupProps>((props, ref) => {
 
-    const { children, groupClassName, title, titleClassName, ...rest } = props
+    const {
+        children,
+        className,
+        groupClassName,
+        title,
+        titleClassName,
+        contentClassName,
+        itemClassName, // Ignore the classes
+        ...rest
+    } = props
 
-    return <Menu.Item>
-        {({ active }) => (
-            <div
-                className={cn(DropdownMenuGroupAnatomy.group(), groupClassName)}
-                aria-label={title}
-                ref={ref}
-            >
-                {title && <div className={cn(DropdownMenuGroupAnatomy.title(), titleClassName)} aria-labelledby={title}>
-                    {title}
-                </div>}
-                {children}
-            </div>
-        )}
-    </Menu.Item>
+    return <div
+        className={cn(DropdownMenuGroupAnatomy.group(), groupClassName, className)}
+        aria-label={title}
+        ref={ref}
+        {...rest}
+    >
+        {title && <div className={cn(DropdownMenuGroupAnatomy.title(), titleClassName)} aria-labelledby={title}>
+            {title}
+        </div>}
+        <div className={cn(DropdownMenuGroupAnatomy.content(), contentClassName)}>
+            {children}
+        </div>
+    </div>
 
 })
 
 DropdownMenuGroup.displayName = "DropdownMenuGroup"
+
+/* -------------------------------------------------------------------------------------------------
+ * DropdownMenu.Divider
+ * -----------------------------------------------------------------------------------------------*/
+
+interface DropdownMenuDivider extends DividerProps, ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
+}
+
+const DropdownMenuDivider: React.FC<DropdownMenuDivider> = React.forwardRef<HTMLHRElement, DropdownMenuDivider>(({ itemClassName, ...props }, ref) => {
+
+    return <Divider {...props} ref={ref}/>
+
+})
+
+DropdownMenuDivider.displayName = "DropdownMenuDivider"
 
 
 /* -------------------------------------------------------------------------------------------------
@@ -199,11 +228,13 @@ DropdownMenuGroup.displayName = "DropdownMenuGroup"
 _DropdownMenu.Item = DropdownMenuItem
 _DropdownMenu.Link = DropdownMenuLink
 _DropdownMenu.Group = DropdownMenuGroup
+_DropdownMenu.Divider = DropdownMenuDivider
 
 export const DropdownMenu = createPolymorphicComponent<"div", DropdownMenuProps, {
     Item: typeof DropdownMenuItem
     Link: typeof DropdownMenuLink
     Group: typeof DropdownMenuGroup
+    Divider: typeof Divider
 }>(_DropdownMenu)
 
 DropdownMenu.displayName = "DropdownMenu"

@@ -1,96 +1,120 @@
 "use client"
 
 import { cn } from "@rahimstack/tailwind-utils"
-import React, { createContext, useCallback, useContext, useEffect, useId, useState } from "react"
+import React, { createContext, useContext, useEffect, useId, useState } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { Checkbox, CheckboxProps } from "./checkbox"
 
+
+/* -------------------------------------------------------------------------------------------------
+ * Provider
+ * -----------------------------------------------------------------------------------------------*/
+
 interface CheckboxGroupContextValue {
-   group_selectedValues: string[]
-   group_size: CheckboxProps["size"]
-   
-   group_handleValueChange(value: string, isChecked: boolean | "indeterminate"): void
+    group_size: CheckboxProps["size"]
 }
 
-const CheckboxGroupContext = createContext<CheckboxGroupContextValue | null>(null)
-export const CheckboxGroupProvider = CheckboxGroupContext.Provider
-export const useCheckboxGroupContext = () => useContext(CheckboxGroupContext)
+const _CheckboxGroupContext = createContext<CheckboxGroupContextValue | null>(null)
+export const CheckboxGroupProvider = _CheckboxGroupContext.Provider
+export const useCheckboxGroupContext = () => useContext(_CheckboxGroupContext)
+
+/* -------------------------------------------------------------------------------------------------
+ * CheckboxGroup
+ * -----------------------------------------------------------------------------------------------*/
 
 export interface CheckboxGroupProps extends BasicFieldOptions {
-   defaultValues?: string[]
-   onChange?: (values: string[]) => void
-   size?: CheckboxProps["size"]
-   stackClassName?: string
-   checkboxRootLabelClassName?: string
-   checkboxLabelClassName?: string
-   checkboxControlClassName?: string
-   checkboxIconClassName?: string
-   options: { value: string, label?: string }[]
+    // Prop for controlling the state
+    value?: string[]
+    // Set the default value
+    defaultValue?: string[]
+    onChange?: (value: string[]) => void
+    size?: CheckboxProps["size"]
+    stackClassName?: string
+    checkboxRootLabelClassName?: string
+    checkboxLabelClassName?: string
+    checkboxControlClassName?: string
+    checkboxIconClassName?: string
+    options: { value: string, label?: string }[]
 }
 
 export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps>((props, ref) => {
-   
-   const [{
-      defaultValues = [],
-      onChange,
-      stackClassName,
-      checkboxLabelClassName,
-      checkboxControlClassName,
-      checkboxRootLabelClassName,
-      checkboxIconClassName,
-      options,
-      size = undefined,
-   }, basicFieldProps] = extractBasicFieldProps<CheckboxGroupProps>(props, useId())
-   
-   const [selectedValues, setSelectedValues] = useState<string[]>(defaultValues)
-   
-   useEffect(() => {
-      if (defaultValues !== selectedValues) {
-         onChange && onChange(selectedValues)
-      }
-   }, [selectedValues])
-   
-   const handleValueChange = useCallback((value: string, isChecked: boolean | "indeterminate") => {
-      setSelectedValues(p => {
-         let newArr = [...p]
-         if (isChecked === true) {
-            if (p.indexOf(value) === -1) newArr.push(value)
-         } else if (isChecked === false) {
-            newArr = newArr.filter(v => v !== value)
-         }
-         return newArr
-      })
-   }, [selectedValues])
-   
-   return (
-      <>
-         <CheckboxGroupProvider value={{ group_selectedValues: selectedValues, group_handleValueChange: handleValueChange, group_size: size }}>
-            <BasicField
-               {...basicFieldProps}
-               ref={ref}
-            >
-               <div className={cn("gap-1", stackClassName)}>
-                  {options.map((opt) => (
-                     <Checkbox
-                        key={opt.value}
-                        label={opt.label}
-                        value={opt.value}
-                        error={basicFieldProps.error}
-                        noErrorMessage
-                        labelClassName={checkboxLabelClassName}
-                        controlClassName={checkboxControlClassName}
-                        rootLabelClassName={checkboxRootLabelClassName}
-                        iconClassName={checkboxIconClassName}
-                        isDisabled={basicFieldProps.isDisabled}
-                        isReadOnly={basicFieldProps.isReadOnly}
-                     />
-                  ))}
-               </div>
-            </BasicField>
-         </CheckboxGroupProvider>
-      </>
-   )
-   
+
+    const [{
+        value,
+        defaultValue = [],
+        onChange,
+        stackClassName,
+        checkboxLabelClassName,
+        checkboxControlClassName,
+        checkboxRootLabelClassName,
+        checkboxIconClassName,
+        options,
+        size = undefined,
+    }, basicFieldProps] = extractBasicFieldProps<CheckboxGroupProps>(props, useId())
+
+    // Keep track of selected values
+    const [selectedValues, setSelectedValues] = useState<string[]>(value ?? defaultValue)
+
+    // Control the state
+    useEffect(() => {
+        if (value) {
+            setSelectedValues(value)
+        }
+    }, [value])
+
+    // Emit changes
+    useEffect(() => {
+        console.log(selectedValues)
+        if (onChange) {
+            onChange(selectedValues)
+        }
+    }, [selectedValues])
+
+
+    return (
+        <>
+            <CheckboxGroupProvider value={{
+                group_size: size
+            }}>
+                <BasicField
+                    {...basicFieldProps}
+                    ref={ref}
+                >
+                    <div className={cn("space-y-1", stackClassName)}>
+                        {options.map((opt) => (
+                            <Checkbox
+                                key={opt.value}
+                                label={opt.label}
+                                value={opt.value}
+                                checked={selectedValues.includes(opt.value)}
+                                onChange={checked => {
+                                    console.log("Changing values")
+                                    setSelectedValues(p => {
+                                        let newArr = [...p]
+                                        if (checked === true) {
+                                            if (p.indexOf(opt.value) === -1) newArr.push(opt.value)
+                                        } else if (checked === false) {
+                                            newArr = newArr.filter(v => v !== opt.value)
+                                        }
+                                        return newArr
+                                    })
+                                }}
+                                error={basicFieldProps.error}
+                                noErrorMessage
+                                labelClassName={checkboxLabelClassName}
+                                controlClassName={checkboxControlClassName}
+                                rootLabelClassName={checkboxRootLabelClassName}
+                                iconClassName={checkboxIconClassName}
+                                isDisabled={basicFieldProps.isDisabled}
+                                isReadOnly={basicFieldProps.isReadOnly}
+                            />
+                        ))}
+                    </div>
+                </BasicField>
+            </CheckboxGroupProvider>
+        </>
+    )
+
 })
 
 CheckboxGroup.displayName = "CheckboxGroup"
