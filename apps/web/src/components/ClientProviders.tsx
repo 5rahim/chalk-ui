@@ -14,7 +14,7 @@ export const ClientProviders: React.FC<ClientProvidersProps> = (props) => {
 
     return (
         <ThemeProvider attribute={"class"}>
-            <UIProvider config={{ locale: "fr" }}>
+            <UIProvider>
                 {children}
             </UIProvider>
         </ThemeProvider>

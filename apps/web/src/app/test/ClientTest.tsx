@@ -9,6 +9,7 @@ import { BiDuplicate } from "@react-icons/all-files/bi/BiDuplicate"
 import { BiLinkExternal } from "@react-icons/all-files/bi/BiLinkExternal"
 import { RadioGroup } from "@/components/ui/radio-group"
 import { CheckboxGroup } from "@/components/ui/checkbox"
+import { PriceInput } from "@/components/ui/price-input"
 
 interface ClientTestProps {
     children?: React.ReactNode
@@ -23,6 +24,8 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
 
     return (
         <div className="mt-10">
+            <PriceInput onChange={console.log}/>
+
             <DropdownMenu trigger={<Button>Open</Button>}>
                 <DropdownMenu.Group title="Item">
                     <DropdownMenu.Item><BiEditAlt/>Edit</DropdownMenu.Item>

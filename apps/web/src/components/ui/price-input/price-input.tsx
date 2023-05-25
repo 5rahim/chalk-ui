@@ -6,106 +6,117 @@ import { extractBasicFieldProps } from "../basic-field"
 import { useUILocaleConfig } from "../core"
 import { TextInput, TextInputProps } from "../text-input"
 import { currencies } from "./currencies"
+import { padTrimValue, removeNonNumericCharacters, replaceDecimalSeparator, sanitizeValue } from "@/components/ui/price-input/utils/sanitize-value"
+import localeConfig from "./locales"
 
 /* -------------------------------------------------------------------------------------------------
  * PriceInput
  * -----------------------------------------------------------------------------------------------*/
 
 export interface PriceInputProps extends Omit<TextInputProps, "value" | "onChange" | "defaultValue"> {
-   value?: number
-   defaultValue?: number
-   onChange?: (value: number) => void
-   locale?: string
-   currency?: Currency
+    value?: number
+    defaultValue?: number
+    onChange?: (value: number) => void
+    locale?: string
+    currency?: Currency
 }
 
 export const PriceInput = React.forwardRef<HTMLInputElement, PriceInputProps>((props, ref) => {
 
-   const [{
-      value,
-      defaultValue = 0,
-      locale: _locale,
-      currency: _currency,
-      onChange,
-      ...rest
-   }, basicFieldProps] = extractBasicFieldProps<PriceInputProps>(props, useId())
+    const [{
+        value,
+        defaultValue = 0,
+        locale,
+        currency,
+        onChange,
+        ...rest
+    }, basicFieldProps] = extractBasicFieldProps<PriceInputProps>(props, useId())
 
-   const { locale: lng, country } = useUILocaleConfig()
+    const { locale: lng, country } = useUILocaleConfig()
 
-   // 1. Get language and currency
-   const locale = useMemo(() => _locale ?? lng, [_locale, lng])
-   const currency = useMemo(() => _currency ?? currencies[country], [_currency, country])
-   // 2. Track the amount (int)
-   const [amount, setAmount] = useState<number>(value ?? defaultValue)
-   // 3. Track editing state
-   const [isEditing, setIsEditing] = useState(false)
-   // 4. Dinero object depends on amount
-   const dineroObject = Dinero({ amount: amount, currency }).setLocale(locale)
-   // 5. Get formatted value (string) from dinero object
-   const formattedValue = dineroObject.toFormat()
-   // 6. Track user input (what the user sees), the initial state is formatted
-   const [inputValue, setInputValue] = useState(formatNumber(dineroObject.toUnit().toString(), locale))
-   // -------------------------------------------------------------------------------------------------
-   // Emit updates as dinero object changes
-   useEffect(() => {
-      onChange && onChange((dineroObject.toUnit() * 100))
-   }, [dineroObject])
+    // 1. Get language and currency
+    const _locale = locale ?? lng
+    const _currency = currency ?? currencies[country]
+    const config = useMemo(() => localeConfig[_locale] ?? { decimalSeparator: ".", groupSeparator: "," }, [_locale])
 
-   // Function to format the input as the user is typing
-   // - Enforce correct separator by locale (e.g: comma or dot)
-   // - Truncate after second decimal
-   // - Remove non-numeric characters
-   const localizedPattern = useCallback((value: string) => {
-      let incorrectSeparator = ","
-      // Locale that use ',' as separator add it to the condition: if(locale.includes('fr') || locales.includes('xx'))
-      if (locale.includes("fr")) incorrectSeparator = "." // In French, only ',' is the correct separator
-      return truncateAfterSecondDecimal(removeNonNumericCharacters(value)).replaceAll(incorrectSeparator, "")
-   }, [locale])
+    const _decimalSeparator = config.decimalSeparator
+    const _groupSeparator = config.groupSeparator
 
-   // Function to parse dinero numeric amount (precision 2) to float
-   const toFloat = useCallback((value: string) => {
-      // We replace any comma with a dot to have a valid input
-      return extractFloat(truncateAfterSecondDecimal(removeNonNumericCharacters(value)).replaceAll(",", "."))
-   }, [])
+    /**
+     * FIXME
+     * /!\ The formatting is incorrect when the value isn't 2 because of Dinero v1.x (#5)
+     * With Dinero v2.x the API will be able to support correct formatting
+     * @link https://v2.dinerojs.com/docs/getting-started/quick-start
+     * This will be patched in future updates
+     */
+    const _decimalSpace = 2
 
-   function handleOnChange(event: ChangeEvent<HTMLInputElement>) {
-      // Example input flow -> (e.g: "2.99")
+    const _multiplier = Math.pow(10, _decimalSpace) // eg: decimalSpace = 2 => 100
 
-      let _amount = 0 // Dinero numeric value (e.g: 0)
-      let _value = "" // Input string value (e.g: "2.99")
-      try {
-         // Enforce formatting on value entered (correct separator, numeric, truncate after second decimal)
-         _value = localizedPattern(event.target.value) // (e.g: "2.99")
-         // Convert the value entered to a float
-         _amount = _value.length > 0 ? toFloat(event.target.value) : 0 // (e.g: 2.99)
-      } catch (e) {
-         setInputValue("0")
-         setAmount((_amount ?? 0) * 100)
-      }
-      // Multiply by 100 to keep a precision of 2
-      setAmount(_amount * 100) // (e.g: 299)
-      setInputValue(_value)
-   }
+    // 2. Track the amount (int)
+    const [amount, setAmount] = useState<number>(value ?? defaultValue)
+    // 3. Track editing state
+    const [isEditing, setIsEditing] = useState(false)
+    // 4. Dinero object depends on amount
+    const dineroObject = Dinero({ amount: amount, currency: _currency, precision: _decimalSpace }).setLocale(_locale)
+    // 5. Get formatted value (string) from dinero object
+    const formattedValue = dineroObject.toFormat()
+    // 6. Track user input (what the user sees), the initial state is formatted
+    const [inputValue, setInputValue] = useState(formatNumber(dineroObject.toUnit().toString(), _locale, _decimalSpace))
+    // -------------------------------------------------------------------------------------------------
+    // Emit updates as dinero object changes
+    useEffect(() => {
+        onChange && onChange(amount)
+    }, [dineroObject])
 
 
-   return (
-      <>
-         <TextInput
-            value={isEditing ? inputValue : formattedValue}
-            onChange={handleOnChange}
-            onBlur={() => {
-               setInputValue(v => formatNumber(dineroObject.toUnit().toString(), locale))
-               setIsEditing(false)
-            }}
-            onFocus={() => {
-               setIsEditing(true)
-            }}
-            ref={ref}
-            {...basicFieldProps}
-            {...rest}
-         />
-      </>
-   )
+    const toFloat = useCallback((value: string) => {
+        // 1. We remove prefixes, group separators and extra decimals (keep local decimal separator) (eg: 4,555.999 -> 4555.99)
+        let _sanitizedValue = sanitizeValue({ value: value, groupSeparator: _groupSeparator, decimalSeparator: _decimalSeparator, decimalsLimit: _decimalSpace })
+        // 2. Convert local decimal to '.' if needed, in order to parse it (eg: fr2,5 -> 2.5)
+        let _valueWithCorrectDecimal = _decimalSeparator !== "." ? replaceDecimalSeparator(_sanitizedValue, _decimalSeparator, false) : _sanitizedValue
+        // 3. Keep decimal space before parsing to float (eg: 2.5 -> 2.50)
+        return parseFloat(padTrimValue(_valueWithCorrectDecimal, ".", _decimalSpace))
+    }, [_decimalSeparator, _groupSeparator])
+
+    function handleOnChange(event: ChangeEvent<HTMLInputElement>) {
+        let _amount = 0
+        let _value = ""
+        try {
+            _value = removeNonNumericCharacters(event.target.value ?? "0")
+            // Convert the value entered to a float
+            if (_value.length > 0) {
+                _amount = toFloat(_value)
+            }
+        } catch (e) {
+            setInputValue("0")
+            setAmount(_amount ?? 0)
+        }
+        // Maintain the precision (eg: precision 2 => 400 -> 40000)
+        const _fixed = parseInt((_amount * _multiplier).toFixed(_decimalSpace))
+        setAmount(_fixed) // Update dinero object (#4)
+        setInputValue(_value) // Update displayed input (#6)
+    }
+
+
+    return (
+        <>
+            <TextInput
+                value={isEditing ? inputValue : formattedValue}
+                onChange={handleOnChange}
+                onBlur={() => {
+                    setInputValue(v => formatNumber(dineroObject.toUnit().toString(), _locale, _decimalSpace))
+                    setIsEditing(false)
+                }}
+                onFocus={() => {
+                    setIsEditing(true)
+                }}
+                ref={ref}
+                {...basicFieldProps}
+                {...rest}
+            />
+        </>
+    )
 
 })
 
@@ -113,48 +124,25 @@ export const PriceInput = React.forwardRef<HTMLInputElement, PriceInputProps>((p
  * Helper functions
  * -----------------------------------------------------------------------------------------------*/
 
-function extractFloat(input: string): number {
-   // Use a regular expression to remove any non-numeric characters
-   const floatString = input.replace(/[^\d.-]/g, "")
+/**
+ * @param input
+ * @param lang
+ * @param decimalSpace
+ */
+function formatNumber(input: string | undefined, lang: string, decimalSpace: number): string {
+    // Parse the input string to a number
+    let inputAsNumber = parseFloat(input ?? "0")
+    if (isNaN(inputAsNumber)) {
+        // If the input is not a valid number, return an empty string
+        return "0"
+    }
+    // Use the Intl object to format the number with 2 decimal places
+    const res = new Intl.NumberFormat(lang, {
+        minimumFractionDigits: decimalSpace,
+        maximumFractionDigits: decimalSpace,
+    }).format(inputAsNumber)
 
-   // Convert the extracted string to a float and return it
-   return parseFloat(floatString)
-}
-
-function removeNonNumericCharacters(input: string): string {
-   return input.replace(/[^0-9,.]\s/g, "") ?? input
-}
-
-function truncateAfterSecondDecimal(input: string): string {
-   if (input.length === 0) return ""
-   const regex = /^([^,.]+)?([,.]\d{0,2})?/
-   const match = regex.exec(input)
-   if (!match) {
-      return input
-   }
-   return match[1] + (match[2] || "")
-}
-
-function formatNumber(input: string | undefined, lang: string): string {
-   // Parse the input string to a number
-   let inputAsNumber = parseFloat(input ?? "0")
-   if (isNaN(inputAsNumber)) {
-      // If the input is not a valid number, return an empty string
-      return "0"
-   }
-
-   // Multiply the input by 100 to ensure that it has 2 decimal places
-   const inputWithDecimals = inputAsNumber
-
-   // Use the Intl object to format the number with 2 decimal places
-   const formattedNumber = new Intl.NumberFormat(lang, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-   }).format(inputWithDecimals)
-
-   // Return the formatted number as a string
-   // return formattedNumber.replaceAll(/\s/g, '')
-   return formattedNumber
+    return res
 }
 
 PriceInput.displayName = "PriceInput"
