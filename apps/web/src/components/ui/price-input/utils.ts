@@ -11,7 +11,7 @@ interface SanitizeValueProps {
 }
 
 /**
- * Remove group separator (eg: 1,000 > 1000)
+ * Remove group separator (eg: 1,000 -> 1000)
  */
 export const removeSeparators = (value: string, separator = ","): string => {
     const reg = new RegExp(escapeRegExp(separator), "g")
@@ -154,11 +154,8 @@ const reHasRegExpChar = RegExp(reRegExpChar.source)
  * "?", "(", ")", "[", "]", "{", "}", and "|" in `string`.
  *
  * @link https://github.com/lodash/lodash/blob/master/escapeRegExp.js
- * @since 3.0.0
- * @category String
  * @param {string} [value=''] The string to escape.
  * @returns {string} Returns the escaped string.
- * @see escape, escapeRegExp, unescape
  * @example
  *
  * escapeRegExp('[lodash](https://lodash.com/)')

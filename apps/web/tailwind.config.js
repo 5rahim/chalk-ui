@@ -12,6 +12,7 @@ module.exports = {
             center: true,
             padding: {
                 DEFAULT: '1rem',
+                md: '1rem',
                 sm: '2rem',
                 lg: '4rem',
                 xl: '5rem',
@@ -22,6 +23,7 @@ module.exports = {
             checked: 'checked',
             selected: 'selected',
             disabled: 'disabled',
+            focus: 'focus',
             highlighted: 'highlighted',
         },
         extend: {
@@ -64,10 +66,10 @@ module.exports = {
                     100: '#F5F5F5',
                     200: '#E5E5E5',
                     300: '#D4D4D4',
-                    400: '#A3A3A3',
+                    400: '#a9a9a9',
                     500: '#737373',
                     600: '#525252',
-                    700: '#404040',
+                    700: '#3b3b3b',
                     800: '#262626',
                     900: "#171717",
                     DEFAULT: "#737373",
@@ -75,5 +77,5 @@ module.exports = {
             },
         },
     },
-    plugins: [require("@tailwindcss/typography"), require('@tailwindcss/forms'), require('@headlessui/tailwindcss')],
+    plugins: [require("@tailwindcss/typography"), require('@tailwindcss/forms'), require('@headlessui/tailwindcss'), require('tailwindcss-animate')],
 }

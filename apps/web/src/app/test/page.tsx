@@ -6,9 +6,7 @@ export default async function Page({ params: { lng } }: { params: { lng: string 
 
     return (
         <>
-            <div className="container max-w-5xl">
-                <ClientTest/>
-            </div>
+            <ClientTest/>
 
             <DarkModeToggle/>
 

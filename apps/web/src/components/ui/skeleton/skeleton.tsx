@@ -22,16 +22,16 @@ export interface SkeletonProps extends React.ComponentPropsWithRef<"div">, Varia
 }
 
 export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>((props, ref) => {
-   
-   const {
+
+    const {
       children,
       className,
       type = "box",
       skeletonClassName,
       ...rest
    } = props
-   
-   if (type === "text") {
+
+    if (type === "text") {
       return (
          <>
             <div className="flex flex-col gap-3">
@@ -45,8 +45,8 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>((props, 
          </>
       )
    }
-   
-   return (
+
+    return (
       <>
          <div
             className={cn(
@@ -59,7 +59,7 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>((props, 
          ></div>
       </>
    )
-   
+
 })
 
 Skeleton.displayName = "Skeleton"

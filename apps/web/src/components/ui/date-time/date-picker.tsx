@@ -35,7 +35,7 @@ export interface DatePickerProps extends Omit<DatePickerStateOptions<DateValue>,
 }
 
 export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((props, ref) => {
-   
+
    const [{
       size,
       intent,
@@ -48,9 +48,9 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
       iconButtonClassName,
       ...datePickerProps
    }, basicFieldProps] = extractBasicFieldProps<DatePickerProps>(props, useId())
-   
+
    let state = useDatePickerState(datePickerProps)
-   
+
    let _ref = useRef<HTMLDivElement>(null)
    let {
       groupProps,
@@ -60,19 +60,19 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
       dialogProps,
       calendarProps,
    } = useDatePicker(datePickerProps, state, _ref)
-   
+
    const { onPress, ...restButtonProps } = buttonProps
-   
+
    return (
       <BasicField
          {...basicFieldProps}
          labelProps={labelProps}
       >
          <div {...groupProps} ref={_ref} className={cn("group", inputContainerStyle())}>
-            
+
             <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
             <InputIcon icon={leftIcon} size={size} side={"left"} />
-            
+
             <div
                className={cn(
                   "form-input",
@@ -93,7 +93,7 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
                <div className="flex">
                   <DateField {...fieldProps} />
                </div>
-               
+
                <IconButton
                   intent="gray-basic"
                   size="xs"
@@ -109,22 +109,22 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
                   onClick={e => onPress && onPress(e as any)}
                />
             </div>
-            
+
             <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
             <InputIcon icon={rightIcon} size={size} side={"right"} />
-         
+
          </div>
-         
+
          <Modal
-            size="sm"
-            isOpen={state.isOpen} onClose={state.close} withCloseButton
-            {...dialogProps}
+             size="sm"
+             isOpen={state.isOpen} onClose={state.close} isClosable
+             {...dialogProps}
          >
-            <div className="flex justify-center">
-               <Calendar {...calendarProps} />
-            </div>
+             <div className="flex justify-center">
+                 <Calendar {...calendarProps} />
+             </div>
          </Modal>
-      
+
       </BasicField>)
 })
 

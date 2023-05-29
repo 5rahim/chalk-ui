@@ -10,6 +10,7 @@ export const dependencyVersionArray = [
     ["react-aria", "^3.24.0"],
     ["lodash", "^4.17.21"],
     ["@types/lodash", "^4.14.194"],
+    ["tailwindcss-animate", "latest"]
 ]
 export type AvailableDependencies = keyof typeof dependencyVersionArray;
 

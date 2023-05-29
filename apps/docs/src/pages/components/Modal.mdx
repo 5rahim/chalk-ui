@@ -15,8 +15,9 @@ export const Highlight = ({children}) => {
     return (
         <>
             <Button onClick={() => setTest(true)}>Open modal</Button>
-            <Modal isOpen={test} onClose={() => setTest(false)} title="Modal" withCloseButton>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
+            <Modal isOpen={test} onClose={() => setTest(false)} title="Modal" isClosable>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis
+                cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
                 quaerat quis quod saepe sit ullam voluptate!
             </Modal>
         </>

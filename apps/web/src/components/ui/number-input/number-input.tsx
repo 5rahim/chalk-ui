@@ -29,9 +29,7 @@ export const NumberInputAnatomy = defineStyleAnatomy({
          "flex flex-none items-center justify-center w-10 border shadow-sm text-lg font-medium",
          "disabled:shadow-none disabled:pointer-events-none",
          "hover:!bg-gray-100 transition",
-         // Light
          "!bg-white border-gray-300 disabled:!bg-gray-50 disabled:!bg-gray-50 disabled:text-gray-300 disabled:border-gray-200",
-         // Dark
          "dark:!bg-gray-900 dark:border-gray-700 dark:hover:!bg-gray-800",
          "dark:disabled:!bg-gray-800 dark:disabled:border-gray-800 dark:disabled:text-gray-700",
       ],
@@ -78,8 +76,8 @@ export interface NumberInputProps extends Omit<TextInputProps, "defaultValue" | 
 }
 
 export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>((props, ref) => {
-   
-   const [{
+
+    const [{
       children,
       className,
       size,
@@ -99,8 +97,8 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       min = 0, max, minFractionDigits, maxFractionDigits = 2, precision, step, allowMouseWheel = true,
       ...rest
    }, { id, ...basicFieldProps }] = extractBasicFieldProps<NumberInputProps>(props, useId())
-   
-   const [state, send] = useMachine(numberInput.machine({
+
+    const [state, send] = useMachine(numberInput.machine({
       id: useId(), // /!\ Zag.js id prop for the NumberInput Machine doesn't work
       name: basicFieldProps.name,
       disabled: basicFieldProps.isDisabled,
@@ -117,12 +115,12 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
          onChange && onChange(v.valueAsNumber)
       },
    }))
-   
-   useEffect(() => {
+
+    useEffect(() => {
       api.setValue(defaultValue)
    }, [])
-   
-   const api = numberInput.connect(state, send, normalizeProps)
+
+    const api = numberInput.connect(state, send, normalizeProps)
    return (
       <>
          <BasicField
@@ -131,11 +129,11 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             id={api.inputProps.id}
          >
             <div className={cn(inputContainerStyle())}>
-               
-               <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
+
+                <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
                <InputIcon icon={leftIcon} size={size} side={"left"} />
-               
-               {!discrete && (
+
+                {!discrete && (
                   <button
                      className={cn(NumberInputAnatomy.control({
                         size,
@@ -146,8 +144,8 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                      -
                   </button>
                )}
-               
-               <input
+
+                <input
                   type="number"
                   name={basicFieldProps.name}
                   className={cn(
@@ -171,8 +169,8 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                   {...rest}
                   ref={ref}
                />
-               
-               {!discrete && (
+
+                {!discrete && (
                   <button
                      className={cn(NumberInputAnatomy.control({
                         size,
@@ -184,15 +182,15 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                      +
                   </button>
                )}
-               
-               <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
+
+                <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
                <InputIcon icon={rightIcon} size={size} side={"right"} />
-            
+
             </div>
          </BasicField>
       </>
    )
-   
+
 })
 
 NumberInput.displayName = "NumberInput"

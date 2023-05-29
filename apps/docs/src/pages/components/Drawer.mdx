@@ -33,20 +33,24 @@ export const Highlight = ({children}) => {
                 <Button onClick={() => setTop(true)}>Open top drawer</Button>
             </div>
 
-            <Drawer isOpen={test} onClose={() => setTest(false)} title="Drawer" placement="right" withCloseButton>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
+            <Drawer isOpen={test} onClose={() => setTest(false)} title="Drawer" placement="right" isClosable>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis
+                cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
                 quaerat quis quod saepe sit ullam voluptate!
             </Drawer>
-            <Drawer isOpen={left} onClose={() => setLeft(false)} title="Drawer" placement="left" withCloseButton>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
+            <Drawer isOpen={left} onClose={() => setLeft(false)} title="Drawer" placement="left" isClosable>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis
+                cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
                 quaerat quis quod saepe sit ullam voluptate!
             </Drawer>
-            <Drawer isOpen={bottom} onClose={() => setBottom(false)} title="Drawer" placement="bottom" withCloseButton>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
+            <Drawer isOpen={bottom} onClose={() => setBottom(false)} title="Drawer" placement="bottom" isClosable>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis
+                cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
                 quaerat quis quod saepe sit ullam voluptate!
             </Drawer>
-            <Drawer isOpen={top} onClose={() => setTop(false)} title="Drawer" placement="top" withCloseButton>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
+            <Drawer isOpen={top} onClose={() => setTop(false)} title="Drawer" placement="top" isClosable>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium asperiores, blanditiis
+                cupiditate delectus dolor enim eveniet fuga incidunt itaque laudantium non nostrum
                 quaerat quis quod saepe sit ullam voluptate!
             </Drawer>
         </>

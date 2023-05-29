@@ -38,7 +38,7 @@ https://chalk.rahim.app
 - [x] Loading Spinner
 - [x] Loading Overlay
 - [x] Accordion
-- [x] DropdownMenu
+- [x] Legacy_dropdownMenu
 - [ ] AppShell
 - [ ] Breadcrumbs
 - [ ] Card

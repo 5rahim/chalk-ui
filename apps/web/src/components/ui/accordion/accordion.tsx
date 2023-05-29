@@ -13,12 +13,9 @@ import { cn } from "@rahimstack/tailwind-utils"
 export const AccordionAnatomy = defineStyleAnatomy({
     container: cva("UI-Accordion__container space-y-2"),
     trigger: cva(["UI-Accordion__trigger",
-        // Light
-        "bg-gray-50 hover:bg-gray-100",
-        // Dark
-        "dark:bg-gray-800 dark:hover:bg-gray-700",
+        "bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700",
         "flex w-full justify-between rounded-lg px-4 py-3 text-left font-medium transition",
-        "focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-brand ring-offset-1",
     ]),
     panel: cva("UI-Accordion__panel py-2"),
     item: cva("UI-Accordion__item"),

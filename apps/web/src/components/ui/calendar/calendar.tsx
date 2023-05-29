@@ -12,21 +12,21 @@ import { defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { CalendarGrid } from "./calendar-grid"
 
 export const CalendarAnatomy = defineStyleAnatomy({
-   container: cva("UI-Calendar__container inline-block text-gray-800 dark:text-gray-200"),
-   header: cva("UI-Calendar__header flex items-center gap-2 pb-4 w-full justify-between"),
-   title: cva("UI-Calendar__title flex-none font-bold text-lg ml-2 w-[fit-content]"),
+    container: cva("UI-Calendar__container inline-block text-gray-800 dark:text-gray-200"),
+    header: cva("UI-Calendar__header flex items-center gap-2 pb-4 w-full justify-between"),
+    title: cva("UI-Calendar__title flex-none font-bold text-lg ml-2 w-fit"),
 })
 
 export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "createCalendar" | "locale"> & { locale?: string }) {
-   
+
    let { countryLocale } = useUILocaleConfig()
    let state = useCalendarState({
       ...props,
       locale: locale ?? countryLocale,
       createCalendar,
    })
-   
-   
+
+
    let ref = useRef<HTMLDivElement>(null)
    let {
       calendarProps,
@@ -37,7 +37,7 @@ export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "creat
       props,
       state,
    )
-   
+
    return (
       <div {...calendarProps} ref={ref} className={cn(CalendarAnatomy.container())}>
          <div className={cn(CalendarAnatomy.header())}>

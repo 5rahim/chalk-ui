@@ -3,7 +3,7 @@
 import { cn } from "@rahimstack/tailwind-utils"
 import React, { createContext, useContext, useEffect, useId, useState } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { Checkbox, CheckboxProps } from "./checkbox"
+import { Checkbox, CheckboxProps } from "."
 
 
 /* -------------------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ export interface CheckboxGroupProps extends BasicFieldOptions {
     onChange?: (value: string[]) => void
     size?: CheckboxProps["size"]
     stackClassName?: string
-    checkboxRootLabelClassName?: string
+    checkboxContainerClassName?: string
     checkboxLabelClassName?: string
     checkboxControlClassName?: string
     checkboxIconClassName?: string
@@ -46,7 +46,7 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
         stackClassName,
         checkboxLabelClassName,
         checkboxControlClassName,
-        checkboxRootLabelClassName,
+        checkboxContainerClassName,
         checkboxIconClassName,
         options,
         size = undefined,
@@ -64,7 +64,6 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
 
     // Emit changes
     useEffect(() => {
-        console.log(selectedValues)
         if (onChange) {
             onChange(selectedValues)
         }
@@ -88,7 +87,6 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
                                 value={opt.value}
                                 checked={selectedValues.includes(opt.value)}
                                 onChange={checked => {
-                                    console.log("Changing values")
                                     setSelectedValues(p => {
                                         let newArr = [...p]
                                         if (checked === true) {
@@ -103,7 +101,7 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
                                 noErrorMessage
                                 labelClassName={checkboxLabelClassName}
                                 controlClassName={checkboxControlClassName}
-                                rootLabelClassName={checkboxRootLabelClassName}
+                                containerClassName={checkboxContainerClassName}
                                 iconClassName={checkboxIconClassName}
                                 isDisabled={basicFieldProps.isDisabled}
                                 isReadOnly={basicFieldProps.isReadOnly}

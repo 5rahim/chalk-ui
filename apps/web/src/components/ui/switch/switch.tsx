@@ -1,177 +1,203 @@
 "use client"
 
 import { cn } from "@rahimstack/tailwind-utils"
-import * as checkbox from "@zag-js/checkbox"
-import { normalizeProps, useMachine } from "@zag-js/react"
-import { cva, VariantProps } from "class-variance-authority"
-import React, { useId, useState } from "react"
+import { cva } from "class-variance-authority"
+import React, { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import type { SwitchProps as SwitchPrimitiveProps } from "@radix-ui/react-switch"
+import * as SwitchPrimitive from "@radix-ui/react-switch"
+import { ShowOnly } from "@/components/ui/show-only"
 
 export const SwitchAnatomy = defineStyleAnatomy({
-   controlWrapper: cva("UI-Switch__controlWrapper relative h-8 w-14 overflow-hidden cursor-pointer flex-none", {
-      variants: {
-         size: {
-            sm: "h-5 w-8",
-            md: "h-6 w-10",
-            lg: "h-7 w-12",
-         },
-      },
-      defaultVariants: {
-         size: "md",
-      },
-   }),
-   rootLabel: cva("UI-Switch__rootLabel relative inline-flex gap-2 items-center flex-none"),
-   control: cva([
-         "UI-Switch__control border",
-         // Light
-         "absolute inset-0 rounded-full bg-gray-300 border-gray-300 transition",
-         "data-checked:bg-brand-500 data-checked:border-brand-500",
-         "hover:bg-gray-400 hover:border-gray-400",
-         "data-disabled:bg-gray-200 data-disabled:text-gray-200 data-disabled:cursor-default",
-         // Dark
-         "dark:bg-gray-700 dark:hover:bg-gray-600",
-         "dark:border-gray-700 dark:hover:border-gray-600",
-         "dark:data-disabled:bg-gray-800 dark:data-disabled:border-gray-800 dark:data-disabled:hover:bg-gray-800 dark:data-disabled:hover:border-gray-800",
-         
-         "dark:data-checked:bg-brand-500 dark:data-checked:border-brand-500",
-      ],
-      {
-         variants: {
+    container: cva([
+        "UI-Checkbox__rootLabel inline-flex gap-2 items-center"
+    ]),
+    control: cva([
+        "peer inline-flex h-[24px] w-[44px] shrink-0 cursor-pointer items-center rounded-full border border-transparent transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+        "outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1",
+        "data-[state=unchecked]:bg-gray-200 dark:data-[state=unchecked]:bg-gray-700", // Unchecked
+        "data-[state=unchecked]:hover:bg-gray-300 dark:data-[state=unchecked]:hover:bg-gray-600", // Unchecked hover
+        "data-[state=checked]:bg-brand", // Checked
+    ], {
+        variants: {
             hasError: {
-               true: "border-red-500 dark:border-red-500",
-               false: null,
+                true: "border-red-500 dark:border-red-500",
+                false: null,
             },
-         },
-         defaultVariants: {
-            hasError: true,
-         },
-      }),
-   controlKnob: cva("UI-Switch__controlKnob absolute inset-0 rounded-full bg-white transition dark:data-disabled:bg-gray-500", {
-      variants: {
-         size: {
-            sm: "m-1 h-3 w-3 data-checked:translate-x-3",
-            md: "m-1 h-4 w-4 data-checked:translate-x-4",
-            lg: "m-1 h-5 w-5 data-checked:translate-x-5",
-         },
-      },
-      defaultVariants: {
-         size: "md",
-      },
-   }),
-   label: cva([
-      "UI-Switch__label",
-      "relative font-normal",
-      "data-disabled:text-gray-300",
-   ], {
-      variants: {
-         size: {
-            sm: "text-sm",
-            md: "text-md",
-            lg: "text-lg",
-         },
-      },
-      defaultVariants: {
-         size: "md",
-      },
-   }),
+        },
+        defaultVariants: {
+            hasError: false,
+        },
+    }),
+    thumb: cva([
+        "pointer-events-none block h-4 w-4 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-[1.4rem] data-[state=unchecked]:translate-x-1"
+    ]),
+
+    label: cva([
+        "UI-Switch__label",
+        "relative font-normal",
+        "data-disabled:text-gray-300",
+    ])
 })
 
 export interface SwitchProps
-   extends ComponentWithAnatomy<typeof SwitchAnatomy>,
-      VariantProps<typeof SwitchAnatomy.controlWrapper>,
-      BasicFieldOptions {
-   defaultChecked?: boolean
-   value?: string
-   onChange?: (value: boolean) => void
+    extends Omit<SwitchPrimitiveProps, "disabled" | "required" | "onCheckedChange" | "onChange">,
+        ComponentWithAnatomy<typeof SwitchAnatomy>,
+        BasicFieldOptions {
+    onChange?: (value: boolean) => void
 }
 
-export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>((props, ref) => {
-   
-   const [{
-      size = "md",
-      defaultChecked = false,
-      value,
-      onChange,
-      controlClassName,
-      labelClassName,
-      rootLabelClassName,
-      controlWrapperClassName,
-      controlKnobClassName,
-   }, { label, ...basicFieldProps }] = extractBasicFieldProps(props, useId())
-   
-   const [control, setControl] = useState<boolean>(defaultChecked)
-   
-   const [state, send] = useMachine(checkbox.machine({
-      id: basicFieldProps.id,
-      name: basicFieldProps.name,
-      disabled: basicFieldProps.isDisabled,
-      readOnly: basicFieldProps.isReadOnly,
-      checked: control,
-      onChange({ checked: UNUSED_checked }) {
-         /**
-          * /!\ Use React to control that state of the component
-          * since the value provided by the machine's `onChange` is duplicated
-          */
-         
-         setControl(s => {
-            onChange && onChange(!s)
-            return !s
-         })
-         
-         // if(typeof checked === 'boolean') {
-         //    onChange && onChange(checked)
-         // }
-      },
-   }))
-   
-   const api = checkbox.connect(state, send, normalizeProps)
-   
-   return (
-      <>
-         <BasicField
+export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(({ className, ...props }, ref) => {
+
+    const [{
+        value,
+        onChange,
+        controlClassName,
+        labelClassName,
+        containerClassName,
+        thumbClassName,
+        ...rest
+    }, { label, ...basicFieldProps }] = extractBasicFieldProps(props, useId())
+
+    return (
+        <BasicField
             {...basicFieldProps} // We do not include the label
-            id={api.inputProps.id}
-         >
-            <label className={cn(SwitchAnatomy.rootLabel(), rootLabelClassName)} {...api.rootProps}>
-               <input type="checkbox" {...api.inputProps} ref={ref} />
-               
-               <div
-                  className={cn(
-                     SwitchAnatomy.controlWrapper({ size }),
-                     controlWrapperClassName,
-                  )}
-               >
-                  
-                  <span
-                     className={cn(
-                        SwitchAnatomy.control({ hasError: !!basicFieldProps.error }),
+            id={basicFieldProps.id}
+        >
+            <div
+                className={cn(
+                    SwitchAnatomy.container(),
+                    containerClassName,
+                )}
+            >
+                <SwitchPrimitive.Root
+                    id={basicFieldProps.id}
+                    ref={ref}
+                    className={cn(
+                        SwitchAnatomy.control({
+                            hasError: !!basicFieldProps.error
+                        }),
                         controlClassName,
-                     )} {...api.controlProps} />
-                  <span
-                     className={cn(
-                        SwitchAnatomy.controlKnob({ size }),
-                        controlKnobClassName,
-                     )}
-                     {...api.controlProps}
-                  />
-               </div>
-               
-               
-               {(!!label || !!value) && <span
-                   className={cn(
-                      SwitchAnatomy.label({ size }),
-                      labelClassName,
-                   )}
-                   {...api.labelProps}
-               >
-                  {label ?? value}
-               </span>}
-            </label>
-         </BasicField>
-      </>
-   )
-   
+                        className
+                    )}
+                    disabled={basicFieldProps.isDisabled}
+                    required={basicFieldProps.isRequired}
+                    onCheckedChange={(checked) => {
+                        onChange && onChange(checked)
+                    }}
+                    {...rest}
+                >
+                    <SwitchPrimitive.Thumb
+                        className={cn(
+                            SwitchAnatomy.thumb(),
+                            thumbClassName
+                        )}
+                    />
+                </SwitchPrimitive.Root>
+                <ShowOnly when={!!label || !!value}>
+                    <label
+                        className={cn(
+                            SwitchAnatomy.label(),
+                            labelClassName,
+                        )}
+                        htmlFor={basicFieldProps.id}
+                    >
+                        {label ?? value}
+                    </label>
+                </ShowOnly>
+            </div>
+        </BasicField>
+    )
+
 })
+
+// export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>((props, ref) => {
+//
+//     const [{
+//         size = "md",
+//         checked,
+//         defaultChecked = false,
+//         value,
+//         onChange,
+//         controlClassName,
+//         labelClassName,
+//         rootLabelClassName,
+//         controlWrapperClassName,
+//         controlKnobClassName,
+//     }, { label, ...basicFieldProps }] = extractBasicFieldProps(props, useId())
+//
+//     const _default = useMemo(() => {
+//         return (checked !== undefined) ? checked : defaultChecked
+//     }, [])
+//
+//     const [state, send] = useMachine(checkbox.machine({
+//         id: basicFieldProps.id,
+//         name: basicFieldProps.name,
+//         disabled: basicFieldProps.isDisabled,
+//         // @ts-expect-error zag.js type error FIXME
+//         readOnly: basicFieldProps.isReadOnly,
+//         checked: _default,
+//         onChange({ checked }) {
+//
+//             if (typeof checked === "boolean") {
+//                 onChange && onChange(checked)
+//             }
+//         },
+//     }))
+//
+//     const api = checkbox.connect(state, send, normalizeProps)
+//
+//     // Control the state
+//     useEffect(() => {
+//         if (checked !== undefined) api.setChecked(checked)
+//     }, [checked])
+//
+//     return (
+//         <>
+//             <BasicField
+//                 {...basicFieldProps} // We do not include the label
+//                 id={api.inputProps.id}
+//             >
+//                 <label className={cn(SwitchAnatomy.rootLabel(), rootLabelClassName)} {...api.rootProps}>
+//                     <input type="checkbox" {...api.inputProps} ref={ref}/>
+//
+//                     <div
+//                         className={cn(
+//                             SwitchAnatomy.controlWrapper({ size }),
+//                             controlWrapperClassName,
+//                         )}
+//                     >
+//
+//                   <span
+//                       className={cn(
+//                           SwitchAnatomy.control({ hasError: !!basicFieldProps.error }),
+//                           controlClassName,
+//                       )} {...api.controlProps} />
+//                         <span
+//                             className={cn(
+//                                 SwitchAnatomy.controlKnob({ size }),
+//                                 controlKnobClassName,
+//                             )}
+//                             {...api.controlProps}
+//                         />
+//                     </div>
+//
+//
+//                     {(!!label || !!value) && <span
+//                         className={cn(
+//                             SwitchAnatomy.label({ size }),
+//                             labelClassName,
+//                         )}
+//                         {...api.labelProps}
+//                     >
+//                   {label ?? value}
+//                </span>}
+//                 </label>
+//             </BasicField>
+//         </>
+//     )
+//
+// })
 
 Switch.displayName = "Switch"

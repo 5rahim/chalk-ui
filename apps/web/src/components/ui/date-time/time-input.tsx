@@ -12,10 +12,10 @@ import { DateSegmentComponent } from "./date-field"
 
 export const TimeInputAnatomy = defineStyleAnatomy({
    input: cva([
-      "UI-TimeInput__input",
-      "relative flex flex-wrap items-center gap-1 cursor-text",
-      "group-focus-within:border-brand-500 group-focus-within:ring-1 group-focus-within:ring-brand-500",
-      "!w-[fit-content]",
+       "UI-TimeInput__input",
+       "relative flex flex-wrap items-center gap-1 cursor-text",
+       "group-focus-within:border-brand-500 group-focus-within:ring-1 group-focus-within:ring-brand-500",
+       "!w-fit",
    ]),
 })
 
@@ -27,7 +27,7 @@ export interface TimeInputProps extends Omit<TimeFieldStateOptions, "locale">,
 }
 
 export const TimeInput = React.forwardRef<HTMLDivElement, TimeInputProps>((props, ref) => {
-   
+
    const [{
       size,
       intent,
@@ -43,32 +43,32 @@ export const TimeInput = React.forwardRef<HTMLDivElement, TimeInputProps>((props
       locale,
       ...datePickerProps
    }, basicFieldProps] = extractBasicFieldProps<TimeInputProps>(props, useId())
-   
+
    const { countryLocale } = useUILocaleConfig()
    let state = useTimeFieldState({
       ...datePickerProps,
       locale: locale ?? countryLocale,
    })
-   
+
    let _ref = useRef<HTMLDivElement>(null)
    let { labelProps, fieldProps } = useTimeField(datePickerProps, state, _ref)
-   
+
    return (
       <BasicField
          {...basicFieldProps}
          labelProps={labelProps}
       >
-         <div className={cn(inputContainerStyle(), "!w-[fit-content]")}>
-            
-            <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
-            <InputIcon icon={leftIcon} size={size} side={"left"} />
-            
-            <div
-               className={cn(
-                  "form-input",
-                  InputAnatomy.input({
-                     size,
-                     intent,
+          <div className={cn(inputContainerStyle(), "!w-fit")}>
+
+              <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"}/>
+              <InputIcon icon={leftIcon} size={size} side={"left"}/>
+
+              <div
+                  className={cn(
+                      "form-input",
+                      InputAnatomy.input({
+                          size,
+                          intent,
                      hasError: !!basicFieldProps.error,
                      untouchable: !!basicFieldProps.isDisabled,
                      hasRightAddon: !!rightAddon,
@@ -86,14 +86,14 @@ export const TimeInput = React.forwardRef<HTMLDivElement, TimeInputProps>((props
                   <DateSegmentComponent key={i} segment={segment} state={state} />
                ))}
             </div>
-            
+
             <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
             <InputIcon icon={rightIcon} size={size} side={"right"} />
-         
+
          </div>
       </BasicField>
    )
-   
+
 })
 
 TimeInput.displayName = "TimeInput"

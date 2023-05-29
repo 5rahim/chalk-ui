@@ -7,17 +7,17 @@ const meta = {
    title: "Components/Overlays/Drawer",
    component: (args) => {
       const [open, setOpen] = useState(false)
-      
+
       return <>
          <Button onClick={() => setOpen(true)}>Open</Button>
          <Drawer isOpen={open} onClose={() => setOpen(false)} {...args} />
       </>
    },
    args: {
-      title: "Drawer title",
-      children: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur debitis labore quae quas sequi tempora vel voluptas. Dolore, enim ex harum labore molestiae nam nesciunt qui totam ullam voluptatibus voluptatum?",
-      withCloseButton: true,
-      placement: "right",
+       title: "Drawer title",
+       children: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur debitis labore quae quas sequi tempora vel voluptas. Dolore, enim ex harum labore molestiae nam nesciunt qui totam ullam voluptatibus voluptatum?",
+       isClosable: true,
+       placement: "right",
    },
    argTypes: {
       placement: {
@@ -35,8 +35,8 @@ export const Base: Story = {
    args: {},
 }
 
-export const WithCloseButton: Story = {
-   args: {
-      withCloseButton: true,
-   },
+export const isClosable: Story = {
+    args: {
+        isClosable: true,
+    },
 }

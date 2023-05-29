@@ -7,7 +7,7 @@ const meta = {
    title: "Components/Overlays/Modal",
    component: (args) => {
       const [open, setOpen] = useState(false)
-      
+
       return <>
          <Button onClick={() => setOpen(true)}>Open</Button>
          <Modal isOpen={open} onClose={() => setOpen(false)} {...args} />
@@ -27,8 +27,8 @@ export const Base: Story = {
    args: {},
 }
 
-export const WithCloseButton: Story = {
-   args: {
-      withCloseButton: true,
-   },
+export const isClosable: Story = {
+    args: {
+        isClosable: true,
+    },
 }

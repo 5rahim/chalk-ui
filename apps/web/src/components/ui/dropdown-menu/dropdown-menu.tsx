@@ -1,12 +1,14 @@
 "use client"
 
-import React, { Fragment } from "react"
+import React, { Fragment, useEffect } from "react"
 import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "@/components/ui/core"
 import { cva, VariantProps } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
 import { Menu, Transition } from "@headlessui/react"
-import { cm } from "@/components/ui/core/color-theme"
 import { Divider, DividerProps } from "@/components/ui/divider"
+import { Modal } from "@/components/ui/modal"
+import { useMediaQuery } from "@/hooks/use-media-query"
+import { useOutOfBounds } from "@/hooks/use-out-of-bounds"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -17,20 +19,38 @@ export const DropdownMenuAnatomy = defineStyleAnatomy({
         "UI-DropdownMenu__menu relative inline-block text-left",
     ]),
     dropdown: cva(["UI-DropdownMenu__dropdown",
-        cm(["bg-{{white,gray-800}}"]),
-        "absolute right-0 mt-2 w-56 origin-top-right rounded-md shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none space-y-1",
-        "p-1"
+        "bg-white dark:bg-gray-800 border dark:border-gray-700 p-1",
+        "absolute z-10 mt-2 w-56 rounded-md shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none space-y-1",
+    ], {
+        variants: {
+            top: { true: "", right: "" },
+            bottom: { true: "", right: "" },
+            left: { true: "", right: "" },
+            right: { true: "", right: "" },
+        },
+        compoundVariants: [
+            { top: false, right: false, bottom: false, left: false, className: "origin-top-right right-0" },
+            { bottom: true, className: "origin-bottom-right right-0 bottom-0" },
+            { bottom: true, left: true, className: "origin-bottom-right left-0 bottom-0" },
+            { right: true, bottom: true, className: "origin-bottom-right right-0 bottom-0" },
+        ]
+    }),
+    mobileDropdown: cva([
+        "DropdownMenu__mobileDropdown mt-2 space-y-1"
+    ]),
+    mobilePanel: cva([
+        "DropdownMenu__mobilePanel pt-2 pb-2 pl-4 pr-12"
     ])
 })
 
 export const DropdownMenuItemAnatomy = defineStyleAnatomy({
     item: cva(["UI-DropdownMenu__item transition",
-        cm("text-{{gray-800,gray-200}} hover:text-{{black,white}}"),
+        "text-gray-800 dark:text-gray-200 hover:text-black dark:hover:text-white",
         "font-medium group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"
     ], {
         variants: {
             active: {
-                true: cm("bg-gray-{{100,700}}"),
+                true: "bg-gray-100 dark:bg-gray-700",
                 false: null
             }
         },
@@ -39,11 +59,10 @@ export const DropdownMenuItemAnatomy = defineStyleAnatomy({
 })
 
 export const DropdownMenuGroupAnatomy = defineStyleAnatomy({
-    group: cva(["UI-DropdownMenu__group",
-        cm("text-{{gray-800,gray-200}}"),
-        "group"
+    group: cva(["UI-DropdownMenu__group group",
+        "text-gray-800 dark:text-gray-200",
     ]),
-    title: cva(["UI-DropdownMenu_title font-semibold px-2 py-1"]),
+    title: cva(["UI-DropdownMenu_title text-gray-500 dark:text-gray-400 text-sm font-medium px-2 py-1"]),
     content: cva(["UI-DropdownMenu_content"])
 })
 
@@ -57,7 +76,7 @@ export interface DropdownMenuProps
         ComponentWithAnatomy<typeof DropdownMenuItemAnatomy>,
         VariantProps<typeof DropdownMenuAnatomy.dropdown> {
     children?: React.ReactNode,
-    trigger: React.ReactNode,
+    trigger: React.ReactElement,
 }
 
 const _DropdownMenu = (props: DropdownMenuProps) => {
@@ -67,10 +86,17 @@ const _DropdownMenu = (props: DropdownMenuProps) => {
         trigger,
         menuClassName,
         dropdownClassName,
+        mobileDropdownClassName,
+        mobilePanelClassName,
         itemClassName,
         className,
         ...rest
     } = props
+
+    const isMobile = useMediaQuery("(max-width: 768px)")
+
+    const [triggerRef, _, triggerSize] = useOutOfBounds()
+    const [componentRef, outOfBounds] = useOutOfBounds()
 
     // Pass `itemClassName` to every child
     const itemsWithProps = React.useMemo(() => React.Children.map(children, (child) => {
@@ -80,24 +106,69 @@ const _DropdownMenu = (props: DropdownMenuProps) => {
         return child
     }), [children])
 
+    useEffect(() => {
+        console.log(outOfBounds)
+    }, [outOfBounds])
+
+    const _trigger = React.cloneElement(trigger, { ref: triggerRef })
+
     return (
-        <Menu as="div" className={cn(DropdownMenuAnatomy.menu(), menuClassName, className)} {...rest}>
-            <Menu.Button as={Fragment}>
-                {trigger}
-            </Menu.Button>
-            <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
-            >
-                <Menu.Items className={cn(DropdownMenuAnatomy.dropdown(), dropdownClassName)}>
-                    {itemsWithProps}
-                </Menu.Items>
-            </Transition>
+        <Menu
+            as="div"
+            className={cn(
+                DropdownMenuAnatomy.menu(),
+                menuClassName,
+                className
+            )}
+            {...rest}
+        >
+            {({ open, close }) => (
+                <>
+                    <Menu.Button as={Fragment}>
+                        {_trigger}
+                    </Menu.Button>
+                    {/*Desktop*/}
+                    {!isMobile && <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                    >
+                        <Menu.Items
+                            ref={componentRef}
+                            className={cn(
+                                DropdownMenuAnatomy.dropdown({
+                                    top: outOfBounds.top > 0,
+                                    bottom: outOfBounds.bottom > 0,
+                                    left: outOfBounds.left > 0,
+                                    right: outOfBounds.right > 0
+                                }),
+                                dropdownClassName,
+                            )}
+                            style={{
+                                bottom: outOfBounds.bottom > 0 ? `${triggerSize.height + 8}px` : undefined
+                            }}
+                        >
+                            {itemsWithProps}
+                        </Menu.Items>
+                    </Transition>}
+                    {/*Mobile*/}
+                    {isMobile && <Modal
+                        isOpen={open}
+                        onClose={close}
+                        isClosable
+                        className="block md:hidden"
+                        panelClassName={cn(DropdownMenuAnatomy.mobilePanel(), mobilePanelClassName)}
+                    >
+                        <Menu.Items className={cn(DropdownMenuAnatomy.mobileDropdown(), mobileDropdownClassName)}>
+                            {itemsWithProps}
+                        </Menu.Items>
+                    </Modal>}
+                </>
+            )}
         </Menu>
     )
 
@@ -135,6 +206,7 @@ DropdownMenuItem.displayName = "DropdownMenuItem"
 
 /* -------------------------------------------------------------------------------------------------
  * DropdownMenu.Link
+ * - You can change the `a` element to a `Link` if you are using Next.js
  * -----------------------------------------------------------------------------------------------*/
 
 interface DropdownMenuLinkProps extends React.ComponentPropsWithRef<"a">, ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
@@ -183,9 +255,17 @@ const DropdownMenuGroup: React.FC<DropdownMenuGroupProps> = React.forwardRef<HTM
         title,
         titleClassName,
         contentClassName,
-        itemClassName, // Ignore the classes
+        itemClassName,
         ...rest
     } = props
+
+    // Pass `itemClassName` to every child
+    const itemsWithProps = React.useMemo(() => React.Children.map(children, (child) => {
+        if (React.isValidElement(child)) {
+            return React.cloneElement(child, { itemClassName } as any)
+        }
+        return child
+    }), [children])
 
     return <div
         className={cn(DropdownMenuGroupAnatomy.group(), groupClassName, className)}
@@ -197,7 +277,7 @@ const DropdownMenuGroup: React.FC<DropdownMenuGroupProps> = React.forwardRef<HTM
             {title}
         </div>}
         <div className={cn(DropdownMenuGroupAnatomy.content(), contentClassName)}>
-            {children}
+            {itemsWithProps}
         </div>
     </div>
 
@@ -212,11 +292,13 @@ DropdownMenuGroup.displayName = "DropdownMenuGroup"
 interface DropdownMenuDivider extends DividerProps, ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
 }
 
-const DropdownMenuDivider: React.FC<DropdownMenuDivider> = React.forwardRef<HTMLHRElement, DropdownMenuDivider>(({ itemClassName, ...props }, ref) => {
+const DropdownMenuDivider: React.FC<DropdownMenuDivider> = React.forwardRef<HTMLHRElement, DropdownMenuDivider>(
+    ({ itemClassName, ...props }, ref) => {
 
-    return <Divider {...props} ref={ref}/>
+        return <Divider {...props} ref={ref}/>
 
-})
+    }
+)
 
 DropdownMenuDivider.displayName = "DropdownMenuDivider"
 

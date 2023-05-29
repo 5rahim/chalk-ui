@@ -4,17 +4,17 @@ import React, { CSSProperties } from "react"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 export const BadgeAnatomy = defineStyleAnatomy({
-   badge: cva("UI-Badge__badge inline-flex text-base w-[fit-content] overflow-hidden justify-center items-center gap-2", {
-      variants: {
-         intent: {
-            gray: "text-gray-800 bg-gray-100 __UI_DARK__ dark:text-gray-300 dark:bg-opacity-10",
-            primary: "text-brand-500 bg-brand-50 __UI_DARK__ dark:text-brand-300 dark:bg-opacity-10",
-            success: "text-green-500 bg-green-50 __UI_DARK__ dark:text-green-300 dark:bg-opacity-10",
-            warning: "text-orange-500 bg-orange-50 __UI_DARK__ dark:text-orange-300 dark:bg-opacity-10",
-            alert: "text-red-500 bg-red-50 __UI_DARK__ dark:text-red-300 dark:bg-opacity-10",
-            blue: "text-blue-500 bg-blue-50 __UI_DARK__ dark:text-blue-300 dark:bg-opacity-10",
-            white: "text-white bg-gray-800 __UI_DARK__ dark:text-white dark:bg-opacity-10",
-            "basic": "text-gray-900 bg-transparent",
+   badge: cva("UI-Badge__badge inline-flex text-base w-fit overflow-hidden justify-center items-center gap-2", {
+       variants: {
+           intent: {
+               gray: "text-gray-800 bg-gray-100 __UI_DARK__ dark:text-gray-300 dark:bg-opacity-10",
+               primary: "text-brand-500 bg-brand-50 __UI_DARK__ dark:text-brand-300 dark:bg-opacity-10",
+               success: "text-green-500 bg-green-50 __UI_DARK__ dark:text-green-300 dark:bg-opacity-10",
+               warning: "text-orange-500 bg-orange-50 __UI_DARK__ dark:text-orange-300 dark:bg-opacity-10",
+               alert: "text-red-500 bg-red-50 __UI_DARK__ dark:text-red-300 dark:bg-opacity-10",
+               blue: "text-blue-500 bg-blue-50 __UI_DARK__ dark:text-blue-300 dark:bg-opacity-10",
+               white: "text-white bg-gray-800 __UI_DARK__ dark:text-white dark:bg-opacity-10",
+               "basic": "text-gray-900 bg-transparent",
             "primary-solid": "text-white bg-brand-500",
             "success-solid": "text-white bg-green-500",
             "warning-solid": "text-white bg-orange-500",
@@ -54,8 +54,8 @@ export interface BadgeProps extends React.ComponentPropsWithRef<"span">, Variant
 }
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>((props, ref) => {
-   
-   const {
+
+    const {
       children,
       className,
       size,
@@ -71,8 +71,8 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>((props, ref) 
       iconClassName,
       ...rest
    } = props
-   
-   return (
+
+    return (
       <>
          <span
             className={cn(
@@ -84,12 +84,12 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>((props, ref) 
             ref={ref}
          >
             {leftIcon && <span className={cn(BadgeAnatomy.icon(), iconClassName)} style={{ marginRight: iconSpacing }}>{leftIcon}</span>}
-            
-            {children}
-            
-            {rightIcon && <span className={cn(BadgeAnatomy.icon(), iconClassName)} style={{ marginLeft: iconSpacing }}>{rightIcon}</span>}
-            
-            {isClosable && <span className={cn(BadgeAnatomy.closeButton(), closeButtonClassName)} onClick={onClose}>
+
+             {children}
+
+             {rightIcon && <span className={cn(BadgeAnatomy.icon(), iconClassName)} style={{ marginLeft: iconSpacing }}>{rightIcon}</span>}
+
+             {isClosable && <span className={cn(BadgeAnatomy.closeButton(), closeButtonClassName)} onClick={onClose}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
                     <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"></path>
                 </svg>
@@ -97,7 +97,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>((props, ref) 
          </span>
       </>
    )
-   
+
 })
 
 Badge.displayName = "Badge"

@@ -112,7 +112,8 @@
       "@zag-js/react"
     ],
     "family": [
-      "basic-field"
+      "basic-field",
+      "show-only"
     ],
     "files": []
   },

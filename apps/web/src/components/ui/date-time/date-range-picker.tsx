@@ -33,7 +33,7 @@ export interface DateRangePickerProps extends Omit<DateRangePickerStateOptions, 
 }
 
 export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerProps>((props, ref) => {
-   
+
    const [{
       size,
       intent,
@@ -45,7 +45,7 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
       iconButtonClassName,
       ...datePickerProps
    }, basicFieldProps] = extractBasicFieldProps<DateRangePickerProps>(props, useId())
-   
+
    let state = useDateRangePickerState(datePickerProps)
    let _ref = useRef<HTMLDivElement>(null)
    let {
@@ -57,19 +57,19 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
       dialogProps,
       calendarProps,
    } = useDateRangePicker(datePickerProps, state, _ref)
-   
+
    let { onPress, ...restButtonProps } = buttonProps
-   
+
    return (
       <BasicField
          {...basicFieldProps}
          labelProps={labelProps}
       >
          <div {...groupProps} ref={_ref} className={cn("flex group", inputContainerStyle())}>
-            
+
             <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
             <InputIcon icon={leftIcon} size={size} side={"left"} />
-            
+
             <div
                className={cn(
                   "form-input",
@@ -104,20 +104,20 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
                   </svg>}
                   onClick={e => onPress && onPress(e as any)}
                />
-            
-            
+
+
             </div>
-            
+
             <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
             <InputIcon icon={rightIcon} size={size} side={"right"} />
-            
+
             <Modal
-               size="xl" isOpen={state.isOpen} onClose={state.close} withCloseButton
-               {...dialogProps}
+                size="xl" isOpen={state.isOpen} onClose={state.close} isClosable
+                {...dialogProps}
             >
-               <div className="flex justify-center"><RangeCalendar {...calendarProps} /></div>
+                <div className="flex justify-center"><RangeCalendar {...calendarProps} /></div>
             </Modal>
-         
+
          </div>
       </BasicField>)
 })

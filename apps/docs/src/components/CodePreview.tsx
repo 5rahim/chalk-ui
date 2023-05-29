@@ -8,12 +8,12 @@ interface CodePreviewProps {
 }
 
 const CodePreview: React.FC<CodePreviewProps> = (props) => {
-   
-   const { children, preview, ...rest } = props
-   
-   const [displayCode, setDisplayCode] = useState(false)
-   
-   return (
+
+    const { children, preview, ...rest } = props
+
+    const [displayCode, setDisplayCode] = useState(false)
+
+    return (
       <div className="py-6">
          <div className="flex relative">
             <a onClick={() => setDisplayCode(false)} className={cn("py-2 px-4 block")}>Preview</a>
@@ -31,7 +31,7 @@ const CodePreview: React.FC<CodePreviewProps> = (props) => {
          </div>
       </div>
    )
-   
+
 }
 
 export default CodePreview

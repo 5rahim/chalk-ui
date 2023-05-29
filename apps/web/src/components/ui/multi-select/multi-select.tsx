@@ -22,12 +22,9 @@ export const MultiSelectAnatomy = defineStyleAnatomy({
       },
    }),
    menuContainer: cva([
-      "UI-MultiSelect__menuContainer absolute z-10 -bottom-2",
-      "left-0 translate-y-full max-h-56 w-full overflow-auto rounded-md p-2 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm",
-      // Light
-      "bg-white",
-      // Dark
-      "dark:bg-gray-800",
+       "UI-MultiSelect__menuContainer absolute z-10 -bottom-2",
+       "left-0 translate-y-full max-h-56 w-full overflow-auto rounded-md p-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm",
+       "bg-white dark:bg-gray-800",
    ]),
    menuItem: cva("UI-MultiSelect__menuItem relative cursor-pointer py-2 pl-3 pr-9 rounded-md", {
       variants: {
@@ -55,7 +52,7 @@ export interface MultiSelectProps extends Omit<TextInputProps, "defaultValue" | 
 }
 
 export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>((props, ref) => {
-   
+
    const [{
       children,
       className,
@@ -78,17 +75,17 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
       menuItemImageClassName,
       ...rest
    }, basicFieldProps] = extractBasicFieldProps<MultiSelectProps>(props, useId())
-   
+
    const inputRef = useRef<HTMLInputElement>(null)
    const ulRef = useRef<HTMLUListElement>(null)
    const [values, setValues] = useState<MultiSelectOption["value"][]>((value ?? defaultValue) ?? [])
    const [tagInputValue, setTagInputValue] = useState("")
    const inputFocused = useDisclosure(false)
    const listDisclosure = useDisclosure(false)
-   
-   const [highlightedOptionIndex, setHighlightedOptionIndex] = useState(0)
-   
-   const selectOptions = useMemo(() => {
+
+    const [highlightedOptionIndex, setHighlightedOptionIndex] = useState(0)
+
+    const selectOptions = useMemo(() => {
       // if user types an input, filter by similar labels or values
       // else show options which are not selected
       const filtered = _filter(options, o => !values.includes(o.value))
@@ -96,16 +93,16 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
          ? o.label.toLowerCase().includes(tagInputValue.toLowerCase())
          : o.value.toLowerCase().includes(tagInputValue.toLowerCase()))) : filtered
    }, [options, values, tagInputValue])
-   
-   useEffect(() => {
+
+    useEffect(() => {
       onChange && onChange(values)
    }, [values])
-   
-   useEffect(() => {
+
+    useEffect(() => {
       if (value) setValues(value)
    }, [value])
-   
-   function handleAddValue(value: string) {
+
+    function handleAddValue(value: string) {
       if (!!max) {
          if (max !== 1 && values.length < max) {
             setValues([...values, value])
@@ -121,21 +118,21 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
          setValues([...values, value])
       }
    }
-   
-   function handlePopValue() {
+
+    function handlePopValue() {
       setValues(v => v.slice(0, v.length - 1))
    }
-   
-   function handleRemoveValue(value: string) {
+
+    function handleRemoveValue(value: string) {
       setValues(v => v.filter(a => a !== value))
    }
-   
-   
-   const closeList = () => {
+
+
+    const closeList = () => {
       listDisclosure.close()
    }
-   
-   /**
+
+    /**
     * When the user is focused on the input and hits enter,
     * if the there's only one option and the tagInputValue is not empty, add the option to the selected values
     * @param event
@@ -156,8 +153,8 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
          handlePopValue()
       }
    }, [selectOptions, highlightedOptionIndex, tagInputValue])
-   
-   const handleKeyUp = useCallback((e: KeyboardEvent) => {
+
+    const handleKeyUp = useCallback((e: KeyboardEvent) => {
       if (e.key === "ArrowDown") {
          setHighlightedOptionIndex(i => {
             const newI = (i + 1) <= (selectOptions.length - 1) ? (i + 1) : 0
@@ -173,33 +170,33 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
          })
       }
    }, [selectOptions])
-   
-   useEffect(() => {
-      
-      window.addEventListener("keyup", handleKeyUp)
+
+    useEffect(() => {
+
+        window.addEventListener("keyup", handleKeyUp)
       if (inputRef.current) {
          inputRef.current.addEventListener("keydown", handleKeyDown)
       }
-      
-      return () => {
+
+        return () => {
          if (inputRef.current) {
             inputRef.current.removeEventListener("keydown", handleKeyDown)
          }
          window.removeEventListener("keyup", handleKeyUp)
       }
    }, [inputRef, listDisclosure, selectOptions, highlightedOptionIndex])
-   
-   const itemsRef = useRef<any>(null)
-   
-   function getMap() {
+
+    const itemsRef = useRef<any>(null)
+
+    function getMap() {
       if (!itemsRef.current) {
          // Initialize the Map on first usage.
          itemsRef.current = new Map()
       }
       return itemsRef.current
    }
-   
-   function scrollToHighlighted(index: number) {
+
+    function scrollToHighlighted(index: number) {
       const map = getMap()
       const node = map.get(index)
       if (index === selectOptions.length - 1) {
@@ -214,18 +211,18 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
          })
       }
    }
-   
-   return (
+
+    return (
       <>
          <BasicField
             {...basicFieldProps}
          >
             <div className={cn(inputContainerStyle())}>
-               
-               <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
+
+                <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
                <InputIcon icon={leftIcon} size={size} side={"left"} />
-               
-               <div
+
+                <div
                   className={cn(
                      "form-input",
                      InputAnatomy.input({
@@ -246,13 +243,13 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                      }
                   }}
                >
-                  
-                  
-                  {isLoading ? (
+
+
+                    {isLoading ? (
                      <p>...</p>
                   ) : <>
-                     
-                     {values.map((value, index) => (
+
+                        {values.map((value, index) => (
                         <span key={index}>
                            <Badge
                               tag
@@ -266,8 +263,8 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                            </Badge>
                         </span>
                      ))}
-                     
-                     <input
+
+                        <input
                         id={basicFieldProps.id}
                         value={tagInputValue}
                         onChange={e => {
@@ -298,8 +295,8 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                         className={cn("outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 !bg-transparent", { "w-1": !inputFocused.isOpen })}
                         ref={inputRef}
                      />
-                     
-                     <Transition
+
+                        <Transition
                         show={listDisclosure.isOpen && selectOptions.length > 0}
                         as={Fragment}
                         leave="transition ease-in duration-100"
@@ -311,13 +308,13 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                            ref={ulRef}
                         >
                            {selectOptions.map((o, index) => {
-                              
-                              const imageComponent = o.image ?
+
+                               const imageComponent = o.image ?
                                  <div className={cn(MultiSelectAnatomy.menuItemImage(), menuItemImageClassName)}>
                                     {o.image}
                                  </div> : <></>
-                              
-                              return (
+
+                               return (
                                  <li
                                     key={o.value}
                                     className={cn(MultiSelectAnatomy.menuItem({ highlighted: highlightedOptionIndex === index }), menuItemClassName)}
@@ -353,18 +350,18 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                            })}
                         </ul>
                      </Transition>
-                  
-                  </>}
+
+                    </>}
                </div>
-               
-               <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
+
+                <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
                <InputIcon icon={rightIcon} size={size} side={"right"} />
-            
+
             </div>
          </BasicField>
       </>
    )
-   
+
 })
 
 MultiSelect.displayName = "MultiSelect"
@@ -374,24 +371,24 @@ function useDisclosure(
    callbacks?: { onOpen?(): void; onClose?(): void },
 ) {
    const [opened, setOpened] = useState(initialState)
-   
-   const open = () => {
+
+    const open = () => {
       if (!opened) {
          setOpened(true)
          callbacks?.onOpen?.()
       }
    }
-   
-   const close = () => {
+
+    const close = () => {
       if (opened) {
          setOpened(false)
          callbacks?.onClose?.()
       }
    }
-   
-   const toggle = () => {
+
+    const toggle = () => {
       opened ? close() : open()
    }
-   
-   return { isOpen: opened, open, close, toggle } as const
+
+    return { isOpen: opened, open, close, toggle } as const
 }

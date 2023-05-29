@@ -1,5 +1,4 @@
 import { cva } from "class-variance-authority"
-
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
  * -----------------------------------------------------------------------------------------------*/
@@ -44,3 +43,4 @@ export function defineStyleAnatomy<A extends Anatomy = Anatomy>(config: A) {
  * @internal UI Folder scope
  */
 export type ComponentWithAnatomy<T extends Anatomy> = AnatomyClassNames<T>
+

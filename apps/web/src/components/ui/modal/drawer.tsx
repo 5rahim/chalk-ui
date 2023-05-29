@@ -26,30 +26,30 @@ export const DrawerAnatomy = defineStyleAnatomy({
 export interface DrawerProps extends React.ComponentPropsWithRef<"div">, ComponentWithAnatomy<typeof DrawerAnatomy>,
    VariantProps<typeof DrawerAnatomy.panel> {
    isOpen: boolean
-   withCloseButton?: boolean
-   onClose: () => void
+    isClosable?: boolean
+    onClose: () => void
 }
 
 export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref) => {
-   
+
    const {
-      children,
-      className,
-      size = "md",
-      placement = "right",
-      withCloseButton = false,
-      isOpen,
-      onClose,
-      title,
-      closeButtonClassName,
-      panelClassName,
-      titleClassName,
-      headerClassName,
-      bodyClassName,
-      containerClassName,
-      ...rest
+       children,
+       className,
+       size = "md",
+       placement = "right",
+       isClosable = false,
+       isOpen,
+       onClose,
+       title,
+       closeButtonClassName,
+       panelClassName,
+       titleClassName,
+       headerClassName,
+       bodyClassName,
+       containerClassName,
+       ...rest
    } = props
-   
+
    let animation = {
       enter: "transform transition ease-in-out duration-500 sm:duration-500",
       enterFrom: "translate-x-full",
@@ -58,7 +58,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
       leaveFrom: "translate-x-0",
       leaveTo: "translate-x-full",
    }
-   
+
    if (placement == "bottom") {
       animation = {
          ...animation,
@@ -84,7 +84,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
          leaveTo: "-translate-x-full",
       }
    }
-   
+
    return (
       <>
          <Transition.Root show={isOpen} as={Fragment}>
@@ -99,7 +99,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                {...rest}
                ref={ref}
             >
-               
+
                {/*Overlay*/}
                <Transition.Child
                   as={Fragment}
@@ -112,7 +112,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                >
                   <div className="fixed inset-0 bg-black bg-opacity-70 transition-opacity" />
                </Transition.Child>
-               
+
                <div className="fixed inset-0 overflow-hidden">
                   <div className="absolute inset-0 overflow-hidden">
                      <div
@@ -153,28 +153,28 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                                  },
                               )}
                            >
-                              
+
                               {/*Container*/}
                               <div className={cn(DrawerAnatomy.container(), containerClassName)}>
                                  <div
                                     className={cn(DrawerAnatomy.header(), headerClassName)}
                                  >
                                     <Dialog.Title className={cn(DrawerAnatomy.title(), titleClassName)}>{title}</Dialog.Title>
-                                    
-                                    {withCloseButton && (
-                                       <CloseButton
-                                          onClick={() => onClose()}
-                                          className={cn(closeButtonClassName)}
-                                       />
-                                    )}
-                                 
+
+                                     {isClosable && (
+                                         <CloseButton
+                                             onClick={() => onClose()}
+                                             className={cn(closeButtonClassName)}
+                                         />
+                                     )}
+
                                  </div>
                                  <div className={cn(DrawerAnatomy.body(), bodyClassName)}>
                                     {children}
                                  </div>
                               </div>
                            </Dialog.Panel>
-                        
+
                         </Transition.Child>
                      </div>
                   </div>
@@ -183,7 +183,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
          </Transition.Root>
       </>
    )
-   
+
 })
 
 Drawer.displayName = "Drawer"

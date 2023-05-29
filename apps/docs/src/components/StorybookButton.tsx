@@ -6,10 +6,10 @@ interface StorybookButtonProps {
 }
 
 const StorybookButton: React.FC<StorybookButtonProps> = (props) => {
-   
-   const { slug, name, ...rest } = props
-   
-   return (
+
+    const { slug, name, ...rest } = props
+
+    return (
       <a href={"https://chalk-storybook.rahim.app/?path=/docs/" + slug} target="_blank">
          <span className="px-4 py-2 rounded-md border dark:border-gray-700 inline-flex gap-2 items-center font-medium mt-4 transition ring-red-500 hover:ring-1 dark:hover:border-gray-600">
             <span className="text-red-600 dark:text-red-400">
@@ -33,7 +33,7 @@ const StorybookButton: React.FC<StorybookButtonProps> = (props) => {
          </span>
       </a>
    )
-   
+
 }
 
 export default StorybookButton
