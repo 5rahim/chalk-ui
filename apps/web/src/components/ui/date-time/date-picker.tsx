@@ -14,18 +14,26 @@ import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling 
 import { Modal } from "../modal"
 import { DateField } from "./date-field"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const DatePickerAnatomy = defineStyleAnatomy({
    input: cva([
       "UI-DateSegment__input",
       "relative flex flex-wrap items-center gap-2 cursor-text",
-      "group-focus-within:border-brand-500 group-focus-within:ring-1 group-focus-within:ring-brand-500",
+      "group-focus-within:border-brand-500 group-focus-within:ring-1 group-focus-within:ring-[--ring]",
       "justify-between",
    ]),
    iconButton: cva([
       "UI-DateSegment__iconButton",
-      "w-5 h-5 group-focus-within:text-brand-700",
+      "w-5 h-5 group-focus-within:text-brand-700 dark:group-focus-within:text-brand-200",
    ]),
 })
+
+/* -------------------------------------------------------------------------------------------------
+ * DatePicker
+ * -----------------------------------------------------------------------------------------------*/
 
 export interface DatePickerProps extends Omit<DatePickerStateOptions<DateValue>, "label">,
    ComponentWithAnatomy<typeof DatePickerAnatomy>,

@@ -10,14 +10,22 @@ import { ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../
 import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
 import { DateSegmentComponent } from "./date-field"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const TimeInputAnatomy = defineStyleAnatomy({
    input: cva([
        "UI-TimeInput__input",
        "relative flex flex-wrap items-center gap-1 cursor-text",
-       "group-focus-within:border-brand-500 group-focus-within:ring-1 group-focus-within:ring-brand-500",
+       "group-focus-within:border-brand-500 group-focus-within:ring-1 group-focus-within:ring-[--ring]",
        "!w-fit",
    ]),
 })
+
+/* -------------------------------------------------------------------------------------------------
+ * TimeInput
+ * -----------------------------------------------------------------------------------------------*/
 
 export interface TimeInputProps extends Omit<TimeFieldStateOptions, "locale">,
    ComponentWithAnatomy<typeof TimeInputAnatomy>,

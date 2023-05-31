@@ -4,9 +4,17 @@ import React from "react"
 import { defineStyleAnatomy } from "../core"
 import { LoadingSpinner } from "./loading-spinner"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const LoadingOverlayAnatomy = defineStyleAnatomy({
    overlay: cva("UI-LoadingOverlay__overlay absolute bg-white dark:bg-gray-900 bg-opacity-70 w-full h-full z-10 inset-0 pt-4 flex items-center justify-center backdrop-blur-sm"),
 })
+
+/* -------------------------------------------------------------------------------------------------
+ * LoadingOverlay
+ * -----------------------------------------------------------------------------------------------*/
 
 interface LoadingOverlayProps {
    children?: React.ReactNode
@@ -14,11 +22,11 @@ interface LoadingOverlayProps {
 }
 
 export const LoadingOverlay: React.FC<LoadingOverlayProps & React.ComponentPropsWithoutRef<"div">> = (props) => {
-   
+
    const { children, show = true, className, ...rest } = props
-   
+
    if (!show) return null
-   
+
    return (
       <>
          <div className={cn(LoadingOverlayAnatomy.overlay(), className)} {...rest}>
@@ -26,7 +34,7 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps & React.ComponentProps
          </div>
       </>
    )
-   
+
 }
 
 LoadingOverlay.displayName = "LoadingOverlay"

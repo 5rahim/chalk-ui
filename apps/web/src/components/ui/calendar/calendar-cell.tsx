@@ -8,6 +8,10 @@ import { mergeProps, useCalendarCell, useFocusRing } from "react-aria"
 import { CalendarState, RangeCalendarState } from "react-stately"
 import { defineStyleAnatomy, useUILocaleConfig } from "../core"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const CalendarCellAnatomy = defineStyleAnatomy({
    cell: cva("UI-CalendarCell__cell relative", {
       variants: {
@@ -21,7 +25,7 @@ export const CalendarCellAnatomy = defineStyleAnatomy({
          isSelectionStart: { true: "bg-brand-600 text-white hover:bg-brand-700", false: null },
          isSelectionEnd: { true: "bg-brand-600 text-white hover:bg-brand-700", false: null },
          isSelected: { true: null, false: null },
-         isFocusVisible: { true: "ring-2 group-focus:z-2 ring-brand-600 ring-offset-2", false: null },
+         isFocusVisible: { true: "ring-2 group-focus:z-2 ring-[--ring] ring-offset-2", false: null },
       },
       compoundVariants: [
          { isDisabled: false, isUnavailable: false, className: "cursor-pointer" },
@@ -40,6 +44,10 @@ export const CalendarCellAnatomy = defineStyleAnatomy({
    }),
 })
 
+/* -------------------------------------------------------------------------------------------------
+ * CalendarCell
+ * -----------------------------------------------------------------------------------------------*/
+
 interface CalendarCellProps {
    state: CalendarState | RangeCalendarState
    date: CalendarDate
@@ -47,7 +55,7 @@ interface CalendarCellProps {
 }
 
 export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
-   
+
    let ref = useRef<HTMLDivElement>(null)
    let {
       cellProps,
@@ -57,9 +65,9 @@ export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
       isUnavailable,
       formattedDate,
    } = useCalendarCell({ date }, state, ref)
-   
+
    let isOutsideMonth = !isSameMonth(currentMonth, date)
-   
+
    // The start and end date of the selected range will have
    // an emphasized appearance.
    let isSelectionStart = (state as RangeCalendarState).highlightedRange
@@ -68,7 +76,7 @@ export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
    let isSelectionEnd = (state as RangeCalendarState).highlightedRange
       ? isSameDay(date, (state as RangeCalendarState).highlightedRange.end)
       : isSelected
-   
+
    // We add rounded corners on the left for the first day of the month,
    // the first day of each week, and the start date of the selection.
    // We add rounded corners on the right for the last day of the month,
@@ -80,9 +88,9 @@ export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
    let isRoundedRight =
       isSelected &&
       (isSelectionEnd)
-   
+
    let { focusProps, isFocusVisible } = useFocusRing()
-   
+
    return (
       <td
          {...cellProps}

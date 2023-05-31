@@ -23,9 +23,7 @@ export const useCheckboxGroupContext = () => useContext(_CheckboxGroupContext)
  * -----------------------------------------------------------------------------------------------*/
 
 export interface CheckboxGroupProps extends BasicFieldOptions {
-    // Prop for controlling the state
     value?: string[]
-    // Set the default value
     defaultValue?: string[]
     onChange?: (value: string[]) => void
     size?: CheckboxProps["size"]

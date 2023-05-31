@@ -13,7 +13,7 @@ export const RadioGroupAnatomy = defineStyleAnatomy({
     radioControl: cva([
         "UI-RadioGroup__radioControl",
         "inline-flex flex-none justify-center items-center border border-gray-300 rounded-full text-white bg-white cursor-pointer transition duration-10 relative",
-        "data-focus:outline-none data-focus:ring-2 ring-offset-1 data-focus:ring-brand",
+        "data-focus:outline-none data-focus:ring-2 ring-offset-1 data-focus:ring-[--ring]",
         "data-disabled:pointer-events-none data-disabled:opacity-50",
         "bg-white border-gray-300 hover:bg-gray-100 hover:text-brand-100",
         "data-checked:bg-brand-500 data-checked:border-brand-500",

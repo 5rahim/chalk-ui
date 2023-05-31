@@ -7,6 +7,10 @@ import { CalendarState, RangeCalendarState } from "react-stately"
 import { IconButton } from "../button"
 import { useUILocaleConfig } from "../core"
 
+/* -------------------------------------------------------------------------------------------------
+ * CalendarHeader
+ * -----------------------------------------------------------------------------------------------*/
+
 interface CalendarHeaderProps {
    state: CalendarState | RangeCalendarState
    calendarProps: any
@@ -28,10 +32,10 @@ export function CalendarHeader({
       year: "numeric",
       timeZone: state.timeZone,
    })
-   
+
    const { onPress: prevButtonOnPress, ...prevButtonRest } = prevButtonProps
    const { onPress: nextButtonOnPress, ...nextButtonRest } = nextButtonProps
-   
+
    return (
       <div className="flex items-center py-4 text-center">
          {/* Add a screen reader only description of the entire visible range rather than

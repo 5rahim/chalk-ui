@@ -4,6 +4,10 @@ import React from "react"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { ShowOnly } from "../show-only"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const BasicFieldAnatomy = defineStyleAnatomy({
    fieldLabel: cva("UI-BasicField__fieldLabel block text-md sm:text-lg font-semibold self-start", {
       variants: {
@@ -20,6 +24,11 @@ export const BasicFieldAnatomy = defineStyleAnatomy({
    fieldErrorText: cva("UI-BasicField__fieldErrorText text-sm text-red-500"),
 })
 
+/* -------------------------------------------------------------------------------------------------
+ * BasicFieldOptions
+ * - Field components inherit these props
+ * -----------------------------------------------------------------------------------------------*/
+
 export interface BasicFieldOptions extends ComponentWithAnatomy<typeof BasicFieldAnatomy> {
    id?: string | undefined
    name?: string
@@ -31,6 +40,10 @@ export interface BasicFieldOptions extends ComponentWithAnatomy<typeof BasicFiel
    isDisabled?: boolean
    isReadOnly?: boolean
 }
+
+/* -------------------------------------------------------------------------------------------------
+ * Extract BasicFieldProps
+ * -----------------------------------------------------------------------------------------------*/
 
 export function extractBasicFieldProps<Props extends BasicFieldOptions>(props: Props, id: string) {
    const {
@@ -81,11 +94,15 @@ export function extractBasicFieldProps<Props extends BasicFieldOptions>(props: P
    ]
 }
 
+/* -------------------------------------------------------------------------------------------------
+ * BasicField
+ * -----------------------------------------------------------------------------------------------*/
+
 export interface BasicFieldProps extends React.ComponentPropsWithRef<"div">, BasicFieldOptions {
 }
 
 export const BasicField: React.FC<BasicFieldProps> = React.memo(React.forwardRef<HTMLDivElement, BasicFieldProps>((props, ref) => {
-   
+
    const {
       children,
       className,
@@ -105,7 +122,7 @@ export const BasicField: React.FC<BasicFieldProps> = React.memo(React.forwardRef
       fieldHelpTextClassName,
       ...rest
    } = props
-   
+
    return (
       <>
          <div
@@ -129,9 +146,9 @@ export const BasicField: React.FC<BasicFieldProps> = React.memo(React.forwardRef
                   </ShowOnly>
                </label>
             </ShowOnly>
-            
+
             {children}
-            
+
             <ShowOnly when={!!help || !!error}>
                <div className={cn(BasicFieldAnatomy.fieldDetails(), fieldDetailsClassName)}>
                   {!!help && <p className={cn(BasicFieldAnatomy.fieldHelpText(), fieldHelpTextClassName)}>{help}</p>}
@@ -141,7 +158,7 @@ export const BasicField: React.FC<BasicFieldProps> = React.memo(React.forwardRef
          </div>
       </>
    )
-   
+
 }))
 
 BasicField.displayName = "BasicField"

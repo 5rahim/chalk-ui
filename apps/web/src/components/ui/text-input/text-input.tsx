@@ -3,13 +3,17 @@ import React, { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
 
+/* -------------------------------------------------------------------------------------------------
+ * TextInput
+ * -----------------------------------------------------------------------------------------------*/
+
 export interface TextInputProps extends Omit<React.ComponentPropsWithRef<"input">, "size">,
    Omit<InputStyling, "hasError" | "isDisabled">,
    BasicFieldOptions {
 }
 
 export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
-   
+
    const [{
       className,
       size = "md",
@@ -21,17 +25,17 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
       disabled,
       ...rest
    }, basicFieldProps] = extractBasicFieldProps<TextInputProps>(props, useId())
-   
+
    return (
       <>
          <BasicField
             {...basicFieldProps}
          >
             <div className={cn(inputContainerStyle())}>
-               
+
                <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
                <InputIcon icon={leftIcon} size={size} side={"left"} />
-               
+
                <input
                   // type="" /!\ We do not put the type since it can be multiple
                   id={basicFieldProps.id}
@@ -54,15 +58,15 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
                   {...rest}
                   ref={ref}
                />
-               
+
                <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
                <InputIcon icon={rightIcon} size={size} side={"right"} />
-            
+
             </div>
          </BasicField>
       </>
    )
-   
+
 })
 
 TextInput.displayName = "TextInput"

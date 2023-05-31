@@ -38,7 +38,10 @@ https://chalk.rahim.app
 - [x] Loading Spinner
 - [x] Loading Overlay
 - [x] Accordion
-- [x] Legacy_dropdownMenu
+- [x] DropdownMenu
+- [x] Popover
+- [x] NavigationTabs
+- [x] TabPanels
 - [ ] AppShell
 - [ ] Breadcrumbs
 - [ ] Card
@@ -46,7 +49,6 @@ https://chalk.rahim.app
 - [ ] Data Table
 - [ ] Pagination
 - [ ] Stats
-- [ ] Tabs
 - [ ] Timeline
 - [ ] Toast
 - [ ] Tooltip

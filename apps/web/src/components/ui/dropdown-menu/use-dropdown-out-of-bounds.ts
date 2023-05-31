@@ -1,15 +1,16 @@
 import React, { useCallback, useState } from "react"
-import useEventListener from "./use-event-listener"
-import useIsomorphicLayoutEffect from "./use-isomorphic-layout-effect"
-
-
+import useEventListener from "@/hooks/use-event-listener"
+import useIsomorphicLayoutEffect from "@/hooks/use-isomorphic-layout-effect"
 
 interface Size {
     width: number
     height: number
 }
 
-export function useOutOfBounds<T extends HTMLElement = HTMLDivElement>(): [
+/**
+ * @internal
+ */
+export function useDropdownOutOfBounds<T extends HTMLElement = HTMLDivElement>(): [
     (node: T | null) => void,
     { top: number, bottom: number, left: number, right: number },
     Size,
@@ -60,15 +61,11 @@ export function useOutOfBounds<T extends HTMLElement = HTMLDivElement>(): [
                 directions.right = Math.abs(windowWidth - rect.right)
             }
 
+            // Update values only when it is out of bounds
+            // This causes the dropdown menu to retain its changed position
             if (directions.top > 0 || directions.left > 0 || directions.bottom > 0 || directions.right > 0) {
                 setOutOfBounds(directions)
             }
-            // setOutOfBounds(prev => {
-            //     if (prev.top !== directions.top || prev.right !== directions.right || prev.bottom !== directions.bottom || prev.left !== directions.left) {
-            //         return directions
-            //     }
-            //     return prev
-            // })
         }
 
         setSize({
@@ -79,7 +76,7 @@ export function useOutOfBounds<T extends HTMLElement = HTMLDivElement>(): [
     }, [ref])
 
     useEventListener("resize", handleSize)
-    useEventListener("keydown", handleSize)
+    useEventListener("click", handleSize)
 
     useIsomorphicLayoutEffect(() => {
         handleSize()

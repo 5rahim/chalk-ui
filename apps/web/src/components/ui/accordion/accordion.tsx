@@ -15,7 +15,7 @@ export const AccordionAnatomy = defineStyleAnatomy({
     trigger: cva(["UI-Accordion__trigger",
         "bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700",
         "flex w-full justify-between rounded-lg px-4 py-3 text-left font-medium transition",
-        "focus:outline-none focus-visible:ring-2 focus-visible:ring-brand ring-offset-1",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-[--ring] ring-offset-1",
     ]),
     panel: cva("UI-Accordion__panel py-2"),
     item: cva("UI-Accordion__item"),

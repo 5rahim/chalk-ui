@@ -19,11 +19,11 @@ export const ComboboxAnatomy = defineStyleAnatomy({
    menuContainer: cva([
        "UI-Combobox__menuContainer absolute z-10 -bottom-0.5",
        "left-0 translate-y-full max-h-56 w-full overflow-auto rounded-md p-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm",
-       "bg-white dark:bg-gray-800",
+       "bg-[--paper]",
    ]),
     menuItem: cva([
         "UI-Combobox__menuItem",
-        "relative cursor-pointer py-2 pl-3 pr-9 rounded-md data-highlighted:bg-gray-100 dark:data-highlighted:bg-gray-700 text-base",
+        "relative cursor-pointer py-2 pl-3 pr-9 rounded-md data-highlighted:bg-[--paper-highlight] text-base",
     ]),
     menuNoOptionText: cva([
         "UI-Combobox__menuNoOptionText",

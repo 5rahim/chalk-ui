@@ -8,6 +8,9 @@ import { useUILocaleConfig } from "../core"
 import { CalendarGrid } from "./calendar-grid"
 import { CalendarHeader } from "./calendar-header"
 
+/* -------------------------------------------------------------------------------------------------
+ * RangeCalendar
+ * -----------------------------------------------------------------------------------------------*/
 
 export function RangeCalendar({ locale, ...props }: Omit<RangeCalendarStateOptions, "createCalendar" | "locale"> & { locale?: string }) {
    let { countryLocale } = useUILocaleConfig()

@@ -7,9 +7,13 @@ import React, { Fragment } from "react"
 import { CloseButton } from "../button"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const ModalAnatomy = defineStyleAnatomy({
     title: cva("UI-Modal__title text-lg font-medium leading-6"),
-    panel: cva("UI-Modal__panel w-full transform overflow-hidden rounded-none sm:rounded-md bg-white dark:bg-gray-900 p-6 text-left align-middle shadow-xl transition-all relative", {
+    panel: cva("UI-Modal__panel w-full transform overflow-hidden rounded-none sm:rounded-md bg-[--modal] p-6 text-left align-middle shadow-xl transition-all relative", {
         variants: {
             size: {
                 sm: "sm:max-w-md",
@@ -25,6 +29,10 @@ export const ModalAnatomy = defineStyleAnatomy({
     body: cva("UI-Modal__body mt-2"),
     closeButton: cva("UI-Modal__closeButton absolute right-2 top-2"),
 })
+
+/* -------------------------------------------------------------------------------------------------
+ * Modal
+ * -----------------------------------------------------------------------------------------------*/
 
 export interface ModalProps extends React.ComponentPropsWithRef<"div">,
     ComponentWithAnatomy<typeof ModalAnatomy>,

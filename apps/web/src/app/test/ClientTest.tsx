@@ -17,6 +17,12 @@ import { TextInput } from "@/components/ui/text-input"
 import { Combobox } from "@/components/ui/combobox"
 import { MultiSelect } from "@/components/ui/multi-select"
 import { Popover } from "@/components/ui/popover"
+import { NavigationTabs, TabPanels } from "@/components/ui/tabs"
+import { BiReceipt } from "@react-icons/all-files/bi/BiReceipt"
+import { Tooltip } from "@/components/ui/tooltip"
+import { BiCog } from "@react-icons/all-files/bi/BiCog"
+import { Alert } from "@/components/ui/alert"
+import { PhoneNumberInput } from "@/components/ui/phone-number-input"
 
 interface ClientTestProps {
     children?: React.ReactNode
@@ -36,7 +42,41 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
     return (
         <>
             <div className="container max-w-5xl">
-                <div className="mt-10 space-y-4 divide-y relative dark:divide-gray-800">
+                <div className="mt-10 space-y-4 relative">
+
+
+                    <PhoneNumberInput />
+
+                    <Alert title={"Alert"} description={"Short description"} intent={"alert-basic"} />
+
+                    <TabPanels>
+                        <TabPanels.Nav>
+                            <TabPanels.Tab>Home</TabPanels.Tab>
+                            <TabPanels.Tab>Orders</TabPanels.Tab>
+                            <TabPanels.Tab><BiCog /><span>Settings</span></TabPanels.Tab>
+                        </TabPanels.Nav>
+                        <TabPanels.Container>
+                            <TabPanels.Panel>
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias amet autem consequuntur, eius hic minus neque, nesciunt obcaecati perferendis placeat quae quasi repudiandae rerum. Assumenda consequatur facere id maiores quae.
+                            </TabPanels.Panel>
+                            <TabPanels.Panel>
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad architecto cum delectus dicta dolores enim, harum impedit ipsa laboriosam nemo nesciunt nostrum perspiciatis quae quibusdam quis sequi sint vitae voluptas.
+                            </TabPanels.Panel>
+                            <TabPanels.Panel>
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate doloremque eveniet magnam numquam odit quibusdam, veniam? Ab cumque dignissimos dolorem nesciunt odit? Deserunt dolores nam, rem saepe suscipit ut vitae!
+                            </TabPanels.Panel>
+                        </TabPanels.Container>
+                    </TabPanels>
+
+                    <NavigationTabs
+                        options={[
+                            { name: "My Account", href: "#", icon: null, isCurrent: false },
+                            { name: "Company", href: "#", icon: null, isCurrent: false },
+                            { name: "Team Members", href: "#", icon: null, isCurrent: true },
+                            { name: "Billing", href: "#", icon: BiReceipt, isCurrent: false },
+                        ]}
+                    />
+
                     <div className="flex flex-wrap gap-2">
                         <Popover trigger={<Button>Open</Button>}>
                             <div>
@@ -87,13 +127,16 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
                         fieldClassName="w-full"
                         fieldLabelClassName="text-md"
                         stackClassName="flex flex-col md:flex-row gap-2 space-y-0"
-                        radioContainerClassName="block w-full p-4 cursor-pointer transition border border-gray-200 rounded-md data-checked:bg-white data-checked:ring-2 data-checked:ring-brand-500"
+                        radioContainerClassName="block w-full p-4 cursor-pointer transition border border-gray-200 rounded-md data-checked:bg-white data-checked:ring-2 data-checked:ring-[--ring]"
                         radioControlClassName="absolute right-2 top-2 h-5 w-5 text-xs"
                         radioLabelClassName="font-semibold flex-none flex"
                         radioHelpClassName="text-sm"
                         options={[{ value: "Option 1", help: "Help" }, { value: "Option 2" }]}
                     />
 
+                    <Tooltip trigger={<Button>Tooltip</Button>}>
+                        Content
+                    </Tooltip>
                     <TextInput/>
                     <Combobox options={[{ value: "Option 1", label: "Option 1" }, { value: "Option 2", label: "Option 2" }]}/>
                     <MultiSelect options={[{ value: "Option 1" }, { value: "Option 2" }]}/>

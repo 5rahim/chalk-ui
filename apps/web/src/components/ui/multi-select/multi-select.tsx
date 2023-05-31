@@ -12,11 +12,15 @@ import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
 import type { TextInputProps } from "../text-input"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const MultiSelectAnatomy = defineStyleAnatomy({
    input: cva("UI-MultiSelect__input relative flex flex-wrap gap-2 cursor-text p-2", {
       variants: {
          isOpen: {
-            true: "border-brand-500 hover:border-brand-500 ring-1 ring-brand-500",
+            true: "border-brand-500 hover:border-brand-500 ring-1 ring-[--ring]",
             false: null,
          },
       },
@@ -24,18 +28,22 @@ export const MultiSelectAnatomy = defineStyleAnatomy({
    menuContainer: cva([
        "UI-MultiSelect__menuContainer absolute z-10 -bottom-2",
        "left-0 translate-y-full max-h-56 w-full overflow-auto rounded-md p-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm",
-       "bg-white dark:bg-gray-800",
+       "bg-[--paper]",
    ]),
    menuItem: cva("UI-MultiSelect__menuItem relative cursor-pointer py-2 pl-3 pr-9 rounded-md", {
       variants: {
          highlighted: {
-            true: "bg-gray-100 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-700",
+            true: "hover:bg-[--paper-highlight]",
             false: null,
          },
       },
    }),
    menuItemImage: cva("UI-MultiSelect__menuItemImage flex-none justify-center w-8 h-8 mr-3 rounded-full overflow-hidden relative bg-slate-200"),
 })
+
+/* -------------------------------------------------------------------------------------------------
+ * MultiSelect
+ * -----------------------------------------------------------------------------------------------*/
 
 export type MultiSelectOption = { value: string, label?: string, description?: string, image?: React.ReactNode }
 

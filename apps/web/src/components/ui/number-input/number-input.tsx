@@ -10,6 +10,9 @@ import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
 import type { TextInputProps } from "../text-input"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
 
 export const NumberInputAnatomy = defineStyleAnatomy({
    input: cva("UI-NumberInput__input", {
@@ -58,6 +61,10 @@ export const NumberInputAnatomy = defineStyleAnatomy({
       },
    ),
 })
+
+/* -------------------------------------------------------------------------------------------------
+ * NumberInput
+ * -----------------------------------------------------------------------------------------------*/
 
 export interface NumberInputProps extends Omit<TextInputProps, "defaultValue" | "onChange" | "value">, InputStyling,
    ComponentWithAnatomy<typeof NumberInputAnatomy> {

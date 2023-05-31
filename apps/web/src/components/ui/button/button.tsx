@@ -3,12 +3,16 @@ import { cva, VariantProps } from "class-variance-authority"
 import React, { CSSProperties } from "react"
 import { defineStyleAnatomy } from "../core"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const ButtonAnatomy = defineStyleAnatomy({
     button: cva([
         "UI-Button__button",
         "shadow-sm whitespace-nowrap font-semibold rounded-md",
         "inline-flex items-center text-white transition ease-in duration-100 text-center text-base justify-center",
-        "focus-visible:outline-none focus-visible:ring-2 ring-offset-1 focus-visible:ring-brand"
+        "focus-visible:outline-none focus-visible:ring-2 ring-offset-1 focus-visible:ring-[--ring]"
     ], {
         variants: {
             intent: {
@@ -79,6 +83,9 @@ export const ButtonAnatomy = defineStyleAnatomy({
     }),
 })
 
+/* -------------------------------------------------------------------------------------------------
+ * Button
+ * -----------------------------------------------------------------------------------------------*/
 
 export interface ButtonProps extends React.ComponentPropsWithRef<"button">, VariantProps<typeof ButtonAnatomy.button> {
     isLoading?: boolean,

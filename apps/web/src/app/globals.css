@@ -5,5 +5,37 @@
 @layer base {
     :root {
         --radius: 0.25rem;
+
+        --brand: theme('colors.brand.500');
+        --control: theme('colors.gray.300');
+        --control-highlight: theme('colors.gray.400');
+
+        --border: theme('colors.gray.200');
+        --ring: theme('colors.brand.500');
+
+        --muted: theme('colors.gray.500');
+        --muted-highlight: theme('colors.gray.700');
+
+        --paper: theme('colors.white');
+        --paper-highlight: theme('colors.gray.100');
+
+        --modal: theme('colors.white');
+    }
+    .dark {
+
+        --brand: theme('colors.brand.200');
+        --control: theme('colors.gray.700');
+        --control-highlight: theme('colors.gray.600');
+
+        --border: theme('colors.gray.700');
+        --ring: theme('colors.brand.200');
+
+        --muted: theme('colors.gray.400');
+        --muted-highlight: theme('colors.gray.300');
+
+        --paper: theme('colors.gray.800');
+        --paper-highlight: theme('colors.gray.700');
+
+        --modal: theme('colors.gray.900');
     }
 }

@@ -3,16 +3,24 @@ import { cva } from "class-variance-authority"
 import { ComponentPropsWithRef, forwardRef } from "react"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const LoadingSpinnerAnatomy = defineStyleAnatomy({
    container: cva("UI-LoadingSpinner__container flex w-full items-center h-24 justify-center"),
    icon: cva("UI-LoadingSpinner__icon inline w-10 h-10 mr-2 text-gray-200 dark:text-gray-600 animate-spin fill-brand-500"),
 })
 
+/* -------------------------------------------------------------------------------------------------
+ * LoadingSpinner
+ * -----------------------------------------------------------------------------------------------*/
+
 export interface LoadingSpinnerProps extends ComponentPropsWithRef<"div">, ComponentWithAnatomy<typeof LoadingSpinnerAnatomy> {
 }
 
 export const LoadingSpinner = forwardRef<HTMLDivElement, LoadingSpinnerProps>((props, ref) => {
-   
+
    const {
       children,
       className,
@@ -20,7 +28,7 @@ export const LoadingSpinner = forwardRef<HTMLDivElement, LoadingSpinnerProps>((p
       iconClassName,
       ...rest
    } = props
-   
+
    return (
       <>
          <div
@@ -54,7 +62,7 @@ export const LoadingSpinner = forwardRef<HTMLDivElement, LoadingSpinnerProps>((p
          </div>
       </>
    )
-   
+
 })
 
 LoadingSpinner.displayName = "LoadingSpinner"

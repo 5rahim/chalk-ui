@@ -3,13 +3,17 @@ import { cva, VariantProps } from "class-variance-authority"
 import React from "react"
 import { defineStyleAnatomy } from "../core"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const InputAnatomy = defineStyleAnatomy({
     input: cva([
         "UI-Input__input",
         "w-full rounded-md",
-        "bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 placeholder-gray-400 dark:placeholder-gray-600",
+        "bg-white dark:bg-gray-900 border-[--border] placeholder-gray-400 dark:placeholder-gray-600",
         "disabled:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed",
-        "focus:border-brand-500 focus:ring-1 focus:ring-brand-500",
+        "focus:border-brand-500 focus:ring-1 focus:ring-[--ring]",
         "outline-none focus:outline-none",
         "transition duration-150",
         "shadow-sm",
@@ -63,8 +67,12 @@ export const InputAnatomy = defineStyleAnatomy({
     }),
 })
 
+/* -------------------------------------------------------------------------------------------------
+ * InputStyling
+ * -----------------------------------------------------------------------------------------------*/
 
-export interface InputStyling extends Omit<VariantProps<typeof InputAnatomy.input>, "untouchable" | "hasError" | "hasLeftAddon" | "hasRightAddon" | "hasLeftIcon" | "hasRightIcon"> {
+export interface InputStyling
+    extends Omit<VariantProps<typeof InputAnatomy.input>, "untouchable" | "hasError" | "hasLeftAddon" | "hasRightAddon" | "hasLeftIcon" | "hasRightIcon"> {
     leftAddon?: string
     leftIcon?: React.ReactNode
     rightAddon?: string
@@ -77,7 +85,9 @@ export interface InputStyling extends Omit<VariantProps<typeof InputAnatomy.inpu
 export const inputContainerStyle = () => cn("UI-Input__inputContainer flex relative")
 
 
-// -------------------------------------------------------------------------------------------------------------------------------- //
+/* -------------------------------------------------------------------------------------------------
+ * Addons Anatomy
+ * -----------------------------------------------------------------------------------------------*/
 
 export const InputAddonsAnatomy = defineStyleAnatomy({
     icon: cva([
@@ -120,13 +130,17 @@ export const InputAddonsAnatomy = defineStyleAnatomy({
     }),
 })
 
+/* -------------------------------------------------------------------------------------------------
+ * InputIcon
+ * -----------------------------------------------------------------------------------------------*/
 
-export const InputIcon = ({ icon, size = "md", side, props }: {
-                              icon: InputStyling["rightIcon"] | undefined,
-                              size: InputStyling["size"],
-                              side: "right" | "left",
-                              props?: Omit<React.ComponentPropsWithoutRef<"span">, "className">,
-                          },
+export const InputIcon = (
+    { icon, size = "md", side, props }: {
+        icon: InputStyling["rightIcon"] | undefined,
+        size: InputStyling["size"],
+        side: "right" | "left",
+        props?: Omit<React.ComponentPropsWithoutRef<"span">, "className">,
+    },
 ) => {
 
     if (!!icon) return <span
@@ -139,14 +153,19 @@ export const InputIcon = ({ icon, size = "md", side, props }: {
     return null
 }
 
-export const InputAddon = ({ addon, leftIcon, rightIcon, size = "md", side, props }: {
-                               addon: InputStyling["rightAddon"] | InputStyling["leftAddon"] | undefined,
-                               rightIcon: InputStyling["leftIcon"] | undefined,
-                               leftIcon: InputStyling["rightIcon"] | undefined,
-                               size: InputStyling["size"],
-                               side: "right" | "left",
-                               props?: Omit<React.ComponentPropsWithoutRef<"span">, "className">,
-                           },
+/* -------------------------------------------------------------------------------------------------
+ * InputAddon
+ * -----------------------------------------------------------------------------------------------*/
+
+export const InputAddon = (
+    { addon, leftIcon, rightIcon, size = "md", side, props }: {
+        addon: InputStyling["rightAddon"] | InputStyling["leftAddon"] | undefined,
+        rightIcon: InputStyling["leftIcon"] | undefined,
+        leftIcon: InputStyling["rightIcon"] | undefined,
+        size: InputStyling["size"],
+        side: "right" | "left",
+        props?: Omit<React.ComponentPropsWithoutRef<"span">, "className">,
+    },
 ) => {
 
     if (!!addon) return (

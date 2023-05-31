@@ -8,7 +8,7 @@ import { Menu, Transition } from "@headlessui/react"
 import { Divider, DividerProps } from "@/components/ui/divider"
 import { Modal } from "@/components/ui/modal"
 import { useMediaQuery } from "@/hooks/use-media-query"
-import { useOutOfBounds } from "@/hooks/use-out-of-bounds"
+import { useDropdownOutOfBounds } from "./use-dropdown-out-of-bounds"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -19,8 +19,8 @@ export const DropdownMenuAnatomy = defineStyleAnatomy({
         "UI-DropdownMenu__menu relative inline-block text-left",
     ]),
     dropdown: cva(["UI-DropdownMenu__dropdown",
-        "bg-white dark:bg-gray-800 border dark:border-gray-700 p-1",
-        "absolute z-10 mt-2 w-56 rounded-md shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none space-y-1",
+        "bg-[--paper] border border-[--border] p-1",
+        "absolute z-10 mt-2 w-56 rounded-md shadow-md focus:outline-none space-y-1",
     ], {
         variants: {
             top: { true: "", right: "" },
@@ -29,10 +29,12 @@ export const DropdownMenuAnatomy = defineStyleAnatomy({
             right: { true: "", right: "" },
         },
         compoundVariants: [
-            { top: false, right: false, bottom: false, left: false, className: "origin-top-right right-0" },
-            { bottom: true, className: "origin-bottom-right right-0 bottom-0" },
-            { bottom: true, left: true, className: "origin-bottom-right left-0 bottom-0" },
-            { right: true, bottom: true, className: "origin-bottom-right right-0 bottom-0" },
+            // { top: false, right: false, bottom: false, left: false, className: "" },
+            { bottom: false, className: "origin-top-right right-0" },
+            { bottom: true, className: "origin-bottom-right" },
+            { left: true, className: "left-0" },
+            { bottom: true, left: true, right: false, className: "origin-bottom-right left-0 bottom-0" },
+            { right: true, bottom: true, left: false, className: "origin-bottom-right right-0 bottom-0" },
         ]
     }),
     mobileDropdown: cva([
@@ -50,7 +52,7 @@ export const DropdownMenuItemAnatomy = defineStyleAnatomy({
     ], {
         variants: {
             active: {
-                true: "bg-gray-100 dark:bg-gray-700",
+                true: "bg-[--paper-highlight]",
                 false: null
             }
         },
@@ -62,7 +64,7 @@ export const DropdownMenuGroupAnatomy = defineStyleAnatomy({
     group: cva(["UI-DropdownMenu__group group",
         "text-gray-800 dark:text-gray-200",
     ]),
-    title: cva(["UI-DropdownMenu_title text-gray-500 dark:text-gray-400 text-sm font-medium px-2 py-1"]),
+    title: cva(["UI-DropdownMenu_title text-[--muted] text-sm font-medium px-2 py-1"]),
     content: cva(["UI-DropdownMenu_content"])
 })
 
@@ -95,8 +97,8 @@ const _DropdownMenu = (props: DropdownMenuProps) => {
 
     const isMobile = useMediaQuery("(max-width: 768px)")
 
-    const [triggerRef, _, triggerSize] = useOutOfBounds()
-    const [componentRef, outOfBounds] = useOutOfBounds()
+    const [triggerRef, _, triggerSize] = useDropdownOutOfBounds()
+    const [componentRef, outOfBounds] = useDropdownOutOfBounds()
 
     // Pass `itemClassName` to every child
     const itemsWithProps = React.useMemo(() => React.Children.map(children, (child) => {
@@ -105,10 +107,6 @@ const _DropdownMenu = (props: DropdownMenuProps) => {
         }
         return child
     }), [children])
-
-    useEffect(() => {
-        console.log(outOfBounds)
-    }, [outOfBounds])
 
     const _trigger = React.cloneElement(trigger, { ref: triggerRef })
 

@@ -11,10 +11,18 @@ import { defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { CalendarCell } from "./calendar-cell"
 import { getDateLocaleLibrary } from "./locale"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const CalendarGridAnatomy = defineStyleAnatomy({
    table: cva("UI-CalendarGrid__table flex-1"),
    head: cva("UI-CalendarGrid__head text-gray-600 text-center"),
 })
+
+/* -------------------------------------------------------------------------------------------------
+ * CalendarGrid
+ * -----------------------------------------------------------------------------------------------*/
 
 interface CalendarGridProps {
    state: CalendarState | RangeCalendarState
@@ -33,14 +41,14 @@ export function CalendarGrid({ locale, state, offset = {} }: CalendarGridProps) 
       },
       state,
    )
-   
+
    const _locale = locale ?? countryLocale
-   
+
    // Get the number of weeks in the month so we can render the proper number of rows.
    let weeksInMonth = useMemo(() => getWeeksInMonth(startDate.toDate(state.timeZone), { locale: getDateLocaleLibrary(_locale) }), [_locale])
-   
+
    const frWeekdays = useMemo(() => ["L", "M", "M", "J", "V", "S", "D"], [])
-   
+
    weekDays = useMemo(() => {
       const [first, ...r] = weekDays
       const arr = [...r!, first!]
@@ -49,7 +57,7 @@ export function CalendarGrid({ locale, state, offset = {} }: CalendarGridProps) 
       }
       return arr
    }, [_locale])
-   
+
    return (
       <table {...gridProps} cellPadding="0" className={cn(CalendarGridAnatomy.table())}>
          <thead {...headerProps} className={cn(CalendarGridAnatomy.head())}>

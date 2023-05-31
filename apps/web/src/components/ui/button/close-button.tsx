@@ -2,12 +2,16 @@ import { cn } from "@rahimstack/tailwind-utils"
 import React from "react"
 import { IconButton, IconButtonProps } from "."
 
+/* -------------------------------------------------------------------------------------------------
+ * CloseButton
+ * -----------------------------------------------------------------------------------------------*/
+
 export interface CloseButtonProps extends IconButtonProps {
    icon?: React.ReactElement<any, string | React.JSXElementConstructor<any>>
 }
 
 export const CloseButton = React.forwardRef<HTMLButtonElement, CloseButtonProps>((props, ref) => {
-   
+
    const {
       children,
       className,
@@ -15,7 +19,7 @@ export const CloseButton = React.forwardRef<HTMLButtonElement, CloseButtonProps>
       size = "sm",
       ...rest
    } = props
-   
+
    return (
       <>
          <IconButton
@@ -36,7 +40,7 @@ export const CloseButton = React.forwardRef<HTMLButtonElement, CloseButtonProps>
          />
       </>
    )
-   
+
 })
 
 CloseButton.displayName = "CloseButton"

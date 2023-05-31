@@ -5,6 +5,10 @@ import React, { Fragment } from "react"
 import { CloseButton } from "../button"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const DrawerAnatomy = defineStyleAnatomy({
    panel: cva("UI-Drawer__panel", {
       variants: {
@@ -16,12 +20,16 @@ export const DrawerAnatomy = defineStyleAnatomy({
          placement: "right",
       },
    }),
-   container: cva("UI-Drawer__container flex h-full flex-col overflow-y-auto bg-white dark:bg-gray-900 shadow-xl"),
+   container: cva("UI-Drawer__container flex h-full flex-col overflow-y-auto bg-[--modal] shadow-xl"),
    body: cva("UI-Drawer__body relative flex-1 pl-4 pr-4 pb-4 sm:pl-6 sm:pr-6 sm:pb-6"),
    header: cva("UI-Drawer__header flex w-full justify-between items-center p-4 sm:p-6 pb-0"),
    title: cva("UI-Drawer__title text-lg font-semibold"),
    closeButton: cva("UI-Drawer__closeButton"),
 })
+
+/* -------------------------------------------------------------------------------------------------
+ * Drawer
+ * -----------------------------------------------------------------------------------------------*/
 
 export interface DrawerProps extends React.ComponentPropsWithRef<"div">, ComponentWithAnatomy<typeof DrawerAnatomy>,
    VariantProps<typeof DrawerAnatomy.panel> {

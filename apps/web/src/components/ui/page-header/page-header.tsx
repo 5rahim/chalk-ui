@@ -3,6 +3,10 @@ import { cva, VariantProps } from "class-variance-authority"
 import React from "react"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const PageHeaderAnatomy = defineStyleAnatomy({
    body: cva("UI-PageHeader__body md:flex md:items-center md:justify-between md:space-x-5"),
    title: cva("UI-PageHeader__title font-bold text-gray-900 dark:text-gray-200", {
@@ -30,6 +34,10 @@ export const PageHeaderAnatomy = defineStyleAnatomy({
    }),
 })
 
+/* -------------------------------------------------------------------------------------------------
+ * PageHeader
+ * -----------------------------------------------------------------------------------------------*/
+
 export interface PageHeaderProps extends React.ComponentPropsWithRef<"div">,
    ComponentWithAnatomy<typeof PageHeaderAnatomy>,
    VariantProps<typeof PageHeaderAnatomy.title> {
@@ -40,7 +48,7 @@ export interface PageHeaderProps extends React.ComponentPropsWithRef<"div">,
 }
 
 export const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>((props, ref) => {
-   
+
    const {
       children,
       className,
@@ -56,7 +64,7 @@ export const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>((pro
       bodyClassName,
       ...rest
    } = props
-   
+
    return (
       <>
          <header
@@ -86,7 +94,7 @@ export const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>((pro
          </header>
       </>
    )
-   
+
 })
 
 PageHeader.displayName = "PageHeader"
