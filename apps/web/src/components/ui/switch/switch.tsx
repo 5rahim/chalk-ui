@@ -9,6 +9,10 @@ import type { SwitchProps as SwitchPrimitiveProps } from "@radix-ui/react-switch
 import * as SwitchPrimitive from "@radix-ui/react-switch"
 import { ShowOnly } from "@/components/ui/show-only"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const SwitchAnatomy = defineStyleAnatomy({
     container: cva([
         "UI-Checkbox__rootLabel inline-flex gap-2 items-center"
@@ -33,13 +37,16 @@ export const SwitchAnatomy = defineStyleAnatomy({
     thumb: cva([
         "pointer-events-none block h-4 w-4 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-[1.4rem] data-[state=unchecked]:translate-x-1"
     ]),
-
     label: cva([
         "UI-Switch__label",
         "relative font-normal",
         "data-disabled:text-gray-300",
     ])
 })
+
+/* -------------------------------------------------------------------------------------------------
+ * Switch
+ * -----------------------------------------------------------------------------------------------*/
 
 export interface SwitchProps
     extends Omit<SwitchPrimitiveProps, "disabled" | "required" | "onCheckedChange" | "onChange">,

@@ -9,7 +9,10 @@ import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 export const SwitchAnatomy = defineStyleAnatomy({
-    controlWrapper: cva("UI-Switch__controlWrapper relative h-8 w-14 overflow-hidden cursor-pointer flex-none", {
+    controlWrapper: cva([
+        "UI-Switch__controlWrapper",
+        "relative h-8 w-14 overflow-hidden cursor-pointer flex-none"
+    ], {
         variants: {
             size: {
                 sm: "h-5 w-8",
@@ -40,7 +43,10 @@ export const SwitchAnatomy = defineStyleAnatomy({
                 hasError: true,
             },
         }),
-    controlKnob: cva("UI-Switch__controlKnob absolute inset-0 rounded-full bg-white transition dark:data-disabled:bg-gray-500", {
+    controlKnob: cva([
+        "UI-Switch__controlKnob",
+        "absolute inset-0 rounded-full bg-white transition dark:data-disabled:bg-gray-500"
+    ], {
         variants: {
             size: {
                 sm: "m-1 h-3 w-3 data-checked:translate-x-3",

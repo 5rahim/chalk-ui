@@ -4,7 +4,7 @@
 
 @layer base {
     :root {
-        --radius: 0.25rem;
+        --radius: 0.375rem;
 
         --brand: theme('colors.brand.500');
         --control: theme('colors.gray.300');
@@ -38,4 +38,28 @@
 
         --modal: theme('colors.gray.900');
     }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    @apply text-gray-800 dark:text-gray-100
+}
+
+h1 {
+    @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl
+}
+
+h2 {
+    @apply scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0
+}
+
+h3 {
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight
+}
+
+h4 {
+    @apply scroll-m-20 text-xl font-semibold tracking-tight
+}
+
+ul {
+    @apply my-6 ml-6 list-disc [\&>li]:mt-2
 }

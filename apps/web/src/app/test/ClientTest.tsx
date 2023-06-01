@@ -23,6 +23,8 @@ import { Tooltip } from "@/components/ui/tooltip"
 import { BiCog } from "@react-icons/all-files/bi/BiCog"
 import { Alert } from "@/components/ui/alert"
 import { PhoneNumberInput } from "@/components/ui/phone-number-input"
+import { Breadcrumbs } from "@/components/ui/breadcrumbs"
+import { Banner } from "@/components/ui/banner"
 
 interface ClientTestProps {
     children?: React.ReactNode
@@ -41,19 +43,36 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
 
     return (
         <>
+            <Banner>
+                We just launched our new product!
+            </Banner>
             <div className="container max-w-5xl">
                 <div className="mt-10 space-y-4 relative">
 
+                    <h1>This is a title</h1>
+                    <h4 className={"text-[--muted]"}>Sub text</h4>
 
-                    <PhoneNumberInput />
+                    <Breadcrumbs pages={[
+                        { name: "Projects", href: "#", isCurrent: false },
+                        { name: "Team members", href: "#", isCurrent: true },
+                    ]}/>
 
-                    <Alert title={"Alert"} description={"Short description"} intent={"alert-basic"} />
+                    <Breadcrumbs
+                        showHomeButton={false}
+                        pages={[
+                            { name: "Projects", href: "#", isCurrent: false },
+                            { name: "Team members", href: "#", isCurrent: true },
+                        ]}/>
+
+                    <PhoneNumberInput/>
+
+                    <Alert title={"Alert"} description={"Short description"} intent={"alert-basic"}/>
 
                     <TabPanels>
                         <TabPanels.Nav>
                             <TabPanels.Tab>Home</TabPanels.Tab>
                             <TabPanels.Tab>Orders</TabPanels.Tab>
-                            <TabPanels.Tab><BiCog /><span>Settings</span></TabPanels.Tab>
+                            <TabPanels.Tab><BiCog/><span>Settings</span></TabPanels.Tab>
                         </TabPanels.Nav>
                         <TabPanels.Container>
                             <TabPanels.Panel>
@@ -127,7 +146,7 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
                         fieldClassName="w-full"
                         fieldLabelClassName="text-md"
                         stackClassName="flex flex-col md:flex-row gap-2 space-y-0"
-                        radioContainerClassName="block w-full p-4 cursor-pointer transition border border-gray-200 rounded-md data-checked:bg-white data-checked:ring-2 data-checked:ring-[--ring]"
+                        radioContainerClassName="block w-full p-4 cursor-pointer dark:bg-gray-900 transition border border-[--border] rounded-md data-checked:ring-2 data-checked:ring-[--ring]"
                         radioControlClassName="absolute right-2 top-2 h-5 w-5 text-xs"
                         radioLabelClassName="font-semibold flex-none flex"
                         radioHelpClassName="text-sm"
@@ -155,7 +174,7 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
 
                     <Button onClick={() => setOpen(s => !s)}/>
 
-                    <Drawer isOpen={open} onClose={() => setOpen(false)}>
+                    <Drawer title={"Test"} isOpen={open} onClose={() => setOpen(false)} isClosable>
                         <div>
                             <RadioGroup options={[{ value: "1" }]}/>
                             <Checkbox/>

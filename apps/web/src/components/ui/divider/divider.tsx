@@ -11,7 +11,8 @@ import { cn } from "@rahimstack/tailwind-utils"
 
 export const DividerAnatomy = defineStyleAnatomy({
     divider: cva([
-        "UI-Divider__divider w-full border-gray-200 dark:border-gray-700",
+        "UI-Divider__divider",
+        "w-full border-gray-200 dark:border-gray-700",
     ])
 })
 

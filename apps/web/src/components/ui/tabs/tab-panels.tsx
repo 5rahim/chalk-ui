@@ -29,10 +29,10 @@ export const TabAnatomy = defineStyleAnatomy({
     tab: cva([
         "UI-Tab__tab",
         "group relative min-w-0 flex-1 overflow-hidden py-4 px-4 text-sm font-medium text-center focus:z-10",
-        "hover:bg-gray-50 dark:hover:bg-gray-800",
         "flex items-center justify-center gap-2 border-b-2 -mb-px",
         "text-[--muted] ui-selected:text-[--brand] ui-selected:border-brand dark:ui-selected:border-brand-200",
-        "border-[--border]",
+        "border-[--border] hover:border-gray-300 dark:hover:border-gray-600",
+        "ring-[--ring] focus-visible:ring-2 outline-none"
     ])
 })
 

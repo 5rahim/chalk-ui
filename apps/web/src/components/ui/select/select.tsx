@@ -5,15 +5,19 @@ import React, { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
 
+/* -------------------------------------------------------------------------------------------------
+ * Select
+ * -----------------------------------------------------------------------------------------------*/
+
 export interface SelectProps extends Omit<React.ComponentPropsWithRef<"select">, "size">, InputStyling, BasicFieldOptions {
-   options?: { value: string | number, label?: string }[]
+    options?: { value: string | number, label?: string }[]
 }
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>((props, ref) => {
-   
-   const [{
-      children,
-      className,
+
+    const [{
+        children,
+        className,
       size = "md",
       intent = "basic",
       leftIcon,
@@ -25,18 +29,18 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>((props, r
       placeholder,
       ...rest
    }, basicFieldProps] = extractBasicFieldProps<SelectProps>(props, useId())
-   
-   return (
+
+    return (
       <>
          <BasicField
             {...basicFieldProps}
          >
             <div className={cn(inputContainerStyle())}>
-               
-               <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
+
+                <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
                <InputIcon icon={leftIcon} size={size} side={"left"} />
-               
-               <select
+
+                <select
                   // type="text"
                   id={basicFieldProps.id}
                   name={basicFieldProps.name}
@@ -64,15 +68,15 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>((props, r
                      <option key={opt.value} value={opt.value}>{opt.label ?? opt.value}</option>
                   ))}
                </select>
-               
-               <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
+
+                <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
                <InputIcon icon={rightIcon} size={size} side={"right"} />
-            
+
             </div>
          </BasicField>
       </>
    )
-   
+
 })
 
 Select.displayName = "Select"

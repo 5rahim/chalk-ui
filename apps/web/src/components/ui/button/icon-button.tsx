@@ -4,8 +4,12 @@ import React from "react"
 import { Button, ButtonProps } from "."
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const IconButtonAnatomy = defineStyleAnatomy({
-   iconButton: cva("UI-IconButton__icon-button p-0", {
+   iconButton: cva("UI-IconButton__iconButton p-0", {
       variants: {
          size: {
             xs: "text-xl h-6 w-6",
@@ -21,6 +25,9 @@ export const IconButtonAnatomy = defineStyleAnatomy({
    }),
 })
 
+/* -------------------------------------------------------------------------------------------------
+ * IconButton
+ * -----------------------------------------------------------------------------------------------*/
 
 export interface IconButtonProps extends Omit<ButtonProps, "leftIcon" | "rightIcon" | "iconSpacing" | "isUppercase">,
    VariantProps<typeof IconButtonAnatomy.iconButton>, ComponentWithAnatomy<typeof IconButtonAnatomy> {
@@ -28,7 +35,7 @@ export interface IconButtonProps extends Omit<ButtonProps, "leftIcon" | "rightIc
 }
 
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>((props, ref) => {
-   
+
    const {
       children,
       className,
@@ -37,7 +44,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>((
       iconButtonClassName,
       ...rest
    } = props
-   
+
    return (
       <>
          <Button
@@ -53,7 +60,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>((
          </Button>
       </>
    )
-   
+
 })
 
 IconButton.displayName = "IconButton"

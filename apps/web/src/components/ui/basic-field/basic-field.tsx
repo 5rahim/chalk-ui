@@ -9,7 +9,10 @@ import { ShowOnly } from "../show-only"
  * -----------------------------------------------------------------------------------------------*/
 
 export const BasicFieldAnatomy = defineStyleAnatomy({
-   fieldLabel: cva("UI-BasicField__fieldLabel block text-md sm:text-lg font-semibold self-start", {
+   fieldLabel: cva([
+      "UI-BasicField__fieldLabel",
+      "block text-md sm:text-lg font-semibold self-start"
+   ], {
       variants: {
          hasError: {
             true: "text-red-500",

@@ -8,8 +8,12 @@ import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
  * -----------------------------------------------------------------------------------------------*/
 
 export const LoadingSpinnerAnatomy = defineStyleAnatomy({
-   container: cva("UI-LoadingSpinner__container flex w-full items-center h-24 justify-center"),
-   icon: cva("UI-LoadingSpinner__icon inline w-10 h-10 mr-2 text-gray-200 dark:text-gray-600 animate-spin fill-brand-500"),
+    container: cva("UI-LoadingSpinner__container flex w-full items-center h-24 justify-center"),
+    icon: cva([
+        "UI-LoadingSpinner__icon",
+        "inline w-10 h-10 mr-2 animate-spin",
+        "text-gray-200 dark:text-gray-600 fill-brand-500"
+    ]),
 })
 
 /* -------------------------------------------------------------------------------------------------

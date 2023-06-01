@@ -118,11 +118,18 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, r
 
     const ButtonContent = <>
         {leftIcon &&
-            <span className={cn("inline-flex self-center flex-shrink-0", iconClassName)} style={{ marginInlineEnd: iconSpacing }}>{leftIcon}</span>}
+            <span
+                className={cn("inline-flex self-center flex-shrink-0", iconClassName)}
+                style={{ marginInlineEnd: iconSpacing }}>
+                {leftIcon}
+            </span>}
         {children}
         {rightIcon &&
-            <span className={cn("inline-flex self-center flex-shrink-0", iconClassName)}
-                  style={{ marginInlineStart: iconSpacing }}>{rightIcon}</span>}
+            <span
+                className={cn("inline-flex self-center flex-shrink-0", iconClassName)}
+                style={{ marginInlineStart: iconSpacing }}>
+                {rightIcon}
+            </span>}
     </>
 
     return (

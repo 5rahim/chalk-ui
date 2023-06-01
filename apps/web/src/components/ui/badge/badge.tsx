@@ -11,13 +11,13 @@ export const BadgeAnatomy = defineStyleAnatomy({
     badge: cva("UI-Badge__badge inline-flex text-base w-fit overflow-hidden justify-center items-center gap-2", {
         variants: {
             intent: {
-                gray: "text-gray-800 bg-gray-100 __UI_DARK__ dark:text-gray-300 dark:bg-opacity-10",
-                primary: "text-brand-500 bg-brand-50 __UI_DARK__ dark:text-brand-300 dark:bg-opacity-10",
-                success: "text-green-500 bg-green-50 __UI_DARK__ dark:text-green-300 dark:bg-opacity-10",
-                warning: "text-orange-500 bg-orange-50 __UI_DARK__ dark:text-orange-300 dark:bg-opacity-10",
-                alert: "text-red-500 bg-red-50 __UI_DARK__ dark:text-red-300 dark:bg-opacity-10",
-                blue: "text-blue-500 bg-blue-50 __UI_DARK__ dark:text-blue-300 dark:bg-opacity-10",
-                white: "text-white bg-gray-800 __UI_DARK__ dark:text-white dark:bg-opacity-10",
+                "gray": "text-gray-800 bg-gray-100 __UI_DARK__ dark:text-gray-300 dark:bg-opacity-10",
+                "primary": "text-brand-500 bg-brand-50 __UI_DARK__ dark:text-brand-300 dark:bg-opacity-10",
+                "success": "text-green-500 bg-green-50 __UI_DARK__ dark:text-green-300 dark:bg-opacity-10",
+                "warning": "text-orange-500 bg-orange-50 __UI_DARK__ dark:text-orange-300 dark:bg-opacity-10",
+                "alert": "text-red-500 bg-red-50 __UI_DARK__ dark:text-red-300 dark:bg-opacity-10",
+                "blue": "text-blue-500 bg-blue-50 __UI_DARK__ dark:text-blue-300 dark:bg-opacity-10",
+                "white": "text-white bg-gray-800 __UI_DARK__ dark:text-white dark:bg-opacity-10",
                 "basic": "text-gray-900 bg-transparent",
                 "primary-solid": "text-white bg-brand-500",
                 "success-solid": "text-white bg-green-500",

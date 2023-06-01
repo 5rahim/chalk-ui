@@ -18,7 +18,10 @@ export const CalendarCellAnatomy = defineStyleAnatomy({
          isFocusVisible: { true: "z-10", false: "z-0" },
       },
    }),
-   date: cva("UI-CalendarCell__date w-full h-full rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium", {
+   date: cva([
+      "UI-CalendarCell__date",
+      "w-full h-full rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium"
+   ], {
       variants: {
          isDisabled: { true: "text-gray-400 cursor-default", false: null },
          isUnavailable: { true: "text-red-300 cursor-default", false: null },

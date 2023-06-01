@@ -3,19 +3,23 @@ import React, { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { InputAnatomy, InputStyling } from "../input"
 
+/* -------------------------------------------------------------------------------------------------
+ * Textarea
+ * -----------------------------------------------------------------------------------------------*/
+
 export interface TextareaProps extends React.ComponentPropsWithRef<"textarea">, InputStyling, BasicFieldOptions {
 }
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((props, ref) => {
-   
-   const [{
-      children,
-      className,
-      intent = "basic",
+
+    const [{
+        children,
+        className,
+        intent = "basic",
       ...rest
    }, basicFieldProps] = extractBasicFieldProps(props, useId())
-   
-   return (
+
+    return (
       <>
          <BasicField
             className={cn("w-full gap-1")}
@@ -39,7 +43,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((pr
          </BasicField>
       </>
    )
-   
+
 })
 
 Textarea.displayName = "Textarea"

@@ -8,6 +8,10 @@ import React, { useEffect, useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
+/* -------------------------------------------------------------------------------------------------
+ * Anatomy
+ * -----------------------------------------------------------------------------------------------*/
+
 export const RadioGroupAnatomy = defineStyleAnatomy({
     stack: cva("UI-RadioGroup__stack w-full space-y-1"),
     radioControl: cva([
@@ -49,8 +53,14 @@ export const RadioGroupAnatomy = defineStyleAnatomy({
             size: "md",
         },
     }),
-    radioHelp: cva("UI-RadioGroup__radioHelp text-gray-500 data-disabled:text-gray-300"),
-    radioContainer: cva("UI-RadioGroup__radioContainer inline-flex w-full gap-2 items-center relative"),
+    radioHelp: cva([
+        "UI-RadioGroup__radioHelp",
+        "text-gray-500 data-disabled:text-gray-300"
+    ]),
+    radioContainer: cva([
+        "UI-RadioGroup__radioContainer",
+        "inline-flex w-full gap-2 items-center relative"
+    ]),
     radioIcon: cva("UI-RadioGroup__radioIcon", {
         variants: {
             untouchable: {
@@ -65,6 +75,9 @@ export const RadioGroupAnatomy = defineStyleAnatomy({
     }),
 })
 
+/* -------------------------------------------------------------------------------------------------
+ * RadioGroup
+ * -----------------------------------------------------------------------------------------------*/
 
 export interface RadioGroupProps extends BasicFieldOptions, ComponentWithAnatomy<typeof RadioGroupAnatomy>,
     VariantProps<typeof RadioGroupAnatomy.radioLabel> {

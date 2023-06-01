@@ -22,9 +22,19 @@ export const PageHeaderAnatomy = defineStyleAnatomy({
          size: "xl",
       },
    }),
-   actionContainer: cva("UI-PageHeader__actionContainer justify-stretch mt-6 flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3"),
-   description: cva("UI-PageHeader__description text-sm font-medium text-gray-500 dark:text-gray-400"),
-   detailsContainer: cva("UI-PageHeader__detailsContainer block sm:flex items-start sm:space-x-5", {
+   actionContainer: cva([
+      "UI-PageHeader__actionContainer",
+      "justify-stretch mt-6 flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end",
+      "sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3"
+   ]),
+   description: cva([
+      "UI-PageHeader__description",
+      "text-sm font-medium text-gray-500 dark:text-gray-400"
+   ]),
+   detailsContainer: cva([
+      "UI-PageHeader__detailsContainer",
+      "block sm:flex items-start sm:space-x-5"
+   ], {
       variants: {
          withImage: {
             true: "flex-col gap-2 sm:flex-row sm:gap-6",

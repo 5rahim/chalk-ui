@@ -42,8 +42,11 @@ https://chalk.rahim.app
 - [x] Popover
 - [x] NavigationTabs
 - [x] TabPanels
+- [x] Tooltip
+- [x] Breadcrumbs
+- [x] Typography
+- [x] Banner
 - [ ] AppShell
-- [ ] Breadcrumbs
 - [ ] Card
 - [ ] Charts
 - [ ] Data Table
@@ -51,8 +54,6 @@ https://chalk.rahim.app
 - [ ] Stats
 - [ ] Timeline
 - [ ] Toast
-- [ ] Tooltip
-- [ ] Typography
 - [ ] Form
   - [x] Text Input
   - [x] Textarea

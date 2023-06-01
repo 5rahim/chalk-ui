@@ -9,6 +9,10 @@ import { useUILocaleConfig } from "../core"
 import locales from "./locales.json"
 import { GoogleMapsAutocompletionRequest, useGoogleMapsAutocomplete } from "./use-address-autocomplete"
 
+/* -------------------------------------------------------------------------------------------------
+ * AddressInput
+ * -----------------------------------------------------------------------------------------------*/
+
 export interface AddressInputProps extends Omit<ComboboxProps, "options" | "onInputChange" | "onChange"> {
     autocompletionRequest?: GoogleMapsAutocompletionRequest
     apiOptions?: Partial<LoaderOptions>

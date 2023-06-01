@@ -13,7 +13,11 @@ import { defineStyleAnatomy, useUILocaleConfig } from "../core"
  * -----------------------------------------------------------------------------------------------*/
 
 export const DateSegmentAnatomy = defineStyleAnatomy({
-   segment: cva("UI-DateSegment__segment px-0.5 box-content tabular-nums text-right outline-none rounded-sm focus:bg-brand-50 dark:focus:bg-transparent focus:text-brand-500 dark:focus:text-white focus:font-semibold group shadow-none", {
+   segment: cva([
+      "UI-DateSegment__segment",
+      "px-0.5 box-content tabular-nums text-right outline-none rounded-sm",
+      "focus:bg-brand-50 dark:focus:bg-transparent focus:text-brand-500 dark:focus:text-white focus:font-semibold group shadow-none"
+   ], {
       variants: {
          isEditable: {
             false: "text-gray-500",
@@ -21,7 +25,10 @@ export const DateSegmentAnatomy = defineStyleAnatomy({
          },
       },
    }),
-   input: cva("UI-DateSegment__input block w-full text-center italic text-gray-500 group-focus:text-brand-500 dark:group-focus:text-white group-focus:font-semibold"),
+   input: cva([
+      "UI-DateSegment__input",
+      "block w-full text-center italic text-gray-500 group-focus:text-brand-500 dark:group-focus:text-white group-focus:font-semibold"
+   ]),
 })
 
 DateField.displayName = "DateField"

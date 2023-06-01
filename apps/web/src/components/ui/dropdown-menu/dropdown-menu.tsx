@@ -1,6 +1,6 @@
 "use client"
 
-import React, { Fragment, useEffect } from "react"
+import React, { Fragment } from "react"
 import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "@/components/ui/core"
 import { cva, VariantProps } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
@@ -16,9 +16,11 @@ import { useDropdownOutOfBounds } from "./use-dropdown-out-of-bounds"
 
 export const DropdownMenuAnatomy = defineStyleAnatomy({
     menu: cva([
-        "UI-DropdownMenu__menu relative inline-block text-left",
+        "UI-DropdownMenu__menu",
+        "relative inline-block text-left",
     ]),
-    dropdown: cva(["UI-DropdownMenu__dropdown",
+    dropdown: cva([
+        "UI-DropdownMenu__dropdown",
         "bg-[--paper] border border-[--border] p-1",
         "absolute z-10 mt-2 w-56 rounded-md shadow-md focus:outline-none space-y-1",
     ], {
@@ -38,10 +40,12 @@ export const DropdownMenuAnatomy = defineStyleAnatomy({
         ]
     }),
     mobileDropdown: cva([
-        "DropdownMenu__mobileDropdown mt-2 space-y-1"
+        "DropdownMenu__mobileDropdown",
+        "mt-2 space-y-1"
     ]),
     mobilePanel: cva([
-        "DropdownMenu__mobilePanel pt-2 pb-2 pl-4 pr-12"
+        "DropdownMenu__mobilePanel",
+        "pt-2 pb-2 pl-4 pr-12"
     ])
 })
 

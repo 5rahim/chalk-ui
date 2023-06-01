@@ -10,7 +10,7 @@ import { cn } from "@rahimstack/tailwind-utils"
 export const NavigationTabsAnatomy = defineStyleAnatomy({
     container: cva([
         "UI-NavigationTabs__container",
-        "block relative overflow-hidden overflow-x-auto w-full rounded-md shadow-sm"
+        "block relative overflow-hidden overflow-x-auto w-full rounded-md shadow-sm dark:bg-gray-900"
     ]),
     nav: cva([
         "UI-NavigationTabs__nav",
@@ -25,7 +25,7 @@ export const NavigationTabsAnatomy = defineStyleAnatomy({
         variants: {
             isCurrent: {
                 true: "border-[--brand] text-[--brand]",
-                false: "text-[--muted] hover:border-gray-300 dark:hover:text-gray-400 dark:hover:border-gray-600"
+                false: "text-[--muted] dark:hover:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600"
             }
         },
         defaultVariants: { isCurrent: false }
