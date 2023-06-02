@@ -28,7 +28,6 @@ export const BannerAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface BannerProps extends React.ComponentPropsWithRef<"div">, ComponentWithAnatomy<typeof BannerAnatomy> {
-    children?: React.ReactNode
     isClosable?: boolean
     onClose?: () => void
     /**

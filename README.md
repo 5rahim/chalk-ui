@@ -46,9 +46,9 @@ https://chalk.rahim.app
 - [x] Breadcrumbs
 - [x] Typography
 - [x] Banner
+- [x] Charts
 - [ ] AppShell
 - [ ] Card
-- [ ] Charts
 - [ ] Data Table
 - [ ] Pagination
 - [ ] Stats

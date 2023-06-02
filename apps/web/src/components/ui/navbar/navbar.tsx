@@ -20,7 +20,6 @@ export const NavbarAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface NavbarProps extends React.ComponentPropsWithRef<"div">, ComponentWithAnatomy<typeof NavbarAnatomy> {
-    children?: React.ReactNode
 }
 
 export const Navbar: React.FC<NavbarProps> = React.forwardRef<HTMLDivElement, NavbarProps>((props, ref) => {

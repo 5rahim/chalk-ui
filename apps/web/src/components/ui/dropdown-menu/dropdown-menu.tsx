@@ -81,7 +81,6 @@ export interface DropdownMenuProps
         ComponentWithAnatomy<typeof DropdownMenuAnatomy>,
         ComponentWithAnatomy<typeof DropdownMenuItemAnatomy>,
         VariantProps<typeof DropdownMenuAnatomy.dropdown> {
-    children?: React.ReactNode,
     trigger: React.ReactElement,
 }
 
@@ -183,7 +182,6 @@ _DropdownMenu.displayName = "DropdownMenu"
  * -----------------------------------------------------------------------------------------------*/
 
 interface DropdownMenuItemProps extends React.ComponentPropsWithRef<"button">, ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
-    children?: React.ReactNode
 }
 
 const DropdownMenuItem: React.FC<DropdownMenuItemProps> = React.forwardRef<HTMLButtonElement, DropdownMenuItemProps>((props, ref) => {
@@ -212,7 +210,6 @@ DropdownMenuItem.displayName = "DropdownMenuItem"
  * -----------------------------------------------------------------------------------------------*/
 
 interface DropdownMenuLinkProps extends React.ComponentPropsWithRef<"a">, ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
-    children?: React.ReactNode
     href: string
 }
 
@@ -244,7 +241,6 @@ DropdownMenuLink.displayName = "DropdownMenuLink"
 interface DropdownMenuGroupProps extends React.ComponentPropsWithRef<"div">,
     ComponentWithAnatomy<typeof DropdownMenuGroupAnatomy>,
     ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
-    children?: React.ReactNode
     title?: string
 }
 

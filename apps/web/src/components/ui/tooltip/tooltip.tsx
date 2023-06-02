@@ -27,7 +27,6 @@ export const TooltipAnatomy = defineStyleAnatomy({
 export interface TooltipProps extends React.ComponentPropsWithRef<"div">,
     ComponentWithAnatomy<typeof TooltipAnatomy>,
     TooltipPrimitiveContentProps {
-    children?: React.ReactNode
     trigger: React.ReactElement
 }
 

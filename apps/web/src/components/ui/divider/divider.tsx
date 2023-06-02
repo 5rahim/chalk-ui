@@ -21,7 +21,6 @@ export const DividerAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface DividerProps extends React.ComponentPropsWithRef<"hr">, ComponentWithAnatomy<typeof DividerAnatomy> {
-    children?: React.ReactNode
 }
 
 export const Divider: React.FC<DividerProps> = React.forwardRef<HTMLHRElement, DividerProps>((props, ref) => {

@@ -2,7 +2,6 @@
  * Tailwind Color Mode
  * -----------------------------------------------------------------------------------------------*/
 
-import { cn } from "@rahimstack/tailwind-utils"
 import clsx from "clsx"
 
 /**
@@ -14,6 +13,8 @@ import clsx from "clsx"
  *
  * // Use
  * <div className={cn("px-1", tcm("border-{gray-200,blue-500}"))} />
+ *
+ * /!\ The colors need to be in the Tailwind safeList
  * @param input
  */
 export const tcm = (input: string | string[] | null | undefined) => {
@@ -54,3 +55,34 @@ export const tcm = (input: string | string[] | null | undefined) => {
         return clsx(outputArr)
     }
 }
+
+/* -------------------------------------------------------------------------------------------------
+ * Colors
+ * -----------------------------------------------------------------------------------------------*/
+
+export const ColorPalette = [
+    "brand",
+    "purple",
+    "blue",
+    "amber",
+    "green",
+    "yellow",
+    "cyan",
+    "lime",
+    "sky",
+    "red",
+    "pink",
+    "orange",
+    "stone",
+    "teal",
+    "neutral",
+    "fuchsia",
+    "violet",
+    "slate",
+    "zinc",
+    "emerald",
+    "indigo",
+    "gray",
+    "rose",
+]
+export type UIColor = (typeof ColorPalette)[number];

@@ -28,7 +28,6 @@ export const PopoverAnatomy = defineStyleAnatomy({
 
 export interface PopoverProps extends React.ComponentPropsWithRef<"div">,
     ComponentWithAnatomy<typeof PopoverAnatomy>, PopoverPrimitiveContentProps {
-    children?: React.ReactNode
     trigger: React.ReactNode
 }
 

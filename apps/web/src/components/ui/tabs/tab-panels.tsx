@@ -41,7 +41,6 @@ export const TabAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface TabPanelsProps extends React.ComponentPropsWithRef<"div">, ComponentWithAnatomy<typeof TabPanelsAnatomy> {
-    children?: React.ReactNode
 }
 
 const _TabPanels = (props: TabPanelsProps) => {

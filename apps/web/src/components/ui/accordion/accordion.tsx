@@ -67,9 +67,9 @@ const _Accordion = (props: AccordionProps) => {
  * Accordion.Item
  * -----------------------------------------------------------------------------------------------*/
 
-interface AccordionItemProps extends Omit<ComponentWithAnatomy<typeof AccordionAnatomy>, "containerClassName"> {
+interface AccordionItemProps extends React.ComponentPropsWithoutRef<"div">,
+    Omit<ComponentWithAnatomy<typeof AccordionAnatomy>, "containerClassName"> {
     title: string,
-    children?: React.ReactNode
 }
 
 const AccordionItem: React.FC<AccordionItemProps> = (
@@ -85,7 +85,7 @@ const AccordionItem: React.FC<AccordionItemProps> = (
     return (
         <Disclosure>
             {({ open }) => (
-                <div className={cn(AccordionAnatomy.item(), itemClassName)}>
+                <div className={cn(AccordionAnatomy.item(), itemClassName)} {...rest}>
                     <Disclosure.Button className={cn(AccordionAnatomy.trigger(), triggerClassName)}>
                         Is team pricing available?
                         <svg

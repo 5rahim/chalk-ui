@@ -49,7 +49,6 @@ export const NavigationTabsAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface NavigationTabsProps extends React.ComponentPropsWithRef<"div">, ComponentWithAnatomy<typeof NavigationTabsAnatomy> {
-    children?: React.ReactNode
     options: {
         name: string,
         href: string | null | undefined,
