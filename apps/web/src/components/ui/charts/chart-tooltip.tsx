@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@rahimstack/tailwind-utils"
 import { ChartValueFormatter } from "@/components/ui/charts/types"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"

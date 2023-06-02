@@ -1,3 +1,5 @@
+"use client"
+
 import { ChartTooltipFrame, ChartTooltipRow } from "./chart-tooltip"
 import { ChartValueFormatter } from "@/components/ui/charts/types"
 import { cn } from "@rahimstack/tailwind-utils"
