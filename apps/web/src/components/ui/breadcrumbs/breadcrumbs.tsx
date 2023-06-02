@@ -25,15 +25,9 @@ export const BreadcrumbsAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-Breadcrumbs__item",
-        "text-sm font-medium text-gray-500 hover:text-gray-700"
-    ], {
-        variants: {
-            isCurrent: {
-                true: "pointer-events-none font-semibold text-gray-800 dark:text-gray-300",
-                false: ""
-            }
-        }
-    }),
+        "text-sm font-medium text-gray-500 hover:text-gray-700",
+        "data-[current=true]:pointer-events-none data-[current=true]:font-semibold data-[current=true]:text-[--text-color]"
+    ]),
     homeLink: cva([
         "UI-Breadcrumbs__homeLink",
         "text-gray-400 hover:text-gray-500"
@@ -110,9 +104,8 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = React.forwardRef<HTMLElem
                                 </ShowOnly>
                                 <a
                                     href={page.href ?? "javascript:(0)"}
-                                    className={cn(BreadcrumbsAnatomy.item({
-                                        isCurrent: page.isCurrent
-                                    }), itemClassName)}
+                                    className={cn(BreadcrumbsAnatomy.item(), itemClassName)}
+                                    data-current={page.isCurrent}
                                     aria-current={page.isCurrent ? "page" : undefined}
                                 >
                                     {page.name}

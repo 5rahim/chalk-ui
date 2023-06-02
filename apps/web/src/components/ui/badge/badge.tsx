@@ -8,7 +8,10 @@ import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
  * -----------------------------------------------------------------------------------------------*/
 
 export const BadgeAnatomy = defineStyleAnatomy({
-    badge: cva("UI-Badge__badge inline-flex text-base w-fit overflow-hidden justify-center items-center gap-2", {
+    badge: cva([
+        "UI-Badge__badge",
+        "inline-flex text-base w-fit overflow-hidden justify-center items-center gap-2"
+    ], {
         variants: {
             intent: {
                 "gray": "text-gray-800 bg-gray-100 __UI_DARK__ dark:text-gray-300 dark:bg-opacity-10",
@@ -43,8 +46,14 @@ export const BadgeAnatomy = defineStyleAnatomy({
             size: "md",
         },
     }),
-    closeButton: cva("UI-Badge__close-button text-lg -mr-1 cursor-pointer transition ease-in hover:opacity-60"),
-    icon: cva("UI-Badge__icon inline-flex self-center flex-shrink-0"),
+    closeButton: cva([
+        "UI-Badge__close-button",
+        "text-lg -mr-1 cursor-pointer transition ease-in hover:opacity-60"
+    ]),
+    icon: cva([
+        "UI-Badge__icon",
+        "inline-flex self-center flex-shrink-0"
+    ]),
 })
 
 /* -------------------------------------------------------------------------------------------------

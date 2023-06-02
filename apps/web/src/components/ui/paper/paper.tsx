@@ -12,7 +12,7 @@ import { cn } from "@rahimstack/tailwind-utils"
 export const PaperAnatomy = defineStyleAnatomy({
     paper: cva([
         "UI-Paper__paper",
-        "overflow-hidden rounded-lg bg-white shadow-sm border border-[--border] bg-[--paper]",
+        "overflow-hidden rounded-lg bg-white border border-[--border] bg-[--paper]",
     ]),
 })
 
