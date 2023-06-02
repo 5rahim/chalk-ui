@@ -1,6 +1,10 @@
 import { ChartValueFormatter } from "@/components/ui/charts/types"
 import { UIColor } from "@/components/ui/core/color-theme"
 
+/* -------------------------------------------------------------------------------------------------
+ * Chart Utils
+ * -----------------------------------------------------------------------------------------------*/
+
 /**
  * @internal
  */
@@ -31,7 +35,7 @@ export const getYAxisDomain = (
 export const defaultValueFormatter: ChartValueFormatter = (value: number) => value.toString()
 
 /* -------------------------------------------------------------------------------------------------
- * DonutChart
+ * DonutChart Utils
  * -----------------------------------------------------------------------------------------------*/
 
 export const parseChartData = (data: any[], colors: UIColor[]) =>

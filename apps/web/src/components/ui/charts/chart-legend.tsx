@@ -4,6 +4,10 @@ import { useEffect, useRef, useState } from "react"
 import { UIColor } from "../core/color-theme"
 import { Legend } from "./legend"
 
+/* -------------------------------------------------------------------------------------------------
+ * ChartLegend
+ * -----------------------------------------------------------------------------------------------*/
+
 export const ChartLegend = (
     { payload }: any,
     categoryColors: Map<string, UIColor>,
