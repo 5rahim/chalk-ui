@@ -71,6 +71,7 @@ export const DonutChart = React.forwardRef<HTMLDivElement, DonutChartProps>((pro
                                 textAnchor="middle"
                                 dominantBaseline="middle"
                                 fill={`var(--muted)`}
+                                className={"font-semibold"}
                             >
                                 {parsedLabelInput}
                             </text>

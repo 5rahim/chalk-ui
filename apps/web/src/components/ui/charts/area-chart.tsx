@@ -97,7 +97,7 @@ export const AreaChart: React.FC<AreaChartProps> = React.forwardRef<HTMLDivEleme
                             }}
                             interval="preserveStartEnd"
                             axisLine={false}
-                            tickLine={true}
+                            tickLine={false}
                             padding={{ left: 10, right: 10 }}
                             minTickGap={5}
                             spacing={120}
@@ -108,7 +108,7 @@ export const AreaChart: React.FC<AreaChartProps> = React.forwardRef<HTMLDivEleme
                             width={yAxisWidth}
                             hide={!showYAxis}
                             axisLine={false}
-                            tickLine={true}
+                            tickLine={false}
                             type="number"
                             domain={yAxisDomain as AxisDomain}
                             tick={{ transform: "translate(-3, 0)" }}

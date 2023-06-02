@@ -6,6 +6,8 @@
     :root {
         --radius: 0.375rem;
 
+        --background-color: white;
+
         --brand: theme('colors.brand.500');
         --slate: theme('colors.slate.500');
         --gray: theme('colors.gray.500');
@@ -46,6 +48,7 @@
     }
 
     .dark {
+        --background-color: #121212;
 
         --brand: theme('colors.brand.300');
         --slate: theme('colors.slate.300');
@@ -80,11 +83,15 @@
         --muted: theme('colors.gray.400');
         --muted-highlight: theme('colors.gray.300');
 
-        --paper: theme('colors.gray.800');
-        --paper-highlight: theme('colors.gray.700');
+        --paper: theme('colors.gray.900');
+        --paper-highlight: theme('colors.gray.800');
 
         --modal: theme('colors.gray.900');
     }
+}
+
+html {
+    background-color: var(--background-color);
 }
 
 h1, h2, h3, h4, h5, h6 {
