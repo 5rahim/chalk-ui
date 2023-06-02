@@ -47,13 +47,16 @@ https://chalk.rahim.app
 - [x] Typography
 - [x] Banner
 - [x] Charts
+- [ ] Page Layout
 - [ ] AppShell
-- [ ] Card
-- [ ] Data Table
+- [ ] Callout
+- [ ] Paper
+- [ ] DataGrid
 - [ ] Pagination
 - [ ] Stats
 - [ ] Timeline
 - [ ] Toast
+- [ ] RawLink
 - [ ] Form
   - [x] Text Input
   - [x] Textarea
@@ -72,12 +75,11 @@ https://chalk.rahim.app
   - [x] Date Range Picker
   - [x] Time Input
   - [ ] Color Picker
-  - [ ] JSON Input
-  - [ ] Transfer List
-  - [ ] Dropzone
+  - [ ] File Input/Dropzone
   - [ ] Image Grid Input
   - [ ] Typesafe Form
-    - [ ] SegmentedControl
+  - [ ] ~~Transfer List~~
+  - [ ] ~~JSON Input~~
 - [ ] i18n (For certain components)
     - [x] English
     - [x] French
