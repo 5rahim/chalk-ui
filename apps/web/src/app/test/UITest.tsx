@@ -5,26 +5,45 @@ import { Paper } from "@/components/ui/paper"
 import { Card } from "@/components/ui/card"
 import { DividerWithLabel } from "@/components/ui/divider"
 import { Stats } from "@/components/ui/stats"
+import { Pagination } from "@/components/ui/pagination"
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/toast"
 
 interface UITestProps {
     children?: React.ReactNode
 }
 
-const stats = [
-    { name: "Total Subscribers", value: "71,897", previousValue: "70,946", change: "12%", trend: "up" },
-    { name: "Avg. Open Rate", value: "58.16%", previousValue: "56.14%", change: "2.02%", trend: "up" },
-    { name: "Avg. Click Rate", value: "24.57%", previousValue: "28.62%", change: "4.05%", trend: "down" },
-]
-
 
 export const UITest: React.FC<UITestProps> = (props) => {
 
     const { children, ...rest } = props
+    const toast = useToast()
 
     return (
         <>
             <div className={"container max-w-5xl mt-10 space-y-4"}>
                 <h2>Layouts</h2>
+
+                <Button
+                    onClick={() => toast.success("Success message")}
+                >
+                    Toast success
+                </Button>
+                <Button
+                    onClick={() => toast.error("Error message")}
+                >
+                    Toast error
+                </Button>
+
+                <Pagination>
+                    <Pagination.Trigger direction="left" data-disabled={true}/>
+                    <Pagination.Item value={1} data-selected={true}/>
+                    <Pagination.Item value={2}/>
+                    <Pagination.Ellipsis/>
+                    <Pagination.Item value={8}/>
+                    <Pagination.Item value={10}/>
+                    <Pagination.Trigger direction="right"/>
+                </Pagination>
 
                 <Stats
                     values={[

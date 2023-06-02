@@ -10,15 +10,15 @@ import { cn } from "@rahimstack/tailwind-utils"
 export const NavigationTabsAnatomy = defineStyleAnatomy({
     container: cva([
         "UI-NavigationTabs__container",
-        "block relative overflow-hidden overflow-x-auto w-full rounded-md shadow-sm dark:bg-gray-900"
+        "block relative w-full"
     ]),
     nav: cva([
         "UI-NavigationTabs__nav",
-        "flex border border-[--border] rounded-md -mb-px overflow-hidden"
+        "flex border border-[--border] bg-[--paper] rounded-md -mb-px w-full overflow-hidden overflow-x-auto"
     ]),
     tab: cva([
         "UI-NavigationTabs__tab",
-        "group inline-flex flex-1 items-center py-4 px-1 font-medium text-sm transition outline-none px-4 min-w-0 justify-center",
+        "group inline-flex flex-none sm:flex-1 items-center py-4 px-1 font-medium text-sm transition outline-none px-4 min-w-0 justify-center",
         "border-b-2 border-[--border]",
         "focus-visible:bg-gray-100 focus-visible:ring-4 ring-[--ring] dark:focus-visible:bg-gray-800 dark:ring-gray-800"
     ], {
@@ -96,6 +96,7 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = React.forwardRef<HT
                                     })
                                 )}
                                 aria-hidden="true"
+                                data-current={tab.isCurrent}
                             />}
                             <span>{tab.name}</span>
                         </a>

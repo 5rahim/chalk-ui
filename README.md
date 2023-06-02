@@ -47,16 +47,15 @@ https://chalk.rahim.app
 - [x] Typography
 - [x] Banner
 - [x] Charts
+- [x] Stats
+- [x] Pagination
+- [x] Toast
 - [ ] Page Layout
 - [ ] AppShell
-- [ ] Callout
 - [ ] Paper
 - [ ] DataGrid
-- [ ] Pagination
-- [ ] Stats
-- [ ] Timeline
-- [ ] Toast
 - [ ] RawLink
+- [ ] Timeline
 - [ ] Form
   - [x] Text Input
   - [x] Textarea

@@ -36,6 +36,7 @@
     "react": "^18.2.0",
     "react-aria": "^3.25.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-phone-number-input": "^3.2.22",
     "react-stately": "^3.22.0",
     "recharts": "^2.6.2",

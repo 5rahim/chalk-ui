@@ -25,12 +25,12 @@ export const BreadcrumbsAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-Breadcrumbs__item",
-        "text-sm font-medium text-gray-500 hover:text-gray-700",
+        "text-sm font-medium text-[--muted] hover:text-[--text-color]",
         "data-[current=true]:pointer-events-none data-[current=true]:font-semibold data-[current=true]:text-[--text-color]"
     ]),
-    homeLink: cva([
-        "UI-Breadcrumbs__homeLink",
-        "text-gray-400 hover:text-gray-500"
+    homeItem: cva([
+        "UI-Breadcrumbs__homeItem",
+        "text-[--muted] hover:text-[--text-color]"
     ]),
     homeIcon: cva([
         "UI-Breadcrumbs__homeIcon",
@@ -57,10 +57,10 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = React.forwardRef<HTMLElem
         itemClassName,
         chevronIconClassName,
         homeIconClassName,
-        homeLinkClassName,
+        homeItemClassName,
         className,
         pages,
-        homeHref = "javascript:(0)",
+        homeHref = "/",
         showHomeButton = true,
         ...rest
     } = props
@@ -79,7 +79,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = React.forwardRef<HTMLElem
                             <div>
                                 <a
                                     href={homeHref}
-                                    className={cn(BreadcrumbsAnatomy.homeLink(), homeLinkClassName)}
+                                    className={cn(BreadcrumbsAnatomy.homeItem(), homeItemClassName)}
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
                                          className={cn(BreadcrumbsAnatomy.homeIcon(), homeIconClassName)}>
@@ -103,7 +103,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = React.forwardRef<HTMLElem
                                     </svg>
                                 </ShowOnly>
                                 <a
-                                    href={page.href ?? "javascript:(0)"}
+                                    href={page.href ?? "#"}
                                     className={cn(BreadcrumbsAnatomy.item(), itemClassName)}
                                     data-current={page.isCurrent}
                                     aria-current={page.isCurrent ? "page" : undefined}
