@@ -32,6 +32,8 @@ export interface AreaChartProps extends React.ComponentPropsWithRef<"div">,
     stack?: boolean
     curveType?: ChartCurveType
     connectNulls?: boolean
+    // Display dots for each data point
+    showDots?: boolean
 }
 
 export const AreaChart: React.FC<AreaChartProps> = React.forwardRef<HTMLDivElement, AreaChartProps>((props, ref) => {
@@ -61,6 +63,7 @@ export const AreaChart: React.FC<AreaChartProps> = React.forwardRef<HTMLDivEleme
         minValue,
         maxValue,
         allowDecimals = true,
+        showDots = true,
         noDataText,
         ...rest
     } = props
@@ -161,7 +164,7 @@ export const AreaChart: React.FC<AreaChartProps> = React.forwardRef<HTMLDivEleme
                                 stroke={`var(--${categoryColors.get(category)})`}
                                 fill={`url(#${categoryColors.get(category)})`}
                                 strokeWidth={2}
-                                dot={true}
+                                dot={showDots}
                                 isAnimationActive={showAnimation}
                                 stackId={stack ? "a" : undefined}
                                 connectNulls={connectNulls}
