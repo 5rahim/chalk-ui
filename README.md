@@ -50,12 +50,13 @@ https://chalk.rahim.app
 - [x] Stats
 - [x] Pagination
 - [x] Toast
+- [x] Timeline
+- [x] Paper
+- [x] Card
 - [ ] Page Layout
 - [ ] AppShell
-- [ ] Paper
 - [ ] DataGrid
 - [ ] RawLink
-- [ ] Timeline
 - [ ] Form
   - [x] Text Input
   - [x] Textarea

@@ -8,6 +8,8 @@ import { Stats } from "@/components/ui/stats"
 import { Pagination } from "@/components/ui/pagination"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/toast"
+import { Timeline } from "@/components/ui/timeline"
+import { BiCheck } from "@react-icons/all-files/bi/BiCheck"
 
 interface UITestProps {
     children?: React.ReactNode
@@ -23,6 +25,26 @@ export const UITest: React.FC<UITestProps> = (props) => {
         <>
             <div className={"container max-w-5xl mt-10 space-y-4"}>
                 <h2>Layouts</h2>
+
+                <Timeline
+                    items={[
+                        { title: "John doe", description: "Commented 6d ago", icon: <BiCheck/> },
+                        {
+                            title: <span className="text-[--muted]">
+                                <span className="font-semibold text-[--text-color]">John doe</span> commented 6d ago
+                            </span>,
+                            icon: null,
+                            unstyledTitle: true
+                        },
+                        {
+                            title: "John doe",
+                            description: "Commented 6d ago",
+                            icon: null,
+                            iconClassName: "bg-green-500",
+                            titleClassName: "text-green-500"
+                        },
+                    ]}
+                />
 
                 <Button
                     onClick={() => toast.success("Success message")}
