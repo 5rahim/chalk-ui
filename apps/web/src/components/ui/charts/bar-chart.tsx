@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
 import { Bar, BarChart as ReChartsBarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, } from "recharts"

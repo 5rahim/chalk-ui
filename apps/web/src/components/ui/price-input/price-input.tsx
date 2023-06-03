@@ -45,7 +45,7 @@ export const PriceInput = React.forwardRef<HTMLInputElement, PriceInputProps>((p
     /**
      * FIXME
      * /!\ The formatting is incorrect when the value isn't 2 because of Dinero v1.x (#5)
-     * With Dinero v2.x the API will be able to support correct formatting
+     * With Dinero v2.x the API will be able to support the correct formatting
      * @link https://v2.dinerojs.com/docs/getting-started/quick-start
      * This will be patched in future updates
      */

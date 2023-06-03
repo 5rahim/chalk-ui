@@ -1,7 +1,7 @@
 "use client"
 
 import { ChartTooltipFrame, ChartTooltipRow } from "./chart-tooltip"
-import { ChartValueFormatter } from "@/components/ui/charts/types"
+import { ChartValueFormatter } from "../charts/types"
 import { cn } from "@rahimstack/tailwind-utils"
 import React from "react"
 import { Pie, PieChart as ReChartsDonutChart, ResponsiveContainer, Tooltip } from "recharts"

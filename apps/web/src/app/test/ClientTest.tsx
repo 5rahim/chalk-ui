@@ -25,6 +25,18 @@ import { Alert } from "@/components/ui/alert"
 import { PhoneNumberInput } from "@/components/ui/phone-number-input"
 import { Breadcrumbs } from "@/components/ui/breadcrumbs"
 import { Banner } from "@/components/ui/banner"
+import { Timeline } from "@/components/ui/timeline"
+import { BiCheck } from "@react-icons/all-files/bi/BiCheck"
+import { Pagination } from "@/components/ui/pagination"
+import { Stats } from "@/components/ui/stats"
+import { Paper } from "@/components/ui/paper"
+import { DividerWithLabel } from "@/components/ui/divider"
+import { Card } from "@/components/ui/card"
+import { useToast } from "@/components/ui/toast"
+import { VerticalNav } from "@/components/ui/vertical-nav"
+import { BiUser } from "@react-icons/all-files/bi/BiUser"
+import { BiGroup } from "@react-icons/all-files/bi/BiGroup"
+import { BiBarChart } from "@react-icons/all-files/bi/BiBarChart"
 
 interface ClientTestProps {
     children?: React.ReactNode
@@ -40,6 +52,7 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
     const [open, setOpen] = useState(false)
 
     const cb = <Checkbox id="terms"/>
+    const toast = useToast()
 
     return (
         <>
@@ -48,6 +61,85 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
             </Banner>
             <div className="container max-w-5xl">
                 <div className="mt-10 space-y-4 relative">
+
+                    <div className="max-w-sm bg-[--paper]">
+                        <VerticalNav
+                            items={[
+                                { name: "My Account", href: "#", icon: BiUser, isCurrent: false },
+                                { name: "Company", href: "#", icon: BiBarChart, isCurrent: false },
+                                { name: "Team Members", href: "#", icon: BiGroup, isCurrent: true },
+                                { name: "Billing", href: "#", icon: BiReceipt, isCurrent: false },
+                            ]}
+                        />
+                    </div>
+
+                    <Timeline
+                        items={[
+                            { title: "John doe", description: "Commented 6d ago", icon: <BiCheck/> },
+                            {
+                                title: <span className="text-[--muted]">
+                                    <span className="font-semibold text-[--text-color]">John doe</span> commented 6d ago
+                                </span>,
+                                icon: null,
+                                unstyledTitle: true
+                            },
+                            {
+                                title: "John doe",
+                                description: "Commented 6d ago",
+                                icon: null,
+                                iconClassName: "bg-green-500",
+                                titleClassName: "text-green-500"
+                            },
+                        ]}
+                    />
+
+                    <Button
+                        onClick={() => toast.success("Success message")}
+                    >
+                        Toast success
+                    </Button>
+                    <Button
+                        onClick={() => toast.error("Error message")}
+                    >
+                        Toast error
+                    </Button>
+
+                    <Pagination>
+                        <Pagination.Trigger direction="left" data-disabled={true}/>
+                        <Pagination.Item value={1} data-selected={true}/>
+                        <Pagination.Item value={2}/>
+                        <Pagination.Ellipsis/>
+                        <Pagination.Item value={8}/>
+                        <Pagination.Item value={10}/>
+                        <Pagination.Trigger direction="right"/>
+                    </Pagination>
+
+                    <Stats
+                        values={[
+                            { name: "Total Subscribers", value: "71,897", unit: "70,946", change: "12%", trend: "up" },
+                            { name: "Avg. Open Rate", value: "58.16%", unit: "56.14%", change: "2.02%", trend: "up" },
+                            { name: "Avg. Click Rate", value: "24.57%" },
+                        ]}
+                    />
+
+                    <Paper>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus adipisci asperiores consequatur ducimus exercitationem
+                        explicabo iure, magni nihil numquam optio, quae qui quidem quis quo repudiandae similique veniam vitae voluptatum.
+                    </Paper>
+                    <DividerWithLabel>Divider</DividerWithLabel>
+                    <Card
+                        header={<div>
+                            This is a header
+                        </div>}
+                        footer={<div>
+                            This is a footer
+                        </div>}
+                        headerClassName={"bg-gray-50 dark:bg-gray-800"}
+                        footerClassName={"bg-gray-50 dark:bg-gray-800"}
+                    >
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus adipisci asperiores consequatur ducimus exercitationem
+                        explicabo iure, magni nihil numquam optio, quae qui quidem quis quo repudiandae similique veniam vitae voluptatum.
+                    </Card>
 
                     <h1>This is a title</h1>
                     <h4 className={"text-[--muted]"}>Sub text</h4>
@@ -72,7 +164,7 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
                         <TabPanels.Nav>
                             <TabPanels.Tab>Home</TabPanels.Tab>
                             <TabPanels.Tab>Orders</TabPanels.Tab>
-                            <TabPanels.Tab><BiCog/><span>Settings</span></TabPanels.Tab>
+                            <TabPanels.Tab><BiCog className="w-5 h-5"/><span>Settings</span></TabPanels.Tab>
                         </TabPanels.Nav>
                         <TabPanels.Container>
                             <TabPanels.Panel>
@@ -88,7 +180,7 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
                     </TabPanels>
 
                     <NavigationTabs
-                        options={[
+                        items={[
                             { name: "My Account", href: "#", icon: null, isCurrent: false },
                             { name: "Company", href: "#", icon: null, isCurrent: false },
                             { name: "Team Members", href: "#", icon: null, isCurrent: true },

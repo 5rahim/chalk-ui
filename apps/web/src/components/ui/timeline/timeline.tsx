@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
 
@@ -87,9 +87,12 @@ export const Timeline: React.FC<TimelineProps> = React.forwardRef<HTMLDivElement
             ref={ref}
         >
             {items?.map((item, idx) => (
-                <div className={cn(
-                    TimelineAnatomy.item(), itemClassName
-                )}>
+                <div
+                    key={`${item.title}-${idx}`}
+                    className={cn(
+                        TimelineAnatomy.item(), itemClassName
+                    )}
+                >
                     {/*Left section*/}
                     <div className={cn(
                         TimelineAnatomy.leftSection(), leftSectionClassName

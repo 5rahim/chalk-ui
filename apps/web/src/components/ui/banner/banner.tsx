@@ -1,11 +1,11 @@
 "use client"
 
 import React from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
-import { ShowOnly } from "@/components/ui/show-only"
-import { CloseButton, CloseButtonProps } from "@/components/ui/button"
+import { ShowOnly } from "../show-only"
+import { CloseButton, CloseButtonProps } from "../button"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -19,7 +19,7 @@ export const BannerAnatomy = defineStyleAnatomy({
     ]),
     container: cva([
         "UI-Banner__container",
-        "container max-w-4xl h-full px-4 flex items-center justify-between text-white md:px-8"
+        "container max-w-4xl h-full px-4 flex items-center justify-between text-white md:px-8 text-sm sm:text-base"
     ])
 })
 

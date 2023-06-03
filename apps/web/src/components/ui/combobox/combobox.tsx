@@ -16,14 +16,14 @@ import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling 
  * -----------------------------------------------------------------------------------------------*/
 
 export const ComboboxAnatomy = defineStyleAnatomy({
-   menuContainer: cva([
-       "UI-Combobox__menuContainer absolute z-10 -bottom-0.5",
-       "left-0 translate-y-full max-h-56 w-full overflow-auto rounded-md p-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm",
-       "bg-[--paper]",
-   ]),
+    menuContainer: cva([
+        "UI-Combobox__menuContainer absolute z-10 -bottom-0.5",
+        "left-0 translate-y-full max-h-56 w-full overflow-auto rounded-md p-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm",
+        "bg-[--paper]",
+    ]),
     menuItem: cva([
         "UI-Combobox__menuItem",
-        "relative cursor-pointer py-2 pl-3 pr-9 rounded-md data-highlighted:bg-[--paper-highlight] text-base",
+        "relative cursor-pointer py-2 pl-3 pr-9 rounded-md data-highlighted:bg-[--highlight] text-base",
     ]),
     menuNoOptionText: cva([
         "UI-Combobox__menuNoOptionText",
@@ -40,18 +40,18 @@ export interface ComboboxProps extends Omit<React.ComponentPropsWithRef<"input">
     InputStyling,
     ComponentWithAnatomy<typeof ComboboxAnatomy> {
     options: { value: string, label?: string }[]
-    /* Filter the specified options as the user is typing */
+    // Filter the specified options as the user is typing
     withFiltering?: boolean
-    /* Get the value on of the input as the user is typing */
+    // Get the value on of the input as the user is typing
     onInputChange?: (value: string) => void
-   /* Get the selected value */
-   onChange?: (value: string | undefined) => void
-   placeholder?: string
-   /* Message to display when there is no option */
-   noOptionsMessage?: string
-   /* Allow the user to enter custom values that are not specified in the options */
-   allowCustomValue?: boolean
-   /* Either value or label */
+    // Get the selected value
+    onChange?: (value: string | undefined) => void
+    placeholder?: string
+    // Message to display when there is no option
+    noOptionsMessage?: string
+    // Allow the user to enter custom values that are not specified in the options
+    allowCustomValue?: boolean
+    // Either value or label
     defaultValue?: string
     value?: string
     valueInputRef?: React.Ref<HTMLInputElement>
@@ -59,36 +59,36 @@ export interface ComboboxProps extends Omit<React.ComponentPropsWithRef<"input">
      * We can either return the value or label of the options.
      * Returning the label is useful if users can enter custom values or if the selection doesn't depend on IDs.
      */
-   returnValueOrLabel?: "value" | "label"
+    returnValueOrLabel?: "value" | "label"
 }
 
 export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>((props, ref) => {
 
-   const [{
-      size,
-      intent,
-      leftIcon,
-      leftAddon,
-      rightIcon,
-      rightAddon,
-      children,
-       className,
-       options,
-       withFiltering = true,
-       placeholder,
-       noOptionsMessage,
-       allowCustomValue = false,
-       onInputChange,
-       valueInputRef,
-       defaultValue,
-       onChange,
-       value,
-       returnValueOrLabel = "value",
-       menuContainerClassName,
-       menuItemClassName,
-       menuNoOptionTextClassName,
-       ...rest
-   }, { ...basicFieldProps }] = extractBasicFieldProps<ComboboxProps>(props, useId())
+    const [{
+        size,
+        intent,
+        leftIcon,
+        leftAddon,
+        rightIcon,
+        rightAddon,
+        children,
+        className,
+        options,
+        withFiltering = true,
+        placeholder,
+        noOptionsMessage,
+        allowCustomValue = false,
+        onInputChange,
+        valueInputRef,
+        defaultValue,
+        onChange,
+        value,
+        returnValueOrLabel = "value",
+        menuContainerClassName,
+        menuItemClassName,
+        menuNoOptionTextClassName,
+        ...rest
+    }, { ...basicFieldProps }] = extractBasicFieldProps<ComboboxProps>(props, useId())
 
     const [data, setData] = useState(options)
 
@@ -107,29 +107,30 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>((props
                 setData(options)
             },
             onSelect: (details) => {
-            if (returnValueOrLabel === "value") {
-               setSelectedValue(details.value)
-               onChange && onChange(details.value)
+                if (returnValueOrLabel === "value") {
+                    setSelectedValue(details.value)
+                    onChange && onChange(details.value)
 
-            } else if (returnValueOrLabel === "label") {
-               setSelectedValue(details.label)
-               onChange && onChange(details.label)
-            }
-         },
-         onInputChange({ value }) {
-            if (withFiltering) {
-               const filtered = options.filter((item) => {
-                     if (item.label) {
-                        return item.label.toLowerCase().includes(value.toLowerCase())
-                     } else {
-                        return item.value.toLowerCase().includes(value.toLowerCase())
-                     }
-                   },
-               )
-                setData(filtered.length > 0 ? filtered : noOptionsMessage ? [] : data) // Do not empty options if there is no 'noOptionsMessage'
-            }
-             onInputChange && onInputChange(value)
-         },
+                } else if (returnValueOrLabel === "label") {
+                    setSelectedValue(details.label)
+                    onChange && onChange(details.label)
+                }
+            },
+            onInputChange({ value }) {
+                if (withFiltering) {
+                    const filtered = options.filter((item) => {
+                            if (item.label) {
+                                return item.label.toLowerCase().includes(value.toLowerCase())
+                            } else {
+                                return item.value.toLowerCase().includes(value.toLowerCase())
+                            }
+                        },
+                    )
+                    // Do not empty options if there is no 'noOptionsMessage'
+                    setData(filtered.length > 0 ? filtered : noOptionsMessage ? [] : data)
+                }
+                onInputChange && onInputChange(value)
+            },
         }),
     )
 
@@ -167,90 +168,91 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>((props
             <BasicField
                 {...basicFieldProps}
                 ref={ref}
-         >
-            <input type="text" hidden value={selectedValue ?? ""} onChange={() => {}} ref={valueInputRef} />
+            >
+                <input type="text" hidden value={selectedValue ?? ""} onChange={() => {
+                }} ref={valueInputRef}/>
 
                 <div {...api.rootProps}>
-               <div {...api.controlProps} className={cn(inputContainerStyle())}>
+                    <div {...api.controlProps} className={cn(inputContainerStyle())}>
 
-                   <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
-                  <InputIcon icon={leftIcon} size={size} side={"left"} props={api.triggerProps} />
+                        <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"}/>
+                        <InputIcon icon={leftIcon} size={size} side={"left"} props={api.triggerProps}/>
 
-                   <input
-                     className={cn(
-                         "appearance-none",
-                         InputAnatomy.input({
-                             size,
-                             intent,
-                             hasError: !!basicFieldProps.error,
-                             untouchable: !!basicFieldProps.isDisabled,
-                             hasRightAddon: !!rightAddon,
-                             hasRightIcon: !!rightIcon,
-                             hasLeftAddon: !!leftAddon,
-                             hasLeftIcon: !!leftIcon,
-                         }),
-                     )}
-                     disabled={basicFieldProps.isDisabled}
-                     onBlur={() => {
-                         /* If we do not allow custom values and the user blurs the input, we reset the input */
-                         if (!allowCustomValue) {
-                             if (options.length === 0 && !api.selectedValue || (api.selectedValue && api.selectedValue.length === 0)) {
-                                 api.setInputValue("")
-                             }
+                        <input
+                            className={cn(
+                                "appearance-none",
+                                InputAnatomy.input({
+                                    size,
+                                    intent,
+                                    hasError: !!basicFieldProps.error,
+                                    untouchable: !!basicFieldProps.isDisabled,
+                                    hasRightAddon: !!rightAddon,
+                                    hasRightIcon: !!rightIcon,
+                                    hasLeftAddon: !!leftAddon,
+                                    hasLeftIcon: !!leftIcon,
+                                }),
+                            )}
+                            disabled={basicFieldProps.isDisabled}
+                            onBlur={() => {
+                                // If we do not allow custom values and the user blurs the input, we reset the input
+                                if (!allowCustomValue) {
+                                    if (options.length === 0 && !api.selectedValue || (api.selectedValue && api.selectedValue.length === 0)) {
+                                        api.setInputValue("")
+                                    }
 
-                             if (
-                                 options.length > 0 &&
-                                 (!_isEmpty(_find(options, ["value", api.selectedValue])?.label)
-                                 || !_isEmpty(_find(options, ["value", api.selectedValue])?.value)
-                              )
-                           ) {
-                              api.selectedValue && api.setValue(api.selectedValue)
-                           }
-                        }
-                     }}
-                     {...rest}
-                     ref={ref}
-                     {...api.inputProps}
-                  />
+                                    if (
+                                        options.length > 0 &&
+                                        (!_isEmpty(_find(options, ["value", api.selectedValue])?.label)
+                                            || !_isEmpty(_find(options, ["value", api.selectedValue])?.value)
+                                        )
+                                    ) {
+                                        api.selectedValue && api.setValue(api.selectedValue)
+                                    }
+                                }
+                            }}
+                            {...rest}
+                            ref={ref}
+                            {...api.inputProps}
+                        />
 
-                   <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
-                  <InputIcon icon={rightIcon} size={size} side={"right"} props={api.triggerProps} />
+                        <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"}/>
+                        <InputIcon icon={rightIcon} size={size} side={"right"} props={api.triggerProps}/>
 
-               </div>
-            </div>
+                    </div>
+                </div>
 
                 {/* Menu */}
-            <div {...api.positionerProps} className="z-10">
-               {(!!noOptionsMessage || list.length > 0) && (
-                  <ul
-                     className={cn(ComboboxAnatomy.menuContainer(), menuContainerClassName)}
-                     {...api.contentProps}
-                  >
-                     {(list.length === 0 && !!noOptionsMessage) &&
-                         <div className={cn(ComboboxAnatomy.menuNoOptionText(), menuNoOptionTextClassName)}>{noOptionsMessage}</div>}
-                     {list.map((item, index) => (
-                        <li
-                            className={cn(
-                                ComboboxAnatomy.menuItem(),
-                                menuItemClassName,
-                            )}
-                            key={`combobox:${item.value}:${index}`}
-                            {...api.getOptionProps({
-                              label: item.label ?? item.value,
-                              value: item.value,
-                              index,
-                              disabled: basicFieldProps.isDisabled,
-                           })}
+                <div {...api.positionerProps} className="z-10">
+                    {(!!noOptionsMessage || list.length > 0) && (
+                        <ul
+                            className={cn(ComboboxAnatomy.menuContainer(), menuContainerClassName)}
+                            {...api.contentProps}
                         >
-                           {item.label}
-                        </li>
-                     ))}
-                  </ul>
-               )}
-            </div>
-         </BasicField>
-      </>
-   )
+                            {(list.length === 0 && !!noOptionsMessage) &&
+                                <div className={cn(ComboboxAnatomy.menuNoOptionText(), menuNoOptionTextClassName)}>{noOptionsMessage}</div>}
+                            {list.map((item, index) => (
+                                <li
+                                    className={cn(
+                                        ComboboxAnatomy.menuItem(),
+                                        menuItemClassName,
+                                    )}
+                                    key={`combobox:${item.value}:${index}`}
+                                    {...api.getOptionProps({
+                                        label: item.label ?? item.value,
+                                        value: item.value,
+                                        index,
+                                        disabled: basicFieldProps.isDisabled,
+                                    })}
+                                >
+                                    {item.label}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            </BasicField>
+        </>
+    )
 
 })
 

@@ -1,10 +1,10 @@
 "use client"
 
 import React from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
-import { Paper, PaperProps } from "@/components/ui/paper"
+import { Paper, PaperProps } from "../paper"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

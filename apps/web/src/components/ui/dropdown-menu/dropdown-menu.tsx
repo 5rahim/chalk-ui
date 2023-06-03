@@ -1,12 +1,12 @@
 "use client"
 
 import React, { Fragment } from "react"
-import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "@/components/ui/core"
+import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
 import { cva, VariantProps } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
 import { Menu, Transition } from "@headlessui/react"
-import { Divider, DividerProps } from "@/components/ui/divider"
-import { Modal } from "@/components/ui/modal"
+import { Divider, DividerProps } from "../divider"
+import { Modal } from "../modal"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { useDropdownOutOfBounds } from "./use-dropdown-out-of-bounds"
 
@@ -31,7 +31,6 @@ export const DropdownMenuAnatomy = defineStyleAnatomy({
             right: { true: "", right: "" },
         },
         compoundVariants: [
-            // { top: false, right: false, bottom: false, left: false, className: "" },
             { bottom: false, className: "origin-top-right right-0" },
             { bottom: true, className: "origin-bottom-right" },
             { left: true, className: "left-0" },
@@ -56,7 +55,7 @@ export const DropdownMenuItemAnatomy = defineStyleAnatomy({
     ], {
         variants: {
             active: {
-                true: "bg-[--paper-highlight]",
+                true: "bg-[--highlight]",
                 false: null
             }
         },
@@ -314,7 +313,7 @@ export const DropdownMenu = createPolymorphicComponent<"div", DropdownMenuProps,
     Item: typeof DropdownMenuItem
     Link: typeof DropdownMenuLink
     Group: typeof DropdownMenuGroup
-    Divider: typeof Divider
+    Divider: typeof DropdownMenuDivider
 }>(_DropdownMenu)
 
 DropdownMenu.displayName = "DropdownMenu"

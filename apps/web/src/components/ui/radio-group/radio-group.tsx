@@ -29,7 +29,7 @@ export const RadioGroupAnatomy = defineStyleAnatomy({
                 md: "h-5 w-5 text-xs",
                 lg: "h-6 w-6 text-sm",
             },
-            hasError: {
+            hasError: { // FIXME nove to data
                 true: "border-red-500 dark:border-red-500",
                 false: null,
             },

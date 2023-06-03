@@ -27,8 +27,8 @@ export const CloseButton = React.forwardRef<HTMLButtonElement, CloseButtonProps>
             intent="gray-outline"
             size={size}
             className={cn(
-               "rounded-full text-2xl",
-               className,
+                "rounded-full text-2xl flex-none",
+                className,
             )}
             icon={<span>
                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor">

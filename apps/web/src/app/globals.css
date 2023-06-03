@@ -44,6 +44,7 @@
 
         --paper: theme('colors.white');
         --paper-highlight: theme('colors.gray.100');
+        --highlight: rgba(0, 0, 0, 0.04);
 
         --modal: theme('colors.white');
     }
@@ -88,6 +89,7 @@
 
         --paper: theme('colors.gray.900');
         --paper-highlight: theme('colors.gray.800');
+        --highlight: rgba(255, 255, 255, 0.06);
 
         --modal: theme('colors.gray.900');
     }

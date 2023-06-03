@@ -1,5 +1,7 @@
+"use client"
+
 import React from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
 
@@ -7,31 +9,32 @@ import { cn } from "@rahimstack/tailwind-utils"
  * Anatomy
  * -----------------------------------------------------------------------------------------------*/
 
-export const NavigationTabsAnatomy = defineStyleAnatomy({
+export const VerticalNavAnatomy = defineStyleAnatomy({
     nav: cva([
-        "UI-NavigationTabs__nav",
-        "flex bg-[--paper] w-full overflow-hidden overflow-x-auto"
+        "UI-VerticalNav__nav",
+        "block space-y-1"
     ]),
     tab: cva([
-        "UI-NavigationTabs__tab",
-        "group inline-flex flex-none sm:flex-1 items-center py-4 px-1 font-medium text-sm transition outline-none px-4 min-w-0 justify-center",
-        "border-b-2 border-[--border]",
-        "focus-visible:bg-[--highlight]",
-        "text-[--muted] dark:hover:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600",
-        "data-[current=true]:border-[--brand] data-[current=true]:text-[--brand]"
+        "UI-VerticalNav__tab",
+        "group flex flex-none truncate items-center px-3 py-2 text-sm font-[600] rounded-md transition",
+        "hover:bg-[--highlight]",
+        "focus-visible:ring-2 ring-[--ring] outline-none",
+        "text-[--muted]",
+        "data-[current=true]:text-[--brand]"
     ]),
     icon: cva([
-        "UI-NavigationTabs__icon",
-        "-ml-0.5 mr-2 h-5 w-5",
+        "UI-VerticalNav__icon",
+        "flex-shrink-0 -ml-1 mr-3 h-6 w-6",
         "text-[--muted] data-[current=true]:text-[--brand]"
     ]),
 })
 
 /* -------------------------------------------------------------------------------------------------
- * NavigationTabs
+ * VerticalNav
  * -----------------------------------------------------------------------------------------------*/
 
-export interface NavigationTabsProps extends React.ComponentPropsWithRef<"nav">, ComponentWithAnatomy<typeof NavigationTabsAnatomy> {
+export interface VerticalNavProps extends React.ComponentPropsWithRef<"div">, ComponentWithAnatomy<typeof VerticalNavAnatomy> {
+    children?: React.ReactNode
     items: {
         name: string,
         href: string | null | undefined,
@@ -40,12 +43,12 @@ export interface NavigationTabsProps extends React.ComponentPropsWithRef<"nav">,
     }[]
 }
 
-export const NavigationTabs: React.FC<NavigationTabsProps> = React.forwardRef<HTMLElement, NavigationTabsProps>((props, ref) => {
+export const VerticalNav: React.FC<VerticalNavProps> = React.forwardRef<HTMLDivElement, VerticalNavProps>((props, ref) => {
 
     const {
         children,
-        className,
         navClassName,
+        className,
         items,
         ...rest
     } = props
@@ -53,7 +56,7 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = React.forwardRef<HT
     return (
         <nav
             ref={ref}
-            className={cn(NavigationTabsAnatomy.nav(), navClassName, className)}
+            className={cn(VerticalNavAnatomy.nav(), navClassName, className)}
             {...rest}
         >
             {items.map((tab: any) => (
@@ -61,14 +64,14 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = React.forwardRef<HT
                     key={tab.name}
                     href={tab.href}
                     className={cn(
-                        NavigationTabsAnatomy.tab(),
+                        VerticalNavAnatomy.tab(),
                     )}
                     aria-current={tab.isCurrent ? "page" : undefined}
                     data-current={tab.isCurrent}
                 >
                     {tab.icon && <tab.icon
                         className={cn(
-                            NavigationTabsAnatomy.icon()
+                            VerticalNavAnatomy.icon()
                         )}
                         aria-hidden="true"
                         data-current={tab.isCurrent}
@@ -81,4 +84,4 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = React.forwardRef<HT
 
 })
 
-NavigationTabs.displayName = "Tabs"
+VerticalNav.displayName = "VerticalNav"

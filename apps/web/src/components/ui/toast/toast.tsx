@@ -4,8 +4,8 @@ import { Transition } from "@headlessui/react"
 import React from "react"
 import toast, { resolveValue, Toast as ToastType, Toaster } from "react-hot-toast"
 import { cn } from "@rahimstack/tailwind-utils"
-import { CloseButton } from "@/components/ui/button"
-import { defineStyleAnatomy } from "@/components/ui/core"
+import { CloseButton } from "../button"
+import { defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 
 /* -------------------------------------------------------------------------------------------------

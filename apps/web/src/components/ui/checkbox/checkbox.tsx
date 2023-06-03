@@ -7,8 +7,8 @@ import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import type { CheckboxProps as CheckboxPrimitiveProps } from "@radix-ui/react-checkbox"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
-import { useCheckboxGroupContext } from "@/components/ui/checkbox/checkbox-group"
-import { ShowOnly } from "@/components/ui/show-only"
+import { useCheckboxGroupContext } from "../checkbox/checkbox-group"
+import { ShowOnly } from "../show-only"
 
 
 /* -------------------------------------------------------------------------------------------------

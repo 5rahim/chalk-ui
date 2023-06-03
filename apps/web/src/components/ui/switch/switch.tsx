@@ -7,7 +7,7 @@ import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import type { SwitchProps as SwitchPrimitiveProps } from "@radix-ui/react-switch"
 import * as SwitchPrimitive from "@radix-ui/react-switch"
-import { ShowOnly } from "@/components/ui/show-only"
+import { ShowOnly } from "../show-only"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

@@ -18,64 +18,62 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>((props, r
     const [{
         children,
         className,
-      size = "md",
-      intent = "basic",
-      leftIcon,
-      leftAddon,
-      rightAddon,
-      rightIcon,
-      defaultValue,
-      options = [],
-      placeholder,
-      ...rest
-   }, basicFieldProps] = extractBasicFieldProps<SelectProps>(props, useId())
+        size = "md",
+        intent = "basic",
+        leftIcon,
+        leftAddon,
+        rightAddon,
+        rightIcon,
+        defaultValue,
+        options = [],
+        placeholder,
+        ...rest
+    }, basicFieldProps] = extractBasicFieldProps<SelectProps>(props, useId())
 
     return (
-      <>
-         <BasicField
-            {...basicFieldProps}
-         >
-            <div className={cn(inputContainerStyle())}>
+        <>
+            <BasicField
+                {...basicFieldProps}
+            >
+                <div className={cn(inputContainerStyle())}>
 
-                <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
-               <InputIcon icon={leftIcon} size={size} side={"left"} />
+                    <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"}/>
+                    <InputIcon icon={leftIcon} size={size} side={"left"}/>
 
-                <select
-                  // type="text"
-                  id={basicFieldProps.id}
-                  name={basicFieldProps.name}
-                  className={cn(
-                     "form-select",
-                     InputAnatomy.input({
-                        size,
-                        intent,
-                        hasError: !!basicFieldProps.error,
-                        untouchable: !!basicFieldProps.isDisabled,
-                        hasRightAddon: !!rightAddon,
-                        hasRightIcon: !!rightIcon,
-                        hasLeftAddon: !!leftAddon,
-                        hasLeftIcon: !!leftIcon,
-                     }),
-                     className,
-                  )}
-                  disabled={basicFieldProps.isDisabled}
-                  {...rest}
-                  // defaultValue={defaultValue ? defaultValue : options[0]?.value} /!\ Select elements must be either controlled or uncontrolled.
-                  ref={ref}
-               >
-                  {placeholder && <option value="">{placeholder}</option>}
-                  {options.map(opt => (
-                     <option key={opt.value} value={opt.value}>{opt.label ?? opt.value}</option>
-                  ))}
-               </select>
+                    <select
+                        id={basicFieldProps.id}
+                        name={basicFieldProps.name}
+                        className={cn(
+                            "form-select",
+                            InputAnatomy.input({
+                                size,
+                                intent,
+                                hasError: !!basicFieldProps.error,
+                                untouchable: !!basicFieldProps.isDisabled,
+                                hasRightAddon: !!rightAddon,
+                                hasRightIcon: !!rightIcon,
+                                hasLeftAddon: !!leftAddon,
+                                hasLeftIcon: !!leftIcon,
+                            }),
+                            className,
+                        )}
+                        disabled={basicFieldProps.isDisabled}
+                        {...rest}
+                        ref={ref}
+                    >
+                        {placeholder && <option value="">{placeholder}</option>}
+                        {options.map(opt => (
+                            <option key={opt.value} value={opt.value}>{opt.label ?? opt.value}</option>
+                        ))}
+                    </select>
 
-                <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
-               <InputIcon icon={rightIcon} size={size} side={"right"} />
+                    <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"}/>
+                    <InputIcon icon={rightIcon} size={size} side={"right"}/>
 
-            </div>
-         </BasicField>
-      </>
-   )
+                </div>
+            </BasicField>
+        </>
+    )
 
 })
 

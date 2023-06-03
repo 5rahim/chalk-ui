@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "@/components/ui/core"
+import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
 import type { TabListProps as TabPrimitiveListProps, TabProps as TabPrimitiveProps } from "@headlessui/react"
@@ -32,7 +32,7 @@ export const TabAnatomy = defineStyleAnatomy({
         "flex items-center justify-center gap-2 border-b-2 -mb-px",
         "text-[--muted] ui-selected:text-[--brand] ui-selected:border-brand dark:ui-selected:border-brand-200",
         "border-[--border] hover:border-gray-300 dark:hover:border-gray-600",
-        "ring-[--ring] focus-visible:ring-2 outline-none"
+        "focus-visible:bg-[--highlight] outline-none"
     ])
 })
 

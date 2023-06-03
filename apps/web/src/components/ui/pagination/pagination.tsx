@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "@/components/ui/core"
+import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
 
@@ -16,7 +16,7 @@ export const PaginationAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-Pagination__item",
-        "text-md inline-flex h-10 w-10 items-center justify-center rounded border border-[--border] cursor-pointer hover:bg-[--paper-highlight] select-none",
+        "text-md inline-flex h-10 w-10 items-center justify-center rounded border border-[--border] cursor-pointer hover:bg-[--highlight] select-none",
         "data-selected:bg-brand-500 data-selected:border-transparent data-selected:text-white data-selected:hover:bg-brand-500 data-selected:pointer-events-none",
         "data-disabled:opacity-50 data-disabled:pointer-events-none data-disabled:cursor-not-allowed"
     ]),

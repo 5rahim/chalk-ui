@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
 
@@ -70,7 +70,10 @@ export const Stats: React.FC<StatsProps> = React.forwardRef<HTMLDListElement, St
                 ref={ref}
             >
                 {values.map((item) => (
-                    <div key={item.name} className={cn(StatsAnatomy.item(), itemClassName)}>
+                    <div
+                        key={item.name}
+                        className={cn(StatsAnatomy.item(), itemClassName)}
+                    >
 
                         <dt className={cn(StatsAnatomy.name(), nameClassName)}>{item.name}</dt>
 
@@ -82,7 +85,7 @@ export const Stats: React.FC<StatsProps> = React.forwardRef<HTMLDListElement, St
                             className={cn(StatsAnatomy.trend(), trendClassName)}
                             data-trend={item.trend}
                         >
-                            <span> {item.trend === "up" ? "+" : "-"}</span>
+                            {item.trend && <span> {item.trend === "up" ? "+" : "-"}</span>}
                             {item.change}
                         </div>
                     </div>
