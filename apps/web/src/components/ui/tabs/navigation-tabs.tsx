@@ -14,16 +14,15 @@ export const NavigationTabsAnatomy = defineStyleAnatomy({
     ]),
     tab: cva([
         "UI-NavigationTabs__tab",
-        "group inline-flex flex-none sm:flex-1 items-center py-4 px-1 font-medium text-sm transition outline-none px-4 min-w-0 justify-center",
-        "border-b-2 border-[--border]",
+        "group navigation-tabs-group inline-flex flex-none shrink-0 basis-auto items-center py-4 px-2 font-medium text-sm transition outline-none px-4 min-w-0 justify-center",
         "focus-visible:bg-[--highlight]",
-        "text-[--muted] dark:hover:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600",
-        "data-[current=true]:border-[--brand] data-[current=true]:text-[--brand]"
+        "text-[--muted]",
+        "hover:text-[--text-color]",
+        "data-[current=true]:border-[--brand] data-[current=true]:font-semibold data-[current=true]:text-[--brand]"
     ]),
     icon: cva([
         "UI-NavigationTabs__icon",
         "-ml-0.5 mr-2 h-5 w-5",
-        "text-[--muted] data-[current=true]:text-[--brand]"
     ]),
 })
 

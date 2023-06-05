@@ -15,7 +15,7 @@ export const TooltipAnatomy = defineStyleAnatomy({
     tooltip: cva([
         "UI-Tooltip__tooltip",
         "z-50 overflow-hidden rounded-md px-3 py-1.5 text-sm shadow-md animate-in fade-in-50",
-        "bg-gray-900 dark:bg-gray-800 text-white",
+        "bg-gray-800 text-white",
         "data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1"
     ])
 })

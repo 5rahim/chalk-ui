@@ -100,6 +100,18 @@ export const DemoNavbar = () => (
     </Navbar>
 )
 
+export const DemoNavigationTabs = () => (
+    <NavigationTabs
+        navClassName={"border-b border-[--border]"}
+        items={[
+            { name: "My Account", href: "#", icon: null, isCurrent: false },
+            { name: "Company", href: "#", icon: null, isCurrent: false },
+            { name: "Team Members", href: "#", icon: null, isCurrent: true },
+            { name: "Billing", href: "#", icon: BiReceipt, isCurrent: false },
+        ]}
+    />
+)
+
 interface ClientTestProps {
     children?: React.ReactNode
 }

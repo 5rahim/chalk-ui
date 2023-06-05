@@ -38,7 +38,7 @@ export const AppLayoutAnatomy = defineStyleAnatomy({
 export const AppLayoutHeaderAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-AppLayoutHeader__root",
-        "flex items-center grow-0 shrink-0 basis-auto"
+        "block w-full"
     ])
 })
 
@@ -63,6 +63,23 @@ export const AppLayoutFooterAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-AppLayoutFooter__root",
     ])
+})
+
+export const AppLayoutSectionAnatomy = defineStyleAnatomy({
+    root: cva([
+        "UI-AppLayoutSection__root",
+        "min-w-0 xl:flex flex-1"
+    ], {
+        variants: {
+            type: {
+                "normal": "",
+                annotation: "shrink-0 basis-[40rem]"
+            }
+        },
+        defaultVariants: {
+            type: "normal"
+        }
+    })
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -220,6 +237,38 @@ const AppLayoutFooter: React.FC<AppLayoutFooterProps> = React.forwardRef<HTMLEle
 AppLayoutFooter.displayName = "AppLayoutFooter"
 
 /* -------------------------------------------------------------------------------------------------
+ * AppLayout.Section
+ * -----------------------------------------------------------------------------------------------*/
+
+export interface AppLayoutSectionProps extends React.ComponentPropsWithRef<"footer">,
+    ComponentWithAnatomy<typeof AppLayoutSectionAnatomy>,
+    VariantProps<typeof AppLayoutSectionAnatomy.root> {
+}
+
+const AppLayoutSection: React.FC<AppLayoutSectionProps> = React.forwardRef<HTMLElement, AppLayoutSectionProps>((props, ref) => {
+
+    const {
+        children,
+        rootClassName,
+        className,
+        ...rest
+    } = props
+
+    return (
+        <section
+            className={cn(AppLayoutSectionAnatomy.root(), rootClassName, className)}
+            {...rest}
+            ref={ref}
+        >
+            {children}
+        </section>
+    )
+
+})
+
+AppLayoutSection.displayName = "AppLayoutSection"
+
+/* -------------------------------------------------------------------------------------------------
  * Component
  * -----------------------------------------------------------------------------------------------*/
 
@@ -227,12 +276,14 @@ _AppLayout.Header = AppLayoutHeader
 _AppLayout.Sidebar = AppLayoutSidebar
 _AppLayout.Content = AppLayoutContent
 _AppLayout.Footer = AppLayoutFooter
+_AppLayout.Section = AppLayoutSection
 
 export const AppLayout = createPolymorphicComponent<"div", AppLayoutProps, {
     Header: typeof AppLayoutHeader
     Sidebar: typeof AppLayoutSidebar
     Content: typeof AppLayoutContent
     Footer: typeof AppLayoutFooter
+    Section: typeof AppLayoutSection
 }>(_AppLayout)
 
 AppLayout.displayName = "AppLayout"

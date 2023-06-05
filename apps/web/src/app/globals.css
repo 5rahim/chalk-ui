@@ -5,6 +5,7 @@
 @layer base {
     :root {
         --radius: 0.375rem;
+        --layout-spacing: theme('space.4');
 
         --text-color: theme('colors.gray.800');
         --background-color: white;
@@ -107,17 +108,17 @@ h1 {
 }
 
 h2 {
-    @apply scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0
+    @apply scroll-m-20 text-3xl font-bold tracking-tight first:mt-0
 }
 
 h3 {
-    @apply scroll-m-20 text-2xl font-semibold tracking-tight
+    @apply scroll-m-20 text-2xl font-bold tracking-tight
 }
 
 h4 {
-    @apply scroll-m-20 text-xl font-semibold tracking-tight
+    @apply scroll-m-20 text-xl font-bold tracking-tight
 }
 
 h5 {
-    @apply scroll-m-20 text-lg font-semibold tracking-tight
+    @apply scroll-m-20 text-lg font-bold tracking-tight
 }

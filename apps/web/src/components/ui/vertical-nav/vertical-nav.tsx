@@ -17,7 +17,7 @@ export const VerticalNavAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-VerticalNav__tab",
-        "group flex flex-none truncate items-center px-3 py-2 text-sm font-[600] rounded-md transition cursor-pointer",
+        "group vertical-nav-group flex flex-none truncate items-center px-4 py-2 text-sm font-[600] rounded-md transition cursor-pointer",
         "hover:bg-[--highlight] hover:text-[--text-color]",
         "focus-visible:ring-2 ring-[--ring] outline-none",
         "text-[--muted]",
@@ -34,7 +34,8 @@ export const VerticalNavAnatomy = defineStyleAnatomy({
     icon: cva([
         "UI-VerticalNav__icon",
         "flex-shrink-0 -ml-1 mr-3 h-6 w-6",
-        "text-[--muted] group-hover:text-[--text-color] data-[current=true]:text-[--brand] data-[current=true]:group-hover:text-[--brand]"
+        "text-[--muted]",
+        "group-hover:group-[.vertical-nav-group]:text-[--text-color] data-[current=true]:text-[--brand] data-[current=true]:group-hover:group-[.vertical-nav-group]:text-[--brand]"
     ]),
     subList: cva([
         "UI-VerticalNav__subList",
@@ -118,7 +119,7 @@ export const VerticalNav: React.FC<VerticalNavProps> = React.forwardRef<HTMLDivE
                                 aria-current={item.isCurrent ? "page" : undefined}
                                 data-current={item.isCurrent}
                             >
-                                <div className="w-full flex">
+                                <div className="w-full flex items-center">
                                     {item.icon && <item.icon
                                         className={cn(
                                             VerticalNavAnatomy.icon(),
