@@ -5,9 +5,9 @@ import { AvatarProps } from "."
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 export const AvatarShowcaseAnatomy = defineStyleAnatomy({
-   container: cva("UI-AvatarShowcase__container flex items-center"),
-   name: cva("UI-AvatarShowcase__name font-semibold text-gray-900 dark:text-gray-200"),
-   description: cva("UI-AvatarShowcase__description block text-sm text-gray-500 dark:text-gray-400"),
+   container: cva("UI-AvatarShowcase__container group flex items-center"),
+   name: cva("UI-AvatarShowcase__name font-medium text-base text-[--text-color] tracking-tight"),
+   description: cva("UI-AvatarShowcase__description block text-sm text-[--muted]"),
    detailsContainer: cva("UI-AvatarShowcase__detailsContainer ml-3"),
 })
 
@@ -18,7 +18,7 @@ export interface AvatarShowcaseProps extends React.ComponentPropsWithRef<"div">,
 }
 
 export const AvatarShowcase = React.forwardRef<HTMLDivElement, AvatarShowcaseProps>((props, ref) => {
-   
+
    const {
       children,
       className,
@@ -31,7 +31,7 @@ export const AvatarShowcase = React.forwardRef<HTMLDivElement, AvatarShowcasePro
       containerClassName,
       ...rest
    } = props
-   
+
    return (
       <>
          <div
@@ -45,11 +45,12 @@ export const AvatarShowcase = React.forwardRef<HTMLDivElement, AvatarShowcasePro
          >
             {avatar}
             <div className={cn(AvatarShowcaseAnatomy.detailsContainer(), detailsContainerClassName)}>
-               <h1 className={cn(AvatarShowcaseAnatomy.name(), nameClassName)}>{name}</h1>
+               <p className={cn(AvatarShowcaseAnatomy.name(), nameClassName)}>{name}</p>
                {!!description && <span className={cn(AvatarShowcaseAnatomy.description(), descriptionClassName)}>{description}</span>}
+               {children}
             </div>
          </div>
       </>
    )
-   
+
 })

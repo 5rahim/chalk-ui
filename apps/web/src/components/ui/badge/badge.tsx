@@ -10,7 +10,7 @@ import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 export const BadgeAnatomy = defineStyleAnatomy({
     badge: cva([
         "UI-Badge__badge",
-        "inline-flex text-base w-fit overflow-hidden justify-center items-center gap-2"
+        "inline-flex flex-none text-base w-fit overflow-hidden justify-center items-center gap-2"
     ], {
         variants: {
             intent: {
@@ -31,7 +31,7 @@ export const BadgeAnatomy = defineStyleAnatomy({
                 "white-solid": "text-gray-900 bg-white",
             },
             size: {
-                sm: "h-4 px-2  text-xs",
+                sm: "h-[1.2rem] px-2  text-xs",
                 md: "h-6 px-3 text-xs",
                 lg: "h-7 px-3 text-md",
                 xl: "h-8 px-4 text-lg",
@@ -44,6 +44,7 @@ export const BadgeAnatomy = defineStyleAnatomy({
         defaultVariants: {
             intent: "primary",
             size: "md",
+            tag: false,
         },
     }),
     closeButton: cva([

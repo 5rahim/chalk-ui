@@ -53,8 +53,9 @@ https://chalk.rahim.app
 - [x] Timeline
 - [x] Paper
 - [x] Card
+- [x] Navbar
+- [x] AppLayout
 - [ ] Page Layout
-- [ ] AppShell
 - [ ] DataGrid
 - [ ] RawLink
 - [ ] Form

@@ -21,7 +21,7 @@ const __LocaleConfigContext = React.createContext<UILocaleConfig>(__LocaleConfig
 /**
  * @internal UI Folder scope
  */
-export const useUILocaleConfig = (): UILocaleConfig => {
+export const useUILocaleConfig = () => {
    return React.useContext(__LocaleConfigContext)
 }
 

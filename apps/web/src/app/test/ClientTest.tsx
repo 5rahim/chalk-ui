@@ -37,6 +37,68 @@ import { VerticalNav } from "@/components/ui/vertical-nav"
 import { BiUser } from "@react-icons/all-files/bi/BiUser"
 import { BiGroup } from "@react-icons/all-files/bi/BiGroup"
 import { BiBarChart } from "@react-icons/all-files/bi/BiBarChart"
+import { Badge } from "@/components/ui/badge"
+import { HorizontalNav } from "@/components/ui/horizontal-nav"
+import { Navbar } from "@/components/ui/navbar"
+import { BiHome } from "@react-icons/all-files/bi/BiHome"
+import { Avatar, AvatarShowcase } from "@/components/ui/avatar"
+
+export const DemoNavigationItems = [
+    {
+        name: "Home", icon: BiHome, isCurrent: true,
+        content: <VerticalNav
+            items={[
+                { name: "My Account", href: "#", icon: BiUser, isCurrent: false },
+                { name: "Company", href: "#", icon: BiBarChart, isCurrent: true },
+                { name: "Billing", href: "#", icon: BiReceipt, isCurrent: false },
+            ]}
+        />
+    },
+    {
+        name: "Menu", icon: BiUser, isCurrent: false,
+        content: <VerticalNav
+            items={[
+                { name: "My Account", href: "#", icon: BiUser, isCurrent: false },
+                { name: "Company", href: "#", icon: BiBarChart, isCurrent: false },
+                { name: "Billing", href: "#", icon: BiReceipt, isCurrent: false },
+            ]}
+        />
+    },
+    { name: "Company", href: "#", icon: BiBarChart, isCurrent: false },
+    {
+        name: "Team Members",
+        href: "#",
+        icon: BiGroup,
+        isCurrent: false,
+        addon: <Badge className="ml-2" intent="gray-solid" size="sm">5</Badge>
+    },
+    { name: "Billing", href: "#", icon: BiReceipt, isCurrent: false },
+]
+
+export const DemoNavbar = () => (
+    <Navbar className={""}>
+        <Navbar.Layout>
+            <Navbar.Navigation>
+                <div className="font-bold">Logo</div>
+                <HorizontalNav
+                    switchToDrawerBelow={"lg"}
+                    items={DemoNavigationItems}
+                />
+            </Navbar.Navigation>
+            <DropdownMenu
+                trigger={<AvatarShowcase
+                    avatar={<Avatar size="sm"/>} name={"John Doe"}
+                    className="cursor-pointer p-1 sm:pr-3 rounded-full hover:bg-[--highlight]"
+                    nameClassName={"text-sm font-semibold text-[--muted] group-hover:text-[--text-color]"}
+                    detailsContainerClassName={"hidden sm:block"}
+                />}
+                mobilePlacement={"top"}
+            >
+                <DropdownMenu.Item>Sign out</DropdownMenu.Item>
+            </DropdownMenu>
+        </Navbar.Layout>
+    </Navbar>
+)
 
 interface ClientTestProps {
     children?: React.ReactNode
@@ -56,18 +118,68 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
 
     return (
         <>
+
             <Banner>
                 We just launched our new product!
             </Banner>
             <div className="container max-w-5xl">
                 <div className="mt-10 space-y-4 relative">
 
-                    <div className="max-w-sm bg-[--paper]">
+                    <div className="w-full bg-[--paper] p-2 border border-[--border]">
+                        <HorizontalNav
+                            switchToDrawerBelow={"sm"}
+                            items={[
+                                {
+                                    name: "My Account", icon: BiUser, isCurrent: true,
+                                    content: <VerticalNav
+                                        items={[
+                                            { name: "My Account", href: "#", icon: BiUser, isCurrent: false },
+                                            { name: "Company", href: "#", icon: BiBarChart, isCurrent: true },
+                                            { name: "Billing", href: "#", icon: BiReceipt, isCurrent: false },
+                                        ]}
+                                    />
+                                },
+                                {
+                                    name: "Menu", icon: BiUser, isCurrent: false,
+                                    content: <VerticalNav
+                                        items={[
+                                            { name: "My Account", href: "#", icon: BiUser, isCurrent: false },
+                                            { name: "Company", href: "#", icon: BiBarChart, isCurrent: false },
+                                            { name: "Billing", href: "#", icon: BiReceipt, isCurrent: false },
+                                        ]}
+                                    />
+                                },
+                                { name: "Company", href: "#", icon: BiBarChart, isCurrent: false },
+                                {
+                                    name: "Team Members",
+                                    href: "#",
+                                    icon: BiGroup,
+                                    isCurrent: false,
+                                    addon: <Badge className="ml-2" intent="gray-solid" size="sm">5</Badge>
+                                },
+                                { name: "Billing", href: "#", icon: BiReceipt, isCurrent: false },
+                            ]}
+                        />
+                    </div>
+
+                    <div className="max-w-sm bg-[--paper] p-2 border border-[--border]">
                         <VerticalNav
                             items={[
-                                { name: "My Account", href: "#", icon: BiUser, isCurrent: false },
+                                {
+                                    name: "My Account", href: "#", icon: BiUser, isCurrent: false,
+                                    content: <VerticalNav items={[
+                                        { name: "Information", href: "#", isCurrent: false },
+                                        { name: "Security", href: "#", isCurrent: false },
+                                    ]}/>
+                                },
                                 { name: "Company", href: "#", icon: BiBarChart, isCurrent: false },
-                                { name: "Team Members", href: "#", icon: BiGroup, isCurrent: true },
+                                {
+                                    name: "Team Members",
+                                    href: "#",
+                                    icon: BiGroup,
+                                    isCurrent: true,
+                                    addon: <Badge className="ml-2" intent="gray-solid">5</Badge>
+                                },
                                 { name: "Billing", href: "#", icon: BiReceipt, isCurrent: false },
                             ]}
                         />

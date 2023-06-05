@@ -6,7 +6,7 @@ import { cva, VariantProps } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
 import { Menu, Transition } from "@headlessui/react"
 import { Divider, DividerProps } from "../divider"
-import { Modal } from "../modal"
+import { Modal, ModalProps } from "../modal"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { useDropdownOutOfBounds } from "./use-dropdown-out-of-bounds"
 
@@ -81,6 +81,7 @@ export interface DropdownMenuProps
         ComponentWithAnatomy<typeof DropdownMenuItemAnatomy>,
         VariantProps<typeof DropdownMenuAnatomy.dropdown> {
     trigger: React.ReactElement,
+    mobilePlacement?: ModalProps["mobilePlacement"]
 }
 
 const _DropdownMenu = (props: DropdownMenuProps) => {
@@ -94,6 +95,7 @@ const _DropdownMenu = (props: DropdownMenuProps) => {
         mobilePanelClassName,
         itemClassName,
         className,
+        mobilePlacement = "bottom",
         ...rest
     } = props
 
@@ -162,6 +164,7 @@ const _DropdownMenu = (props: DropdownMenuProps) => {
                         isClosable
                         className="block md:hidden"
                         panelClassName={cn(DropdownMenuAnatomy.mobilePanel(), mobilePanelClassName)}
+                        mobilePlacement={mobilePlacement}
                     >
                         <Menu.Items className={cn(DropdownMenuAnatomy.mobileDropdown(), mobileDropdownClassName)}>
                             {itemsWithProps}

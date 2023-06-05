@@ -12,7 +12,7 @@ import { cn } from "@rahimstack/tailwind-utils"
 export const StatsAnatomy = defineStyleAnatomy({
     list: cva([
         "UI-Stats__list",
-        "mt-5 grid grid-cols-1 divide-y divide-[--border] overflow-hidden rounded-lg md:grid-cols-3 md:divide-y-0 md:divide-x"
+        "grid grid-cols-1 divide-y divide-[--border] overflow-hidden md:grid-cols-3 md:divide-y-0 md:divide-x"
     ]),
     item: cva([
         "UI-Stats__item",
@@ -20,7 +20,7 @@ export const StatsAnatomy = defineStyleAnatomy({
     ]),
     name: cva([
         "UI-Stats__name",
-        "text-sm font-normal text-gray-900"
+        "text-sm font-normal text-[--muted]"
     ]),
     value: cva([
         "UI-Stats__value",
@@ -79,7 +79,7 @@ export const Stats: React.FC<StatsProps> = React.forwardRef<HTMLDListElement, St
 
                         <dd className={cn(StatsAnatomy.value(), valueClassName)}>
                             {item.value}
-                            <span className={cn(StatsAnatomy.unit(), unitClassName)}>from {item.unit}</span>
+                            <span className={cn(StatsAnatomy.unit(), unitClassName)}>{item.unit}</span>
                         </dd>
                         <div
                             className={cn(StatsAnatomy.trend(), trendClassName)}

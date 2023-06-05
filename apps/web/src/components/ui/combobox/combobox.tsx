@@ -17,9 +17,10 @@ import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling 
 
 export const ComboboxAnatomy = defineStyleAnatomy({
     menuContainer: cva([
-        "UI-Combobox__menuContainer absolute z-10 -bottom-0.5",
+        "UI-Combobox__menuContainer",
+        "absolute z-10 -bottom-0.5",
         "left-0 translate-y-full max-h-56 w-full overflow-auto rounded-md p-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm",
-        "bg-[--paper]",
+        "bg-[--paper] border border-[--border]",
     ]),
     menuItem: cva([
         "UI-Combobox__menuItem",

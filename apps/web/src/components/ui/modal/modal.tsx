@@ -19,7 +19,7 @@ export const ModalAnatomy = defineStyleAnatomy({
     panel: cva([
         "UI-Modal__panel",
         "w-full transform overflow-hidden rounded-none sm:rounded-md p-6 text-left align-middle shadow-xl transition-all relative",
-        "bg-[--modal]"
+        "bg-[--paper]"
     ], {
         variants: {
             size: {
@@ -34,6 +34,25 @@ export const ModalAnatomy = defineStyleAnatomy({
         },
     }),
     body: cva("UI-Modal__body mt-2"),
+    overlay: cva([
+        "UI-Modal__overlay",
+        "fixed inset-0 bg-black bg-opacity-25 dark:bg-opacity-70"
+    ]),
+    outsideContainer: cva([
+        "UI-Modal__outsideContainer",
+        "flex min-h-full justify-center p-0 sm:p-4 text-center"
+    ], {
+        variants: {
+            mobilePlacement: {
+                initial: "items-center",
+                bottom: "items-end sm:items-center",
+                top: "items-start sm:items-center"
+            }
+        },
+        defaultVariants: {
+            mobilePlacement: "bottom"
+        }
+    }),
     closeButton: cva([
         "UI-Modal__closeButton",
         "absolute right-2 top-2"
@@ -46,7 +65,7 @@ export const ModalAnatomy = defineStyleAnatomy({
 
 export interface ModalProps extends React.ComponentPropsWithRef<"div">,
     ComponentWithAnatomy<typeof ModalAnatomy>,
-    VariantProps<typeof ModalAnatomy.panel> {
+    VariantProps<typeof ModalAnatomy.panel>, VariantProps<typeof ModalAnatomy.outsideContainer> {
     isOpen: boolean,
     onClose: () => void
     title?: string
@@ -65,8 +84,11 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>((props, ref) =
         panelClassName,
         titleClassName,
         closeButtonClassName,
+        outsideContainerClassName,
         bodyClassName,
+        overlayClassName,
         isClosable,
+        mobilePlacement,
         ...rest
     } = props
 
@@ -83,11 +105,11 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>((props, ref) =
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <div className="fixed inset-0 bg-black bg-opacity-25 dark:bg-opacity-70"/>
+                        <div className={cn(ModalAnatomy.overlay(), overlayClassName)}/>
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-y-auto">
-                        <div className="flex min-h-full items-end sm:items-center justify-center p-0 sm:p-4 text-center">
+                        <div className={cn(ModalAnatomy.outsideContainer({ mobilePlacement }), outsideContainerClassName)}>
                             <Transition.Child
                                 as={Fragment}
                                 enter="ease-out duration-300"

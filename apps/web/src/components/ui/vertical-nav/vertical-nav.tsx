@@ -1,9 +1,10 @@
 "use client"
 
-import React from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"
+import React, { Fragment } from "react"
+import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
+import { Disclosure } from "@headlessui/react"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -14,18 +15,30 @@ export const VerticalNavAnatomy = defineStyleAnatomy({
         "UI-VerticalNav__nav",
         "block space-y-1"
     ]),
-    tab: cva([
+    item: cva([
         "UI-VerticalNav__tab",
-        "group flex flex-none truncate items-center px-3 py-2 text-sm font-[600] rounded-md transition",
-        "hover:bg-[--highlight]",
+        "group flex flex-none truncate items-center px-3 py-2 text-sm font-[600] rounded-md transition cursor-pointer",
+        "hover:bg-[--highlight] hover:text-[--text-color]",
         "focus-visible:ring-2 ring-[--ring] outline-none",
         "text-[--muted]",
         "data-[current=true]:text-[--brand]"
     ]),
+    parentItem: cva([
+        "UI-VerticalNav__parentItem",
+        "cursor-pointer",
+    ]),
+    parentItemChevron: cva([
+        "UI-VerticalNav__parentItemChevron",
+        "w-5 h-5 transition-transform data-[open=true]:rotate-90",
+    ]),
     icon: cva([
         "UI-VerticalNav__icon",
         "flex-shrink-0 -ml-1 mr-3 h-6 w-6",
-        "text-[--muted] data-[current=true]:text-[--brand]"
+        "text-[--muted] group-hover:text-[--text-color] data-[current=true]:text-[--brand] data-[current=true]:group-hover:text-[--brand]"
+    ]),
+    subList: cva([
+        "UI-VerticalNav__subList",
+        "pl-2",
     ]),
 })
 
@@ -37,9 +50,11 @@ export interface VerticalNavProps extends React.ComponentPropsWithRef<"div">, Co
     children?: React.ReactNode
     items: {
         name: string,
-        href: string | null | undefined,
+        href?: string | null | undefined,
         icon?: ((props: any) => JSX.Element) | null | undefined,
-        isCurrent: boolean
+        isCurrent?: boolean,
+        addon?: React.ReactNode
+        content?: React.ReactNode
     }[]
 }
 
@@ -48,6 +63,11 @@ export const VerticalNav: React.FC<VerticalNavProps> = React.forwardRef<HTMLDivE
     const {
         children,
         navClassName,
+        itemClassName,
+        iconClassName,
+        parentItemClassName,
+        subListClassName,
+        parentItemChevronClassName,
         className,
         items,
         ...rest
@@ -59,25 +79,72 @@ export const VerticalNav: React.FC<VerticalNavProps> = React.forwardRef<HTMLDivE
             className={cn(VerticalNavAnatomy.nav(), navClassName, className)}
             {...rest}
         >
-            {items.map((tab: any) => (
+            {items.map((item, idx) => !item.content ? (
                 <a
-                    key={tab.name}
-                    href={tab.href}
+                    key={item.name}
+                    href={item.href ?? "#"}
                     className={cn(
-                        VerticalNavAnatomy.tab(),
+                        VerticalNavAnatomy.item(),
+                        itemClassName,
                     )}
-                    aria-current={tab.isCurrent ? "page" : undefined}
-                    data-current={tab.isCurrent}
+                    aria-current={item.isCurrent ? "page" : undefined}
+                    data-current={item.isCurrent}
                 >
-                    {tab.icon && <tab.icon
+                    {item.icon && <item.icon
                         className={cn(
-                            VerticalNavAnatomy.icon()
+                            VerticalNavAnatomy.icon(),
+                            iconClassName,
                         )}
                         aria-hidden="true"
-                        data-current={tab.isCurrent}
+                        data-current={item.isCurrent}
                     />}
-                    <span>{tab.name}</span>
+                    <span>{item.name}</span>
+                    {item.addon}
                 </a>
+            ) : (
+                <Disclosure as={Fragment} key={item.name}>
+                    {({ open }) => (
+                        <>
+                            <Disclosure.Button
+                                as="div"
+                                key={item.name}
+                                tabIndex={idx}
+                                className={cn(
+                                    VerticalNavAnatomy.item(),
+                                    VerticalNavAnatomy.parentItem(),
+                                    itemClassName,
+                                    parentItemClassName,
+                                )}
+                                aria-current={item.isCurrent ? "page" : undefined}
+                                data-current={item.isCurrent}
+                            >
+                                <div className="w-full flex">
+                                    {item.icon && <item.icon
+                                        className={cn(
+                                            VerticalNavAnatomy.icon(),
+                                            iconClassName,
+                                        )}
+                                        aria-hidden="true"
+                                        data-current={item.isCurrent}
+                                    />}
+                                    <span>{item.name}</span>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                     className={cn(VerticalNavAnatomy.parentItemChevron(), parentItemChevronClassName)}
+                                     data-open={`${open}`}
+                                >
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </Disclosure.Button>
+                            <Disclosure.Panel
+                                className={cn(VerticalNavAnatomy.subList(), subListClassName)}
+                            >
+                                {item.content && item.content}
+                            </Disclosure.Panel>
+                        </>
+                    )}
+                </Disclosure>
             ))}
         </nav>
     )

@@ -337,6 +337,15 @@ const cities = [
     },
 ]
 
+export const DemoLineChart = () => <LineChart
+    className="h-80 mt-6"
+    data={lineChartData}
+    index="year"
+    categories={["Upward Trend", "Downward Trend"]}
+    colors={["green", "yellow"]}
+    yAxisWidth={40}
+/>
+
 export const ChartTest: React.FC<ChartTestProps> = (props) => {
 
     const { children, ...rest } = props

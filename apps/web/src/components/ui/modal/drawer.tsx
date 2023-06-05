@@ -1,3 +1,5 @@
+"use client"
+
 import { Dialog, Transition } from "@headlessui/react"
 import { cn } from "@rahimstack/tailwind-utils"
 import { cva, VariantProps } from "class-variance-authority"
@@ -22,7 +24,7 @@ export const DrawerAnatomy = defineStyleAnatomy({
     }),
     container: cva([
         "UI-Drawer__container",
-        "flex h-full flex-col overflow-y-auto bg-[--modal] shadow-xl"
+        "flex h-full flex-col overflow-y-auto bg-[--paper] shadow-xl"
     ]),
     body: cva([
         "UI-Drawer__body",
@@ -112,7 +114,6 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                     as="div"
                     className={cn(
                         "relative z-50",
-                        // elementStyles({ }),
                         className,
                     )}
                     onClose={onClose}

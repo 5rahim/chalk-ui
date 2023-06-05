@@ -46,6 +46,8 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = React.forwardRef<HT
         children,
         className,
         navClassName,
+        tabClassName,
+        iconClassName,
         items,
         ...rest
     } = props
@@ -56,19 +58,21 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = React.forwardRef<HT
             className={cn(NavigationTabsAnatomy.nav(), navClassName, className)}
             {...rest}
         >
-            {items.map((tab: any) => (
+            {items.map((tab) => (
                 <a
                     key={tab.name}
-                    href={tab.href}
+                    href={tab.href ?? "#"}
                     className={cn(
                         NavigationTabsAnatomy.tab(),
+                        tabClassName,
                     )}
                     aria-current={tab.isCurrent ? "page" : undefined}
                     data-current={tab.isCurrent}
                 >
                     {tab.icon && <tab.icon
                         className={cn(
-                            NavigationTabsAnatomy.icon()
+                            NavigationTabsAnatomy.icon(),
+                            iconClassName
                         )}
                         aria-hidden="true"
                         data-current={tab.isCurrent}
