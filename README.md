@@ -54,6 +54,8 @@ https://chalk.rahim.app
 - [x] Paper
 - [x] Card
 - [x] Navbar
+- [x] VerticalNav
+- [x] HorizontalNav
 - [x] AppLayout
 - [ ] Page Layout
 - [ ] DataGrid

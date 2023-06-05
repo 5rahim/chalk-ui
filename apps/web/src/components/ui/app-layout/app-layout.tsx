@@ -50,11 +50,7 @@ export const AppLayoutSidebarAnatomy = defineStyleAnatomy({
         "group-[.sidebar-md]:md:w-64",
         "group-[.sidebar-lg]:md:w-[20rem]",
         "group-[.sidebar-xl]:md:w-[25rem]",
-    ]),
-    sidebar: cva([
-        "UI-AppLayoutSidebar__root",
-        "flex flex-grow flex-col overflow-y-auto border-r border-[--border] bg-[--paper]"
-    ]),
+    ])
 })
 
 export const AppLayoutContentAnatomy = defineStyleAnatomy({
@@ -145,22 +141,17 @@ const AppLayoutSidebar: React.FC<AppLayoutSidebarProps> = React.forwardRef<HTMLE
     const {
         children,
         rootClassName,
-        sidebarClassName,
         className,
         ...rest
     } = props
 
     return (
         <aside
-            className={cn(AppLayoutSidebarAnatomy.root(), rootClassName)}
+            className={cn(AppLayoutSidebarAnatomy.root(), rootClassName, className)}
             {...rest}
             ref={ref}
         >
-            {/*<div*/}
-            {/*    className={cn(AppLayoutSidebarAnatomy.sidebar(), sidebarClassName, className)}*/}
-            {/*>*/}
             {children}
-            {/*</div>*/}
         </aside>
     )
 

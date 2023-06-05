@@ -4,6 +4,7 @@ import React from "react"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
+import { ShowOnly } from "@/components/ui/show-only"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -81,13 +82,15 @@ export const Stats: React.FC<StatsProps> = React.forwardRef<HTMLDListElement, St
                             {item.value}
                             <span className={cn(StatsAnatomy.unit(), unitClassName)}>{item.unit}</span>
                         </dd>
-                        <div
-                            className={cn(StatsAnatomy.trend(), trendClassName)}
-                            data-trend={item.trend}
-                        >
-                            {item.trend && <span> {item.trend === "up" ? "+" : "-"}</span>}
-                            {item.change}
-                        </div>
+                        <ShowOnly when={!!item.change || !!item.trend}>
+                            <div
+                                className={cn(StatsAnatomy.trend(), trendClassName)}
+                                data-trend={item.trend}
+                            >
+                                {item.trend && <span> {item.trend === "up" ? "+" : "-"}</span>}
+                                {item.change}
+                            </div>
+                        </ShowOnly>
                     </div>
                 ))}
             </dl>

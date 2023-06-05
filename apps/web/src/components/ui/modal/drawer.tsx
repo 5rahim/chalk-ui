@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react"
 import { cn } from "@rahimstack/tailwind-utils"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { Fragment } from "react"
-import { CloseButton } from "../button"
+import { CloseButton, CloseButtonProps } from "../button"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 /* -------------------------------------------------------------------------------------------------
@@ -50,6 +50,7 @@ export interface DrawerProps extends React.ComponentPropsWithRef<"div">, Compone
     isOpen: boolean
     isClosable?: boolean
     onClose: () => void
+    closeButtonIntent?: CloseButtonProps["intent"]
 }
 
 export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref) => {
@@ -69,6 +70,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
         headerClassName,
         bodyClassName,
         containerClassName,
+        closeButtonIntent,
         ...rest
     } = props
 
@@ -186,6 +188,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                                                     <CloseButton
                                                         onClick={() => onClose()}
                                                         className={cn(closeButtonClassName)}
+                                                        intent={closeButtonIntent}
                                                     />
                                                 )}
 

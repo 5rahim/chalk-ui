@@ -16,8 +16,8 @@ export const UITest_Sidebar: React.FC<{ children?: React.ReactNode }> = (props) 
     return (
         <AppSidebarProvider>
             <AppLayout withSidebar>
-                <AppLayout.Sidebar className="p-4">
-                    <AppSidebar>
+                <AppLayout.Sidebar>
+                    <AppSidebar className="p-4">
                         <VerticalNav items={DemoNavigationItems}/>
                     </AppSidebar>
                 </AppLayout.Sidebar>
