@@ -30,7 +30,7 @@ export const IconButtonAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface IconButtonProps extends Omit<ButtonProps, "leftIcon" | "rightIcon" | "iconSpacing" | "isUppercase">,
-   VariantProps<typeof IconButtonAnatomy.iconButton>, ComponentWithAnatomy<typeof IconButtonAnatomy> {
+    VariantProps<typeof IconButtonAnatomy.iconButton>, ComponentWithAnatomy<typeof IconButtonAnatomy> {
    icon?: React.ReactElement<any, string | React.JSXElementConstructor<any>>
 }
 
@@ -46,19 +46,19 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>((
    } = props
 
    return (
-      <>
-         <Button
-            className={cn(
-               IconButtonAnatomy.iconButton({ size }),
-               iconButtonClassName,
-               className,
-            )}
-            {...rest}
-            ref={ref}
-         >
-            {icon}
-         </Button>
-      </>
+       <>
+          <Button
+              className={cn(
+                  IconButtonAnatomy.iconButton({ size }),
+                  iconButtonClassName,
+                  className,
+              )}
+              {...rest}
+              ref={ref}
+          >
+             {icon}
+          </Button>
+       </>
    )
 
 })

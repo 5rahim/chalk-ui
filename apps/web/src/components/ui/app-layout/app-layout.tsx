@@ -86,9 +86,9 @@ export const AppLayoutStackAnatomy = defineStyleAnatomy({
     })
 })
 
-export const AppLayoutSectionAnatomy = defineStyleAnatomy({
+export const AppLayoutGridAnatomy = defineStyleAnatomy({
     root: cva([
-        "UI-AppLayoutSection__root",
+        "UI-AppLayoutGrid__root",
         "block"
     ], {
         variants: {
@@ -247,15 +247,15 @@ const AppLayoutContent: React.FC<AppLayoutContentProps> = React.forwardRef<HTMLE
 AppLayoutContent.displayName = "AppLayoutContent"
 
 /* -------------------------------------------------------------------------------------------------
- * AppLayout.Section
+ * AppLayout.Grid
  * -----------------------------------------------------------------------------------------------*/
 
-export interface AppLayoutSectionProps extends React.ComponentPropsWithRef<"section">,
-    ComponentWithAnatomy<typeof AppLayoutSectionAnatomy>,
-    VariantProps<typeof AppLayoutSectionAnatomy.root> {
+export interface AppLayoutGridProps extends React.ComponentPropsWithRef<"section">,
+    ComponentWithAnatomy<typeof AppLayoutGridAnatomy>,
+    VariantProps<typeof AppLayoutGridAnatomy.root> {
 }
 
-const AppLayoutSection: React.FC<AppLayoutSectionProps> = React.forwardRef<HTMLElement, AppLayoutSectionProps>((props, ref) => {
+const AppLayoutGrid: React.FC<AppLayoutGridProps> = React.forwardRef<HTMLElement, AppLayoutGridProps>((props, ref) => {
 
     const {
         children,
@@ -269,7 +269,7 @@ const AppLayoutSection: React.FC<AppLayoutSectionProps> = React.forwardRef<HTMLE
 
     return (
         <section
-            className={cn(AppLayoutSectionAnatomy.root({ breakBelow, cols, spacing }), rootClassName, className)}
+            className={cn(AppLayoutGridAnatomy.root({ breakBelow, cols, spacing }), rootClassName, className)}
             {...rest}
             ref={ref}
         >
@@ -279,7 +279,7 @@ const AppLayoutSection: React.FC<AppLayoutSectionProps> = React.forwardRef<HTMLE
 
 })
 
-AppLayoutSection.displayName = "AppLayoutSection"
+AppLayoutGrid.displayName = "AppLayoutGrid"
 
 /* -------------------------------------------------------------------------------------------------
  * AppLayout.Footer
@@ -352,7 +352,7 @@ _AppLayout.Header = AppLayoutHeader
 _AppLayout.Sidebar = AppLayoutSidebar
 _AppLayout.Content = AppLayoutContent
 _AppLayout.Footer = AppLayoutFooter
-_AppLayout.Section = AppLayoutSection
+_AppLayout.Grid = AppLayoutGrid
 _AppLayout.Stack = AppLayoutStack
 
 export const AppLayout = createPolymorphicComponent<"div", AppLayoutProps, {
@@ -360,7 +360,7 @@ export const AppLayout = createPolymorphicComponent<"div", AppLayoutProps, {
     Sidebar: typeof AppLayoutSidebar
     Content: typeof AppLayoutContent
     Footer: typeof AppLayoutFooter
-    Section: typeof AppLayoutSection
+    Grid: typeof AppLayoutGrid
     Stack: typeof AppLayoutStack
 }>(_AppLayout)
 

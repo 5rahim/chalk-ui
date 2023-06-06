@@ -33,24 +33,24 @@ export const AvatarShowcase = React.forwardRef<HTMLDivElement, AvatarShowcasePro
    } = props
 
    return (
-      <>
-         <div
-            className={cn(
-               AvatarShowcaseAnatomy.container(),
-               containerClassName,
-               className,
-            )}
-            {...rest}
-            ref={ref}
-         >
-            {avatar}
-            <div className={cn(AvatarShowcaseAnatomy.detailsContainer(), detailsContainerClassName)}>
-               <p className={cn(AvatarShowcaseAnatomy.name(), nameClassName)}>{name}</p>
-               {!!description && <span className={cn(AvatarShowcaseAnatomy.description(), descriptionClassName)}>{description}</span>}
-               {children}
-            </div>
-         </div>
-      </>
+       <>
+          <div
+              className={cn(
+                  AvatarShowcaseAnatomy.container(),
+                  containerClassName,
+                  className,
+              )}
+              {...rest}
+              ref={ref}
+          >
+             {avatar}
+             <div className={cn(AvatarShowcaseAnatomy.detailsContainer(), detailsContainerClassName)}>
+                <p className={cn(AvatarShowcaseAnatomy.name(), nameClassName)}>{name}</p>
+                {!!description && <span className={cn(AvatarShowcaseAnatomy.description(), descriptionClassName)}>{description}</span>}
+                {children}
+             </div>
+          </div>
+       </>
    )
 
 })

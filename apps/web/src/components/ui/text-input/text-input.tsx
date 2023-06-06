@@ -8,64 +8,64 @@ import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling 
  * -----------------------------------------------------------------------------------------------*/
 
 export interface TextInputProps extends Omit<React.ComponentPropsWithRef<"input">, "size">,
-   Omit<InputStyling, "hasError" | "isDisabled">,
-   BasicFieldOptions {
+    Omit<InputStyling, "hasError" | "isDisabled">,
+    BasicFieldOptions {
 }
 
 export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
 
-   const [{
-      className,
-      size = "md",
-      intent = "basic",
-      leftAddon = undefined,
-      leftIcon = undefined,
-      rightAddon = undefined,
-      rightIcon = undefined,
-      disabled,
-      ...rest
-   }, basicFieldProps] = extractBasicFieldProps<TextInputProps>(props, useId())
+    const [{
+        className,
+        size = "md",
+        intent = "basic",
+        leftAddon = undefined,
+        leftIcon = undefined,
+        rightAddon = undefined,
+        rightIcon = undefined,
+        disabled,
+        ...rest
+    }, basicFieldProps] = extractBasicFieldProps<TextInputProps>(props, useId())
 
-   return (
-      <>
-         <BasicField
-            {...basicFieldProps}
-         >
-            <div className={cn(inputContainerStyle())}>
+    return (
+        <>
+            <BasicField
+                {...basicFieldProps}
+            >
+                <div className={cn(inputContainerStyle())}>
 
-               <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
-               <InputIcon icon={leftIcon} size={size} side={"left"} />
+                    <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"}/>
+                    <InputIcon icon={leftIcon} size={size} side={"left"}/>
 
-               <input
-                  // type="" /!\ We do not put the type since it can be multiple
-                  id={basicFieldProps.id}
-                  name={basicFieldProps.name}
-                  className={cn(
-                     "form-input",
-                     InputAnatomy.input({
-                        size,
-                        intent,
-                        hasError: !!basicFieldProps.error,
-                        untouchable: !!basicFieldProps.isDisabled,
-                        hasRightAddon: !!rightAddon,
-                        hasRightIcon: !!rightIcon,
-                        hasLeftAddon: !!leftAddon,
-                        hasLeftIcon: !!leftIcon,
-                     }),
-                     className,
-                  )}
-                  disabled={basicFieldProps.isDisabled || disabled}
-                  {...rest}
-                  ref={ref}
-               />
+                    <input
+                        // type="" /!\ We do not put the type since it can be multiple
+                        id={basicFieldProps.id}
+                        name={basicFieldProps.name}
+                        className={cn(
+                            "form-input",
+                            InputAnatomy.input({
+                                size,
+                                intent,
+                                hasError: !!basicFieldProps.error,
+                                untouchable: !!basicFieldProps.isDisabled,
+                                hasRightAddon: !!rightAddon,
+                                hasRightIcon: !!rightIcon,
+                                hasLeftAddon: !!leftAddon,
+                                hasLeftIcon: !!leftIcon,
+                            }),
+                            className,
+                        )}
+                        disabled={basicFieldProps.isDisabled || disabled}
+                        {...rest}
+                        ref={ref}
+                    />
 
-               <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
-               <InputIcon icon={rightIcon} size={size} side={"right"} />
+                    <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"}/>
+                    <InputIcon icon={rightIcon} size={size} side={"right"}/>
 
-            </div>
-         </BasicField>
-      </>
-   )
+                </div>
+            </BasicField>
+        </>
+    )
 
 })
 

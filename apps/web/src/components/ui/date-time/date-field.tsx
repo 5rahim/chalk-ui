@@ -50,11 +50,11 @@ export function DateField({ locale, ...props }: Omit<DateFieldStateOptions, "loc
    let { fieldProps } = useDateField(props, state, ref)
 
    return (
-      <div {...fieldProps} ref={ref} className="flex">
-         {state.segments.map((segment, i) => (
-            <DateSegmentComponent key={i} segment={segment} state={state} />
-         ))}
-      </div>
+       <div {...fieldProps} ref={ref} className="flex">
+          {state.segments.map((segment, i) => (
+              <DateSegmentComponent key={i} segment={segment} state={state}/>
+          ))}
+       </div>
    )
 }
 
@@ -70,25 +70,25 @@ export function DateSegmentComponent({ segment, state }: { segment: DateSegment,
    let { segmentProps } = useDateSegment(segment, state, ref)
 
    return (
-      <div
-         {...segmentProps}
-         ref={ref}
-         style={{
-            ...segmentProps.style,
-         }}
-         className={cn(DateSegmentAnatomy.segment({ isEditable: segment.isEditable }))}
-         suppressHydrationWarning
-      >
-         <span
-            aria-hidden="true" className={cn(DateSegmentAnatomy.input())} style={{
-            display: segment.isPlaceholder ? undefined : "none", height: segment.isPlaceholder ? undefined : 0,
-            pointerEvents: "none",
-         }}
-         >
-            {segment.placeholder}
-         </span>
-         {segment.isPlaceholder ? null : segment.text}
-      </div>
+       <div
+           {...segmentProps}
+           ref={ref}
+           style={{
+              ...segmentProps.style,
+           }}
+           className={cn(DateSegmentAnatomy.segment({ isEditable: segment.isEditable }))}
+           suppressHydrationWarning
+       >
+          <span
+              aria-hidden="true" className={cn(DateSegmentAnatomy.input())} style={{
+             display: segment.isPlaceholder ? undefined : "none", height: segment.isPlaceholder ? undefined : 0,
+             pointerEvents: "none",
+          }}
+          >
+             {segment.placeholder}
+          </span>
+          {segment.isPlaceholder ? null : segment.text}
+       </div>
    )
 }
 

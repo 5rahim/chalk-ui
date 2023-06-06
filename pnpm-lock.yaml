@@ -117,6 +117,9 @@ importers:
       '@react-icons/all-files':
         specifier: ^4.1.0
         version: 4.1.0(react@18.2.0)
+      '@tanstack/react-table':
+        specifier: ^8.9.1
+        version: 8.9.1(react-dom@18.2.0)(react@18.2.0)
       '@zag-js/checkbox':
         specifier: ^0.9.2
         version: 0.9.2
@@ -196,6 +199,9 @@ importers:
         specifier: ^9.0.4
         version: 9.0.4(react@18.2.0)
     devDependencies:
+      '@faker-js/faker':
+        specifier: ^8.0.2
+        version: 8.0.2
       '@types/dinero.js':
         specifier: ^1.9.0
         version: 1.9.0
@@ -2205,16 +2211,21 @@ packages:
     dev: true
 
   /@eslint/js@8.38.0:
-    resolution: {integrity: sha512-IoD2MfUnOV58ghIHCiil01PcohxjbYR/qCxsoC+xNgUwh1EY8jOOrYmu3d3a71+tJJ23uscEV4X2HJWMsPJu4g==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    resolution: { integrity: sha512-IoD2MfUnOV58ghIHCiil01PcohxjbYR/qCxsoC+xNgUwh1EY8jOOrYmu3d3a71+tJJ23uscEV4X2HJWMsPJu4g== }
+    engines: { node: ^12.22.0 || ^14.17.0 || >=16.0.0 }
+    dev: true
+
+  /@faker-js/faker@8.0.2:
+    resolution: { integrity: sha512-Uo3pGspElQW91PCvKSIAXoEgAUlRnH29sX2/p89kg7sP1m2PzCufHINd0FhTXQf6DYGiUlVncdSPa2F9wxed2A== }
+    engines: { node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13' }
     dev: true
 
   /@fal-works/esbuild-plugin-global-externals@2.1.2:
-    resolution: {integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==}
+    resolution: { integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ== }
     dev: true
 
   /@floating-ui/core@1.2.6:
-    resolution: {integrity: sha512-EvYTiXet5XqweYGClEmpu3BoxmsQ4hkj3QaYA6qEnigCWffTP3vNRwBReTdrwDwo7OoJ3wM8Uoe9Uk4n+d4hfg==}
+    resolution: { integrity: sha512-EvYTiXet5XqweYGClEmpu3BoxmsQ4hkj3QaYA6qEnigCWffTP3vNRwBReTdrwDwo7OoJ3wM8Uoe9Uk4n+d4hfg== }
     dev: false
 
   /@floating-ui/dom@1.2.5:
@@ -6850,9 +6861,26 @@ packages:
       tailwindcss: 3.3.2
     dev: true
 
+  /@tanstack/react-table@8.9.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: { integrity: sha512-yHs2m6lk5J5RNcu2dNtsDGux66wNXZjEgzxos6MRCX8gL+nqxeW3ZglqP6eANN0bGElPnjvqiUHGQvdACOr3Cw== }
+    engines: { node: '>=12' }
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@tanstack/table-core': 8.9.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@tanstack/table-core@8.9.1:
+    resolution: { integrity: sha512-2+R83n8vMZND0q3W1lSiF7co9nFbeWbjAErFf27xwbeA9E0wtUu5ZDfgj+TZ6JzdAEQAgfxkk/QNFAKiS8E4MA== }
+    engines: { node: '>=12' }
+    dev: false
+
   /@testing-library/dom@8.20.0:
-    resolution: {integrity: sha512-d9ULIT+a4EXLX3UU8FBjauG9NnsZHkHztXoIcTsOKoOw030fyjheN9svkTULjJxtYag9DZz5Jz5qkWZDPxTFwA==}
-    engines: {node: '>=12'}
+    resolution: { integrity: sha512-d9ULIT+a4EXLX3UU8FBjauG9NnsZHkHztXoIcTsOKoOw030fyjheN9svkTULjJxtYag9DZz5Jz5qkWZDPxTFwA== }
+    engines: { node: '>=12' }
     dependencies:
       '@babel/code-frame': 7.21.4
       '@babel/runtime': 7.21.5

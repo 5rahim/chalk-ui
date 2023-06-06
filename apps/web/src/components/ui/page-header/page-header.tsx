@@ -49,8 +49,8 @@ export const PageHeaderAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface PageHeaderProps extends React.ComponentPropsWithRef<"div">,
-   ComponentWithAnatomy<typeof PageHeaderAnatomy>,
-   VariantProps<typeof PageHeaderAnatomy.title> {
+    ComponentWithAnatomy<typeof PageHeaderAnatomy>,
+    VariantProps<typeof PageHeaderAnatomy.title> {
    title?: string
    description?: string
    action?: React.ReactNode
@@ -76,33 +76,33 @@ export const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>((pro
    } = props
 
    return (
-      <>
-         <header
-            aria-label={title}
-            className={cn(
-               PageHeaderAnatomy.body(),
-               bodyClassName,
-               className,
-            )}
-         >
-            <div className={cn(PageHeaderAnatomy.detailsContainer(), detailsContainerClassName)}>
-               {image && <div className="flex-shrink-0">
+       <>
+          <header
+              aria-label={title}
+              className={cn(
+                  PageHeaderAnatomy.body(),
+                  bodyClassName,
+                  className,
+              )}
+          >
+             <div className={cn(PageHeaderAnatomy.detailsContainer(), detailsContainerClassName)}>
+                {image && <div className="flex-shrink-0">
                    <div className="relative">
                       {image}
                    </div>
-               </div>}
-               <div className="">
-                  <h1 className={cn(PageHeaderAnatomy.title({ size }), titleClassName)}>{title}</h1>
-                  {description && <p className={cn(PageHeaderAnatomy.description(), descriptionClassName)}>
-                     {description}
-                  </p>}
-               </div>
-            </div>
-            <div className={cn(PageHeaderAnatomy.actionContainer(), actionContainerClassName)}>
-               {action}
-            </div>
-         </header>
-      </>
+                </div>}
+                <div className="">
+                   <h1 className={cn(PageHeaderAnatomy.title({ size }), titleClassName)}>{title}</h1>
+                   {description && <p className={cn(PageHeaderAnatomy.description(), descriptionClassName)}>
+                      {description}
+                   </p>}
+                </div>
+             </div>
+             <div className={cn(PageHeaderAnatomy.actionContainer(), actionContainerClassName)}>
+                {action}
+             </div>
+          </header>
+       </>
    )
 
 })

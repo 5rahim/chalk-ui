@@ -36,9 +36,9 @@ export const DatePickerAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface DatePickerProps extends Omit<DatePickerStateOptions<DateValue>, "label">,
-   ComponentWithAnatomy<typeof DatePickerAnatomy>,
-   BasicFieldOptions,
-   InputStyling {
+    ComponentWithAnatomy<typeof DatePickerAnatomy>,
+    BasicFieldOptions,
+    InputStyling {
    locale?: string
 }
 
@@ -72,68 +72,68 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
    const { onPress, ...restButtonProps } = buttonProps
 
    return (
-      <BasicField
-         {...basicFieldProps}
-         labelProps={labelProps}
-      >
-         <div {...groupProps} ref={_ref} className={cn("group", inputContainerStyle())}>
+       <BasicField
+           {...basicFieldProps}
+           labelProps={labelProps}
+       >
+          <div {...groupProps} ref={_ref} className={cn("group", inputContainerStyle())}>
 
-            <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"} />
-            <InputIcon icon={leftIcon} size={size} side={"left"} />
+             <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"}/>
+             <InputIcon icon={leftIcon} size={size} side={"left"}/>
 
-            <div
-               className={cn(
-                  "form-input",
-                  InputAnatomy.input({
-                     size,
-                     intent,
-                     hasError: !!basicFieldProps.error,
-                     untouchable: !!basicFieldProps.isDisabled,
-                     hasRightAddon: !!rightAddon,
-                     hasRightIcon: !!rightIcon,
-                     hasLeftAddon: !!leftAddon,
-                     hasLeftIcon: !!leftIcon,
-                  }),
-                  DatePickerAnatomy.input(),
-                  inputClassName,
-               )}
-            >
-               <div className="flex">
-                  <DateField {...fieldProps} />
-               </div>
+             <div
+                 className={cn(
+                     "form-input",
+                     InputAnatomy.input({
+                        size,
+                        intent,
+                        hasError: !!basicFieldProps.error,
+                        untouchable: !!basicFieldProps.isDisabled,
+                        hasRightAddon: !!rightAddon,
+                        hasRightIcon: !!rightIcon,
+                        hasLeftAddon: !!leftAddon,
+                        hasLeftIcon: !!leftIcon,
+                     }),
+                     DatePickerAnatomy.input(),
+                     inputClassName,
+                 )}
+             >
+                <div className="flex">
+                   <DateField {...fieldProps} />
+                </div>
 
-               <IconButton
-                  intent="gray-basic"
-                  size="xs"
-                  {...restButtonProps}
-                  icon={<svg
-                     xmlns="http://www.w3.org/2000/svg"
-                     fill="currentColor"
-                     viewBox="0 0 24 24"
-                     className={cn(DatePickerAnatomy.iconButton(), iconButtonClassName)}
-                  >
-                     <path d="M3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7v2H5a2 2 0 0 0-2 2zm16 14H5V8h14z"></path>
-                  </svg>}
-                  onClick={e => onPress && onPress(e as any)}
-               />
-            </div>
-
-            <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"} />
-            <InputIcon icon={rightIcon} size={size} side={"right"} />
-
-         </div>
-
-         <Modal
-             size="sm"
-             isOpen={state.isOpen} onClose={state.close} isClosable
-             {...dialogProps}
-         >
-             <div className="flex justify-center">
-                 <Calendar {...calendarProps} />
+                <IconButton
+                    intent="gray-basic"
+                    size="xs"
+                    {...restButtonProps}
+                    icon={<svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className={cn(DatePickerAnatomy.iconButton(), iconButtonClassName)}
+                    >
+                       <path d="M3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7v2H5a2 2 0 0 0-2 2zm16 14H5V8h14z"></path>
+                    </svg>}
+                    onClick={e => onPress && onPress(e as any)}
+                />
              </div>
-         </Modal>
 
-      </BasicField>)
+             <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"}/>
+             <InputIcon icon={rightIcon} size={size} side={"right"}/>
+
+          </div>
+
+          <Modal
+              size="sm"
+              isOpen={state.isOpen} onClose={state.close} isClosable
+              {...dialogProps}
+          >
+             <div className="flex justify-center">
+                <Calendar {...calendarProps} />
+             </div>
+          </Modal>
+
+       </BasicField>)
 })
 
 DatePicker.displayName = "DatePicker"

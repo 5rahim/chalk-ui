@@ -292,13 +292,19 @@ export const ClientTest: React.FC<ClientTestProps> = (props) => {
                         </TabPanels.Nav>
                         <TabPanels.Container>
                             <TabPanels.Panel>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias amet autem consequuntur, eius hic minus neque, nesciunt obcaecati perferendis placeat quae quasi repudiandae rerum. Assumenda consequatur facere id maiores quae.
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias amet autem consequuntur, eius hic minus neque,
+                                nesciunt obcaecati
+                                perferendis placeat quae quasi repudiandae rerum. Assumenda consequatur facere id maiores quae.
                             </TabPanels.Panel>
                             <TabPanels.Panel>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad architecto cum delectus dicta dolores enim, harum impedit ipsa laboriosam nemo nesciunt nostrum perspiciatis quae quibusdam quis sequi sint vitae voluptas.
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad architecto cum delectus dicta dolores enim, harum impedit
+                                ipsa laboriosam
+                                nemo nesciunt nostrum perspiciatis quae quibusdam quis sequi sint vitae voluptas.
                             </TabPanels.Panel>
                             <TabPanels.Panel>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate doloremque eveniet magnam numquam odit quibusdam, veniam? Ab cumque dignissimos dolorem nesciunt odit? Deserunt dolores nam, rem saepe suscipit ut vitae!
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate doloremque eveniet magnam numquam odit quibusdam,
+                                veniam? Ab
+                                cumque dignissimos dolorem nesciunt odit? Deserunt dolores nam, rem saepe suscipit ut vitae!
                             </TabPanels.Panel>
                         </TabPanels.Container>
                     </TabPanels>

@@ -74,11 +74,11 @@ export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
    // The start and end date of the selected range will have
    // an emphasized appearance.
    let isSelectionStart = (state as RangeCalendarState).highlightedRange
-      ? isSameDay(date, (state as RangeCalendarState).highlightedRange.start)
-      : isSelected
+       ? isSameDay(date, (state as RangeCalendarState).highlightedRange.start)
+       : isSelected
    let isSelectionEnd = (state as RangeCalendarState).highlightedRange
-      ? isSameDay(date, (state as RangeCalendarState).highlightedRange.end)
-      : isSelected
+       ? isSameDay(date, (state as RangeCalendarState).highlightedRange.end)
+       : isSelected
 
    // We add rounded corners on the left for the first day of the month,
    // the first day of each week, and the start date of the selection.
@@ -87,33 +87,33 @@ export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
    let { countryLocale } = useUILocaleConfig()
    let dayOfWeek = getDayOfWeek(date, countryLocale)
    let isRoundedLeft =
-      isSelected && (isSelectionStart)
+       isSelected && (isSelectionStart)
    let isRoundedRight =
-      isSelected &&
-      (isSelectionEnd)
+       isSelected &&
+       (isSelectionEnd)
 
    let { focusProps, isFocusVisible } = useFocusRing()
 
    return (
-      <td
-         {...cellProps}
-         className={cn(CalendarCellAnatomy.cell({ isFocusVisible }))}
-      >
-         <div
-            {...mergeProps(buttonProps, focusProps)}
-            ref={ref}
-            hidden={isOutsideMonth}
-            className={cn(CalendarCellAnatomy.button({ isDisabled, isSelected, isUnavailable, isRoundedLeft, isRoundedRight }))}
-         >
-            <div
-               className={cn(CalendarCellAnatomy.date({
-                  isSelected, isSelectionEnd, isSelectionStart, isUnavailable, isDisabled, isFocusVisible,
-               }))}
-            >
-               {formattedDate}
-            </div>
-         </div>
-      </td>
+       <td
+           {...cellProps}
+           className={cn(CalendarCellAnatomy.cell({ isFocusVisible }))}
+       >
+          <div
+              {...mergeProps(buttonProps, focusProps)}
+              ref={ref}
+              hidden={isOutsideMonth}
+              className={cn(CalendarCellAnatomy.button({ isDisabled, isSelected, isUnavailable, isRoundedLeft, isRoundedRight }))}
+          >
+             <div
+                 className={cn(CalendarCellAnatomy.date({
+                    isSelected, isSelectionEnd, isSelectionStart, isUnavailable, isDisabled, isFocusVisible,
+                 }))}
+             >
+                {formattedDate}
+             </div>
+          </div>
+       </td>
    )
 }
 

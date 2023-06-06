@@ -9,9 +9,8 @@ import { DemoNavigationItems, DemoNavigationTabs } from "@/app/test/ClientTest"
 import { DemoLineChart } from "@/app/test/ChartTest"
 import { PageHeader } from "@/components/ui/page-header"
 import { Button } from "@/components/ui/button"
-import { BiInfoCircle } from "@react-icons/all-files/bi/BiInfoCircle"
-import { Tooltip } from "@/components/ui/tooltip"
 import { Card } from "@/components/ui/card"
+import { DataGridTest } from "@/app/test/DataGridTest"
 
 export const UITest_Sidebar: React.FC<{ children?: React.ReactNode }> = (props) => {
 
@@ -60,42 +59,42 @@ export const UITest_Sidebar: React.FC<{ children?: React.ReactNode }> = (props) 
 
                             <AppLayout.Stack>
 
-                                <AppLayout.Section>
-                                    <div className={""}>
-                                        <h3>Section</h3>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi at consequatur debitis ea eum laudantium
-                                        libero
-                                        nihil.
+                                <DataGridTest/>
+
+                                <AppLayout.Grid cols={5}>
+                                    <div className={"col-span-1"}>
+                                        <h4>Grid</h4>
+                                        <p className={"text-sm text-[--muted]"}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                     </div>
-                                    <div className={"col-span-2"}>
-                                        <Card className={""}>
+                                    <div className={"col-span-4"}>
+                                        <Card>
                                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt
                                             distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero voluptas!
                                         </Card>
                                     </div>
-                                </AppLayout.Section>
+                                </AppLayout.Grid>
 
-                                <AppLayout.Section breakBelow={"lg"}>
+                                <AppLayout.Grid breakBelow={"lg"}>
                                     <div className={"col-span-2"}>
-                                        <Card className={""}>
+                                        <Card>
                                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt
                                             distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero voluptas!
                                         </Card>
                                     </div>
                                     <div className={"col-span-1 basis-[40rem]"}>
-                                        <Card className={""}>
+                                        <Card>
                                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt
                                             distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero voluptas!
                                         </Card>
                                     </div>
-                                </AppLayout.Section>
+                                </AppLayout.Grid>
 
 
                                 <div className={"flex items-center gap-2"}>
                                     <h4>Performance History</h4>
-                                    <Tooltip trigger={<BiInfoCircle className={"w-5 h-5 text-[--blue]"}/>}>
-                                        Shows the trends
-                                    </Tooltip>
+                                    {/*<Tooltip trigger={<BiInfoCircle className={"w-5 h-5 text-[--blue]"}/>}>*/}
+                                    {/*    Shows the trends*/}
+                                    {/*</Tooltip>*/}
                                 </div>
 
                                 <DemoLineChart/>

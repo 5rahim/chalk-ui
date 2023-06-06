@@ -86,12 +86,12 @@ export function extractBasicFieldProps<Props extends BasicFieldOptions>(props: P
       },
    ] as [
       Omit<Props,
-         "label" | "name" | "help" | "error" |
-         "isDisabled" | "isRequired" | "isReadOnly" |
-         "fieldDetailsClassName" | "fieldLabelClassName" | "fieldClassName" | "fieldHelpTextClassName" |
-         "fieldErrorTextClassName" | "id" | "labelProps"
+          "label" | "name" | "help" | "error" |
+          "isDisabled" | "isRequired" | "isReadOnly" |
+          "fieldDetailsClassName" | "fieldLabelClassName" | "fieldClassName" | "fieldHelpTextClassName" |
+          "fieldErrorTextClassName" | "id" | "labelProps"
       >,
-         Omit<BasicFieldOptions, "id"> & {
+          Omit<BasicFieldOptions, "id"> & {
          id: string
       }
    ]
@@ -127,39 +127,39 @@ export const BasicField: React.FC<BasicFieldProps> = React.memo(React.forwardRef
    } = props
 
    return (
-      <>
-         <div
-            className={cn(
-               BasicFieldAnatomy.field(),
-               className,
-               fieldClassName,
-            )}
-            {...rest}
-            ref={ref}
-         >
-            <ShowOnly when={!!label}>
-               <label
-                  htmlFor={isDisabled ? undefined : id}
-                  className={cn(BasicFieldAnatomy.fieldLabel({ hasError: !!error }), fieldLabelClassName)}
-                  {...labelProps}
-               >
-                  {label}
-                  <ShowOnly when={isRequired}>
-                     <span className={cn(BasicFieldAnatomy.fieldAsterisk(), fieldAsteriskClassName)}>*</span>
-                  </ShowOnly>
-               </label>
-            </ShowOnly>
+       <>
+          <div
+              className={cn(
+                  BasicFieldAnatomy.field(),
+                  className,
+                  fieldClassName,
+              )}
+              {...rest}
+              ref={ref}
+          >
+             <ShowOnly when={!!label}>
+                <label
+                    htmlFor={isDisabled ? undefined : id}
+                    className={cn(BasicFieldAnatomy.fieldLabel({ hasError: !!error }), fieldLabelClassName)}
+                    {...labelProps}
+                >
+                   {label}
+                   <ShowOnly when={isRequired}>
+                      <span className={cn(BasicFieldAnatomy.fieldAsterisk(), fieldAsteriskClassName)}>*</span>
+                   </ShowOnly>
+                </label>
+             </ShowOnly>
 
-            {children}
+             {children}
 
-            <ShowOnly when={!!help || !!error}>
-               <div className={cn(BasicFieldAnatomy.fieldDetails(), fieldDetailsClassName)}>
-                  {!!help && <p className={cn(BasicFieldAnatomy.fieldHelpText(), fieldHelpTextClassName)}>{help}</p>}
-                  {!!error && <p className={cn(BasicFieldAnatomy.fieldErrorText(), fieldErrorTextClassName)}>{error}</p>}
-               </div>
-            </ShowOnly>
-         </div>
-      </>
+             <ShowOnly when={!!help || !!error}>
+                <div className={cn(BasicFieldAnatomy.fieldDetails(), fieldDetailsClassName)}>
+                   {!!help && <p className={cn(BasicFieldAnatomy.fieldHelpText(), fieldHelpTextClassName)}>{help}</p>}
+                   {!!error && <p className={cn(BasicFieldAnatomy.fieldErrorText(), fieldErrorTextClassName)}>{error}</p>}
+                </div>
+             </ShowOnly>
+          </div>
+       </>
    )
 
 }))

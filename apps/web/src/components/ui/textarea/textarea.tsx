@@ -16,33 +16,33 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((pr
         children,
         className,
         intent = "basic",
-      ...rest
-   }, basicFieldProps] = extractBasicFieldProps(props, useId())
+        ...rest
+    }, basicFieldProps] = extractBasicFieldProps(props, useId())
 
     return (
-      <>
-         <BasicField
-            className={cn("w-full gap-1")}
-            {...basicFieldProps}
-         >
+        <>
+            <BasicField
+                className={cn("w-full gap-1")}
+                {...basicFieldProps}
+            >
             <textarea
-               // type="text"
-               id={basicFieldProps.id}
-               className={cn(
-                  "form-textarea",
-                  InputAnatomy.input({
-                     intent,
-                     hasError: !!basicFieldProps.error,
-                     untouchable: !!basicFieldProps.isDisabled,
-                  }),
-                  className,
-               )}
-               {...rest}
-               ref={ref}
+                // type="text"
+                id={basicFieldProps.id}
+                className={cn(
+                    "form-textarea",
+                    InputAnatomy.input({
+                        intent,
+                        hasError: !!basicFieldProps.error,
+                        untouchable: !!basicFieldProps.isDisabled,
+                    }),
+                    className,
+                )}
+                {...rest}
+                ref={ref}
             />
-         </BasicField>
-      </>
-   )
+            </BasicField>
+        </>
+    )
 
 })
 

@@ -25,6 +25,7 @@ export const CheckboxAnatomy = defineStyleAnatomy({
         "data-[state=unchecked]:bg-white dark:data-[state=unchecked]:bg-gray-700", // Unchecked
         "data-[state=unchecked]:hover:bg-gray-100 dark:data-[state=unchecked]:hover:bg-gray-600", // Unchecked hover
         "data-[state=checked]:bg-brand dark:data-[state=checked]:bg-brand data-[state=checked]:border-brand", // Checked
+        "data-[state=indeterminate]:bg-[--muted] data-[state=indeterminate]:border-transparent", // Checked
     ], {
         variants: {
             size: {
@@ -132,7 +133,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                     {...rest}
                 >
                     <CheckboxPrimitive.CheckboxIndicator className={cn(CheckboxAnatomy.indicator(), indicatorClassName)}>
-                        <svg
+                        {rest.checked === true && <svg
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" stroke="currentColor"
                             fill="currentColor"
                             className={cn(CheckboxAnatomy.icon({ size: _size }), iconClassName)}
@@ -141,7 +142,13 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                                 fill="#fff"
                                 d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"
                             ></path>
-                        </svg>
+                        </svg>}
+
+                        {rest.checked === "indeterminate" &&
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                                <line x1="5" x2="19" y1="12" y2="12"/>
+                            </svg>}
                     </CheckboxPrimitive.CheckboxIndicator>
                 </CheckboxPrimitive.Root>
                 <ShowOnly when={!!label || !!value}>

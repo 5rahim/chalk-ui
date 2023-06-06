@@ -14,9 +14,9 @@ export const ShowOnly: React.FC<ShowOnlyProps> = (props) => {
    const { children, when } = props
 
    return (
-      <>
-         {when ? children : null}
-      </>
+       <>
+          {when ? children : null}
+       </>
    )
 
 }

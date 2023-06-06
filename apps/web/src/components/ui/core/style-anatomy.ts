@@ -36,7 +36,7 @@ export type AnatomyClassNames<T extends Anatomy> = {
  * @param config
  */
 export function defineStyleAnatomy<A extends Anatomy = Anatomy>(config: A) {
-   return config
+    return config
 }
 
 /**

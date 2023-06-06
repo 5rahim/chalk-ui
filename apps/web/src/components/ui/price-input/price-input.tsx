@@ -72,7 +72,12 @@ export const PriceInput = React.forwardRef<HTMLInputElement, PriceInputProps>((p
 
     const toFloat = useCallback((value: string) => {
         // 1. We remove prefixes, group separators and extra decimals (keep local decimal separator) (eg: 4,555.999 -> 4555.99)
-        let _sanitizedValue = sanitizeValue({ value: value, groupSeparator: _groupSeparator, decimalSeparator: _decimalSeparator, decimalsLimit: _decimalSpace })
+        let _sanitizedValue = sanitizeValue({
+            value: value,
+            groupSeparator: _groupSeparator,
+            decimalSeparator: _decimalSeparator,
+            decimalsLimit: _decimalSpace
+        })
         // 2. Convert local decimal to '.' if needed, in order to parse it (eg: fr2,5 -> 2.5)
         let _valueWithCorrectDecimal = _decimalSeparator !== "." ? replaceDecimalSeparator(_sanitizedValue, _decimalSeparator, false) : _sanitizedValue
         // 3. Keep decimal space before parsing to float (eg: 2.5 -> 2.50)

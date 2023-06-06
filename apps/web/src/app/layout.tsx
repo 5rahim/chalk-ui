@@ -10,17 +10,17 @@ export const metadata = {
 }
 
 export default function RootLayout({
-   children,
-}: {
+                                      children,
+                                   }: {
    children: React.ReactNode
 }) {
    return (
-      <html suppressHydrationWarning={true}>
-      <body className={inter.className}>
-      <ClientProviders>
-         {children}
-      </ClientProviders>
-      </body>
-      </html>
+       <html suppressHydrationWarning={true}>
+       <body className={inter.className}>
+       <ClientProviders>
+          {children}
+       </ClientProviders>
+       </body>
+       </html>
    )
 }
