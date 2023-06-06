@@ -12,6 +12,7 @@ export const AppLayoutAnatomy = defineStyleAnatomy({
         "UI-AppLayout__root",
         "flex w-full min-h-screen group",
         "group-[.with-sidebar]:group-[.sidebar-slim]:md:pl-20",
+        "group-[.with-sidebar]:group-[.sidebar-sm]:md:pl-48",
         "group-[.with-sidebar]:group-[.sidebar-md]:md:pl-64",
         "group-[.with-sidebar]:group-[.sidebar-lg]:md:pl-[20rem]",
         "group-[.with-sidebar]:group-[.sidebar-xl]:md:pl-[25rem]",
@@ -23,6 +24,7 @@ export const AppLayoutAnatomy = defineStyleAnatomy({
             },
             sidebarSize: {
                 slim: "sidebar-slim",
+                sm: "sidebar-sm",
                 md: "sidebar-md",
                 lg: "sidebar-lg",
                 xl: "sidebar-xl",
@@ -47,6 +49,7 @@ export const AppLayoutSidebarAnatomy = defineStyleAnatomy({
         "UI-AppLayoutSidebar__root",
         "hidden md:fixed md:inset-y-0 md:flex md:flex-col grow-0 shrink-0 basis-0",
         "group-[.sidebar-slim]:md:w-20",
+        "group-[.sidebar-sm]:md:w-48",
         "group-[.sidebar-md]:md:w-64",
         "group-[.sidebar-lg]:md:w-[20rem]",
         "group-[.sidebar-xl]:md:w-[25rem]",
@@ -65,19 +68,55 @@ export const AppLayoutFooterAnatomy = defineStyleAnatomy({
     ])
 })
 
+export const AppLayoutStackAnatomy = defineStyleAnatomy({
+    root: cva([
+        "UI-AppLayoutStack__root",
+    ], {
+        variants: {
+            spacing: {
+                sm: "space-y-2",
+                md: "space-y-4",
+                lg: "space-y-8",
+                xl: "space-y-10",
+            },
+        },
+        defaultVariants: {
+            spacing: "md",
+        }
+    })
+})
+
 export const AppLayoutSectionAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-AppLayoutSection__root",
-        "min-w-0 xl:flex flex-1"
+        "block"
     ], {
         variants: {
-            type: {
-                "normal": "",
-                annotation: "shrink-0 basis-[40rem]"
+            breakBelow: {
+                sm: "sm:grid sm:space-y-0",
+                md: "md:grid md:space-y-0",
+                lg: "lg:grid lg:space-y-0",
+                xl: "xl:grid xl:space-y-0",
+            },
+            spacing: {
+                sm: "space-y-2 gap-2",
+                md: "space-y-4 gap-4",
+                lg: "space-y-8 gap-8",
+                xl: "space-y-10 gap-10",
+            },
+            cols: {
+                1: "grid-cols-1",
+                2: "grid-cols-2",
+                3: "grid-cols-3",
+                4: "grid-cols-4",
+                5: "grid-cols-5",
+                6: "grid-cols-6",
             }
         },
         defaultVariants: {
-            type: "normal"
+            breakBelow: "xl",
+            spacing: "md",
+            cols: 3
         }
     })
 })
@@ -99,12 +138,13 @@ const _AppLayout = (props: AppLayoutProps) => {
         className,
         ref,
         withSidebar,
+        sidebarSize,
         ...rest
     } = props
 
     return (
         <div
-            className={cn(AppLayoutAnatomy.root({ withSidebar }), rootClassName, className)}
+            className={cn(AppLayoutAnatomy.root({ withSidebar, sidebarSize }), rootClassName, className)}
             {...rest}
             ref={ref}
         >
@@ -207,6 +247,41 @@ const AppLayoutContent: React.FC<AppLayoutContentProps> = React.forwardRef<HTMLE
 AppLayoutContent.displayName = "AppLayoutContent"
 
 /* -------------------------------------------------------------------------------------------------
+ * AppLayout.Section
+ * -----------------------------------------------------------------------------------------------*/
+
+export interface AppLayoutSectionProps extends React.ComponentPropsWithRef<"section">,
+    ComponentWithAnatomy<typeof AppLayoutSectionAnatomy>,
+    VariantProps<typeof AppLayoutSectionAnatomy.root> {
+}
+
+const AppLayoutSection: React.FC<AppLayoutSectionProps> = React.forwardRef<HTMLElement, AppLayoutSectionProps>((props, ref) => {
+
+    const {
+        children,
+        rootClassName,
+        className,
+        breakBelow,
+        cols,
+        spacing,
+        ...rest
+    } = props
+
+    return (
+        <section
+            className={cn(AppLayoutSectionAnatomy.root({ breakBelow, cols, spacing }), rootClassName, className)}
+            {...rest}
+            ref={ref}
+        >
+            {children}
+        </section>
+    )
+
+})
+
+AppLayoutSection.displayName = "AppLayoutSection"
+
+/* -------------------------------------------------------------------------------------------------
  * AppLayout.Footer
  * -----------------------------------------------------------------------------------------------*/
 
@@ -237,36 +312,37 @@ const AppLayoutFooter: React.FC<AppLayoutFooterProps> = React.forwardRef<HTMLEle
 AppLayoutFooter.displayName = "AppLayoutFooter"
 
 /* -------------------------------------------------------------------------------------------------
- * AppLayout.Section
+ * AppLayout.Stack
  * -----------------------------------------------------------------------------------------------*/
 
-export interface AppLayoutSectionProps extends React.ComponentPropsWithRef<"footer">,
-    ComponentWithAnatomy<typeof AppLayoutSectionAnatomy>,
-    VariantProps<typeof AppLayoutSectionAnatomy.root> {
+export interface AppLayoutStackProps extends React.ComponentPropsWithRef<"div">,
+    ComponentWithAnatomy<typeof AppLayoutStackAnatomy>,
+    VariantProps<typeof AppLayoutStackAnatomy.root> {
 }
 
-const AppLayoutSection: React.FC<AppLayoutSectionProps> = React.forwardRef<HTMLElement, AppLayoutSectionProps>((props, ref) => {
+const AppLayoutStack: React.FC<AppLayoutStackProps> = React.forwardRef<HTMLDivElement, AppLayoutStackProps>((props, ref) => {
 
     const {
         children,
         rootClassName,
         className,
+        spacing,
         ...rest
     } = props
 
     return (
-        <section
-            className={cn(AppLayoutSectionAnatomy.root(), rootClassName, className)}
+        <div
+            className={cn(AppLayoutStackAnatomy.root({ spacing }), rootClassName, className)}
             {...rest}
             ref={ref}
         >
             {children}
-        </section>
+        </div>
     )
 
 })
 
-AppLayoutSection.displayName = "AppLayoutSection"
+AppLayoutStack.displayName = "AppLayoutStack"
 
 /* -------------------------------------------------------------------------------------------------
  * Component
@@ -277,6 +353,7 @@ _AppLayout.Sidebar = AppLayoutSidebar
 _AppLayout.Content = AppLayoutContent
 _AppLayout.Footer = AppLayoutFooter
 _AppLayout.Section = AppLayoutSection
+_AppLayout.Stack = AppLayoutStack
 
 export const AppLayout = createPolymorphicComponent<"div", AppLayoutProps, {
     Header: typeof AppLayoutHeader
@@ -284,6 +361,7 @@ export const AppLayout = createPolymorphicComponent<"div", AppLayoutProps, {
     Content: typeof AppLayoutContent
     Footer: typeof AppLayoutFooter
     Section: typeof AppLayoutSection
+    Stack: typeof AppLayoutStack
 }>(_AppLayout)
 
 AppLayout.displayName = "AppLayout"

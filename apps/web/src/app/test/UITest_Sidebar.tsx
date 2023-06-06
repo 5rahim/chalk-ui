@@ -20,7 +20,7 @@ export const UITest_Sidebar: React.FC<{ children?: React.ReactNode }> = (props) 
 
     return (
         <AppSidebarProvider>
-            <AppLayout withSidebar>
+            <AppLayout withSidebar sidebarSize={"md"}>
                 <AppLayout.Sidebar>
                     <AppSidebar className="p-4">
                         <div className="tracking-tighter font-[900] text-2xl mb-4">LOGO</div>
@@ -56,48 +56,52 @@ export const UITest_Sidebar: React.FC<{ children?: React.ReactNode }> = (props) 
                                 className={"border-b border-[--border]"}
                             />
                         </div>
-                        <div className={"container max-w-full p-4 space-y-4"}>
+                        <div className={"container max-w-full p-4"}>
 
-                            {/*Stats*/}
+                            <AppLayout.Stack>
 
-                            <div className={"grid grid-cols-1 xl:grid-cols-3 gap-4"}>
-                                <div className={""}>
-                                    <h3>Section</h3>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi at consequatur debitis ea eum laudantium libero
-                                    nihil.
+                                <AppLayout.Section>
+                                    <div className={""}>
+                                        <h3>Section</h3>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi at consequatur debitis ea eum laudantium
+                                        libero
+                                        nihil.
+                                    </div>
+                                    <div className={"col-span-2"}>
+                                        <Card className={""}>
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt
+                                            distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero voluptas!
+                                        </Card>
+                                    </div>
+                                </AppLayout.Section>
+
+                                <AppLayout.Section breakBelow={"lg"}>
+                                    <div className={"col-span-2"}>
+                                        <Card className={""}>
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt
+                                            distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero voluptas!
+                                        </Card>
+                                    </div>
+                                    <div className={"col-span-1 basis-[40rem]"}>
+                                        <Card className={""}>
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt
+                                            distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero voluptas!
+                                        </Card>
+                                    </div>
+                                </AppLayout.Section>
+
+
+                                <div className={"flex items-center gap-2"}>
+                                    <h4>Performance History</h4>
+                                    <Tooltip trigger={<BiInfoCircle className={"w-5 h-5 text-[--blue]"}/>}>
+                                        Shows the trends
+                                    </Tooltip>
                                 </div>
-                                <div className={"col-span-2"}>
-                                    <Card className={""}>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt
-                                        distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero voluptas!
-                                    </Card>
-                                </div>
-                            </div>
 
-                            <div className={"grid grid-cols-1 xl:grid-cols-3 gap-4"}>
-                                <div className={"col-span-2"}>
-                                    <Card className={""}>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt
-                                        distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero voluptas!
-                                    </Card>
-                                </div>
-                                <div className={"col-span-1"}>
-                                    <Card className={""}>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt
-                                        distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero voluptas!
-                                    </Card>
-                                </div>
-                            </div>
+                                <DemoLineChart/>
 
+                            </AppLayout.Stack>
 
-                            <div className={"flex items-center gap-2"}>
-                                <h4>Performance History</h4>
-                                <Tooltip trigger={<BiInfoCircle className={"w-5 h-5 text-[--blue]"}/>}>
-                                    Shows the trends
-                                </Tooltip>
-                            </div>
-
-                            <DemoLineChart/>
                         </div>
                     </AppLayout.Content>
                     <AppLayout.Footer className={"text-center font-medium text-[--muted] pb-10"}>
