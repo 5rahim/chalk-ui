@@ -16,9 +16,10 @@ export const PaginationAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-Pagination__item",
-        "text-md inline-flex h-10 w-10 items-center justify-center rounded border border-[--border] cursor-pointer hover:bg-[--highlight] select-none",
+        "bg-transparent dark:bg-transparent text-md inline-flex h-10 w-10 items-center justify-center rounded border border-[--border] cursor-pointer",
+        "hover:bg-[--paper-highlight] hover:border-[--paper-highlight] select-none",
         "data-selected:bg-brand-500 data-selected:border-transparent data-selected:text-white data-selected:hover:bg-brand-500 data-selected:pointer-events-none",
-        "data-disabled:opacity-50 data-disabled:pointer-events-none data-disabled:cursor-not-allowed"
+        "data-[disabled=true]:opacity-50 data-[disabled=true]:pointer-events-none data-[disabled=true]:cursor-not-allowed"
     ]),
     ellipsis: cva([
         "UI-Pagination__ellipsis",
@@ -108,11 +109,15 @@ PaginationItem.displayName = "PaginationItem"
 
 export interface PaginationTriggerProps extends Omit<React.ComponentPropsWithRef<"a">, "children">, ComponentWithAnatomy<typeof PaginationAnatomy> {
     direction: "left" | "right"
+    isChevrons?: boolean
+    isDisabled?: boolean
 }
 
 const PaginationTrigger: React.FC<PaginationTriggerProps> = React.forwardRef<HTMLAnchorElement, PaginationTriggerProps>((props, ref) => {
 
     const {
+        isChevrons = false,
+        isDisabled = false,
         direction,
         className,
         itemClassName,
@@ -124,6 +129,7 @@ const PaginationTrigger: React.FC<PaginationTriggerProps> = React.forwardRef<HTM
         <li>
             <a
                 className={cn(PaginationAnatomy.item(), itemClassName, className)}
+                data-disabled={`${isDisabled}`}
                 {...rest}
                 ref={ref}
             >
@@ -132,15 +138,22 @@ const PaginationTrigger: React.FC<PaginationTriggerProps> = React.forwardRef<HTM
                          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                          className="h-4 w-4"
                     >
-                        <polyline points="15 18 9 12 15 6"></polyline>
+                        {!isChevrons ? <polyline points="15 18 9 12 15 6"></polyline> : <>
+                            <polyline points="11 17 6 12 11 7"/>
+                            <polyline points="18 17 13 12 18 7"/>
+                        </>}
                     </svg>
                 ) : (
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                          className="h-4 w-4"
                     >
-                        <polyline points="9 18 15 12 9 6"></polyline>
+                        {!isChevrons ? <polyline points="9 18 15 12 9 6"></polyline> : <>
+                            <polyline points="13 17 18 12 13 7"/>
+                            <polyline points="6 17 11 12 6 7"/>
+                        </>}
                     </svg>
+
                 )}
             </a>
         </li>

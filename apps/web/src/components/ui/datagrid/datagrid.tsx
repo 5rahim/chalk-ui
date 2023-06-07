@@ -23,6 +23,7 @@ import _keys from "lodash/keys"
 import { Select } from "@/components/ui/select"
 import { NumberInput } from "@/components/ui/number-input"
 import { LoadingOverlay } from "@/components/ui/loading-spinner"
+import { Pagination } from "@/components/ui/pagination"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -33,9 +34,72 @@ export const DataGridAnatomy = defineStyleAnatomy({
         "UI-DataGrid__root",
     ]),
     paginationButton: cva([
-        "relative inline-flex justify-center items-center h-10 w-10 text-xl border border-gray-200 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50",
+        "UI-DataGrid__paginationButton",
+        "relative inline-flex justify-center items-center h-10 w-10 text-xl border border-[--border] font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50",
         "disabled:bg-gray-100 disabled:text-gray-400 disabled:pointer-events-none"
-    ])
+    ]),
+    header: cva([
+        "UI-DataGrid__header",
+        "block space-y-4 w-full"
+    ]),
+    filterContainer: cva([
+        "UI-DataGrid__filterContainer",
+        "flex w-full items-center gap-2 flex-wrap"
+    ]),
+    tableWrapper: cva([
+        "UI-DataGrid__tableWrapper",
+        "flex flex-col overflow-y-hidden overflow-x-auto"
+    ]),
+    tableContainer: cva([
+        "UI-DataGrid__tableContainer",
+        "align-middle inline-block min-w-full relative"
+    ]),
+    table: cva([
+        "UI-DataGrid__table",
+        "w-full divide-y divide-[--border] overflow-x-auto relative table-fixed"
+    ]),
+    tableHead: cva([
+        "UI-DataGrid__tableHead",
+        "border-b border-[--border]"
+    ]),
+    th: cva([
+        "UI-DataGrid__th",
+        "px-3 h-12 text-left text-sm font-bold",
+        "data-[rowselection=true]:px-3 data-[rowselection=true]:sm:px-1 data-[rowselection=true]:text-center"
+    ]),
+    titleChevronContainer: cva([
+        "UI-DataGrid__titleChevronContainer",
+        "absolute flex items-center inset-y-0 top-1 -right-9"
+    ]),
+    titleChevron: cva([
+        "UI-DataGrid__titleChevron",
+        "mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500 relative bottom-0.5"
+    ]),
+    tableBody: cva([
+        "UI-DataGrid__tableBody",
+        "bg-[--paper] divide-y divide-[--border] w-full"
+    ]),
+    td: cva([
+        "UI-DataGrid__td",
+        "px-2 py-2 whitespace-nowrap text-sm font-medium text-[--text-color] truncate overflow-ellipsis",
+        "data-[rowselection=true]:px-2 data-[rowselection=true]:sm:px-0 data-[rowselection=true]:text-center"
+    ]),
+    tr: cva([
+        "UI-DataGrid__tr",
+        "hover:bg-[--highlight] truncate"
+    ]),
+    footer: cva([
+        "UI-DataGrid__footer",
+        "flex flex-col sm:flex-row w-full items-center gap-2 justify-between p-2 mt-2 overflow-x-auto max-w-full"
+    ]),
+    footerPageDisplayContainer: cva([
+        "UI-DataGrid__footerPageDisplayContainer",
+        "flex flex-none items-center gap-1 ml-2 text-sm"
+    ]),
+    footerPaginationInputContainer: cva([
+        "UI-DataGrid__footerPaginationInputContainer",
+        "flex flex-none items-center gap-2"
+    ]),
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -82,6 +146,21 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         rootClassName,
         className,
         paginationButtonClassName,
+        headerClassName,
+        filterContainerClassName,
+        tableWrapperClassName,
+        tableContainerClassName,
+        tableHeadClassName,
+        tableClassName,
+        thClassName,
+        titleChevronClassName,
+        titleChevronContainerClassName,
+        tableBodyClassName,
+        trClassName,
+        tdClassName,
+        footerClassName,
+        footerPageDisplayContainerClassName,
+        footerPaginationInputContainerClassName,
         /**/
         withFetching = false,
         columns,
@@ -135,6 +214,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
     /**
      * Pagination
      */
+
         // Keep track of pages
     const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: _limit })
     // Pagination object
@@ -204,43 +284,41 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
     }, [table.getState().rowSelection])
 
     return (
-        <div>
-            <div className="flex justify-between">
-                <div className="block space-y-4 w-full">
-                    {/* Search Box */}
-                    <DataGridSearchInput value={globalFilter ?? ""} onChange={value => setGlobalFilter(String(value))}/>
+        <div className={cn(DataGridAnatomy.root(), rootClassName)}>
+            <div className={cn(DataGridAnatomy.header(), headerClassName)}>
+                {/* Search Box */}
+                <DataGridSearchInput value={globalFilter ?? ""} onChange={value => setGlobalFilter(String(value))}/>
 
-                    <div className="flex w-full items-center gap-2 flex-wrap">
-                        {table.getAllLeafColumns().map(column => {
-                            if (column.getCanFilter() && (column.columnDef.meta as any)?.filter) {
-                                // return <DataGridFilter
-                                //     key={column.id}
-                                //     filterValue={column.getFilterValue()}
-                                //     filter={(column.columnDef.meta as any)?.filter as any}
-                                //     setFilterValue={column.setFilterValue}
-                                // />
-                            }
-                            return null
-                        })}
-                    </div>
+                <div className={cn(DataGridAnatomy.filterContainer(), filterContainerClassName)}>
+                    {table.getAllLeafColumns().map(column => {
+                        if (column.getCanFilter() && (column.columnDef.meta as any)?.filter) {
+                            // return <DataGridFilter
+                            //     key={column.id}
+                            //     filterValue={column.getFilterValue()}
+                            //     filter={(column.columnDef.meta as any)?.filter as any}
+                            //     setFilterValue={column.setFilterValue}
+                            // />
+                        }
+                        return null
+                    })}
                 </div>
             </div>
 
             {/* Table */}
             <div
-                className="flex flex-col mt-4 overflow-y-hidden overflow-x-auto"
+                className={cn(DataGridAnatomy.tableWrapper(), tableWrapperClassName)}
                 ref={tableRef}
             >
                 <div className="relative">
-                    <div className="align-middle inline-block min-w-full relative">
-                        <LoadingOverlay show={isLoading || (withFetching && isFetching)} className="absolute"/>
-                        <table
-                            className="w-full divide-y divide-gray-200 overflow-x-auto relative table-fixed"
-                        >
+                    <div className={cn(DataGridAnatomy.tableContainer(), tableContainerClassName)}>
+
+                        <LoadingOverlay show={isLoading || (withFetching && isFetching)}/>
+
+                        <table className={cn(DataGridAnatomy.table(), tableClassName)}>
 
                             {/*Head*/}
 
-                            <thead className="border-b-2">
+                            <thead className={cn(DataGridAnatomy.tableHead(), tableHeadClassName)}>
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <tr key={headerGroup.id}>
                                     {headerGroup.headers.map((header, index) => (
@@ -248,12 +326,8 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                             key={header.id}
                                             colSpan={header.colSpan}
                                             scope="col"
-                                            className={cn(
-                                                "px-3 h-12 text-left text-sm font-bold",
-                                                {
-                                                    "px-3 sm:px-1 text-center": index === 0 && enableRowSelection,
-                                                },
-                                            )}
+                                            className={cn(DataGridAnatomy.th(), thClassName)}
+                                            data-rowselection={`${index === 0 && enableRowSelection}`}
                                             style={{ width: header.getSize() }}
                                         >
                                             {((index !== 0 && enableRowSelection) || !enableRowSelection) ? <div
@@ -276,12 +350,12 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                             header.column.columnDef.header,
                                                             header.getContext(),
                                                         )}
-                                                        <span className="absolute flex items-center inset-y-0 top-1 -right-9">
+                                                        <span className={cn(DataGridAnatomy.titleChevronContainer(), titleChevronContainerClassName)}>
                                                             {header.column.getIsSorted() === "asc" &&
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                                                      fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
                                                                      strokeLinejoin="round"
-                                                                     className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500 relative bottom-0.5">
+                                                                     className={cn(DataGridAnatomy.titleChevron(), titleChevronClassName)}>
                                                                     <polyline points="18 15 12 9 6 15"/>
                                                                 </svg>
                                                             }
@@ -289,15 +363,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                                                      fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
                                                                      strokeLinejoin="round"
-                                                                     className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500 relative bottom-0.5">
-                                                                    <polyline points="6 9 12 15 18 9"/>
-                                                                </svg>
-                                                            }
-                                                            {header.column.getIsSorted() === false &&
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                                                     fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                                                                     strokeLinejoin="round"
-                                                                     className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500 relative bottom-0.5">
+                                                                     className={cn(DataGridAnatomy.titleChevron(), titleChevronClassName)}>
                                                                     <polyline points="6 9 12 15 18 9"/>
                                                                 </svg>
                                                             }
@@ -318,22 +384,17 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
 
                             {!isLoading && (
                                 <tbody
-                                    className="bg-white divide-y divide-gray-200 w-full"
+                                    className={cn(DataGridAnatomy.tableBody(), tableBodyClassName)}
                                 >
                                 {table.getRowModel().rows.slice(table.getState().pagination.pageIndex * pageSize, (table.getState().pagination.pageIndex + 1) * pageSize).map((row) => {
                                     return (
-                                        <tr key={row.id} className="hover:bg-gray-50 truncate">
+                                        <tr key={row.id} className={cn(DataGridAnatomy.tr(), trClassName)}>
                                             {row.getVisibleCells().map((cell, index) => {
-
                                                 return (
                                                     <td
                                                         key={cell.id}
-                                                        className={cn(
-                                                            "px-2 py-2 whitespace-nowrap text-sm font-medium text-gray-900 truncate overflow-ellipsis",
-                                                            {
-                                                                "px-2 sm:px-0 text-center": index === 0 && enableRowSelection,
-                                                            },
-                                                        )}
+                                                        className={cn(DataGridAnatomy.td(), tdClassName)}
+                                                        data-rowselection={index === 0 && enableRowSelection}
                                                         style={{ width: cell.column.getSize(), maxWidth: cell.column.columnDef.maxSize }}
                                                     >
                                                         {flexRender(
@@ -342,7 +403,6 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                         )}
                                                     </td>
                                                 )
-
                                             })}
                                         </tr>
                                     )
@@ -363,61 +423,52 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                     </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row w-full items-center gap-2 justify-between border-t p-2 mt-2 overflow-x-auto max-w-full">
+                <div className={cn(DataGridAnatomy.footer(), footerClassName)}>
 
-                    <div className="flex gap-1 flex-none">
-                        <button
-                            className={cn(DataGridAnatomy.paginationButton(), paginationButtonClassName)}
+                    <Pagination>
+                        <Pagination.Trigger
+                            direction={"left"}
+                            isChevrons
                             onClick={() => table.setPageIndex(0)}
-                            disabled={!table.getCanPreviousPage()}
-                        >
-                            {/*<BiChevronsLeft />*/}
-                        </button>
-                        <button
-                            className={cn(DataGridAnatomy.paginationButton(), paginationButtonClassName)}
+                            isDisabled={!table.getCanPreviousPage()}
+                        />
+                        <Pagination.Trigger
+                            direction={"left"}
                             onClick={() => table.previousPage()}
-                            disabled={!table.getCanPreviousPage()}
-                        >
-                            {/*<BiChevronLeft />*/}
-                        </button>
-                        <button
-                            className={cn(DataGridAnatomy.paginationButton(), paginationButtonClassName)}
+                            isDisabled={!table.getCanPreviousPage()}
+                        />
+                        <Pagination.Trigger
+                            direction={"right"}
                             onClick={() => table.nextPage()}
-                            disabled={!table.getCanNextPage()}
-                        >
-                            {/*<BiChevronRight />*/}
-                        </button>
-                        <button
-                            className={cn(DataGridAnatomy.paginationButton(), paginationButtonClassName)}
+                            isDisabled={!table.getCanNextPage()}
+                        />
+                        <Pagination.Trigger
+                            direction={"right"}
+                            isChevrons
                             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                            disabled={!table.getCanNextPage()}
-                        >
-                            {/*<BiChevronsRight />*/}
-                        </button>
-                        <div className="flex flex-none items-center gap-1 ml-2">
-                            <div>Page</div>
-                            <strong>
-                                {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
-                            </strong>
-                        </div>
+                            isDisabled={!table.getCanNextPage()}
+                        />
+                    </Pagination>
+
+                    <div className={cn(DataGridAnatomy.footerPageDisplayContainer(), footerPageDisplayContainerClassName)}>
+                        <div>Page</div>
+                        <strong>
+                            {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+                        </strong>
                     </div>
 
-                    <div className="flex flex-none items-center gap-2">
-                        {/*<BiBookmark className="text-4xl" />*/}
-                        <span className="flex flex-none items-center gap-1">
-                            <div className="w-[3rem]">
-                                <NumberInput
-                                    discrete
-                                    defaultValue={table.getState().pagination.pageIndex + 1}
-                                    min={1}
-                                    max={pageCount}
-                                    onChange={v => {
-                                        const page = v ? v - 1 : 0
-                                        table.setPageIndex(page)
-                                    }}
-                                />
-                            </div>
-                        </span>
+                    <div className={cn(DataGridAnatomy.footerPaginationInputContainer(), footerPaginationInputContainerClassName)}>
+                        <NumberInput
+                            discrete
+                            defaultValue={table.getState().pagination.pageIndex + 1}
+                            min={1}
+                            max={pageCount}
+                            onChange={v => {
+                                const page = v ? v - 1 : 0
+                                table.setPageIndex(page)
+                            }}
+                            className={"inline-flex flex-none items-center w-[3rem]"}
+                        />
                         <Select
                             value={table.getState().pagination.pageSize}
                             onChange={e => {
@@ -435,7 +486,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
 
             </div>
 
-            {/*<pre>{JSON.stringify(table.getState(), null, 2)}</pre>*/}
+            <pre>{JSON.stringify(table.getState(), null, 2)}</pre>
         </div>
     )
 
@@ -493,7 +544,7 @@ function DataGridSearchInput(props: DataGridSearchInputProps & TextInputProps) {
             value={value}
             onChange={e => setValue(e.target.value)}
             leftIcon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-5 text-[--muted]">
+                           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-[--muted]">
                 <circle cx="11" cy="11" r="8"/>
                 <path d="m21 21-4.3-4.3"/>
             </svg>}

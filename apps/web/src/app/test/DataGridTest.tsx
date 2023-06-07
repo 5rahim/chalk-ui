@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { faker } from "@faker-js/faker"
 import { createDataGridColumns, DataGrid } from "@/components/ui/datagrid"
+import { Badge } from "@/components/ui/badge"
 
 interface DataGridTestProps {
     children?: React.ReactNode
@@ -36,7 +37,7 @@ const newProduct = (): Product => {
             "in_stock",
             "out_of_stock",
         ])[0]!,
-        price: faker.number.int({ min: 100000, max: 15000000 }),
+        price: faker.number.int({ min: 5, max: 1500 }),
         category_id: faker.helpers.shuffle<Product["category_id"]>([
             "505e73f3-4047-4fc7-81bc-55198a1d4bf2",
             "a349ac9e-9851-4dba-9138-981ad693f72c",
@@ -94,8 +95,22 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         {
             accessorKey: "name",
             header: "Name",
-            cell: info => info.getValue()
-        }
+            cell: info => info.getValue(),
+            size: 90,
+        },
+        {
+            accessorKey: "price",
+            header: () => "Price",
+            cell: info => "$" + Intl.NumberFormat("en-US").format(info.getValue() as number),
+            footer: props => props.column.id,
+            size: 90,
+        },
+        {
+            accessorKey: "visible",
+            header: "Visible",
+            cell: info => <Badge intent={info.getValue() ? "success" : "gray"}>{info.getValue() ? "Visible" : "Hidden"}</Badge>,
+            size: 90
+        },
     ]), [])
 
     return (

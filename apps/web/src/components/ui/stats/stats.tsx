@@ -17,7 +17,7 @@ export const StatsAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-Stats__item",
-        "px-4 py-5 sm:p-6"
+        "relative px-4 py-5 sm:p-6"
     ]),
     name: cva([
         "UI-Stats__name",
@@ -35,6 +35,10 @@ export const StatsAnatomy = defineStyleAnatomy({
         "UI-Stats__trend",
         "inline-flex items-baseline text-sm font-medium",
         "data-[trend=up]:text-green-500 data-[trend=down]:text-red-500"
+    ]),
+    icon: cva([
+        "UI-Stats_icon",
+        "absolute top-5 right-5 opacity-30 text-3xl sm:text-4xl xl:text-5xl"
     ])
 })
 
@@ -44,7 +48,14 @@ export const StatsAnatomy = defineStyleAnatomy({
 
 export interface StatsProps extends React.ComponentPropsWithRef<"dl">, ComponentWithAnatomy<typeof StatsAnatomy> {
     children?: React.ReactNode,
-    values: { name: string, value: string | number, unit?: string | number, change?: string | number, trend?: "up" | "down" }[]
+    values: {
+        name: string,
+        value: string | number,
+        unit?: string | number,
+        change?: string | number,
+        trend?: "up" | "down",
+        icon?: React.ReactElement
+    }[]
 }
 
 export const Stats: React.FC<StatsProps> = React.forwardRef<HTMLDListElement, StatsProps>((props, ref) => {
@@ -57,6 +68,7 @@ export const Stats: React.FC<StatsProps> = React.forwardRef<HTMLDListElement, St
         valueClassName,
         unitClassName,
         trendClassName,
+        iconClassName,
         className,
         values,
         ...rest
@@ -82,6 +94,7 @@ export const Stats: React.FC<StatsProps> = React.forwardRef<HTMLDListElement, St
                             {item.value}
                             <span className={cn(StatsAnatomy.unit(), unitClassName)}>{item.unit}</span>
                         </dd>
+
                         <ShowOnly when={!!item.change || !!item.trend}>
                             <div
                                 className={cn(StatsAnatomy.trend(), trendClassName)}
@@ -91,6 +104,11 @@ export const Stats: React.FC<StatsProps> = React.forwardRef<HTMLDListElement, St
                                 {item.change}
                             </div>
                         </ShowOnly>
+
+                        <div className={cn(StatsAnatomy.icon(), iconClassName)}>
+                            {item.icon}
+                        </div>
+
                     </div>
                 ))}
             </dl>

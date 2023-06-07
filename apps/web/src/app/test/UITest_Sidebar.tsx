@@ -11,6 +11,7 @@ import { PageHeader } from "@/components/ui/page-header"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { DataGridTest } from "@/app/test/DataGridTest"
+import { BiGroup } from "@react-icons/all-files/bi/BiGroup"
 
 export const UITest_Sidebar: React.FC<{ children?: React.ReactNode }> = (props) => {
 
@@ -48,7 +49,7 @@ export const UITest_Sidebar: React.FC<{ children?: React.ReactNode }> = (props) 
                         <div>
                             <Stats
                                 values={[
-                                    { name: "Total Subscribers", value: "71,897", unit: "from 70,946", change: "12%", trend: "up" },
+                                    { name: "Total Subscribers", value: "71,897", unit: "from 70,946", change: "12%", trend: "up", icon: <BiGroup/> },
                                     { name: "Avg. Open Rate", value: "58.16%", unit: "from 56.14%", change: "2.02%", trend: "up" },
                                     { name: "Avg. Click Rate", value: "24.57%" },
                                 ]}
