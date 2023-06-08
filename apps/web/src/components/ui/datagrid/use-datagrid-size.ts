@@ -3,28 +3,28 @@ import useEventListener from "@/hooks/use-event-listener"
 import useIsomorphicLayoutEffect from "@/hooks/use-isomorphic-layout-effect"
 
 export function useDataGridSize<T extends HTMLElement = HTMLDivElement>(): [
-  (node: T | null) => void,
-  { width: number, height: number },
+    (node: T | null) => void,
+    { width: number, height: number },
 ] {
-  const [ref, setRef] = useState<T | null>(null)
-  const [size, setSize] = useState<{ width: number, height: number }>({
-    width: 0,
-    height: 0,
-  })
-
-  const handleSize = useCallback(() => {
-    setSize({
-      width: ref?.offsetWidth || 0,
-      height: ref?.offsetHeight || 0,
+    const [ref, setRef] = useState<T | null>(null)
+    const [size, setSize] = useState<{ width: number, height: number }>({
+        width: 0,
+        height: 0,
     })
 
-  }, [ref?.offsetHeight, ref?.offsetWidth])
+    const handleSize = useCallback(() => {
+        setSize({
+            width: ref?.offsetWidth || 0,
+            height: ref?.offsetHeight || 0,
+        })
 
-  useEventListener("resize", handleSize)
+    }, [ref?.offsetHeight, ref?.offsetWidth])
 
-  useIsomorphicLayoutEffect(() => {
-    handleSize()
-  }, [ref?.offsetHeight, ref?.offsetWidth])
+    useEventListener("resize", handleSize)
 
-  return [setRef, size]
+    useIsomorphicLayoutEffect(() => {
+        handleSize()
+    }, [ref?.offsetHeight, ref?.offsetWidth])
+
+    return [setRef, size]
 }

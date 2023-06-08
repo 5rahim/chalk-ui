@@ -10,7 +10,7 @@ import { defineStyleAnatomy } from "../core"
 export const ButtonAnatomy = defineStyleAnatomy({
     button: cva([
         "UI-Button__button",
-        "shadow-sm whitespace-nowrap font-semibold rounded-md",
+        "shadow-sm whitespace-nowrap font-semibold rounded-[--radius]",
         "inline-flex items-center text-white transition ease-in duration-100 text-center text-base justify-center",
         "focus-visible:outline-none focus-visible:ring-2 ring-offset-1 focus-visible:ring-[--ring]"
     ], {

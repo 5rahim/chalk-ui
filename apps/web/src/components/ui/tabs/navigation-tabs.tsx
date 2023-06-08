@@ -14,7 +14,7 @@ export const NavigationTabsAnatomy = defineStyleAnatomy({
     ]),
     tab: cva([
         "UI-NavigationTabs__tab",
-        "group navigation-tabs-group inline-flex flex-none shrink-0 basis-auto items-center py-4 px-2 font-medium text-sm transition outline-none px-4 min-w-0 justify-center",
+        "group/navtabs inline-flex flex-none shrink-0 basis-auto items-center py-4 px-2 font-medium text-sm transition outline-none px-4 min-w-0 justify-center",
         "focus-visible:bg-[--highlight]",
         "text-[--muted]",
         "hover:text-[--text-color]",

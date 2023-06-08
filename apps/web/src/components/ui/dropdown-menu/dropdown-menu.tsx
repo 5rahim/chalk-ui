@@ -22,7 +22,7 @@ export const DropdownMenuAnatomy = defineStyleAnatomy({
     dropdown: cva([
         "UI-DropdownMenu__dropdown",
         "bg-[--paper] border border-[--border] p-1",
-        "absolute z-10 mt-2 w-56 rounded-md shadow-md focus:outline-none space-y-1",
+        "absolute z-10 mt-2 w-56 rounded-[--radius] shadow-md focus:outline-none space-y-1",
     ], {
         variants: {
             top: { true: "", right: "" },
@@ -51,7 +51,7 @@ export const DropdownMenuAnatomy = defineStyleAnatomy({
 export const DropdownMenuItemAnatomy = defineStyleAnatomy({
     item: cva(["UI-DropdownMenu__item transition",
         "text-gray-800 dark:text-gray-200 hover:text-black dark:hover:text-white",
-        "font-medium group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2"
+        "font-medium group flex w-full items-center rounded-[--radius] px-2 py-2 text-sm gap-2"
     ], {
         variants: {
             active: {

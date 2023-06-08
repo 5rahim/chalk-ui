@@ -21,7 +21,7 @@ export const HorizontalNavAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-HorizontalNav__item",
-        "group inline-flex items-center h-full select-none rounded-md p-3 leading-none no-underline outline-none transition-colors",
+        "group inline-flex items-center h-full select-none rounded-[--radius] p-3 leading-none no-underline outline-none transition-colors",
         "text-[--muted] hover:bg-[--highlight] hover:text-[--text-color] focus:bg-[--highlight]",
         "data-[current=true]:text-[--brand]",
         "text-sm font-[600] leading-none"
@@ -53,7 +53,7 @@ export const HorizontalNavAnatomy = defineStyleAnatomy({
     }),
     mobileTrigger: cva([
         "UI-VerticalNav__mobileTrigger",
-        "items-center justify-center rounded-md p-2 text-[--muted] hover:bg-[--highlight] hover:text-[--text-color]",
+        "items-center justify-center rounded-[--radius] p-2 text-[--muted] hover:bg-[--highlight] hover:text-[--text-color]",
         "focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[--ring]"
     ], {
         variants: {
@@ -78,7 +78,7 @@ export const HorizontalNavAnatomy = defineStyleAnatomy({
     viewport: cva([
         "UI-HorizontalNav__viewport",
         "relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)]",
-        "w-full overflow-hidden rounded-md shadow-lg border border-[--border] bg-[--paper] text-[--text-color]",
+        "w-full overflow-hidden rounded-[--radius] shadow-lg border border-[--border] bg-[--paper] text-[--text-color]",
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95",
         "data-[state=open]:zoom-in-90",
     ]),

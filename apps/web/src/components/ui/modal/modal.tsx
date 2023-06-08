@@ -18,7 +18,7 @@ export const ModalAnatomy = defineStyleAnatomy({
     ]),
     panel: cva([
         "UI-Modal__panel",
-        "w-full transform overflow-hidden rounded-none sm:rounded-md p-6 text-left align-middle shadow-xl transition-all relative",
+        "w-full transform overflow-hidden rounded-none sm:rounded-[--radius] p-6 text-left align-middle shadow-xl transition-all relative",
         "bg-[--paper]"
     ], {
         variants: {

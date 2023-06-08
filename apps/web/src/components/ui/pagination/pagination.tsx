@@ -19,7 +19,8 @@ export const PaginationAnatomy = defineStyleAnatomy({
         "bg-transparent dark:bg-transparent text-md inline-flex h-10 w-10 items-center justify-center rounded border border-[--border] cursor-pointer",
         "hover:bg-[--paper-highlight] hover:border-[--paper-highlight] select-none",
         "data-selected:bg-brand-500 data-selected:border-transparent data-selected:text-white data-selected:hover:bg-brand-500 data-selected:pointer-events-none",
-        "data-[disabled=true]:opacity-50 data-[disabled=true]:pointer-events-none data-[disabled=true]:cursor-not-allowed"
+        "data-[disabled=true]:opacity-50 data-[disabled=true]:pointer-events-none data-[disabled=true]:cursor-not-allowed",
+        "outline-none ring-[--ring] focus-visible:ring-2"
     ]),
     ellipsis: cva([
         "UI-Pagination__ellipsis",
@@ -73,11 +74,11 @@ _Pagination.displayName = "Pagination"
  * Pagination.Item
  * -----------------------------------------------------------------------------------------------*/
 
-export interface PaginationItemProps extends Omit<React.ComponentPropsWithRef<"a">, "children">, ComponentWithAnatomy<typeof PaginationAnatomy> {
+export interface PaginationItemProps extends Omit<React.ComponentPropsWithRef<"button">, "children">, ComponentWithAnatomy<typeof PaginationAnatomy> {
     value: string | number
 }
 
-const PaginationItem: React.FC<PaginationItemProps> = React.forwardRef<HTMLAnchorElement, PaginationItemProps>((props, ref) => {
+const PaginationItem: React.FC<PaginationItemProps> = React.forwardRef<HTMLButtonElement, PaginationItemProps>((props, ref) => {
 
     const {
         value,
@@ -89,13 +90,13 @@ const PaginationItem: React.FC<PaginationItemProps> = React.forwardRef<HTMLAncho
 
     return (
         <li>
-            <a
+            <button
                 className={cn(PaginationAnatomy.item(), itemClassName, className)}
                 {...rest}
                 ref={ref}
             >
                 {value}
-            </a>
+            </button>
         </li>
     )
 
@@ -107,13 +108,14 @@ PaginationItem.displayName = "PaginationItem"
  * Pagination.Trigger
  * -----------------------------------------------------------------------------------------------*/
 
-export interface PaginationTriggerProps extends Omit<React.ComponentPropsWithRef<"a">, "children">, ComponentWithAnatomy<typeof PaginationAnatomy> {
+export interface PaginationTriggerProps extends Omit<React.ComponentPropsWithRef<"button">, "children">,
+    ComponentWithAnatomy<typeof PaginationAnatomy> {
     direction: "left" | "right"
     isChevrons?: boolean
     isDisabled?: boolean
 }
 
-const PaginationTrigger: React.FC<PaginationTriggerProps> = React.forwardRef<HTMLAnchorElement, PaginationTriggerProps>((props, ref) => {
+const PaginationTrigger: React.FC<PaginationTriggerProps> = React.forwardRef<HTMLButtonElement, PaginationTriggerProps>((props, ref) => {
 
     const {
         isChevrons = false,
@@ -127,7 +129,7 @@ const PaginationTrigger: React.FC<PaginationTriggerProps> = React.forwardRef<HTM
 
     return (
         <li>
-            <a
+            <button
                 className={cn(PaginationAnatomy.item(), itemClassName, className)}
                 data-disabled={`${isDisabled}`}
                 {...rest}
@@ -155,7 +157,7 @@ const PaginationTrigger: React.FC<PaginationTriggerProps> = React.forwardRef<HTM
                     </svg>
 
                 )}
-            </a>
+            </button>
         </li>
     )
 

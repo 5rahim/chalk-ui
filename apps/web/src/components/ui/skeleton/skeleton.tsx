@@ -11,8 +11,8 @@ export const SkeletonAnatomy = defineStyleAnatomy({
     skeleton: cva("UI-Skeleton__skeleton", {
         variants: {
             type: {
-                box: "h-14 bg-gray-200 w-full rounded-md animate-pulse",
-                text: "h-2 bg-gray-100 rounded-md animate-purple",
+                box: "h-14 bg-gray-200 w-full rounded-[--radius] animate-pulse",
+                text: "h-2 bg-gray-100 rounded-[--radius] animate-purple",
             },
         },
         defaultVariants: {},

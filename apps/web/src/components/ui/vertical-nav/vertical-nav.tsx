@@ -17,7 +17,7 @@ export const VerticalNavAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-VerticalNav__tab",
-        "group vertical-nav-group flex flex-none truncate items-center px-4 py-2 text-sm font-[600] rounded-md transition cursor-pointer",
+        "group/vnav flex flex-none truncate items-center px-4 py-2 text-sm font-[600] rounded-[--radius] transition cursor-pointer",
         "hover:bg-[--highlight] hover:text-[--text-color]",
         "focus-visible:ring-2 ring-[--ring] outline-none",
         "text-[--muted]",
@@ -35,7 +35,7 @@ export const VerticalNavAnatomy = defineStyleAnatomy({
         "UI-VerticalNav__icon",
         "flex-shrink-0 -ml-1 mr-3 h-6 w-6",
         "text-[--muted]",
-        "group-hover:group-[.vertical-nav-group]:text-[--text-color] data-[current=true]:text-[--brand] data-[current=true]:group-hover:group-[.vertical-nav-group]:text-[--brand]"
+        "group-hover/vnav:text-[--text-color] data-[current=true]:text-[--brand] data-[current=true]:group-hover/vnav:text-[--brand]"
     ]),
     subList: cva([
         "UI-VerticalNav__subList",

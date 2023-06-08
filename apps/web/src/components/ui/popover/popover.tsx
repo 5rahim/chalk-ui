@@ -16,7 +16,7 @@ export const PopoverAnatomy = defineStyleAnatomy({
     popover: cva([
         "UI-Popover__popover relative",
         "w-72",
-        "z-50 rounded-md border border-[--border] bg-[--paper] p-4 shadow-md outline-none animate-in",
+        "z-50 rounded-[--radius] border border-[--border] bg-[--paper] p-4 shadow-md outline-none animate-in",
         "data-[side=bottom]:slide-in-from-bottom-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-top-2",
         "data-[side=bottom]:mt-2 data-[side=top]:mb-2 data-[side=left]:mr-2 data-[side=right]:ml-2"
     ])

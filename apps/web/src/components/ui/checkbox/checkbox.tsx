@@ -16,10 +16,10 @@ import { ShowOnly } from "../show-only"
  * -----------------------------------------------------------------------------------------------*/
 
 export const CheckboxAnatomy = defineStyleAnatomy({
-    container: cva("UI-Checkbox__rootLabel inline-flex gap-2 items-center"),
+    container: cva("UI-Checkbox__container inline-flex gap-2 items-center"),
     control: cva([
         "UI-Checkbox__root",
-        "appearance-none peer block relative overflow-hidden transition h-5 w-5 shrink-0 text-white rounded-md ring-offset-1 border ring-offset-background",
+        "appearance-none peer block relative overflow-hidden transition h-5 w-5 shrink-0 text-white rounded-[--radius] ring-offset-1 border ring-offset-background",
         "border-gray-300 dark:border-gray-700",
         "outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--ring] disabled:cursor-not-allowed disabled:opacity-50",
         "data-[state=unchecked]:bg-white dark:data-[state=unchecked]:bg-gray-700", // Unchecked
@@ -108,11 +108,12 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
             error={noErrorMessage ? undefined : basicFieldProps.error} // The error message hidden when `noErrorMessage` is defined
             fieldClassName={"space-y-.5"}
         >
-            <div
+            <label
                 className={cn(
                     CheckboxAnatomy.container(),
                     containerClassName
                 )}
+                htmlFor={basicFieldProps.id}
             >
                 <CheckboxPrimitive.Root
                     id={basicFieldProps.id}
@@ -162,7 +163,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                         {label ?? value}
                     </label>
                 </ShowOnly>
-            </div>
+            </label>
         </BasicField>
     )
 

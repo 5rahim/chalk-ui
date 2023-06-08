@@ -35,7 +35,7 @@ export const AppSidebarTriggerAnatomy = defineStyleAnatomy({
     trigger: cva([
         "UI-AppSidebarTrigger__trigger",
         "block md:hidden",
-        "items-center justify-center rounded-md p-2 text-[--muted] hover:bg-[--highlight] hover:text-[--text-color]",
+        "items-center justify-center rounded-[--radius] p-2 text-[--muted] hover:bg-[--highlight] hover:text-[--text-color]",
         "focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[--ring]"
     ])
 })

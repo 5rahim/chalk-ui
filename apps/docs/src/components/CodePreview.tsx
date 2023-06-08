@@ -16,19 +16,19 @@ const CodePreview: React.FC<CodePreviewProps> = (props) => {
     return (
       <div className="py-6">
          <div className="flex relative">
-            <a onClick={() => setDisplayCode(false)} className={cn("py-2 px-4 block")}>Preview</a>
-            <a onClick={() => setDisplayCode(true)} className={cn("py-2 px-4 block")}>Code</a>
+             <a onClick={() => setDisplayCode(false)} className={cn("py-2 px-4 block")}>Preview</a>
+             <a onClick={() => setDisplayCode(true)} className={cn("py-2 px-4 block")}>Code</a>
          </div>
-         <div className="border rounded-md">
-            {!displayCode && <div className="flex justify-center items-center p-10 min-h-[350px]">
-                <div className="max-w-[70%] w-full">
-                   {preview}
-                </div>
-            </div>}
-            {displayCode && <div className="pt-4 pl-4 pr-4">
-               {children}
-            </div>}
-         </div>
+          <div className="border rounded-[--radius]">
+              {!displayCode && <div className="flex justify-center items-center p-10 min-h-[350px]">
+                  <div className="max-w-[70%] w-full">
+                      {preview}
+                  </div>
+              </div>}
+              {displayCode && <div className="pt-4 pl-4 pr-4">
+                  {children}
+              </div>}
+          </div>
       </div>
    )
 

@@ -38,7 +38,7 @@ export const BadgeAnatomy = defineStyleAnatomy({
             },
             tag: {
                 false: "font-semibold tracking-wide rounded-full",
-                true: "font-semibold rounded-md",
+                true: "font-semibold rounded-[--radius]",
             },
         },
         defaultVariants: {

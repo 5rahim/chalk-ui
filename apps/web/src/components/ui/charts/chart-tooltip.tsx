@@ -13,7 +13,7 @@ import { UIColor } from "../core/color-theme"
 export const ChartTooltipAnatomy = defineStyleAnatomy({
     frame: cva([
         "UI-ChartTooltip__frame",
-        "border border-[--border] bg-[--paper] p-2 rounded-md"
+        "border border-[--border] bg-[--paper] p-2 rounded-[--radius]"
     ]),
     header: cva([
         "UI-ChartTooltip__header",

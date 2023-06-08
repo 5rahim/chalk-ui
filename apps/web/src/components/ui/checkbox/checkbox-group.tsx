@@ -32,7 +32,7 @@ export interface CheckboxGroupProps extends BasicFieldOptions {
     checkboxLabelClassName?: string
     checkboxControlClassName?: string
     checkboxIconClassName?: string
-    options: { value: string, label?: string }[]
+    options: { value: string, label?: React.ReactNode }[]
 }
 
 export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps>((props, ref) => {

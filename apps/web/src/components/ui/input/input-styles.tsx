@@ -10,8 +10,8 @@ import { defineStyleAnatomy } from "../core"
 export const InputAnatomy = defineStyleAnatomy({
     input: cva([
         "UI-Input__input",
-        "w-full rounded-md",
-        "bg-white dark:bg-gray-900 border-[--border] placeholder-gray-400 dark:placeholder-gray-600",
+        "w-full rounded-[--radius]",
+        "bg-[--paper] border-[--border] placeholder-gray-400 dark:placeholder-gray-600",
         "disabled:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed",
         "focus:border-brand-500 focus:ring-1 focus:ring-[--ring]",
         "outline-none focus:outline-none",
@@ -26,7 +26,7 @@ export const InputAnatomy = defineStyleAnatomy({
             },
             intent: {
                 basic: "hover:border-gray-300",
-                filled: "bg-gray-100 border-gray-100 focus:bg-white",
+                filled: "bg-gray-100 dark:bg-gray-800 border-transparent focus:bg-white",
             },
             hasError: {
                 false: null,

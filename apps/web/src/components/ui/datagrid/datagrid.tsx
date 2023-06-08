@@ -1,8 +1,9 @@
 "use client"
 
-import React, { useEffect, useMemo, useState } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { ComponentWithAnatomy, defineStyleAnatomy, UIIcons, useUILocaleConfig } from "../core"
 import {
+    Column,
     ColumnDef,
     ColumnFiltersState,
     flexRender,
@@ -20,10 +21,16 @@ import { TextInput, TextInputProps } from "../text-input"
 import { Checkbox } from "../checkbox"
 import { useDataGridSize } from "./use-datagrid-size"
 import _keys from "lodash/keys"
-import { Select } from "@/components/ui/select"
-import { NumberInput } from "@/components/ui/number-input"
-import { LoadingOverlay } from "@/components/ui/loading-spinner"
-import { Pagination } from "@/components/ui/pagination"
+import { Select } from "../select"
+import { NumberInput } from "../number-input"
+import { LoadingOverlay } from "../loading-spinner"
+import { Pagination } from "../pagination"
+import { DataGridFilter } from "../datagrid/datagrid-filter"
+import { DropdownMenu } from "../dropdown-menu"
+import { DataGridFilteringProps } from "../datagrid/helpers"
+import { IconButton } from "../button"
+import { Tooltip } from "../tooltip"
+import locales from "./locales.json"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -33,22 +40,17 @@ export const DataGridAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-DataGrid__root",
     ]),
-    paginationButton: cva([
-        "UI-DataGrid__paginationButton",
-        "relative inline-flex justify-center items-center h-10 w-10 text-xl border border-[--border] font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50",
-        "disabled:bg-gray-100 disabled:text-gray-400 disabled:pointer-events-none"
-    ]),
     header: cva([
         "UI-DataGrid__header",
-        "block space-y-4 w-full"
+        "block space-y-4 w-full mb-4"
     ]),
     filterContainer: cva([
         "UI-DataGrid__filterContainer",
-        "flex w-full items-center gap-2 flex-wrap"
+        "flex w-full items-center gap-4 flex-wrap"
     ]),
     tableWrapper: cva([
         "UI-DataGrid__tableWrapper",
-        "flex flex-col overflow-y-hidden overflow-x-auto"
+        "flex flex-col overflow-x-auto"
     ]),
     tableContainer: cva([
         "UI-DataGrid__tableContainer",
@@ -63,17 +65,17 @@ export const DataGridAnatomy = defineStyleAnatomy({
         "border-b border-[--border]"
     ]),
     th: cva([
-        "UI-DataGrid__th",
+        "UI-DataGrid__th group/th",
         "px-3 h-12 text-left text-sm font-bold",
         "data-[rowselection=true]:px-3 data-[rowselection=true]:sm:px-1 data-[rowselection=true]:text-center"
     ]),
     titleChevronContainer: cva([
         "UI-DataGrid__titleChevronContainer",
-        "absolute flex items-center inset-y-0 top-1 -right-9"
+        "absolute flex items-center inset-y-0 top-1 -right-9 group"
     ]),
     titleChevron: cva([
         "UI-DataGrid__titleChevron",
-        "mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500 relative bottom-0.5"
+        "mr-3 h-4 w-4 text-gray-400 group-hover:text-gray-500 relative bottom-0.5"
     ]),
     tableBody: cva([
         "UI-DataGrid__tableBody",
@@ -81,8 +83,9 @@ export const DataGridAnatomy = defineStyleAnatomy({
     ]),
     td: cva([
         "UI-DataGrid__td",
-        "px-2 py-2 whitespace-nowrap text-sm font-medium text-[--text-color] truncate overflow-ellipsis",
-        "data-[rowselection=true]:px-2 data-[rowselection=true]:sm:px-0 data-[rowselection=true]:text-center"
+        "px-2 py-2 whitespace-nowrap text-sm font-medium text-[--text-color]",
+        "data-[rowselection=true]:px-2 data-[rowselection=true]:sm:px-0 data-[rowselection=true]:text-center",
+        "data-[actioncolumn=false]:truncate data-[actioncolumn=false]:overflow-ellipsis"
     ]),
     tr: cva([
         "UI-DataGrid__tr",
@@ -99,6 +102,11 @@ export const DataGridAnatomy = defineStyleAnatomy({
     footerPaginationInputContainer: cva([
         "UI-DataGrid__footerPaginationInputContainer",
         "flex flex-none items-center gap-2"
+    ]),
+    filterDropdownButton: cva([
+        "UI-DataGrid__filterDropdownButton",
+        "flex gap-2 items-center bg-[--paper] border border-[--border] rounded-[--radius] py-1 px-2 cursor-pointer hover:bg-[--highlight]",
+        "select-none focus-visible:ring-2 outline-none focus-visible:ring-[--ring]"
     ]),
 })
 
@@ -141,11 +149,12 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
 
 export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>) {
 
+    const { locale: lng } = useUILocaleConfig()
+
     const {
         children,
         rootClassName,
         className,
-        paginationButtonClassName,
         headerClassName,
         filterContainerClassName,
         tableWrapperClassName,
@@ -161,6 +170,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         footerClassName,
         footerPageDisplayContainerClassName,
         footerPaginationInputContainerClassName,
+        filterDropdownButtonClassName,
         /**/
         withFetching = false,
         columns,
@@ -275,6 +285,10 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         })
     }, [hideColumns, tableWidth])
 
+    useEffect(() => {
+        console.log(columnFilters)
+    }, [columnFilters])
+
     /**
      * Item selection
      */
@@ -283,25 +297,75 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         onItemSelected && onItemSelected(data?.filter((v: any, i: number) => selectedIndexArr.includes(i)) as T[])
     }, [table.getState().rowSelection])
 
+    const filterableColumns = table.getAllLeafColumns().filter(n => n.getCanFilter() && (n.columnDef.meta as any)?.filter)
+    const unselectedFilterableColumns = filterableColumns.filter(n => !columnFilters.map(c => c.id).includes(n.id))
+
+    // Get the default value for a filter when the user selects it
+    const getFilterDefaultValue = useCallback((col: Column<any>) => {
+        // Since the column is filterable, get options
+        const options = (col.columnDef.meta as any)?.filter as DataGridFilteringProps
+        if (options.type === "select" || options.type === "radio") {
+            return options.options?.[0]?.value ?? ""
+        } else if (options.type === "boolean") {
+            return "true"
+        } else if (options.type === "checkbox") {
+            return options.options?.map(n => n.value) ?? []
+        }
+        return null
+    }, [])
+
     return (
         <div className={cn(DataGridAnatomy.root(), rootClassName)}>
             <div className={cn(DataGridAnatomy.header(), headerClassName)}>
-                {/* Search Box */}
-                <DataGridSearchInput value={globalFilter ?? ""} onChange={value => setGlobalFilter(String(value))}/>
 
                 <div className={cn(DataGridAnatomy.filterContainer(), filterContainerClassName)}>
-                    {table.getAllLeafColumns().map(column => {
-                        if (column.getCanFilter() && (column.columnDef.meta as any)?.filter) {
-                            // return <DataGridFilter
-                            //     key={column.id}
-                            //     filterValue={column.getFilterValue()}
-                            //     filter={(column.columnDef.meta as any)?.filter as any}
-                            //     setFilterValue={column.setFilterValue}
-                            // />
+                    {/* Search Box */}
+                    <DataGridSearchInput value={globalFilter ?? ""} onChange={value => setGlobalFilter(String(value))}/>
+                    {/* Filtering options */}
+                    <DropdownMenu
+                        trigger={
+                            <button className={cn(DataGridAnatomy.filterDropdownButton(), filterDropdownButtonClassName)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                                </svg>
+                                <span>Filters ({unselectedFilterableColumns.length})</span>
+                            </button>
+                        }>
+                        {unselectedFilterableColumns.map(col => {
+                            const defaultValue = getFilterDefaultValue(col)
+                            const icon = (col.columnDef.meta as any)?.filter?.icon
+                            return <DropdownMenu.Item
+                                key={col.id}
+                                onClick={() => setColumnFilters(p => [...p, { id: col.id, value: defaultValue }])}
+                            >
+                                <span className={"text-lg"}>{icon && icon}</span>
+                                <span>{(col.columnDef.meta as any)?.filter?.name}</span>
+                            </DropdownMenu.Item>
+                        })}
+                    </DropdownMenu>
+                    <Tooltip trigger={<IconButton icon={UIIcons.undo()} intent={"gray-outline"} size={"sm"} onClick={() => setColumnFilters([])}/>}>
+                        {locales["remove-filters"][lng]}
+                    </Tooltip>
+                </div>
+
+                <div className={cn(DataGridAnatomy.filterContainer(), filterContainerClassName)}>
+                    {/*Display selected filters*/}
+                    {table.getAllLeafColumns().filter(n => columnFilters.map(a => a.id).includes(n.id)).map(col => {
+                        if (col.getCanFilter() && (col.columnDef.meta as any)?.filter) {
+                            return <DataGridFilter
+                                key={col.id}
+                                column={col.columnDef}
+                                filterValue={col.getFilterValue()}
+                                setFilterValue={col.setFilterValue}
+                                filteringOptions={(col.columnDef.meta as any)?.filter as any}
+                                onRemove={() => setColumnFilters(p => [...p.filter(n => n.id !== col.id)])}
+                            />
                         }
-                        return null
+                        return <div key={col.id}></div>
                     })}
                 </div>
+
             </div>
 
             {/* Table */}
@@ -367,6 +431,19 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                                     <polyline points="6 9 12 15 18 9"/>
                                                                 </svg>
                                                             }
+                                                            {(header.column.getIsSorted() === false && header.column.getCanSort()) &&
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                                     fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                                                                     strokeLinejoin="round"
+                                                                     className={cn(
+                                                                         DataGridAnatomy.titleChevron(),
+                                                                         "w-4 h-4 opacity-0 transition-opacity group-hover/th:opacity-100",
+                                                                         titleChevronClassName
+                                                                     )}>
+                                                                    <path d="m7 15 5 5 5-5"/>
+                                                                    <path d="m7 9 5-5 5 5"/>
+                                                                </svg>
+                                                            }
                                                         </span>
                                                     </div>
                                                 )}
@@ -382,7 +459,8 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
 
                             {/*Body*/}
 
-                            {!isLoading && (
+                            {/*Without fetching*/}
+                            {(!isLoading && !withFetching) && (
                                 <tbody
                                     className={cn(DataGridAnatomy.tableBody(), tableBodyClassName)}
                                 >
@@ -394,7 +472,8 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                     <td
                                                         key={cell.id}
                                                         className={cn(DataGridAnatomy.td(), tdClassName)}
-                                                        data-rowselection={index === 0 && enableRowSelection}
+                                                        data-rowselection={`${index === 0 && enableRowSelection}`}
+                                                        data-actioncolumn={`${cell.column.id === "actions"}`}
                                                         style={{ width: cell.column.getSize(), maxWidth: cell.column.columnDef.maxSize }}
                                                     >
                                                         {flexRender(
@@ -409,6 +488,9 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                 })}
                                 </tbody>
                             )}
+
+                            {/*With fetching*/}
+
                         </table>
                         {((withFetching) && (!isLoading && table.getRowModel().rows.slice(table.getState().pagination.pageIndex * pageSize, (table.getState().pagination.pageIndex + 1) * pageSize).length === 0)) && <>
                             <div className="flex w-full text-3xl py-4 items-center justify-center">
@@ -495,22 +577,6 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
 DataGrid.displayName = "DataGrid"
 
 /* -------------------------------------------------------------------------------------------------
- * Helper
- * -----------------------------------------------------------------------------------------------*/
-
-/**
- * Return
- * @example
- * const columns = useMemo(() => createDataGridColumns<Item>([
- *  ...
- * ]), [])
- * @param columns
- */
-export function createDataGridColumns<T extends Record<string, any>>(columns: ColumnDef<T>[]) {
-    return columns
-}
-
-/* -------------------------------------------------------------------------------------------------
  * DataGridSearchInput
  * -----------------------------------------------------------------------------------------------*/
 
@@ -548,6 +614,8 @@ function DataGridSearchInput(props: DataGridSearchInputProps & TextInputProps) {
                 <circle cx="11" cy="11" r="8"/>
                 <path d="m21 21-4.3-4.3"/>
             </svg>}
+            size={"sm"}
+            fieldClassName={"md:max-w-[15rem]"}
         />
     )
 }
