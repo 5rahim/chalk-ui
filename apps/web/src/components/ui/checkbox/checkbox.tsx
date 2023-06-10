@@ -19,7 +19,7 @@ export const CheckboxAnatomy = defineStyleAnatomy({
     container: cva("UI-Checkbox__container inline-flex gap-2 items-center"),
     control: cva([
         "UI-Checkbox__root",
-        "appearance-none peer block relative overflow-hidden transition h-5 w-5 shrink-0 text-white rounded-[--radius] ring-offset-1 border ring-offset-background",
+        "appearance-none peer block relative overflow-hidden transition h-5 w-5 shrink-0 text-white rounded-md ring-offset-1 border ring-offset-background",
         "border-gray-300 dark:border-gray-700",
         "outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--ring] disabled:cursor-not-allowed disabled:opacity-50",
         "data-[state=unchecked]:bg-white dark:data-[state=unchecked]:bg-gray-700", // Unchecked
@@ -134,7 +134,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                     {...rest}
                 >
                     <CheckboxPrimitive.CheckboxIndicator className={cn(CheckboxAnatomy.indicator(), indicatorClassName)}>
-                        {rest.checked === true && <svg
+                        {(typeof rest.checked === "boolean" && rest.checked) && <svg
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" stroke="currentColor"
                             fill="currentColor"
                             className={cn(CheckboxAnatomy.icon({ size: _size }), iconClassName)}

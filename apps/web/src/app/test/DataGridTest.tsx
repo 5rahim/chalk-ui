@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react"
 import { faker } from "@faker-js/faker"
-import { createDataGridColumns, DataGrid } from "@/components/ui/datagrid"
+import { createDataGridColumns, DataGrid, DataGridFetchingHandlerParams, useDataGridFetchingHandler } from "@/components/ui/datagrid"
 import { Badge } from "@/components/ui/badge"
 import { DropdownMenu } from "@/components/ui/dropdown-menu"
 import { IconButton } from "@/components/ui/button"
@@ -11,6 +11,8 @@ import { BiFolder } from "@react-icons/all-files/bi/BiFolder"
 import { BiLowVision } from "@react-icons/all-files/bi/BiLowVision"
 import { BiBasket } from "@react-icons/all-files/bi/BiBasket"
 import { BiCheck } from "@react-icons/all-files/bi/BiCheck"
+import { BiUser } from "@react-icons/all-files/bi/BiUser"
+import { useQuery } from "@tanstack/react-query"
 
 interface DataGridTestProps {
     children?: React.ReactNode
@@ -73,31 +75,39 @@ const _data = makeData(30)
 export async function fetchData() {
     // Simulate some network latency
     await new Promise(r => setTimeout(r, 0))
-    // console.log('slice', options.offset,
-    //    ((options.offset/options.limit) + 1) * options.limit)
     return {
         rows: _data,
     }
 }
 
+export async function fetchFromFakeServer(options: DataGridFetchingHandlerParams) {
+    // Simulate some network latency
+    let a = []
+    await new Promise(r => setTimeout(r, 1000))
+    a = _data.filter(n => options.globalFilterValue !== "" ? n.name.toLowerCase().trim().includes(options.globalFilterValue.toLowerCase().trim()) : true)
+    console.log(a)
+    return {
+        rows: limitOffset(a, options.limit, options.offset),
+        rowCount: a.length
+    }
+}
+
+
 export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
 
     const { children, ...rest } = props
 
-    const [data, setData] = useState<Product[] | undefined>(undefined)
+    const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
+
 
     useEffect(() => {
         async function fetch() {
             const res = await fetchData()
-            setData(res.rows)
+            setClientData(res.rows)
         }
 
         fetch()
     }, [])
-
-    useEffect(() => {
-        console.log(data)
-    }, [data])
 
     const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering }) => [
         {
@@ -122,8 +132,8 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
             size: 90,
             ...withFiltering({
                 name: "Category",
-                type: "select",
-                options: [{ value: "Electronics" }, { value: "Food" }],
+                type: "radio",
+                options: [{ value: "Electronics" }, { value: "Food" }, { value: "-" }],
                 icon: <BiFolder/>
             }),
         },
@@ -144,12 +154,16 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                     {
                         value: "in_stock",
                         label: <span className={"flex items-center gap-2"}><BiBasket className={"text-green-500"}/><span>In stock</span></span>
+                    },
+                    {
+                        value: "test",
+                        label: <span className={"flex items-center gap-2"}><BiUser className={"text-green-500"}/><span>Test</span></span>
                     }
                 ],
                 valueFormatter: (value) => {
                     if (value === "out_of_stock") return "Out of stock"
                     if (value === "in_stock") return "In stock"
-                    return ""
+                    return value
                 }
             })
         },
@@ -184,21 +198,53 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         },
     ]), [])
 
+    // Server
+
+    const fetchingHandler = useDataGridFetchingHandler()
+
+    const dataQuery = useQuery({
+        queryKey: ["data", fetchingHandler.getParams()],
+        queryFn: () => fetchFromFakeServer(fetchingHandler.getParams()),
+        keepPreviousData: true, refetchOnWindowFocus: false
+    })
+
+    useEffect(() => {
+        console.log(fetchingHandler.getParams())
+    }, [fetchingHandler])
+
     return (
         <>
             <DataGrid<Product>
+                withFetching={true}
+                fetchingHandler={fetchingHandler}
+                isFetching={dataQuery.isFetching}
                 columns={columns}
-                data={data}
-                dataCount={_data.length}
-                isLoading={!data}
-                isFetching={undefined}
+                data={dataQuery.data?.rows}
+                rowCount={fetchingHandler.getIsFiltering() ? (dataQuery.data?.rowCount ?? 0) : _data.length}
+                isLoading={dataQuery.isLoading}
                 hideColumns={[
                     { below: 850, hide: ["availability", "price"] },
                     { below: 600, hide: ["action"] },
                     { below: 515, hide: ["category"] },
                     { below: 400, hide: ["visible"] },
                 ]}
-                enableRowSelection={false}
+                enableRowSelection={true}
+                onItemSelected={data => {
+                    console.log(data)
+                }}
+            />
+            <DataGrid<Product>
+                columns={columns}
+                data={clientData}
+                rowCount={_data.length}
+                isLoading={!clientData}
+                hideColumns={[
+                    { below: 850, hide: ["availability", "price"] },
+                    { below: 600, hide: ["action"] },
+                    { below: 515, hide: ["category"] },
+                    { below: 400, hide: ["visible"] },
+                ]}
+                enableRowSelection={true}
                 onItemSelected={data => {
                     console.log(data)
                 }}
@@ -206,4 +252,23 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         </>
     )
 
+}
+
+
+export function limitOffset<T>(array: T[], limit: number, offset: number): T[] {
+    if (!array) return []
+
+    const length = array.length
+
+    if (!length) {
+        return []
+    }
+    if (offset > length - 1) {
+        return []
+    }
+
+    const start = Math.min(length - 1, offset)
+    const end = Math.min(length, offset + limit)
+
+    return array.slice(start, end)
 }

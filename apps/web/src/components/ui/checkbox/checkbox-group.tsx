@@ -78,7 +78,7 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
                     ref={ref}
                 >
                     <div className={cn("space-y-1", stackClassName)}>
-                        {options.map((opt) => (
+                        {options.map((opt, idx) => (
                             <Checkbox
                                 key={opt.value}
                                 label={opt.label}
@@ -103,6 +103,7 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
                                 iconClassName={checkboxIconClassName}
                                 isDisabled={basicFieldProps.isDisabled}
                                 isReadOnly={basicFieldProps.isReadOnly}
+                                tabIndex={idx}
                             />
                         ))}
                     </div>

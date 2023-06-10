@@ -114,6 +114,14 @@ export const DataGridAnatomy = defineStyleAnatomy({
  * DataGrid
  * -----------------------------------------------------------------------------------------------*/
 
+export type DataGridFetchingHandlerParams = { offset: number, limit: number, globalFilterValue: string, filters: any }
+export type DataGridFetchingHandler = {
+    setParams: ({ offset, limit, globalFilterValue }: Pick<DataGridFetchingHandlerParams, "offset" | "limit" | "globalFilterValue">) => void
+    getParams: () => DataGridFetchingHandlerParams
+    getIsFiltering: () => boolean
+    setFilters: (filters: any) => void
+}
+
 export interface DataGridProps<T extends Record<string, any>> extends React.ComponentPropsWithoutRef<"div">,
     ComponentWithAnatomy<typeof DataGridAnatomy> {
     data: T[] | null | undefined
@@ -124,12 +132,14 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
      * The width is based on the table, not the window
      */
     hideColumns?: { below: number, hide: string[] }[]
-    // DataGrid should know how many objects there are to paginate
-    dataCount: number
+    /**
+     * DataGrid should know how many objects there are to paginate
+     *
+     * - When using with `withFetching` you should recalculate it using the filters
+     */
+    rowCount: number
     // Display loading spinner when data is loading
     isLoading: boolean
-    // Display loading spinner when new data is coming in
-    isFetching?: boolean
     /**
      * Enables and displays checkboxes for each row.
      * Use in conjunction with onItemSelected()
@@ -141,10 +151,15 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
     itemsPerPage?: number
     /**
      * @default false
-     * By default DataGrid expects the entirety of the data.
-     * By setting this prop to `true`, DataGrid will allow you to manually filter and paginate data
+     * By default DataGrid handles pagination and filtering on the client.
+     * By setting this prop to `true`, DataGrid will allow you to paginate and filter manually from the server.
+     *
+     * - Provide a "rowCount" prop so that DataGrid knows how many pages there are
      */
     withFetching?: boolean
+    fetchingHandler?: DataGridFetchingHandler
+    // Display loading spinner when new data is coming in
+    isFetching?: boolean
 }
 
 export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>) {
@@ -172,16 +187,18 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         footerPaginationInputContainerClassName,
         filterDropdownButtonClassName,
         /**/
-        withFetching = false,
         columns,
         data = [],
-        dataCount,
+        rowCount,
         hideColumns = [],
         isLoading,
         isFetching,
         enableRowSelection,
         onItemSelected,
         itemsPerPage: _limit = 5,
+        /**/
+        withFetching = false,
+        fetchingHandler,
         ...rest
     } = props
 
@@ -196,7 +213,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         header: ({ table }) => (
             <Checkbox
                 checked={table.getIsSomeRowsSelected() ? "indeterminate" : table.getIsAllRowsSelected()}
-                onChange={table.getToggleAllRowsSelectedHandler()}
+                // onChange={table.getToggleAllRowsSelectedHandler()}
             />
         ),
         cell: ({ row }) => (
@@ -210,10 +227,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         ),
     }, ...columns], [columns])
 
-    /**
-     * States
-     */
-        // Keep track of search input
+    // Keep track of search input
     const [globalFilter, setGlobalFilter] = useState("")
     // Keep track of selected row
     const [rowSelection, setRowSelection] = useState({})
@@ -221,16 +235,18 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = useState({})
 
-    /**
-     * Pagination
-     */
-
-        // Keep track of pages
+    // Keep track of pages
     const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: _limit })
     // Pagination object
     const pagination = useMemo(() => ({ pageIndex, pageSize, }), [pageIndex, pageSize])
     // Calculate page count
-    const pageCount = useMemo(() => Math.ceil(dataCount / pageSize) ?? -1, [dataCount, pageSize])
+    const pageCount = useMemo(() => Math.ceil(rowCount / pageSize) ?? -1, [rowCount, pageSize])
+
+    useEffect(() => {
+        if (withFetching && fetchingHandler) {
+            fetchingHandler.setParams({ offset: pageIndex, limit: pageSize, globalFilterValue: globalFilter })
+        }
+    }, [globalFilter, pageSize, pageIndex])
 
     /**
      * Table
@@ -263,7 +279,8 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         onRowSelectionChange: setRowSelection,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
+        getFilteredRowModel: !withFetching ? getFilteredRowModel() : undefined,
+        manualPagination: withFetching,
         debugTable: true,
     })
 
@@ -284,10 +301,6 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
             })
         })
     }, [hideColumns, tableWidth])
-
-    useEffect(() => {
-        console.log(columnFilters)
-    }, [columnFilters])
 
     /**
      * Item selection
@@ -314,6 +327,12 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         return null
     }, [])
 
+    useEffect(() => {
+        fetchingHandler?.setFilters(columnFilters)
+    }, [columnFilters])
+
+    const displayedRows = withFetching ? table.getRowModel().rows : table.getRowModel().rows.slice(table.getState().pagination.pageIndex * pageSize, (table.getState().pagination.pageIndex + 1) * pageSize)
+
     return (
         <div className={cn(DataGridAnatomy.root(), rootClassName)}>
             <div className={cn(DataGridAnatomy.header(), headerClassName)}>
@@ -321,7 +340,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                 <div className={cn(DataGridAnatomy.filterContainer(), filterContainerClassName)}>
                     {/* Search Box */}
                     <DataGridSearchInput value={globalFilter ?? ""} onChange={value => setGlobalFilter(String(value))}/>
-                    {/* Filtering options */}
+                    {/* Filter dropdown */}
                     <DropdownMenu
                         trigger={
                             <button className={cn(DataGridAnatomy.filterDropdownButton(), filterDropdownButtonClassName)}>
@@ -332,37 +351,47 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                 <span>Filters ({unselectedFilterableColumns.length})</span>
                             </button>
                         }>
+                        {/*Filter list*/}
                         {unselectedFilterableColumns.map(col => {
                             const defaultValue = getFilterDefaultValue(col)
                             const icon = (col.columnDef.meta as any)?.filter?.icon
-                            return <DropdownMenu.Item
-                                key={col.id}
-                                onClick={() => setColumnFilters(p => [...p, { id: col.id, value: defaultValue }])}
-                            >
-                                <span className={"text-lg"}>{icon && icon}</span>
-                                <span>{(col.columnDef.meta as any)?.filter?.name}</span>
-                            </DropdownMenu.Item>
+                            return (
+                                <DropdownMenu.Item
+                                    key={col.id}
+                                    onClick={() => setColumnFilters(p => [...p, { id: col.id, value: defaultValue }])}
+                                >
+                                    <span className={"text-lg"}>{icon && icon}</span>
+                                    <span>{(col.columnDef.meta as any)?.filter?.name}</span>
+                                </DropdownMenu.Item>
+                            )
                         })}
                     </DropdownMenu>
-                    <Tooltip trigger={<IconButton icon={UIIcons.undo()} intent={"gray-outline"} size={"sm"} onClick={() => setColumnFilters([])}/>}>
-                        {locales["remove-filters"][lng]}
-                    </Tooltip>
+
+                    {/*Remove filters button*/}
+                    {unselectedFilterableColumns.length !== filterableColumns.length && (
+                        <Tooltip
+                            trigger={<IconButton icon={UIIcons.undo()} intent={"gray-outline"} size={"sm"} onClick={() => setColumnFilters([])}/>}>
+                            {locales["remove-filters"][lng]}
+                        </Tooltip>
+                    )}
                 </div>
 
                 <div className={cn(DataGridAnatomy.filterContainer(), filterContainerClassName)}>
                     {/*Display selected filters*/}
                     {table.getAllLeafColumns().filter(n => columnFilters.map(a => a.id).includes(n.id)).map(col => {
                         if (col.getCanFilter() && (col.columnDef.meta as any)?.filter) {
-                            return <DataGridFilter
-                                key={col.id}
-                                column={col.columnDef}
-                                filterValue={col.getFilterValue()}
-                                setFilterValue={col.setFilterValue}
-                                filteringOptions={(col.columnDef.meta as any)?.filter as any}
-                                onRemove={() => setColumnFilters(p => [...p.filter(n => n.id !== col.id)])}
-                            />
+                            return (
+                                <DataGridFilter
+                                    key={col.id}
+                                    column={col.columnDef}
+                                    filterValue={col.getFilterValue()}
+                                    setFilterValue={col.setFilterValue}
+                                    filteringOptions={(col.columnDef.meta as any)?.filter as any}
+                                    onRemove={() => setColumnFilters(p => [...p.filter(n => n.id !== col.id)])}
+                                />
+                            )
                         }
-                        return <div key={col.id}></div>
+                        return undefined
                     })}
                 </div>
 
@@ -460,11 +489,9 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                             {/*Body*/}
 
                             {/*Without fetching*/}
-                            {(!isLoading && !withFetching) && (
-                                <tbody
-                                    className={cn(DataGridAnatomy.tableBody(), tableBodyClassName)}
-                                >
-                                {table.getRowModel().rows.slice(table.getState().pagination.pageIndex * pageSize, (table.getState().pagination.pageIndex + 1) * pageSize).map((row) => {
+                            {(!isLoading) && (
+                                <tbody className={cn(DataGridAnatomy.tableBody(), tableBodyClassName)}>
+                                {displayedRows.map((row) => {
                                     return (
                                         <tr key={row.id} className={cn(DataGridAnatomy.tr(), trClassName)}>
                                             {row.getVisibleCells().map((cell, index) => {
@@ -489,19 +516,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                 </tbody>
                             )}
 
-                            {/*With fetching*/}
-
                         </table>
-                        {((withFetching) && (!isLoading && table.getRowModel().rows.slice(table.getState().pagination.pageIndex * pageSize, (table.getState().pagination.pageIndex + 1) * pageSize).length === 0)) && <>
-                            <div className="flex w-full text-3xl py-4 items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <line x1="15" x2="9" y1="9" y2="15"/>
-                                    <line x1="9" x2="15" y1="9" y2="15"/>
-                                </svg>
-                            </div>
-                        </>}
                     </div>
                 </div>
 
@@ -575,6 +590,26 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
 }
 
 DataGrid.displayName = "DataGrid"
+
+
+/* -------------------------------------------------------------------------------------------------
+ * Server side
+ * -----------------------------------------------------------------------------------------------*/
+
+export const useDataGridFetchingHandler = (defaultProps?: DataGridFetchingHandlerParams): DataGridFetchingHandler => {
+    const _defaultValue = { offset: 0, limit: 0, globalFilterValue: "", filters: [] }
+
+    const [params, setParams] = useState<DataGridFetchingHandlerParams>(defaultProps ?? _defaultValue)
+
+    const isFiltering = params.globalFilterValue !== ""
+
+    return {
+        getParams: () => params,
+        getIsFiltering: () => isFiltering,
+        setFilters: (filters: any) => setParams(p => ({ ...p, filters })),
+        setParams: (props: Partial<DataGridFetchingHandlerParams>) => setParams(p => ({ ...p, ...props })),
+    }
+}
 
 /* -------------------------------------------------------------------------------------------------
  * DataGridSearchInput

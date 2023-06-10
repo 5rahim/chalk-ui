@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useCallback } from "react"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
@@ -61,11 +61,22 @@ export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HT
     } = props
 
     const icon = filteringOptions.icon
+
+    // Value formatter - if undefined, use the default behavior
+    const valueFormatter = filteringOptions.valueFormatter || ((value: string) => value)
+
+    // Get the options
     const options = filteringOptions.options ?? []
-    const defaultValueFormatter = (value: string) => {
-        return value
-    }
-    const valueFormatter = filteringOptions.valueFormatter || defaultValueFormatter
+
+    // Update handler
+    const handleUpdate = useCallback((value: any) => {
+        let finalValue = value
+        console.log(finalValue)
+
+        if (finalValue === "-") finalValue = ""
+
+        setFilterValue(finalValue)
+    }, [])
 
     return (
         <div
@@ -88,7 +99,7 @@ export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HT
                     leftAddon={filteringOptions.name}
                     options={[...options.map(n => ({ value: n.value, label: valueFormatter(n.value) }))]}
                     onChange={e =>
-                        setFilterValue(e.target.value.toLowerCase())
+                        handleUpdate(e.target.value.toLowerCase())
                     }
                     size={"sm"}
                     fieldClassName={"w-fit"}
@@ -97,36 +108,40 @@ export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HT
             </ShowOnly>
             {/*Boolean*/}
             <ShowOnly when={filteringOptions.type === "boolean"}>
-                <DropdownMenu trigger={
-                    <DataGridActiveFilter
-                        options={filteringOptions}
-                        value={valueFormatter(filterValue)}
-                    />
-                }>
+                <DropdownMenu
+                    dropdownClassName={"right-[inherit] left"}
+                    trigger={
+                        <DataGridActiveFilter
+                            options={filteringOptions}
+                            value={valueFormatter(filterValue)}
+                        />
+                    }>
                     <DropdownMenu.Group>
-                        <DropdownMenu.Item
-                            onClick={() => setFilterValue("true")}>{valueFormatter("true") === "true" ? "True" : valueFormatter("true")}
+                        <DropdownMenu.Item onClick={() => handleUpdate("true")}>
+                            {valueFormatter("true") === "true" ? "True" : valueFormatter("true")}
                         </DropdownMenu.Item>
-                        <DropdownMenu.Item
-                            onClick={() => setFilterValue("false")}>{valueFormatter("false") === "false" ? "False" : valueFormatter("false")}
+                        <DropdownMenu.Item onClick={() => handleUpdate("false")}>
+                            {valueFormatter("false") === "false" ? "False" : valueFormatter("false")}
                         </DropdownMenu.Item>
                     </DropdownMenu.Group>
                 </DropdownMenu>
             </ShowOnly>
             {/*Checkbox*/}
             <ShowOnly when={filteringOptions.type === "checkbox" && !!options.length}>
-                <DropdownMenu trigger={
-                    <DataGridActiveFilter
-                        options={filteringOptions}
-                        value={Array.isArray(filterValue) ? filterValue.map((n: string) => valueFormatter(n)) : valueFormatter(filterValue)}
-                    />
-                }>
+                <DropdownMenu
+                    dropdownClassName={"right-[inherit] left"}
+                    trigger={
+                        <DataGridActiveFilter
+                            options={filteringOptions}
+                            value={Array.isArray(filterValue) ? filterValue.map((n: string) => valueFormatter(n)) : valueFormatter(filterValue)}
+                        />}
+                >
                     <DropdownMenu.Group className={"p-1"}>
                         {filteringOptions.options?.length && (
                             <CheckboxGroup
                                 options={filteringOptions.options}
                                 value={filterValue}
-                                onChange={setFilterValue}
+                                onChange={handleUpdate}
                                 checkboxContainerClassName={"flex flex-row-reverse w-full justify-between"}
                                 checkboxLabelClassName={"cursor-pointer"}
                             />
@@ -136,18 +151,20 @@ export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HT
             </ShowOnly>
             {/*Radio*/}
             <ShowOnly when={filteringOptions.type === "radio" && !!options.length}>
-                <DropdownMenu trigger={
-                    <DataGridActiveFilter
-                        options={filteringOptions}
-                        value={Array.isArray(filterValue) ? filterValue.map((n: string) => valueFormatter(n)) : valueFormatter(filterValue)}
-                    />
-                }>
+                <DropdownMenu
+                    dropdownClassName={"right-[inherit] left"}
+                    trigger={
+                        <DataGridActiveFilter
+                            options={filteringOptions}
+                            value={Array.isArray(filterValue) ? filterValue.map((n: string) => valueFormatter(n)) : valueFormatter(filterValue)}
+                        />}
+                >
                     <DropdownMenu.Group className={"p-1"}>
                         {filteringOptions.options?.length && (
                             <RadioGroup
                                 options={filteringOptions.options}
                                 value={filterValue}
-                                onChange={setFilterValue}
+                                onChange={handleUpdate}
                                 radioContainerClassName={"flex flex-row-reverse w-full justify-between"}
                                 radioLabelClassName={"cursor-pointer"}
                             />
@@ -165,22 +182,26 @@ export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HT
 DataGridFilter.displayName = "DataGridFilter"
 
 
-interface DataGridActiveFilterProps extends ComponentWithAnatomy<typeof DataGridActiveFilterAnatomy> {
+interface DataGridActiveFilterProps extends React.ComponentPropsWithRef<"button">, ComponentWithAnatomy<typeof DataGridActiveFilterAnatomy> {
     children?: React.ReactNode
     options: DataGridFilteringProps
     value: any
 }
 
-export const DataGridActiveFilter: React.FC<DataGridActiveFilterProps> = (props) => {
+export const DataGridActiveFilter: React.FC<DataGridActiveFilterProps> = React.forwardRef((props, ref) => {
 
     const { children, options, value, ...rest } = props
 
     const formattedValue = Array.isArray(value) ? (value.length > 2 ? [...value.slice(0, 2), "..."].join(", ") : value.join(", ")) : String(value)
 
-    return <button className={cn(DataGridAnatomy.filterDropdownButton())} {...rest}>
-        {options.icon && <span>{options.icon}</span>}
-        <span>{options.name}:</span>
-        <span className={"font-semibold"}>{formattedValue}</span>
-    </button>
+    return (
+        <button className={cn(DataGridAnatomy.filterDropdownButton(), "truncate overflow-ellipsis")} {...rest} ref={ref}>
+            {options.icon && <span>{options.icon}</span>}
+            <span>{options.name}:</span>
+            <span className={"font-semibold flex flex-none overflow-hidden whitespace-normal"}>{formattedValue}</span>
+        </button>
+    )
 
-}
+})
+
+DataGridActiveFilter.displayName = "DataGridActiveFilter"

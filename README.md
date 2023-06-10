@@ -87,17 +87,19 @@ https://chalk.rahim.app
   - [ ] ~~Transfer List~~
   - [ ] ~~JSON Input~~
 - [ ] i18n (For certain components)
-    - [x] English
-    - [x] French
+  - [x] English
+  - [x] French
 - [ ] Tests
+
+TODO: Sidebar scrollable content, sidebar footer, datagrid null value in filters
 
 ## CLI Roadmap
 
-- [x] Init 
-- [x] Add 
-- [ ] Remove 
+- [x] Init
+- [x] Add
+- [ ] Remove
 - [ ] Update
-- [ ] Migrate (scans the installed components and performs an update) 
+- [ ] Migrate (scans the installed components and performs an update)
 
 ## Dev
 
