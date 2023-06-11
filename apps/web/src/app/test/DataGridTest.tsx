@@ -215,7 +215,7 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
     return (
         <>
             <DataGrid<Product>
-                withFetching={true}
+                withManualFiltering={true}
                 fetchingHandler={fetchingHandler}
                 isFetching={dataQuery.isFetching}
                 columns={columns}

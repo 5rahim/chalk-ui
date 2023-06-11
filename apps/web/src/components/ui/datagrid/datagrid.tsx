@@ -114,12 +114,11 @@ export const DataGridAnatomy = defineStyleAnatomy({
  * DataGrid
  * -----------------------------------------------------------------------------------------------*/
 
-export type DataGridFetchingHandlerParams = { offset: number, limit: number, globalFilterValue: string, filters: any }
+export type DataGridFetchingHandlerParams = { offset: number, limit: number, globalFilterValue: string, filters: any[] }
 export type DataGridFetchingHandler = {
-    setParams: ({ offset, limit, globalFilterValue }: Pick<DataGridFetchingHandlerParams, "offset" | "limit" | "globalFilterValue">) => void
+    setParams: (params: Partial<DataGridFetchingHandlerParams>) => void
     getParams: () => DataGridFetchingHandlerParams
     getIsFiltering: () => boolean
-    setFilters: (filters: any) => void
 }
 
 export interface DataGridProps<T extends Record<string, any>> extends React.ComponentPropsWithoutRef<"div">,
@@ -133,9 +132,8 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
      */
     hideColumns?: { below: number, hide: string[] }[]
     /**
-     * DataGrid should know how many objects there are to paginate
-     *
-     * - When using with `withFetching` you should recalculate it using the filters
+     * DataGrid should know how many objects there are to paginate.
+     * It can be fetched using an aggregation query via SSR.
      */
     rowCount: number
     // Display loading spinner when data is loading
@@ -145,19 +143,34 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
      * Use in conjunction with onItemSelected()
      */
     enableRowSelection: boolean
-    // Returns selected objects
+    /**
+     * Returns selected rows.
+     *
+     * /!\ You should avoid using it with `fetchingHandler` because you can only select visible rows
+     */
     onItemSelected?: (value: T[]) => void
     // Limit the number of rows per page
     itemsPerPage?: number
     /**
      * @default false
-     * By default DataGrid handles pagination and filtering on the client.
-     * By setting this prop to `true`, DataGrid will allow you to paginate and filter manually from the server.
+     * By default DataGrid handles pagination and filtering on the client, so it expects all the data at once.
+     * By using the fetching handler DataGrid will allow you to paginate and filter manually from the server.
      *
      * - Provide a "rowCount" prop so that DataGrid knows how many pages there are
+     * - You should recalculate `rowCount`
+     *
+     * @example
+     * // With dynamic rowCount
+     * rowCount={fetchingHandler.getIsFiltering() ? (res.data?.rowCount ?? 0) : aggregationRes.count}
      */
-    withFetching?: boolean
     fetchingHandler?: DataGridFetchingHandler
+    /**
+     * Use in combination with `fetchingHandler`.
+     * When it is false, the column filters will only be applied to visible rows
+     *
+     * - When it is true, the filters will not be applied, you can then manually filter the data using the returned values
+     */
+    withManualFiltering?: boolean
     // Display loading spinner when new data is coming in
     isFetching?: boolean
 }
@@ -197,10 +210,12 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         onItemSelected,
         itemsPerPage: _limit = 5,
         /**/
-        withFetching = false,
+        withManualFiltering = false,
         fetchingHandler,
         ...rest
     } = props
+
+    const withFetching = !!fetchingHandler
 
     /**
      * Selection checkboxes
@@ -210,21 +225,27 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         size: 1,
         disableSortBy: true,
         disableGlobalFilter: true,
-        header: ({ table }) => (
-            <Checkbox
-                checked={table.getIsSomeRowsSelected() ? "indeterminate" : table.getIsAllRowsSelected()}
-                // onChange={table.getToggleAllRowsSelectedHandler()}
-            />
-        ),
-        cell: ({ row }) => (
-            <div className="px-1">
+        header: ({ table }) => {
+            console.log(table.getIsSomeRowsSelected())
+            return (
                 <Checkbox
-                    checked={row.getIsSomeSelected() ? "indeterminate" : row.getIsSelected()}
-                    isDisabled={!row.getCanSelect()}
-                    onChange={row.getToggleSelectedHandler()}
+                    checked={table.getIsSomeRowsSelected() ? "indeterminate" : table.getIsAllRowsSelected()}
+                    onChange={() => table.toggleAllRowsSelected()}
                 />
-            </div>
-        ),
+            )
+        },
+        cell: ({ row }) => {
+            return (
+                <div className="px-1">
+                    <Checkbox
+                        key={row.id}
+                        checked={row.getIsSomeSelected() ? "indeterminate" : row.getIsSelected()}
+                        isDisabled={!row.getCanSelect()}
+                        onChange={row.getToggleSelectedHandler()}
+                    />
+                </div>
+            )
+        },
     }, ...columns], [columns])
 
     // Keep track of search input
@@ -279,7 +300,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         onRowSelectionChange: setRowSelection,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: !withFetching ? getFilteredRowModel() : undefined,
+        getFilteredRowModel: (withFetching && withManualFiltering) ? undefined : getFilteredRowModel(), // Control filtering
         manualPagination: withFetching,
         debugTable: true,
     })
@@ -301,6 +322,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
             })
         })
     }, [hideColumns, tableWidth])
+
 
     /**
      * Item selection
@@ -328,7 +350,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
     }, [])
 
     useEffect(() => {
-        fetchingHandler?.setFilters(columnFilters)
+        fetchingHandler?.setParams({ filters: columnFilters })
     }, [columnFilters])
 
     const displayedRows = withFetching ? table.getRowModel().rows : table.getRowModel().rows.slice(table.getState().pagination.pageIndex * pageSize, (table.getState().pagination.pageIndex + 1) * pageSize)
@@ -596,17 +618,39 @@ DataGrid.displayName = "DataGrid"
  * Server side
  * -----------------------------------------------------------------------------------------------*/
 
+/**
+ *
+ * @param defaultProps
+ *
+ * Returns an object containing helper functions for manually paginating and filtering.
+ *
+ * @example
+ * const fetchingHandler = useDataGridFetchingHandler()
+ *
+ * const res = useQuery({
+ *     queryKey: ["data", fetchingHandler.getParams()],
+ *     queryFn: () => fetchFromFakeServer(fetchingHandler.getParams()),
+ *     keepPreviousData: true, refetchOnWindowFocus: false
+ * })
+ *
+ * return (
+ *     <DataGrid<any>
+ *         withManualFiltering={true}
+ *         fetchingHandler={fetchingHandler}
+ *         isFetching={dataQuery.isFetching}
+ *     />
+ * )
+ */
 export const useDataGridFetchingHandler = (defaultProps?: DataGridFetchingHandlerParams): DataGridFetchingHandler => {
     const _defaultValue = { offset: 0, limit: 0, globalFilterValue: "", filters: [] }
 
     const [params, setParams] = useState<DataGridFetchingHandlerParams>(defaultProps ?? _defaultValue)
 
-    const isFiltering = params.globalFilterValue !== ""
+    const isFiltering = params.globalFilterValue !== "" || params.filters.length > 0
 
     return {
         getParams: () => params,
         getIsFiltering: () => isFiltering,
-        setFilters: (filters: any) => setParams(p => ({ ...p, filters })),
         setParams: (props: Partial<DataGridFetchingHandlerParams>) => setParams(p => ({ ...p, ...props })),
     }
 }

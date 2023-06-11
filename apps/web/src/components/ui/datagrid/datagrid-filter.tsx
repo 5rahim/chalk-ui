@@ -71,10 +71,7 @@ export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HT
     // Update handler
     const handleUpdate = useCallback((value: any) => {
         let finalValue = value
-        console.log(finalValue)
-
-        if (finalValue === "-") finalValue = ""
-
+        // Do something
         setFilterValue(finalValue)
     }, [])
 
