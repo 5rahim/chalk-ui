@@ -10,8 +10,8 @@ import { DemoLineChart } from "@/app/test/ChartTest"
 import { PageHeader } from "@/components/ui/page-header"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { DataGridTest } from "@/app/test/DataGridTest"
 import { BiGroup } from "@react-icons/all-files/bi/BiGroup"
+import { NewComponentTest } from "@/app/test/NewComponentTest"
 
 export const UITest_Sidebar: React.FC<{ children?: React.ReactNode }> = (props) => {
 
@@ -60,7 +60,8 @@ export const UITest_Sidebar: React.FC<{ children?: React.ReactNode }> = (props) 
 
                             <AppLayout.Stack>
 
-                                <DataGridTest/>
+                                {/*<DataGridTest/>*/}
+                                <NewComponentTest/>
 
                                 <AppLayout.Grid cols={5}>
                                     <div className={"col-span-1"}>

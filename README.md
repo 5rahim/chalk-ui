@@ -79,7 +79,7 @@ https://chalk.rahim.app
   - [x] Date Picker
   - [x] Date Range Picker
   - [x] Time Input
-  - [ ] Color Picker
+  - [x] Color Picker
   - [ ] File Input/Dropzone
   - [ ] Image Grid Input
   - [ ] Typesafe Form

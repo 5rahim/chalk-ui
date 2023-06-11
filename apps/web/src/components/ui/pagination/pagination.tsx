@@ -17,7 +17,7 @@ export const PaginationAnatomy = defineStyleAnatomy({
     item: cva([
         "UI-Pagination__item",
         "bg-transparent dark:bg-transparent text-md inline-flex h-10 w-10 items-center justify-center rounded border border-[--border] cursor-pointer",
-        "hover:bg-[--paper-highlight] hover:border-[--paper-highlight] select-none",
+        "hover:bg-[--highlight] hover:border-[--highlight] select-none",
         "data-selected:bg-brand-500 data-selected:border-transparent data-selected:text-white data-selected:hover:bg-brand-500 data-selected:pointer-events-none",
         "data-[disabled=true]:opacity-50 data-[disabled=true]:pointer-events-none data-[disabled=true]:cursor-not-allowed",
         "outline-none ring-[--ring] focus-visible:ring-2"

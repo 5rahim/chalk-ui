@@ -334,6 +334,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
 
     const filterableColumns = table.getAllLeafColumns().filter(n => n.getCanFilter() && (n.columnDef.meta as any)?.filter)
     const unselectedFilterableColumns = filterableColumns.filter(n => !columnFilters.map(c => c.id).includes(n.id))
+    const selectedFilteredColumns = table.getAllLeafColumns().filter(n => columnFilters.map(a => a.id).includes(n.id))
 
     // Get the default value for a filter when the user selects it
     const getFilterDefaultValue = useCallback((col: Column<any>) => {
@@ -398,7 +399,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                     )}
                 </div>
 
-                <div className={cn(DataGridAnatomy.filterContainer(), filterContainerClassName)}>
+                {(selectedFilteredColumns.length > 0) && <div className={cn(DataGridAnatomy.filterContainer(), filterContainerClassName)}>
                     {/*Display selected filters*/}
                     {table.getAllLeafColumns().filter(n => columnFilters.map(a => a.id).includes(n.id)).map(col => {
                         if (col.getCanFilter() && (col.columnDef.meta as any)?.filter) {
@@ -415,7 +416,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                         }
                         return undefined
                     })}
-                </div>
+                </div>}
 
             </div>
 
@@ -606,7 +607,6 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
 
             </div>
 
-            <pre>{JSON.stringify(table.getState(), null, 2)}</pre>
         </div>
     )
 
