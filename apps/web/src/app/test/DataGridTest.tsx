@@ -81,10 +81,17 @@ export async function fetchData() {
 }
 
 export async function fetchFromFakeServer(options: DataGridFetchingHandlerParams) {
+    let a: Product[] = []
     // Simulate some network latency
-    let a = []
     await new Promise(r => setTimeout(r, 1000))
+    // Filter by name
     a = _data.filter(n => options.globalFilterValue !== "" ? n.name.toLowerCase().trim().includes(options.globalFilterValue.toLowerCase().trim()) : true)
+    // Filter by other criteria
+    options.filters.map(v => {
+        if (v.id === "category" && typeof v.value === "string") {
+            a = a.filter(n => n.category === v.value)
+        }
+    })
     console.log(a)
     return {
         rows: limitOffset(a, options.limit, options.offset),

@@ -114,7 +114,7 @@ export const DataGridAnatomy = defineStyleAnatomy({
  * DataGrid
  * -----------------------------------------------------------------------------------------------*/
 
-export type DataGridFetchingHandlerParams = { offset: number, limit: number, globalFilterValue: string, filters: any[] }
+export type DataGridFetchingHandlerParams = { offset: number, limit: number, globalFilterValue: string, filters: { id: string, value: unknown }[] }
 export type DataGridFetchingHandler = {
     setParams: (params: Partial<DataGridFetchingHandlerParams>) => void
     getParams: () => DataGridFetchingHandlerParams
@@ -370,7 +370,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
                                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
                                 </svg>
-                                <span>Filters ({unselectedFilterableColumns.length})</span>
+                                <span>{locales["filters"][lng]} ({unselectedFilterableColumns.length})</span>
                             </button>
                         }>
                         {/*Filter list*/}
@@ -570,7 +570,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                     </Pagination>
 
                     <div className={cn(DataGridAnatomy.footerPageDisplayContainer(), footerPageDisplayContainerClassName)}>
-                        <div>Page</div>
+                        <div>{locales["page"][lng]}</div>
                         <strong>
                             {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
                         </strong>
@@ -597,7 +597,8 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                 value: pageSize,
                                 label: `${pageSize}`
                             }))}
-                            className="w-[fit-content]"
+                            fieldClassName="w-auto"
+                            className="w-auto"
                         />
                     </div>
 

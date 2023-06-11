@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useCallback } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
 import { DataGridFilteringProps } from "."
@@ -46,6 +46,8 @@ export interface DataGridFilterProps extends React.ComponentPropsWithRef<"div">,
 }
 
 export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HTMLDivElement, DataGridFilterProps>((props, ref) => {
+
+    const { locale: lng } = useUILocaleConfig()
 
     const {
         children,
