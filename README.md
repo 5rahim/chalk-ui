@@ -81,10 +81,10 @@ https://chalk.rahim.app
   - [x] Time Input
   - [x] Color Picker
   - [x] File Input/Dropzone
+  - [x] Typesafe Form
   - [ ] Image Grid Input
-  - [ ] Typesafe Form
-  - [ ] ~~Transfer List~~
-  - [ ] ~~JSON Input~~
+  - [ ] Transfer List
+  - [ ] JSON Input
 - [ ] i18n (For certain components)
   - [x] English
   - [x] French
