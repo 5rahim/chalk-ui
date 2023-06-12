@@ -18,8 +18,9 @@ import { FileUploadHandler } from "./use-file-upload-handler"
 export const DropzoneAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-Dropzone__root",
-        "mb-2 cursor-pointer hover:text-[--text-color] flex items-center justify-center p-4 border border-[--border] rounded-md border-dashed",
+        "mb-2 cursor-pointer hover:text-[--text-color] flex items-center justify-center p-4 border border-[--border] rounded-[--radius] border-dashed",
         "gap-3 text-sm sm:text-base",
+        "outline-none ring-[--ring] focus-visible:ring-2",
         "text-[--muted] transition ease-in-out hover:border-[--text-color]",
         "data-[drag-active=true]:border-brand-500",
         "data-[drag-reject=true]:border-[--red]",
@@ -138,9 +139,9 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
     const [files, setFiles] = useState<File[]>([])
 
     // When the user drops/chooses files
-    const onDrop = useCallback((acceptedFiles: any) => {
+    const onDrop = useCallback((acceptedFiles: File[]) => {
         // Emit the new files
-        onChange && onChange(acceptedFiles)
+        handleChange(acceptedFiles)
         // Update files - add the preview
         setFiles(acceptedFiles.map((file: File) => Object.assign(file, {
             preview: URL.createObjectURL(file),
@@ -152,9 +153,18 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
         setFiles(p => {
             const newFiles = [...p]
             newFiles.splice(file, 1)
-            onChange && onChange(newFiles) // Emit the new files
+            handleChange(newFiles) // Emit the new files
             return newFiles
         })
+    }, [])
+
+    const handleChange = useCallback((files: File[]) => {
+        if (onChange) {
+            onChange(files)
+            if (uploadHandler) {
+                uploadHandler.populateFiles(files)
+            }
+        }
     }, [])
 
     const {
@@ -173,7 +183,10 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
         preventDropOnDocument,
         noClick,
         noDrag,
-        onError,
+        onError: (e) => {
+            onError && onError(e)
+            console.log(e)
+        },
         validator,
         accept,
     })
@@ -212,6 +225,8 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                     {locales["download"][lng]}
                 </span>
             </div>
+
+            {maxSize && <div className={"text-sm text-[--muted]"}>{`≤`} {humanFileSize(maxSize, 0)}</div>}
 
             {!withImagePreview && <div className={cn(DropzoneAnatomy.list(), listClassName)}>
                 {files?.map((file: any, index) => {

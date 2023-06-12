@@ -69,7 +69,7 @@ export function extractBasicFieldProps<Props extends BasicFieldOptions>(props: P
    return [
       rest,
       {
-         id: _id ?? id,
+         id: _id || id,
          name,
          label,
          help,
