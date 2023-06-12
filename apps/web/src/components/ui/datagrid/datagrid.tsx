@@ -67,7 +67,7 @@ export const DataGridAnatomy = defineStyleAnatomy({
     th: cva([
         "UI-DataGrid__th group/th",
         "px-3 h-12 text-left text-sm font-bold",
-        "data-[rowselection=true]:px-3 data-[rowselection=true]:sm:px-1 data-[rowselection=true]:text-center"
+        "data-[row-selection=true]:px-3 data-[row-selection=true]:sm:px-1 data-[row-selection=true]:text-center"
     ]),
     titleChevronContainer: cva([
         "UI-DataGrid__titleChevronContainer",
@@ -84,8 +84,9 @@ export const DataGridAnatomy = defineStyleAnatomy({
     td: cva([
         "UI-DataGrid__td",
         "px-2 py-2 whitespace-nowrap text-sm font-medium text-[--text-color]",
-        "data-[rowselection=true]:px-2 data-[rowselection=true]:sm:px-0 data-[rowselection=true]:text-center",
-        "data-[actioncolumn=false]:truncate data-[actioncolumn=false]:overflow-ellipsis"
+        "data-[row-selection=true]:px-2 data-[row-selection=true]:sm:px-0 data-[row-selection=true]:text-center",
+        "data-[action-column=false]:truncate data-[action-column=false]:overflow-ellipsis",
+        "data-[row-selected=true]:bg-brand-50 dark:data-[row-selected=true]:bg-gray-700"
     ]),
     tr: cva([
         "UI-DataGrid__tr",
@@ -443,7 +444,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                             colSpan={header.colSpan}
                                             scope="col"
                                             className={cn(DataGridAnatomy.th(), thClassName)}
-                                            data-rowselection={`${index === 0 && enableRowSelection}`}
+                                            data-row-selection={`${index === 0 && enableRowSelection}`}
                                             style={{ width: header.getSize() }}
                                         >
                                             {((index !== 0 && enableRowSelection) || !enableRowSelection) ? <div
@@ -453,7 +454,6 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                         "cursor-pointer": header.column.getCanSort(),
                                                     },
                                                 )}
-                                                // onClick={() => onSortData(column.id)}
                                             >
                                                 {header.isPlaceholder ? null : (
                                                     <div
@@ -511,7 +511,6 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
 
                             {/*Body*/}
 
-                            {/*Without fetching*/}
                             {(!isLoading) && (
                                 <tbody className={cn(DataGridAnatomy.tableBody(), tableBodyClassName)}>
                                 {displayedRows.map((row) => {
@@ -522,8 +521,9 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                     <td
                                                         key={cell.id}
                                                         className={cn(DataGridAnatomy.td(), tdClassName)}
-                                                        data-rowselection={`${index === 0 && enableRowSelection}`}
-                                                        data-actioncolumn={`${cell.column.id === "actions"}`}
+                                                        data-row-selection={`${index === 0 && enableRowSelection}`}
+                                                        data-action-column={`${cell.column.id === "actions"}`}
+                                                        data-row-selected={cell.getContext().row.getIsSelected()}
                                                         style={{ width: cell.column.getSize(), maxWidth: cell.column.columnDef.maxSize }}
                                                     >
                                                         {flexRender(

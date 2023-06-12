@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { BiGroup } from "@react-icons/all-files/bi/BiGroup"
 import { NewComponentTest } from "@/app/test/NewComponentTest"
+import { DataGridTest } from "@/app/test/DataGridTest"
 
 export const UITest_Sidebar: React.FC<{ children?: React.ReactNode }> = (props) => {
 
@@ -60,8 +61,8 @@ export const UITest_Sidebar: React.FC<{ children?: React.ReactNode }> = (props) 
 
                             <AppLayout.Stack>
 
-                                {/*<DataGridTest/>*/}
                                 <NewComponentTest/>
+                                <DataGridTest/>
 
                                 <AppLayout.Grid cols={5}>
                                     <div className={"col-span-1"}>

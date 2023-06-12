@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"
 import { cva } from "class-variance-authority"
 import { cn } from "@rahimstack/tailwind-utils"
@@ -28,8 +28,11 @@ export const ColorInputAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface ColorInputProps extends ComponentWithAnatomy<typeof ColorInputAnatomy>,
-    TextInputProps {
+    Omit<TextInputProps, "onChange" | "value" | "defaultValue"> {
     children?: React.ReactNode
+    onChange?: (value: string) => string
+    value?: string
+    defaultValue?: string
 }
 
 export const ColorInput: React.FC<ColorInputProps> = React.forwardRef((props, ref) => {
@@ -39,12 +42,23 @@ export const ColorInput: React.FC<ColorInputProps> = React.forwardRef((props, re
         colorInputClassName,
         colorPickerContainerClassName,
         className,
+        value,
+        onChange,
+        defaultValue = "#5e28c2",
         ...rest
     } = props
 
-    const [color, setColor] = useState("#aabbcc")
+    const [color, setColor] = useState(defaultValue)
 
-    const inputRef = useRef<HTMLInputElement>(null)
+    // Control the value
+    useEffect(() => {
+        if (value) setColor(value)
+    }, [value])
+
+    // Emit the changes
+    useEffect(() => {
+        if (onChange) onChange(color)
+    }, [color])
 
     return (
         <DropdownMenu
@@ -66,7 +80,7 @@ export const ColorInput: React.FC<ColorInputProps> = React.forwardRef((props, re
                                 d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
                         </svg>
                     }
-                    ref={inputRef}
+                    ref={ref}
                     {...rest}
                 />
             }

@@ -18,7 +18,7 @@ export const NewComponentTest: React.FC<NewComponentTestProps> = (props) => {
         <>
             <Dropzone
                 label={"Files"}
-                withImagePreview
+                // withImagePreview
                 accept={{ "image/*": [".png", ".jpeg", ".jpg"] }}
                 uploadHandler={imageUploader}
             />
