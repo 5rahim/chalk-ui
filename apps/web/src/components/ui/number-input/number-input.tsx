@@ -1,12 +1,11 @@
 "use client"
 
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import * as numberInput from "@zag-js/number-input"
 import { normalizeProps, useMachine } from "@zag-js/react"
 import { cva } from "class-variance-authority"
 import React, { useEffect, useId } from "react"
 import { BasicField, extractBasicFieldProps } from "../basic-field"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
 import type { TextInputProps } from "../text-input"
 

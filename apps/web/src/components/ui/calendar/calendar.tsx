@@ -1,14 +1,13 @@
 "use client"
 
 import { createCalendar } from "@internationalized/date"
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
 import _capitalize from "lodash/capitalize"
 import { useRef } from "react"
 import { useCalendar } from "react-aria"
 import { CalendarStateOptions, useCalendarState } from "react-stately"
 import { IconButton } from "../button"
-import { defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { CalendarGrid } from "./calendar-grid"
 
 /* -------------------------------------------------------------------------------------------------

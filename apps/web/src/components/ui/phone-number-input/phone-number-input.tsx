@@ -1,6 +1,6 @@
 "use client"
 
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn } from "../core"
 import { CountryCode, E164Number } from "libphonenumber-js"
 import React, { useId } from "react"
 import PhoneInput from "react-phone-number-input"

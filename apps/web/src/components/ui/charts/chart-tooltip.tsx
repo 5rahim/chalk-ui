@@ -1,8 +1,7 @@
 "use client"
 
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { ChartValueFormatter } from "../charts/types"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { UIColor } from "../core/color-theme"
 

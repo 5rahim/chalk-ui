@@ -1,7 +1,6 @@
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import React from "react"
-import { defineStyleAnatomy } from "../core"
 import { LoadingSpinner } from "./loading-spinner"
 
 /* -------------------------------------------------------------------------------------------------

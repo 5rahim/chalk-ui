@@ -1,9 +1,8 @@
 "use client"
 
 import React from "react"
-import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 import type { TabListProps as TabPrimitiveListProps, TabProps as TabPrimitiveProps } from "@headlessui/react"
 import { Tab as TabPrimitive } from "@headlessui/react"
 

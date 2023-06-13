@@ -1,9 +1,8 @@
 "use client"
 
 import React, { useState } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 import { Area, AreaChart as ReChartsAreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, } from "recharts"
 import { BaseChartProps, ChartCurveType } from "./types"
 import { constructCategoryColors, defaultValueFormatter, getYAxisDomain } from "./utils"
@@ -181,7 +180,7 @@ export const AreaChart: React.FC<AreaChartProps> = React.forwardRef<HTMLDivEleme
 
                     </ReChartsAreaChart>
                 ) : (
-                    <div>No data</div>
+                    <div>...</div>
                 )}
             </ResponsiveContainer>
         </div>

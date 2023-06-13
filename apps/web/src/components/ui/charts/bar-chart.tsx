@@ -1,9 +1,8 @@
 "use client"
 
 import React, { useState } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 import { Bar, BarChart as ReChartsBarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, } from "recharts"
 import { BaseChartProps } from "./types"
 import { constructCategoryColors, defaultValueFormatter, getYAxisDomain } from "./utils"
@@ -198,7 +197,7 @@ export const BarChart: React.FC<BarChartProps> = React.forwardRef<HTMLDivElement
                         ) : null}
                     </ReChartsBarChart>
                 ) : (
-                    <div>No data</div>
+                    <div>...</div>
                 )}
             </ResponsiveContainer>
         </div>

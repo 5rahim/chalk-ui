@@ -1,10 +1,9 @@
 "use client"
 
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import type { CheckboxProps as CheckboxPrimitiveProps } from "@radix-ui/react-checkbox"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { useCheckboxGroupContext } from "../checkbox/checkbox-group"

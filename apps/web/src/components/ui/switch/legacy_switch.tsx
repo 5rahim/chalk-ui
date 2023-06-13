@@ -1,12 +1,11 @@
 "use client"
 
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import * as checkbox from "@zag-js/checkbox"
 import { normalizeProps, useMachine } from "@zag-js/react"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { useEffect, useId, useMemo } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 export const SwitchAnatomy = defineStyleAnatomy({
     controlWrapper: cva([

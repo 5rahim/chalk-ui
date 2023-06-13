@@ -1,4 +1,4 @@
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn } from "../core"
 import React, { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { InputAnatomy, InputStyling } from "../input"
@@ -26,7 +26,6 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((pr
                 {...basicFieldProps}
             >
             <textarea
-                // type="text"
                 id={basicFieldProps.id}
                 className={cn(
                     "form-textarea",

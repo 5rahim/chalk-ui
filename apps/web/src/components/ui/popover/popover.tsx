@@ -1,9 +1,8 @@
 "use client"
 
 import React from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 import type { PopoverContentProps as PopoverPrimitiveContentProps } from "@radix-ui/react-popover"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
 

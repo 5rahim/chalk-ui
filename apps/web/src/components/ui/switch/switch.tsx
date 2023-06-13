@@ -1,10 +1,9 @@
 "use client"
 
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import React, { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import type { SwitchProps as SwitchPrimitiveProps } from "@radix-ui/react-switch"
 import * as SwitchPrimitive from "@radix-ui/react-switch"
 import { ShowOnly } from "../show-only"

@@ -1,10 +1,10 @@
 import React, { useMemo } from "react"
 import { useFormContext } from "react-hook-form"
 import locales from "./locales.json"
-import { useUILocaleConfig } from "@/components/ui/core"
-import { ShowOnly } from "@/components/ui/show-only"
-import { LoadingOverlay } from "@/components/ui/loading-spinner"
-import { Button, ButtonProps } from "@/components/ui/button"
+import { useUILocaleConfig } from "../core"
+import { ShowOnly } from "../show-only"
+import { LoadingOverlay } from "../loading-spinner"
+import { Button, ButtonProps } from "../button"
 
 /* -------------------------------------------------------------------------------------------------
  * SubmitField

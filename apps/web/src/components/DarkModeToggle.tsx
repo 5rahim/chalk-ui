@@ -3,7 +3,6 @@
 import { useTheme } from "next-themes"
 import React from "react"
 import { Switch } from "@/components/ui/switch"
-import { Checkbox } from "@/components/ui/checkbox"
 
 interface DarkModeToggleProps {
     children?: React.ReactNode

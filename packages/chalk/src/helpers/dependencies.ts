@@ -14,7 +14,7 @@ export const dependencyVersionArray = [
 ]
 export type AvailableDependencies = keyof typeof dependencyVersionArray;
 
-export const addDependencies = (arr: string[] | string[][]) => {
+export const legacy_addDependencies = (arr: string[] | string[][]) => {
     const withVersions = Array.isArray(arr[0])
     const dependencies = (withVersions ? arr.map(a => a[0] + "@" + a[1]) : arr as string[]).filter(Boolean)
     const pm = getPackageManager()

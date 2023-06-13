@@ -1,7 +1,6 @@
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, defineStyleAnatomy } from "../core"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { CSSProperties } from "react"
-import { defineStyleAnatomy } from "../core"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

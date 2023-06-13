@@ -1,7 +1,6 @@
 import React from "react"
-import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "@/components/ui/core"
+import { cn, ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
 import { cva, VariantProps } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

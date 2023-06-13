@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn } from "../core"
 import _isEmpty from "lodash/isEmpty"
 import React, { createContext, useContext, useEffect, useMemo } from "react"
 import {

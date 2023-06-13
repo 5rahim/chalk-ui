@@ -114,9 +114,6 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.0.6
         version: 1.0.6(@types/react-dom@18.2.4)(@types/react@18.2.6)(react-dom@18.2.0)(react@18.2.0)
-      '@rahimstack/tailwind-utils':
-        specifier: 0.3.0
-        version: 0.3.0(postcss@8.4.23)(typescript@5.0.4)
       '@react-icons/all-files':
         specifier: ^4.1.0
         version: 4.1.0(react@18.2.0)
@@ -204,6 +201,9 @@ importers:
       recharts:
         specifier: ^2.6.2
         version: 2.6.2(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
+      tailwind-merge:
+        specifier: ^1.13.1
+        version: 1.13.1
       tailwindcss:
         specifier: ^3.3.2
         version: 3.3.2
@@ -3466,7 +3466,7 @@ packages:
     dependencies:
       class-variance-authority: 0.6.0(typescript@5.0.4)
       clsx: 1.2.1
-      tailwind-merge: 1.12.0
+      tailwind-merge: 1.13.1
       tsup: 6.7.0(postcss@8.4.23)(typescript@5.0.4)
     transitivePeerDependencies:
       - '@swc/core'
@@ -14869,8 +14869,8 @@ packages:
     dev: true
 
   /table@6.8.1:
-    resolution: {integrity: sha512-Y4X9zqrCftUhMeH2EptSSERdVKt/nEdijTOacGD/97EKjhQ/Qs8RTlEGABSJNNN8lac9kheH+af7yAkEWlgneA==}
-    engines: {node: '>=10.0.0'}
+    resolution: { integrity: sha512-Y4X9zqrCftUhMeH2EptSSERdVKt/nEdijTOacGD/97EKjhQ/Qs8RTlEGABSJNNN8lac9kheH+af7yAkEWlgneA== }
+    engines: { node: '>=10.0.0' }
     dependencies:
       ajv: 8.12.0
       lodash.truncate: 4.4.2
@@ -14879,12 +14879,12 @@ packages:
       strip-ansi: 6.0.1
     dev: true
 
-  /tailwind-merge@1.12.0:
-    resolution: {integrity: sha512-Y17eDp7FtN1+JJ4OY0Bqv9OA41O+MS8c1Iyr3T6JFLnOgLg3EvcyMKZAnQ8AGyvB5Nxm3t9Xb5Mhe139m8QT/g==}
+  /tailwind-merge@1.13.1:
+    resolution: { integrity: sha512-tRtRN22TDokGi2TuYSvuHQuuW6BJ/zlUEG+iYpAQ9i66msc/0eU/+HPccbPnNNH0mCPp0Ob8thaC8Uy9CxHitQ== }
     dev: false
 
   /tailwindcss-animate@1.0.5(tailwindcss@3.3.2):
-    resolution: {integrity: sha512-UU3qrOJ4lFQABY+MVADmBm+0KW3xZyhMdRvejwtXqYOL7YjHYxmuREFAZdmVG5LPe5E9CAst846SLC4j5I3dcw==}
+    resolution: { integrity: sha512-UU3qrOJ4lFQABY+MVADmBm+0KW3xZyhMdRvejwtXqYOL7YjHYxmuREFAZdmVG5LPe5E9CAst846SLC4j5I3dcw== }
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
     dependencies:

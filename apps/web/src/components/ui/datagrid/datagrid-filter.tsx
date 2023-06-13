@@ -1,9 +1,8 @@
 "use client"
 
 import React, { useCallback } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 import { DataGridFilteringProps } from "."
 import { Select } from "../select"
 import { ColumnDef } from "@tanstack/react-table"

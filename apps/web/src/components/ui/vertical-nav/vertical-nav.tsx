@@ -1,9 +1,8 @@
 "use client"
 
 import React, { Fragment } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 import { Disclosure } from "@headlessui/react"
 
 /* -------------------------------------------------------------------------------------------------

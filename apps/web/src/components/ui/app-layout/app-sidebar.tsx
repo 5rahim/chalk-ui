@@ -1,10 +1,9 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
-import { Drawer } from "@/components/ui/modal"
+import { Drawer } from "../modal"
 
 /* -------------------------------------------------------------------------------------------------
  * Context

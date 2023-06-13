@@ -1,12 +1,11 @@
 "use client"
 
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import React, { useState } from "react"
 import locales from "./locales.json"
-import { LoadingOverlay } from "@/components/ui/loading-spinner"
-import { Button } from "@/components/ui/button"
-import { Modal } from "@/components/ui/modal"
-import { ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "@/components/ui/core"
+import { LoadingOverlay } from "../loading-spinner"
+import { Button } from "../button"
+import { Modal } from "../modal"
 import { cva } from "class-variance-authority"
 
 /* -------------------------------------------------------------------------------------------------

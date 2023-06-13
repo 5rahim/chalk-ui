@@ -1,14 +1,13 @@
 "use client"
 
 import { Transition } from "@headlessui/react"
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import _filter from "lodash/filter"
 import _find from "lodash/find"
 import React, { Fragment, useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { Badge } from "../badge"
 import { BasicField, extractBasicFieldProps } from "../basic-field"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
 import type { TextInputProps } from "../text-input"
 

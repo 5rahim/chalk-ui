@@ -1,6 +1,5 @@
-import { ColorPalette, ComponentWithAnatomy, defineStyleAnatomy, UIColor } from "../core"
+import { cn, ColorPalette, ComponentWithAnatomy, defineStyleAnatomy, UIColor } from "../core"
 import React from "react"
-import { cn } from "@rahimstack/tailwind-utils"
 import { cva } from "class-variance-authority"
 
 /* -------------------------------------------------------------------------------------------------

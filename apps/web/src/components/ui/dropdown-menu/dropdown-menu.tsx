@@ -1,9 +1,8 @@
 "use client"
 
 import React, { Fragment } from "react"
-import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
 import { cva, VariantProps } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 import { Menu, Transition } from "@headlessui/react"
 import { Divider, DividerProps } from "../divider"
 import { Modal, ModalProps } from "../modal"

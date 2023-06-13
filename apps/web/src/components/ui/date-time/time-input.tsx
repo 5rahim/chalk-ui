@@ -1,12 +1,11 @@
 "use client"
 
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
 import React, { useId, useRef } from "react"
 import { useTimeField } from "react-aria"
 import { TimeFieldStateOptions, useTimeFieldState } from "react-stately"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
 import { DateSegmentComponent } from "./date-field"
 

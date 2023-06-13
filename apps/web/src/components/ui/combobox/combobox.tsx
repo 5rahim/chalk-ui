@@ -1,6 +1,6 @@
 "use client"
 
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import * as combobox from "@zag-js/combobox"
 import { normalizeProps, useMachine } from "@zag-js/react"
 import { cva } from "class-variance-authority"
@@ -8,7 +8,6 @@ import _find from "lodash/find"
 import _isEmpty from "lodash/isEmpty"
 import React, { useEffect, useId, useMemo, useState } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
 
 /* -------------------------------------------------------------------------------------------------

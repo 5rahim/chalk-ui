@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy, UIIcons, useUILocaleConfig } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy, UIIcons, useUILocaleConfig } from "../core"
 import {
     Column,
     ColumnDef,
@@ -16,7 +16,6 @@ import {
 } from "@tanstack/react-table"
 
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 import { TextInput, TextInputProps } from "../text-input"
 import { Checkbox } from "../checkbox"
 import { useDataGridSize } from "./use-datagrid-size"
@@ -538,8 +537,18 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                 })}
                                 </tbody>
                             )}
-
                         </table>
+                        {displayedRows.length === 0 && (
+                            <div className={"w-full flex justify-center py-4"}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                     className="w-6 h-6">
+                                    <path d="m2 2 20 20"/>
+                                    <path d="M8.35 2.69A10 10 0 0 1 21.3 15.65"/>
+                                    <path d="M19.08 19.08A10 10 0 1 1 4.92 4.92"/>
+                                </svg>
+                            </div>
+                        )}
                     </div>
                 </div>
 

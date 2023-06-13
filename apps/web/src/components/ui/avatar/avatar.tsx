@@ -1,9 +1,8 @@
 "use client"
 
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { useRef, useState } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

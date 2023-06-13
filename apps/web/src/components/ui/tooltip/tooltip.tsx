@@ -1,9 +1,8 @@
 "use client"
 
 import React from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 import type { TooltipContentProps as TooltipPrimitiveContentProps } from "@radix-ui/react-tooltip"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 

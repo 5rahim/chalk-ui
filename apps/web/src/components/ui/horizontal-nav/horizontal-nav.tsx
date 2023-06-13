@@ -1,13 +1,12 @@
 "use client"
 
 import React, { useState } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva, VariantProps } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 import type { NavigationMenuProps as NavigationMenuPrimitiveProps } from "@radix-ui/react-navigation-menu"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
-import { Drawer } from "@/components/ui/modal"
-import { VerticalNav } from "@/components/ui/vertical-nav"
+import { Drawer } from "../modal"
+import { VerticalNav } from "../vertical-nav"
 
 
 /* -------------------------------------------------------------------------------------------------

@@ -1,9 +1,8 @@
 "use client"
 
 import React, { useCallback, useEffect, useId, useState } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { Accept, FileError, useDropzone } from "react-dropzone"
 import { IconButton } from "../button"
@@ -226,7 +225,7 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                 </span>
             </div>
 
-            {maxSize && <div className={"text-sm text-[--muted]"}>{`≤`} {humanFileSize(maxSize, 0)}</div>}
+            {maxSize && <div className={"text-sm text-[--muted] font-medium"}>{`≤`} {humanFileSize(maxSize, 0)}</div>}
 
             {!withImagePreview && <div className={cn(DropzoneAnatomy.list(), listClassName)}>
                 {files?.map((file: any, index) => {
@@ -317,8 +316,6 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                                 className={cn(DropzoneAnatomy.listItemRemoveButton(), listItemRemoveButtonClassName)}
                                 onClick={() => handleRemove(index)}
                             />
-
-
                         </div>
                     )
                 })}

@@ -2,9 +2,8 @@
 
 import React from "react"
 import { Disclosure, Transition } from "@headlessui/react"
-import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "@/components/ui/core"
+import { cn, ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

@@ -1,13 +1,12 @@
 "use client"
 
 import { DateDuration, endOfMonth } from "@internationalized/date"
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
 import getWeeksInMonth from "date-fns/getWeeksInMonth"
 import { useMemo } from "react"
 import { useCalendarGrid } from "react-aria"
 import { CalendarState, RangeCalendarState } from "react-stately"
-import { defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { CalendarCell } from "./calendar-cell"
 import { getDateLocaleLibrary } from "./locale"
 

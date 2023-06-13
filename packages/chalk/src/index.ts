@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { Component, getAvailableComponents } from "@/src/helpers/components"
-import { addDependencies, dependencyVersionArray } from "@/src/helpers/dependencies"
+import { dependencyVersionArray, legacy_addDependencies } from "@/src/helpers/dependencies"
 import { getProjectInfo } from "@/src/helpers/project"
-import { createJSONSnapshot } from "@/src/helpers/snapshot"
+import { createJSONSnapshot, TEMP_createJSONBaseSnapshot } from "@/src/helpers/snapshot"
 import { STYLES, TAILWIND_CONFIG } from "@/src/templates/files"
 import { logger } from "@/src/utils/logger"
 import { getPackageInfo, getPackageManager } from "@/src/utils/package"
@@ -33,7 +33,7 @@ async function main() {
         )
 
     /**
-     * @Internal
+     * @internal
      */
     program.command("snapshot")
         .description("Copy files and directories under \"./src/\" and transform them into JSON format.")
@@ -54,6 +54,29 @@ async function main() {
             const jsonOutput = JSON.stringify(jsonData, null, 2)
             writeFileSync(snapshotPath, jsonOutput)
             logger.info(`Snapshot created: ${snapshotFilename}`)
+        })
+    /**
+     * @internal
+     */
+    program.command("rebase")
+        .description("Copy files and directories under \"./src/\" and transform them into JSON format.")
+        .action(() => {
+
+            // Create the "snapshot" directory if it doesn't exist
+            const snapshotDir = path.resolve("snapshot")
+            if (!existsSync(snapshotDir)) {
+                mkdirSync(snapshotDir)
+            }
+
+            // Generate the timestamp for the snapshot file name
+            const timestamp = new Date().toISOString().replace(/:/g, "-")
+            const snapshotFilename = `base_${timestamp}.json`
+            const snapshotPath = path.join(snapshotDir, snapshotFilename)
+
+            const jsonData = TEMP_createJSONBaseSnapshot()
+            const jsonOutput = JSON.stringify(jsonData, null, 2)
+            writeFileSync(snapshotPath, jsonOutput)
+            logger.info(`Base created: ${snapshotFilename}`)
         })
 
     program.command("clean")
@@ -118,7 +141,7 @@ async function main() {
 
             // Install dependencies.
             const dependenciesSpinner = ora(`Installing dependencies... (${packageManager})`).start()
-            await addDependencies(dependencyVersionArray)
+            await legacy_addDependencies(dependencyVersionArray)
             dependenciesSpinner.succeed()
 
             // Ensure styles directory exists.
@@ -144,21 +167,21 @@ async function main() {
             await fs.writeFile(tailwindDestination, TAILWIND_CONFIG, "utf8")
             tailwindSpinner.succeed()
 
-            const dir = await promptForDestinationDir() // prompt for ui dir
+            const baseDir = await promptForDestinationDir() // prompt for ui dir
 
             // Create componentPath directory if it doesn't exist.
-            const destinationDir = path.resolve(dir)
+            const destinationDir = path.resolve(baseDir)
             if (!existsSync(destinationDir)) {
-                const spinner = ora(`Creating ${dir}...`).start()
+                const spinner = ora(`Creating ${baseDir}...`).start()
                 await fs.mkdir(destinationDir, { recursive: true }) // ./src/components/ui/
                 spinner.succeed()
             }
 
-            /**
+            /* -------------------------------------------------------------------------------------------------
              * Components
-             */
+             * -----------------------------------------------------------------------------------------------*/
 
-                // Get available components
+            // Get available components
             const availableComponents = await getAvailableComponents()
 
             if (!availableComponents?.length) {
@@ -173,10 +196,11 @@ async function main() {
                 // Do nothing
             } else {
                 // Prompt for components if no "--all" option
+                // User selected components
                 selectedComponents = await promptForComponents(availableComponents)
 
                 for (const component of selectedComponents) {
-                    // Insert component's family
+                    // Insert component's family in list only if it isn't already added
                     if (component.family?.length && component.family.length > 0) {
                         component.family.filter(n => !selectedComponents.map(s => s.component).includes(n)).map(n => {
                             const comp = availableComponents.filter(c => c.component === n)[0]
@@ -185,7 +209,8 @@ async function main() {
                     }
                 }
 
-                selectedComponents.push(availableComponents.filter(n => n.component === "core")[0]!) // Add core folder
+                // Add core folder
+                selectedComponents.push(availableComponents.filter(n => n.component === "core")[0]!)
             }
 
             logger.success(`Installing ${selectedComponents.length} component(s) and their dependencies...`)
@@ -194,28 +219,32 @@ async function main() {
             for (const component of selectedComponents) {
                 const componentSpinner = ora(`${component.name}...`).start()
 
-                // Write the files.
+                // Write the files of each component
                 for (const file of component.files) {
-                    // Replace alias with the project's alias.
+
+                    // Replace path alias with the project's alias.
                     if (projectInfo?.alias) {
                         file.content = file.content.replace(/@\//g, projectInfo.alias)
                     }
 
-                    let componentDir = file.dir === "." ? dir : (dir + "/" + file.dir) // e.g: ./src/components/ui/xxxxx
+                    // Get the directory of each file
+                    let componentDir = file.dir === "." ? baseDir : (baseDir + "/" + file.dir) // e.g: ./src/components/ui/xxxxx
 
-                    if (file.dir) { // Create dir if not exists
+                    // Create dir if it doesn't exist
+                    if (file.dir) {
                         if (!existsSync(path.resolve(componentDir))) {
                             await fs.mkdir(path.resolve(componentDir), { recursive: true })
                         }
                     }
 
+                    // Write the content of the component to the directory
                     const filePath = path.resolve(componentDir, file.name)
-                    await fs.writeFile(filePath, file.content) // Write component
+                    await fs.writeFile(filePath, file.content)
                 }
 
                 // Install dependencies.
                 if (component.dependencies?.length && component.dependencies.length > 0) {
-                    await addDependencies(component.dependencies.filter(d => !installedDependencies.includes(d)))
+                    await legacy_addDependencies(component.dependencies.filter(d => !installedDependencies.includes(d)))
                     component.dependencies.map(d => installedDependencies.push(d))
                 }
                 componentSpinner.succeed(component.name)
@@ -295,7 +324,7 @@ async function main() {
 
                 // Install dependencies.
                 if (component.dependencies?.length) {
-                    await addDependencies(component.dependencies)
+                    await legacy_addDependencies(component.dependencies)
                 }
                 componentSpinner.succeed(component.name)
             }

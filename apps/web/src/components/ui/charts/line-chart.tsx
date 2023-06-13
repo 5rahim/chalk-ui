@@ -1,9 +1,8 @@
 "use client"
 
 import React, { useState } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 import { CartesianGrid, Legend, Line, LineChart as ReChartsLineChart, ResponsiveContainer, Tooltip, XAxis, YAxis, } from "recharts"
 import { BaseChartProps, ChartCurveType } from "./types"
 import { constructCategoryColors, defaultValueFormatter, getYAxisDomain } from "./utils"
@@ -153,7 +152,7 @@ export const LineChart: React.FC<LineChartProps> = React.forwardRef<HTMLDivEleme
 
                     </ReChartsLineChart>
                 ) : (
-                    <div>No data</div>
+                    <div>...</div>
                 )}
             </ResponsiveContainer>
         </div>

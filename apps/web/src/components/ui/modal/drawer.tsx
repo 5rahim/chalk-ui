@@ -1,11 +1,10 @@
 "use client"
 
 import { Dialog, Transition } from "@headlessui/react"
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva, VariantProps } from "class-variance-authority"
 import React, { Fragment } from "react"
 import { CloseButton, CloseButtonProps } from "../button"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

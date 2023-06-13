@@ -1,12 +1,11 @@
 "use client"
 
 import React, { useLayoutEffect, useState } from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "@/components/ui/core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
-import { DropdownMenu } from "@/components/ui/dropdown-menu"
+import { DropdownMenu } from "../dropdown-menu"
 import { HexColorPicker } from "react-colorful"
-import { TextInput, TextInputProps } from "@/components/ui/text-input"
+import { TextInput, TextInputProps } from "../text-input"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

@@ -1,8 +1,8 @@
+import clsx from "clsx"
+
 /* -------------------------------------------------------------------------------------------------
  * Tailwind Color Mode
  * -----------------------------------------------------------------------------------------------*/
-
-import clsx from "clsx"
 
 /**
  * Tailwind color mode utility function
@@ -14,7 +14,7 @@ import clsx from "clsx"
  * // Use
  * <div className={cn("px-1", tcm("border-{gray-200,blue-500}"))} />
  *
- * /!\ The colors need to be in the Tailwind safeList
+ * /!\ The classes need to be in the Tailwind safeList
  * @param input
  */
 export const tcm = (input: string | string[] | null | undefined) => {

@@ -1,6 +1,6 @@
 "use client"
 
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn } from "../core"
 import React, { createContext, useContext, useEffect, useId, useState } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { Checkbox, CheckboxProps } from "."

@@ -1,4 +1,4 @@
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn } from "../core"
 
 type UIIconProps = {
     className?: string

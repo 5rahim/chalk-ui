@@ -1,9 +1,8 @@
 "use client"
 
 import React from "react"
-import { ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { cn } from "@rahimstack/tailwind-utils"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

@@ -1,6 +1,6 @@
 "use client"
 
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn } from "../core"
 import React, { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"

@@ -2,10 +2,9 @@
 
 import { ChartTooltipFrame, ChartTooltipRow } from "./chart-tooltip"
 import { ChartValueFormatter } from "../charts/types"
-import { cn } from "@rahimstack/tailwind-utils"
+import { cn, ColorPalette, ComponentWithAnatomy, defineStyleAnatomy, UIColor } from "../core"
 import React from "react"
 import { Pie, PieChart as ReChartsDonutChart, ResponsiveContainer, Tooltip } from "recharts"
-import { ColorPalette, ComponentWithAnatomy, defineStyleAnatomy, UIColor } from "../core"
 import { defaultValueFormatter, parseChartData, parseChartLabelInput } from "./utils"
 import { cva } from "class-variance-authority"
 
@@ -103,7 +102,7 @@ export const DonutChart = React.forwardRef<HTMLDivElement, DonutChartProps>((pro
                         ) : null}
                     </ReChartsDonutChart>
                 ) : (
-                    <div>No data</div>
+                    <div>...</div>
                 )}
             </ResponsiveContainer>
         </div>
