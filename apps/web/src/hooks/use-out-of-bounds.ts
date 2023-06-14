@@ -2,8 +2,6 @@ import React, { useCallback, useState } from "react"
 import useEventListener from "./use-event-listener"
 import useIsomorphicLayoutEffect from "./use-isomorphic-layout-effect"
 
-
-
 interface Size {
     width: number
     height: number

@@ -1,5 +1,5 @@
-import { ChartValueFormatter } from "@/components/ui/charts/types"
-import { UIColor } from "@/components/ui/core/color-theme"
+import { ChartValueFormatter } from "../charts"
+import { UIColor } from "../core"
 
 /* -------------------------------------------------------------------------------------------------
  * Chart Utils

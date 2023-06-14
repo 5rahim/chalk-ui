@@ -39,6 +39,7 @@
     "commander": "^10.0.1",
     "execa": "^7.1.1",
     "fs-extra": "^11.1.1",
+    "lodash": "^4.17.21",
     "node-fetch": "^3.3.1",
     "ora": "^6.3.1",
     "prompts": "^2.4.2",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
+    "@types/lodash": "^4.14.194",
     "@types/prompts": "^2.4.4",
     "rimraf": "^4.4.1",
     "tsup": "^6.7.0",

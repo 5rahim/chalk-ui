@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { Component, getAvailableComponents } from "@/src/helpers/components"
-import { dependencyVersionArray, legacy_addDependencies } from "@/src/helpers/dependencies"
+import { dependencyVersionArray, installDependencies, legacy_addDependencies } from "@/src/helpers/dependencies"
 import { getProjectInfo } from "@/src/helpers/project"
-import { createJSONSnapshot, TEMP_createJSONBaseSnapshot } from "@/src/helpers/snapshot"
+import { createJSONSnapshot } from "@/src/helpers/snapshot"
 import { STYLES, TAILWIND_CONFIG } from "@/src/templates/files"
 import { logger } from "@/src/utils/logger"
 import { getPackageInfo, getPackageManager } from "@/src/utils/package"
@@ -14,6 +14,7 @@ import ora from "ora"
 import path from "path"
 import * as process from "process"
 import prompts from "prompts"
+import _ from "lodash"
 
 // TODO Add "remove" option, refactor "add" option
 // TODO Dev dependencies (@types/lodash)
@@ -55,29 +56,6 @@ async function main() {
             writeFileSync(snapshotPath, jsonOutput)
             logger.info(`Snapshot created: ${snapshotFilename}`)
         })
-    /**
-     * @internal
-     */
-    program.command("rebase")
-        .description("Copy files and directories under \"./src/\" and transform them into JSON format.")
-        .action(() => {
-
-            // Create the "snapshot" directory if it doesn't exist
-            const snapshotDir = path.resolve("snapshot")
-            if (!existsSync(snapshotDir)) {
-                mkdirSync(snapshotDir)
-            }
-
-            // Generate the timestamp for the snapshot file name
-            const timestamp = new Date().toISOString().replace(/:/g, "-")
-            const snapshotFilename = `base_${timestamp}.json`
-            const snapshotPath = path.join(snapshotDir, snapshotFilename)
-
-            const jsonData = TEMP_createJSONBaseSnapshot()
-            const jsonOutput = JSON.stringify(jsonData, null, 2)
-            writeFileSync(snapshotPath, jsonOutput)
-            logger.info(`Base created: ${snapshotFilename}`)
-        })
 
     program.command("clean")
         .action(async () => {
@@ -93,11 +71,11 @@ async function main() {
             const components = await getAvailableComponents()
             for (const component of components) {
                 if (component.dependencies?.length && component.dependencies.length > 0) {
-                    await execa(packageManager, [
-                        packageManager === "npm" ? "uninstall" : "remove",
-                        ...component.dependencies.filter(d => !ud.includes(d)),
-                    ])
-                    component.dependencies.map(d => ud.push(d))
+                    // await execa(packageManager, [
+                    //     packageManager === "npm" ? "uninstall" : "remove",
+                    //     ...component.dependencies.filter(d => !ud.includes(d)),
+                    // ])
+                    // component.dependencies.map(d => ud.push(d))
                 }
             }
             dependenciesSpinner2.succeed()
@@ -141,7 +119,7 @@ async function main() {
 
             // Install dependencies.
             const dependenciesSpinner = ora(`Installing dependencies... (${packageManager})`).start()
-            await legacy_addDependencies(dependencyVersionArray)
+            await installDependencies(dependencyVersionArray)
             dependenciesSpinner.succeed()
 
             // Ensure styles directory exists.
@@ -167,13 +145,21 @@ async function main() {
             await fs.writeFile(tailwindDestination, TAILWIND_CONFIG, "utf8")
             tailwindSpinner.succeed()
 
-            const baseDir = await promptForDestinationDir() // prompt for ui dir
+            const componentDirText = await promptForDestinationDir() // prompt for ui dir
+            const hooksDirText = await promptForHooksDir() // prompt for hooks dir
 
             // Create componentPath directory if it doesn't exist.
-            const destinationDir = path.resolve(baseDir)
+            const destinationDir = path.resolve(componentDirText)
             if (!existsSync(destinationDir)) {
-                const spinner = ora(`Creating ${baseDir}...`).start()
+                const spinner = ora(`Creating ${componentDirText}...`).start()
                 await fs.mkdir(destinationDir, { recursive: true }) // ./src/components/ui/
+                spinner.succeed()
+            }
+            // Create hook directory if it doesn't exist.
+            const hooksDir = path.resolve(hooksDirText)
+            if (!existsSync(hooksDir)) {
+                const spinner = ora(`Creating ${hooksDirText}...`).start()
+                await fs.mkdir(hooksDir, { recursive: true }) // ./src/hooks/
                 spinner.succeed()
             }
 
@@ -190,7 +176,8 @@ async function main() {
             }
 
             let selectedComponents = availableComponents // Set selected components as all
-            let installedDependencies: string[] = []
+            let installedDependencies: string[][] = []
+            let dependenciesToInstall: string[][] = []
 
             if (options.all) {
                 // Do nothing
@@ -228,27 +215,33 @@ async function main() {
                     }
 
                     // Get the directory of each file
-                    let componentDir = file.dir === "." ? baseDir : (baseDir + "/" + file.dir) // e.g: ./src/components/ui/xxxxx
+                    let componentDir = file.dir === "." ? componentDirText : (componentDirText + "/" + file.dir) // e.g: ./src/components/ui/xxxxx
 
                     // Create dir if it doesn't exist
                     if (file.dir) {
                         if (!existsSync(path.resolve(componentDir))) {
-                            await fs.mkdir(path.resolve(componentDir), { recursive: true })
+                            // await fs.mkdir(path.resolve(componentDir), { recursive: true })
                         }
                     }
 
                     // Write the content of the component to the directory
                     const filePath = path.resolve(componentDir, file.name)
-                    await fs.writeFile(filePath, file.content)
+                    // await fs.writeFile(filePath, file.content)
                 }
 
-                // Install dependencies.
+                // Add dependencies to list to install
                 if (component.dependencies?.length && component.dependencies.length > 0) {
-                    await legacy_addDependencies(component.dependencies.filter(d => !installedDependencies.includes(d)))
-                    component.dependencies.map(d => installedDependencies.push(d))
+                    component.dependencies.map(d => dependenciesToInstall.push(d))
+                    // await legacy_addDependencies(component.dependencies.filter(d => !installedDependencies.includes(d)))
+                    // component.dependencies.map(d => installedDependencies.push(d))
                 }
                 componentSpinner.succeed(component.name)
             }
+
+            const finalDependencies = _.uniqWith(dependenciesToInstall, _.isEqual)
+
+            installDependencies(finalDependencies)
+
 
         })
 
@@ -357,6 +350,19 @@ async function promptForDestinationDir() {
             name: "dir",
             message: "Where would you like to add the component(s)?",
             initial: "./src/components/ui",
+        },
+    ])
+
+    return dir
+}
+
+async function promptForHooksDir() {
+    const { dir } = await prompts([
+        {
+            type: "text",
+            name: "dir",
+            message: "Where would you like to add the hooks?",
+            initial: "./src/hooks",
         },
     ])
 
