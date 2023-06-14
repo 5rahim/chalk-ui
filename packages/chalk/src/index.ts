@@ -1,12 +1,13 @@
 #!/usr/bin/env node
-import { Component, getAvailableComponents } from "@/src/helpers/components"
-import { dependencyVersionArray, installDependencies, legacy_addDependencies } from "@/src/helpers/dependencies"
+import { Component, getAvailableComponents, script_addComponents } from "@/src/helpers/components"
+import { mainDependencies, script_installDependencies } from "@/src/helpers/dependencies"
 import { getProjectInfo } from "@/src/helpers/project"
 import { createJSONSnapshot } from "@/src/helpers/snapshot"
 import { STYLES, TAILWIND_CONFIG } from "@/src/templates/files"
 import { logger } from "@/src/utils/logger"
-import { getPackageInfo, getPackageManager } from "@/src/utils/package"
+import { getInstalledComponentDependencyList, getPackageInfo, getPackageManager } from "@/src/utils/package"
 /**/
+import _ from "lodash"
 import { Command } from "commander"
 import { execa } from "execa"
 import { existsSync, mkdirSync, promises as fs, writeFileSync } from "fs"
@@ -14,7 +15,6 @@ import ora from "ora"
 import path from "path"
 import * as process from "process"
 import prompts from "prompts"
-import _ from "lodash"
 
 // TODO Add "remove" option, refactor "add" option
 // TODO Dev dependencies (@types/lodash)
@@ -52,33 +52,44 @@ async function main() {
             const snapshotPath = path.join(snapshotDir, snapshotFilename)
 
             const jsonData = createJSONSnapshot()
-            const jsonOutput = JSON.stringify(jsonData, null, 2)
+            const jsonOutput = JSON.stringify(jsonData.filter(n => n.name.length > 0), null, 2)
             writeFileSync(snapshotPath, jsonOutput)
             logger.info(`Snapshot created: ${snapshotFilename}`)
         })
 
     program.command("clean")
         .action(async () => {
-            const dependenciesSpinner = ora(`Uninstalling dependencies...`).start()
-            await execa(packageManager, [
-                packageManager === "npm" ? "uninstall" : "remove",
-                ...dependencyVersionArray.map(d => d[0]),
-            ])
-            dependenciesSpinner.succeed()
 
-            const dependenciesSpinner2 = ora(`Uninstalling component dependencies...`).start()
-            let ud: string[] = []
-            const components = await getAvailableComponents()
-            for (const component of components) {
-                if (component.dependencies?.length && component.dependencies.length > 0) {
-                    // await execa(packageManager, [
-                    //     packageManager === "npm" ? "uninstall" : "remove",
-                    //     ...component.dependencies.filter(d => !ud.includes(d)),
-                    // ])
-                    // component.dependencies.map(d => ud.push(d))
-                }
+            const spinner = ora(`Uninstalling component dependencies...`).start()
+
+            // Get only component dependencies that are installed in the project
+            let installedDependencies = getInstalledComponentDependencyList()
+
+            // FIXME ONLY FOR TEST
+            installedDependencies = installedDependencies.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
+
+            if (installedDependencies.length > 0) {
+                await execa(packageManager, [
+                    packageManager === "npm" ? "uninstall" : "remove",
+                    ...installedDependencies,
+                ])
             }
-            dependenciesSpinner2.succeed()
+
+            spinner.succeed()
+
+            // Prompt for components and hooks directories
+            const componentDestination = await promptForComponentDestination() // prompt for ui dir
+
+            const spinner2 = ora(`Removing components...`).start()
+
+            // Delete directory if it exists.
+            const componentDir = path.resolve(componentDestination)
+            if (existsSync(componentDir)) {
+                await fs.rmdir(componentDir, { recursive: true }) // ./src/components/ui
+            }
+
+            spinner2.succeed()
+
         })
 
     program
@@ -87,12 +98,12 @@ async function main() {
         .option("-y, --yes", "Skip confirmation prompt.")
         .option("--all", "Skip component selection.")
         .action(async (options) => {
-            logger.warn(
-                "Make sure your project is already configured with Tailwind.",
-            )
+            logger.warn("Make sure your project is already configured with Tailwind.")
             logger.warn("")
 
+            // Allows the user to skip confirmation prompts
             if (!options.yes) {
+                // First confirmation prompt
                 const { proceed } = await prompts({
                     type: "confirm",
                     name: "proceed",
@@ -100,29 +111,15 @@ async function main() {
                     initial: true,
                 })
 
-                if (!proceed) {
-                    process.exit(0)
-                }
+                if (!proceed) process.exit(0)
             }
 
-            // 2nd prompt
-            const { proceed } = await prompts({
-                type: "confirm",
-                name: "proceed",
-                message: "We will install the dependencies needed. Proceed?",
-                initial: true,
-            })
-
-            if (!proceed) {
-                process.exit(0)
-            }
-
-            // Install dependencies.
+            // 1. Install main dependencies.
             const dependenciesSpinner = ora(`Installing dependencies... (${packageManager})`).start()
-            await installDependencies(dependencyVersionArray)
+            await script_installDependencies(mainDependencies)
             dependenciesSpinner.succeed()
 
-            // Ensure styles directory exists.
+            // 2. Ensure styles directory exists. (Only for non-appDir apps)
             if (!projectInfo?.appDir) {
                 const stylesDir = projectInfo?.srcDir ? "./src/styles" : "./styles"
                 if (!existsSync(path.resolve(stylesDir))) {
@@ -130,117 +127,61 @@ async function main() {
                 }
             }
 
-            // Update globals.css
+            // 3. Update or create globals.css
             let stylesDestination = "./src/styles/globals.css"
             if (projectInfo?.appDir) {
                 stylesDestination = projectInfo?.srcDir ? "./src/app/globals.css" : "./app/globals.css"
             }
-            const stylesSpinner = ora(`Adding styles with CSS variables...`).start()
+            const stylesSpinner = ora(`Adding styles...`).start()
             await fs.writeFile(stylesDestination, STYLES, "utf8")
             stylesSpinner.succeed()
+            // ----
 
-            // Update tailwind config
+            // 4. Update tailwind config
             const tailwindDestination = "./tailwind.config.js"
             const tailwindSpinner = ora(`Updating tailwind.config.js...`).start()
             await fs.writeFile(tailwindDestination, TAILWIND_CONFIG, "utf8")
             tailwindSpinner.succeed()
+            // ----
 
-            const componentDirText = await promptForDestinationDir() // prompt for ui dir
-            const hooksDirText = await promptForHooksDir() // prompt for hooks dir
+            // 5. Prompt for components and hooks directories
+            const componentDestination = await promptForComponentDestination() // prompt for ui dir
 
-            // Create componentPath directory if it doesn't exist.
-            const destinationDir = path.resolve(componentDirText)
-            if (!existsSync(destinationDir)) {
-                const spinner = ora(`Creating ${componentDirText}...`).start()
-                await fs.mkdir(destinationDir, { recursive: true }) // ./src/components/ui/
-                spinner.succeed()
-            }
-            // Create hook directory if it doesn't exist.
-            const hooksDir = path.resolve(hooksDirText)
-            if (!existsSync(hooksDir)) {
-                const spinner = ora(`Creating ${hooksDirText}...`).start()
-                await fs.mkdir(hooksDir, { recursive: true }) // ./src/hooks/
+            // 6. Create componentPath directory if it doesn't exist.
+            const componentDir = path.resolve(componentDestination)
+            if (!existsSync(componentDir)) {
+                const spinner = ora(`Creating ${componentDestination}...`).start()
+                await fs.mkdir(componentDir, { recursive: true }) // ./src/components/ui/
                 spinner.succeed()
             }
 
             /* -------------------------------------------------------------------------------------------------
-             * Components
+             * Add components
              * -----------------------------------------------------------------------------------------------*/
 
             // Get available components
-            const availableComponents = await getAvailableComponents()
+            const availableComponents = getAvailableComponents()
 
             if (!availableComponents?.length) {
                 logger.error("An error occurred while fetching components. Please try again.")
                 process.exit(0)
             }
 
-            let selectedComponents = availableComponents // Set selected components as all
-            let installedDependencies: string[][] = []
-            let dependenciesToInstall: string[][] = []
+            // By default, set selected components as all available components
+            let selectedComponents = availableComponents
 
             if (options.all) {
                 // Do nothing
             } else {
                 // Prompt for components if no "--all" option
-                // User selected components
                 selectedComponents = await promptForComponents(availableComponents)
-
-                for (const component of selectedComponents) {
-                    // Insert component's family in list only if it isn't already added
-                    if (component.family?.length && component.family.length > 0) {
-                        component.family.filter(n => !selectedComponents.map(s => s.component).includes(n)).map(n => {
-                            const comp = availableComponents.filter(c => c.component === n)[0]
-                            if (comp) selectedComponents.push(comp)
-                        })
-                    }
-                }
-
-                // Add core folder
-                selectedComponents.push(availableComponents.filter(n => n.component === "core")[0]!)
             }
 
-            logger.success(`Installing ${selectedComponents.length} component(s) and their dependencies...`)
+            logger.success(`Writing components...`)
 
-            // Write components
-            for (const component of selectedComponents) {
-                const componentSpinner = ora(`${component.name}...`).start()
+            const dependenciesToInstall = await script_addComponents({ components: selectedComponents, projectInfo, componentDestination })
 
-                // Write the files of each component
-                for (const file of component.files) {
-
-                    // Replace path alias with the project's alias.
-                    if (projectInfo?.alias) {
-                        file.content = file.content.replace(/@\//g, projectInfo.alias)
-                    }
-
-                    // Get the directory of each file
-                    let componentDir = file.dir === "." ? componentDirText : (componentDirText + "/" + file.dir) // e.g: ./src/components/ui/xxxxx
-
-                    // Create dir if it doesn't exist
-                    if (file.dir) {
-                        if (!existsSync(path.resolve(componentDir))) {
-                            // await fs.mkdir(path.resolve(componentDir), { recursive: true })
-                        }
-                    }
-
-                    // Write the content of the component to the directory
-                    const filePath = path.resolve(componentDir, file.name)
-                    // await fs.writeFile(filePath, file.content)
-                }
-
-                // Add dependencies to list to install
-                if (component.dependencies?.length && component.dependencies.length > 0) {
-                    component.dependencies.map(d => dependenciesToInstall.push(d))
-                    // await legacy_addDependencies(component.dependencies.filter(d => !installedDependencies.includes(d)))
-                    // component.dependencies.map(d => installedDependencies.push(d))
-                }
-                componentSpinner.succeed(component.name)
-            }
-
-            const finalDependencies = _.uniqWith(dependenciesToInstall, _.isEqual)
-
-            installDependencies(finalDependencies)
+            await script_installDependencies(dependenciesToInstall)
 
 
         })
@@ -254,73 +195,125 @@ async function main() {
             logger.warn("Make sure you have committed your changes before proceeding.")
             logger.warn("")
 
-            const availableComponents = await getAvailableComponents()
+            // 1. Get available components
+            const availableComponents = getAvailableComponents()
 
             if (!availableComponents?.length) {
-                logger.error(
-                    "An error occurred while fetching components. Please try again.",
-                )
+                logger.error("An error occurred while fetching components. Please try again.",)
                 process.exit(0)
             }
 
-            let selectedComponents = availableComponents.filter((component) =>
-                components.includes(component.component),
-            )
+            // 2. Filter selected components from the parameters
+            let selectedComponents = availableComponents.filter((component) => components.includes(component.component))
 
+            // 3. If nothing was passed as parameter, prompt for components to add
             if (!selectedComponents?.length) {
                 selectedComponents = await promptForComponents(availableComponents)
             }
-
 
             if (!selectedComponents?.length) {
                 logger.warn("No components selected.")
                 process.exit(0)
             }
 
-            logger.warn("Run the 'init' command first and add components in the same folder where the core files are located.")
+            logger.warn("Run the 'init' command first if you haven't. Add components in the same folder where the core directory is located.")
             logger.warn("")
 
-            // Ask for destination
-            const { dir } = await prompts([
-                {
-                    type: "text",
-                    name: "dir",
-                    message: "Where would you like to add the component(s)?",
-                    initial: "./src/components/ui",
-                },
-            ])
+            // 4. Ask for destination
+            const componentDestination = await promptForComponentDestination()
 
-            logger.success(`Installing ${selectedComponents.length} component(s) and dependencies...`)
+            logger.success(`Writing components...`)
 
-            // Write components
-            for (const component of selectedComponents) {
-                const componentSpinner = ora(`${component.name}...`).start()
+            // 5. Write components
+            const dependenciesToInstall = await script_addComponents({ components: selectedComponents, projectInfo, componentDestination })
 
-                // Write the files.
-                for (const file of component.files) {
-                    // Replace alias with the project's alias.
-                    if (projectInfo?.alias) {
-                        file.content = file.content.replace(/@\//g, projectInfo.alias)
-                    }
+            // 6. Install dependencies
+            await script_installDependencies(dependenciesToInstall)
 
-                    let componentDir = file.dir === "." ? dir : (dir + "/" + file.dir) // e.g: ./src/components/ui/****
+        })
 
-                    if (file.dir) { // Create dir if not exists
-                        if (!existsSync(path.resolve(componentDir))) {
-                            await fs.mkdir(path.resolve(componentDir), { recursive: true })
-                        }
-                    }
+    program
+        .command("remove")
+        .description("Remove UI components")
+        .argument("[components...]", "name of components")
+        .action(async (components: string[]) => {
+            logger.warn("Running the following command will overwrite existing files.")
+            logger.warn("Make sure you have committed your changes before proceeding.")
+            logger.warn("")
 
-                    const filePath = path.resolve(componentDir, file.name)
-                    await fs.writeFile(filePath, file.content) // Write component
-                }
+            // Get available components
+            const availableComponents = getAvailableComponents()
 
-                // Install dependencies.
-                if (component.dependencies?.length) {
-                    await legacy_addDependencies(component.dependencies)
-                }
-                componentSpinner.succeed(component.name)
+            if (!availableComponents?.length) {
+                logger.error("An error occurred while fetching components. Please try again.",)
+                process.exit(0)
             }
+
+            // Filter selected components from the parameters
+            let selectedComponents = availableComponents.filter((component) => components.includes(component.component))
+
+            // If nothing was passed as parameter, prompt for components to add
+            if (!selectedComponents?.length) {
+                selectedComponents = await promptForComponents(availableComponents)
+            }
+
+            if (!selectedComponents?.length) {
+                logger.warn("No components selected.")
+                process.exit(0)
+            }
+
+            const { proceed } = await prompts({
+                type: "confirm",
+                name: "proceed",
+                message: "Running this command will delete component files. Proceed?",
+                initial: false,
+            })
+
+            if (!proceed) process.exit(0)
+
+
+            const { proceed: depUnProceed } = await prompts({
+                type: "confirm",
+                name: "proceed",
+                message: "Do you want to uninstall the components' dependencies? This can likely uninstall shared dependencies",
+                initial: false,
+            })
+
+            if (depUnProceed) {
+                const spinner = ora(`Uninstalling dependencies...`).start()
+                // Get only component dependencies that are installed in the project
+                let installedDependencies = _.intersection(getInstalledComponentDependencyList(), _.flatten(selectedComponents.map(n => _.flatten(n.dependencies))))
+
+                // FIXME ONLY FOR TEST
+                installedDependencies = installedDependencies.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
+
+                if (installedDependencies.length > 0) {
+                    await execa(packageManager, [
+                        packageManager === "npm" ? "uninstall" : "remove",
+                        ...installedDependencies,
+                    ])
+                }
+                spinner.succeed()
+            }
+
+
+            // Prompt for components and hooks directories
+            const componentDestination = await promptForComponentDestination() // prompt for ui dir
+
+            const spinner = ora(`Removing components...`).start()
+
+            for (const component of selectedComponents) {
+                // Delete directory if it exists.
+                const componentDir = path.resolve(componentDestination + "/" + component.component)
+                if (existsSync(componentDir)) {
+                    await fs.rmdir(componentDir, { recursive: true }) // ./src/components/ui/xxx
+                }
+            }
+
+            spinner.succeed()
+
+            logger.success("Components uninstalled")
+
         })
 
 
@@ -343,26 +336,13 @@ async function promptForComponents(components: Component[]) {
     return selectedComponents
 }
 
-async function promptForDestinationDir() {
+async function promptForComponentDestination() {
     const { dir } = await prompts([
         {
             type: "text",
             name: "dir",
             message: "Where would you like to add the component(s)?",
             initial: "./src/components/ui",
-        },
-    ])
-
-    return dir
-}
-
-async function promptForHooksDir() {
-    const { dir } = await prompts([
-        {
-            type: "text",
-            name: "dir",
-            message: "Where would you like to add the hooks?",
-            initial: "./src/hooks",
         },
     ])
 

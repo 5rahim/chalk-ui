@@ -5,7 +5,6 @@
 @layer base {
     :root {
         --radius: 0.375rem;
-        --layout-spacing: theme('space.4');
 
         --text-color: theme('colors.gray.800');
         --background-color: white;
@@ -44,7 +43,6 @@
         --muted-highlight: theme('colors.gray.700');
 
         --paper: theme('colors.white');
-        --paper-highlight: theme('colors.gray.100');
         --highlight: rgba(0, 0, 0, 0.04);
 
     }
@@ -52,7 +50,6 @@
     .dark {
         --text-color: theme('colors.gray.200');
         --background-color: #121212;
-
 
         --brand: theme('colors.brand.300');
         --slate: theme('colors.slate.300');
@@ -88,7 +85,6 @@
         --muted-highlight: theme('colors.gray.300');
 
         --paper: theme('colors.gray.900');
-        --paper-highlight: theme('colors.gray.800');
         --highlight: rgba(255, 255, 255, 0.06);
 
     }

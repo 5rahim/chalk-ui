@@ -1,12 +1,11 @@
 "use client"
 
 import React, { Fragment } from "react"
-import { cn, ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy, useMediaQuery } from "../core"
 import { cva, VariantProps } from "class-variance-authority"
 import { Menu, Transition } from "@headlessui/react"
 import { Divider, DividerProps } from "../divider"
 import { Modal, ModalProps } from "../modal"
-import { useMediaQuery } from "@/hooks/use-media-query"
 import { useDropdownOutOfBounds } from "./use-dropdown-out-of-bounds"
 
 /* -------------------------------------------------------------------------------------------------

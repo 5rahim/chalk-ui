@@ -1,6 +1,123 @@
 export const STYLES = `@tailwind base;
 @tailwind components;
-@tailwind utilities;`
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.375rem;
+
+        --text-color: theme('colors.gray.800');
+        --background-color: white;
+
+        --brand: theme('colors.brand.500');
+        --slate: theme('colors.slate.500');
+        --gray: theme('colors.gray.500');
+        --zinc: theme('colors.zinc.500');
+        --neutral: theme('colors.neutral.500');
+        --stone: theme('colors.stone.500');
+        --red: theme('colors.red.500');
+        --orange: theme('colors.orange.500');
+        --amber: theme('colors.amber.500');
+        --yellow: theme('colors.yellow.500');
+        --lime: theme('colors.lime.500');
+        --green: theme('colors.green.500');
+        --emerald: theme('colors.emerald.500');
+        --teal: theme('colors.teal.500');
+        --cyan: theme('colors.cyan.500');
+        --sky: theme('colors.sky.500');
+        --blue: theme('colors.blue.500');
+        --indigo: theme('colors.indigo.500');
+        --violet: theme('colors.violet.500');
+        --purple: theme('colors.purple.500');
+        --fuchsia: theme('colors.fuchsia.500');
+        --pink: theme('colors.pink.500');
+        --rose: theme('colors.rose.500');
+
+        --control: theme('colors.gray.300');
+        --control-highlight: theme('colors.gray.400');
+
+        --border: theme('colors.gray.200');
+        --ring: theme('colors.brand.500');
+
+        --muted: theme('colors.gray.500');
+        --muted-highlight: theme('colors.gray.700');
+
+        --paper: theme('colors.white');
+        --highlight: rgba(0, 0, 0, 0.04);
+
+    }
+
+    .dark {
+        --text-color: theme('colors.gray.200');
+        --background-color: #121212;
+
+        --brand: theme('colors.brand.300');
+        --slate: theme('colors.slate.300');
+        --gray: theme('colors.gray.300');
+        --zinc: theme('colors.zinc.300');
+        --neutral: theme('colors.neutral.300');
+        --stone: theme('colors.stone.300');
+        --red: theme('colors.red.300');
+        --orange: theme('colors.orange.300');
+        --amber: theme('colors.amber.300');
+        --yellow: theme('colors.yellow.300');
+        --lime: theme('colors.lime.300');
+        --green: theme('colors.green.300');
+        --emerald: theme('colors.emerald.300');
+        --teal: theme('colors.teal.300');
+        --cyan: theme('colors.cyan.300');
+        --sky: theme('colors.sky.300');
+        --blue: theme('colors.blue.300');
+        --indigo: theme('colors.indigo.300');
+        --violet: theme('colors.violet.300');
+        --purple: theme('colors.purple.300');
+        --fuchsia: theme('colors.fuchsia.300');
+        --pink: theme('colors.pink.300');
+        --rose: theme('colors.rose.300');
+
+        --control: theme('colors.gray.700');
+        --control-highlight: theme('colors.gray.600');
+
+        --border: theme('colors.gray.700');
+        --ring: theme('colors.brand.200');
+
+        --muted: theme('colors.gray.400');
+        --muted-highlight: theme('colors.gray.300');
+
+        --paper: theme('colors.gray.900');
+        --highlight: rgba(255, 255, 255, 0.06);
+
+    }
+}
+
+html {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    @apply text-gray-800 dark:text-gray-100
+}
+
+h1 {
+    @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl
+}
+
+h2 {
+    @apply scroll-m-20 text-3xl font-bold tracking-tight first:mt-0
+}
+
+h3 {
+    @apply scroll-m-20 text-2xl font-bold tracking-tight
+}
+
+h4 {
+    @apply scroll-m-20 text-xl font-bold tracking-tight
+}
+
+h5 {
+    @apply scroll-m-20 text-lg font-bold tracking-tight
+}`
 
 // ------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------- //
@@ -85,127 +202,3 @@ module.exports = {
     },
     plugins: [require("@tailwindcss/typography"), require('@tailwindcss/forms'), require('@headlessui/tailwindcss')],
 }`
-
-// ------------------------------------------------------------------------------------------------- //
-// ------------------------------------------------------------------------------------------------- //
-// ------------------------------------------------------------------------------------------------- //
-
-export const CORE_STYLE_ANATOMY = `import { cva } from "class-variance-authority"
-
-/**
- * @internal UI Folder scope
- */
-export type Anatomy = { [key: string]: ReturnType<typeof cva> }
-/**
- * @internal
- */
-export type AnatomyClassNames<T extends Anatomy> = {
-   [K in keyof T as \`\${string & K}ClassName\`]?: string
-}
-
-/**
- * @internal UI Folder scope
- * @example
- * const ComponentAnatomy = defineStyleAnatomy({
- *    label: cva(null, {
- *       variants: {
- *          intent: {
- *             "success": "",
- *             "alert": "",
- *          },
- *       },
- *    }),
- *    ...
- * })
- *
- * type ComponentProps = ComponentWithAnatomy<typeof ComponentAnatomy>
- *
- * // const { controlClassName, ...rest }: ComponentProps = props
- * <div className={cn(ComponentAnatomy.control({ intent: "success" }, controlClassName))} />
- * @param config
- */
-export function defineStyleAnatomy<A extends Anatomy = Anatomy>(config: A) {
-   return config
-}
-
-/**
- * @internal UI Folder scope
- */
-export type ComponentWithAnatomy<T extends Anatomy> = AnatomyClassNames<T>`
-
-// ------------------------------------------------------------------------------------------------- //
-// ------------------------------------------------------------------------------------------------- //
-// ------------------------------------------------------------------------------------------------- //
-
-export const CORE_STYLE_PROVIDER = `'use client'
-import React from 'react'
-import { SSRProvider } from 'react-aria'
-
-// ------------------------------------------------------------------------------------------------------------------ //
-
-/**
- * @internal UI Folder scope
- */
-type Lng = 'fr' | 'en' // DEVNOTE Add new lang keywords to maintain type safety
-type UILocaleConfig = {
-   locale: Lng,
-   countryLocale: string,
-   country: string
-}
-const __LocaleConfigDefaultValue: UILocaleConfig = { locale: 'en', countryLocale: 'en-US', country: 'us' }
-const __LocaleConfigContext = React.createContext<UILocaleConfig>(__LocaleConfigDefaultValue)
-
-/**
- * @internal UI Folder scope
- */
-export const useUILocaleConfig = (): UILocaleConfig => {
-   return React.useContext(__LocaleConfigContext)
-}
-
-useUILocaleConfig.displayName = "useUILocaleConfig"
-
-// ------------------------------------------------------------------------------------------------------------------ //
-
-export interface UIProviderProps {
-   children?: React.ReactNode
-   config?: {
-      locale?: Lng,
-      countryLocale?: string,
-      country?: string
-   },
-}
-
-/**
- * @example
- * <UIProvider config={{ locale: 'en', countryLocale: 'en-US', country: 'us' }}>
- *    <App/>
- * </UIProvider>
- * @param children
- * @param config
- * @constructor
- */
-export const UIProvider: React.FC<UIProviderProps> = ({ children, config }) => {
-   
-   let localeConfig: UILocaleConfig = {
-      ...__LocaleConfigDefaultValue,
-      ...config,
-   }
-   
-   return (
-      <__LocaleConfigContext.Provider value={localeConfig}>
-         <SSRProvider>
-            {children}
-         </SSRProvider>
-      </__LocaleConfigContext.Provider>
-   )
-}
-
-UIProvider.displayName = "UIProvider"`
-
-// ------------------------------------------------------------------------------------------------- //
-// ------------------------------------------------------------------------------------------------- //
-// ------------------------------------------------------------------------------------------------- //
-
-export const CORE_INDEX = `export * from './style-anatomy'
-export * from './style-provider'`
-

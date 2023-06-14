@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "fs"
 import path from "path"
 import * as process from "process"
-import { dependencyVersionArray } from "@/src/helpers/dependencies"
+import { DependencyDef, mainDependencies } from "@/src/helpers/dependencies"
 import _ from "lodash"
 
 interface FileData {
@@ -11,8 +11,11 @@ interface FileData {
 }
 
 interface DirectoryData {
-    component: string;
-    files: FileData[];
+    component: string
+    files: FileData[]
+    name: string
+    dependencies: DependencyDef[]
+    family: string[]
 }
 
 function addCommentToContent(content: string, filename: string, date: string): string {
@@ -27,54 +30,6 @@ function addCommentToContent(content: string, filename: string, date: string): s
     // return comment + content
     return content
 }
-
-export function legacy_createJSONSnapshot(): DirectoryData[] {
-    const srcPath = path.resolve("../../apps/web/src/components/ui")
-
-    if (!existsSync(srcPath)) {
-        console.error("Source directory does not exist.")
-        process.exit(1)
-    }
-
-    const directories: DirectoryData[] = [] // All components
-
-    function traverseDirectory(dirPath: string, componentName: string) {
-        // Get all the files/directories in the path
-        const files = readdirSync(dirPath)
-
-        // Format of the snapshot
-        const directoryData: DirectoryData = {
-            component: componentName,
-            files: [],
-        }
-
-        // For each file/directory
-        files.forEach((file) => {
-            const filePath = path.join(dirPath, file) // Get path
-            const stats = statSync(filePath) // Get info
-
-            if (stats.isDirectory()) { // If it is a directory
-                traverseDirectory(filePath, file) // Traverse the directory (recursive)
-            } else if (stats.isFile()) { // If it is a file
-                const content = readFileSync(filePath, "utf8") // Get the content
-                const transformedContent = addCommentToContent(content, componentName + "/" + file, new Date().toDateString()) // Rewrite it
-                const fileData: FileData = {
-                    name: file,
-                    dir: componentName,
-                    content: !file.includes("json") ? transformedContent : content,
-                }
-                directoryData.files.push(fileData)
-            }
-        })
-
-        directories.push(directoryData) // Push component
-    }
-
-    traverseDirectory(srcPath, "")
-
-    return directories
-}
-
 
 export function createJSONSnapshot(): DirectoryData[] {
     const srcPath = path.resolve("../../apps/web/src/components/ui")
@@ -94,7 +49,7 @@ export function createJSONSnapshot(): DirectoryData[] {
         const files = readdirSync(dirPath)
 
         // Format of the snapshot
-        let directoryData: any = {
+        let directoryData: DirectoryData = {
             component: componentName,
             name: componentName.charAt(0).toUpperCase() + _.camelCase(componentName).slice(1),
             dependencies: [],
@@ -118,7 +73,7 @@ export function createJSONSnapshot(): DirectoryData[] {
                  */
                 const family = findRelativeImports(content)
                 family.map((f) => {
-                    if (!directoryData.family.includes(f) && f !== "core") {
+                    if (!directoryData.family.includes(f) && f !== "core" && f !== componentName) {
                         directoryData.family.push(f)
                     }
                 })
@@ -142,8 +97,8 @@ export function createJSONSnapshot(): DirectoryData[] {
                     dir: componentName,
                     content: !file.includes("json") ? transformedContent : content,
                 }
-                directoryData.files.push(fileData)
 
+                directoryData.files.push(fileData)
 
             }
         })
@@ -174,11 +129,10 @@ function findRelativeImports(fileContent: string): string[] {
     return imports
 }
 
-type Dependency = [string, string, string];
 
-function findDependencies(fileContent: string): Dependency[] {
+function findDependencies(fileContent: string): DependencyDef[] {
     const importPattern = /import\s+[^'"]+\s+from\s+['"]([^'"]+)['"]/gmi
-    const dependenciesArr: Dependency[] = []
+    const dependenciesArr: DependencyDef[] = []
 
     let match: RegExpExecArray | null
 
@@ -187,12 +141,12 @@ function findDependencies(fileContent: string): Dependency[] {
     while ((match = importPattern.exec(fileContent)) !== null) {
         const importedModule = match[1]
 
-        // Ignore base dependencies
-        const baseDependencies = [...dependencyVersionArray.map(n => n[0])]
-
+        // Ignore base dependencies and react
+        const baseDependencies = [...mainDependencies.map(n => n[0])]
         if (!baseDependencies.some(n => n.includes(importedModule)) && importedModule !== "react") {
 
             let name = importedModule
+            // Reformat some dependencies
             if (name.includes("lodash")) name = "lodash"
             if (name.includes("date-fns")) name = "date-fns"
             if (name.includes("recharts")) name = "recharts"
@@ -201,6 +155,7 @@ function findDependencies(fileContent: string): Dependency[] {
             if (!name.startsWith(".", 0) && !name.startsWith("@/", 0) && !dependencies.includes(name) && !baseDependencies.some(n => n.includes(name))) {
                 dependencies.push(name)
 
+                // Include types dependencies
                 if (name.includes("dinero")) {
                     dependencies.push("@types/dinero.js")
                 }
