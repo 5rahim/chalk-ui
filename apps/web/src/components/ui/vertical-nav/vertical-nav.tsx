@@ -16,7 +16,7 @@ export const VerticalNavAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-VerticalNav__tab",
-        "group/vnav flex flex-none truncate items-center px-4 py-2 text-sm font-[600] rounded-[--radius] transition cursor-pointer",
+        "group/vnav flex flex-none truncate items-center px-3 py-2 text-sm font-[600] rounded-[--radius] transition cursor-pointer",
         "hover:bg-[--highlight] hover:text-[--text-color]",
         "focus-visible:ring-2 ring-[--ring] outline-none",
         "text-[--muted]",

@@ -16,9 +16,6 @@ import path from "path"
 import * as process from "process"
 import prompts from "prompts"
 
-// TODO Add "remove" option, refactor "add" option
-// TODO Dev dependencies (@types/lodash)
-
 async function main() {
     const packageInfo = await getPackageInfo()
     const projectInfo = await getProjectInfo()

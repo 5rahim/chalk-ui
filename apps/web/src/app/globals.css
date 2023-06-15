@@ -118,3 +118,7 @@ h4 {
 h5 {
     @apply scroll-m-20 text-lg font-bold tracking-tight
 }
+
+h6 {
+    @apply scroll-m-20 text-base font-semibold tracking-tight
+}

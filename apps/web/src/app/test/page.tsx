@@ -7,16 +7,16 @@ const DarkModeToggle = dynamic(() => import("@/components/DarkModeToggle"), { ss
 export default async function Page({ params: { lng } }: { params: { lng: string } }) {
 
     return (
-        <>
+        <div>
 
             <UITest_Sidebar/>
-
 
             {/*<ClientTest/>*/}
             {/*<ChartTest/>*/}
 
+            {/* @ts-expect-error */}
             <DarkModeToggle/>
 
-        </>
+        </div>
     )
 }
