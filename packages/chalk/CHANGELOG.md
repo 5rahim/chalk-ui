@@ -1,5 +1,11 @@
 # @rahimstack/chalk-ui
 
+## 0.1.0
+
+### Minor Changes
+
+- [`5fdf31a`](https://github.com/5rahim/chalk-ui/commit/5fdf31af911479f40c736dd72785191f9a1e5f62) Thanks [@5rahim](https://github.com/5rahim)! - Refactor commands
+
 ## 0.0.2
 
 ### Patch Changes
