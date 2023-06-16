@@ -1,9 +1,8 @@
 "use client"
 
-import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy, UIColor } from "../core"
 import { ChartValueFormatter } from "../charts/types"
 import { cva } from "class-variance-authority"
-import { UIColor } from "../core/color-theme"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

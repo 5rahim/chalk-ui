@@ -2,28 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-    font-family: 'Inter', sans-serif;
-}
 
-@supports (font-variation-settings: normal) {
-    :root {
-        font-family: 'Inter var', sans-serif;
-    }
-}
-
-.dark {
-    background-color: #171717;
-    color: #ffffff;
-    border: 1px solid #171717;
-}
-
-#storybook-root, .sb-story {
-    padding: 4rem;
-    border-radius: .5rem;
-    overflow: hidden;
-    border: 1px solid #ddd;
-}
 
 /*:root {*/
 /*  --foreground-rgb: 0, 0, 0;*/

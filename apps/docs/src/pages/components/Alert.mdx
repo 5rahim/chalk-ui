@@ -1,21 +1,38 @@
-import {Alert}         from "ui";
-import Preview         from "../../components/Preview";
+import { Alert } from "ui";
+import Preview from "../../components/Preview";
 import StorybookButton from "../../components/StorybookButton";
 
 # Alert
 
-<StorybookButton slug="components-data-display-alert--docs" />
+<StorybookButton slug="components-data-display-alert--docs"/>
+
+export const AlertDemo = () => {
+    return (
+        <Alert title="Alert" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit."/>
+    )
+}
 
 <Preview>
     <div>
-        <Alert title="Alert" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit." />
+        <AlertDemo/>
     </div>
-    <Alert title="Alert" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit." intent="alert" />
+    <Alert title="Alert" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit." intent="alert"/>
 </Preview>
+
+```tsx copy
+import { Alert } from "@/components/ui/alert";
+
+export const AlertDemo = () => {
+    return (
+        <Alert title="Alert" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit."/>
+    )
+}
+```
 
 ## Installation
 
+
 ```shell copy
-npx @rahimstack/chalk-ui add badge
+npx @rahimstack/chalk-ui add alert
 ```
 

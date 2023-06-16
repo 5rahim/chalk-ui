@@ -1,7 +1,7 @@
 "use client"
 
 import { ChartTooltipFrame, ChartTooltipRow } from "./chart-tooltip"
-import { ChartValueFormatter } from "../charts/types"
+import { ChartValueFormatter } from "."
 import { cn, ColorPalette, ComponentWithAnatomy, defineStyleAnatomy, UIColor } from "../core"
 import React from "react"
 import { Pie, PieChart as ReChartsDonutChart, ResponsiveContainer, Tooltip } from "recharts"

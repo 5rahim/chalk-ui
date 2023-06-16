@@ -32,35 +32,41 @@ export const legacy_addDependencies = (arr: string[] | string[][]) => {
 }
 
 export const script_installDependencies = async (arr: string[][]) => {
-    const spinner = ora(`Installing dependencies...`).start()
-    const pm = getPackageManager()
+    if (arr.length > 0) {
+        const spinner = ora(`Installing dependencies...`).start()
+        const pm = getPackageManager()
 
-    const normalDeps = arr.filter(n => n[2] === "").map(a => a[0] + "@" + a[1].replace("^", ""))
-    const devDeps = arr.filter(n => n[2] === "-D").map(a => a[0] + "@" + a[1].replace("^", ""))
-    const text = `${pm} ${pm === "npm" ? "install" : "add"} ${normalDeps.join(" ")}`
-    const text2 = `${pm} ${pm === "npm" ? "install" : "add"} ${devDeps.join(" ")} -D`
+        const normalDeps = arr.filter(n => n[2] === "").map(a => a[0] + "@" + a[1].replace("^", ""))
+        const devDeps = arr.filter(n => n[2] === "-D").map(a => a[0] + "@" + a[1].replace("^", ""))
+        const text = `${pm} ${pm === "npm" ? "install" : "add"} ${normalDeps.join(" ")}`
+        const text2 = `${pm} ${pm === "npm" ? "install" : "add"} ${devDeps.join(" ")} -D`
 
-    if (normalDeps.length > 0) {
-        await execa(pm, [
-            pm === "npm" ? "install" : "add",
-            ...normalDeps,
-        ])
+        if (normalDeps.length > 0) {
+            await execa(pm, [
+                pm === "npm" ? "install" : "add",
+                ...normalDeps,
+            ])
+        }
+        if (devDeps.length > 0) {
+            await execa(pm, [
+                pm === "npm" ? "install" : "add",
+                ...devDeps,
+                "-D"
+            ])
+        }
+
+        logger.info("\nYou can copy and paste the following script to install dependencies manually in case of an error: ")
+        logger.info("---")
+        logger.text(text)
+        if (devDeps.length > 0) {
+            logger.info("---")
+            logger.text(text2)
+        }
+        logger.info("---")
+
+        spinner.succeed()
+    } else {
+        logger.warn("Dependencies already installed.")
     }
-    if (devDeps.length > 0) {
-        await execa(pm, [
-            pm === "npm" ? "install" : "add",
-            ...devDeps,
-            "-D"
-        ])
-    }
-
-    logger.info("\nYou can copy and paste the following script to install dependencies manually in case of an error: ")
-    logger.info("---")
-    logger.text(text)
-    logger.info("---")
-    logger.text(text2)
-    logger.info("---")
-
-    spinner.succeed()
     return ""
 }

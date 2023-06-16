@@ -6,7 +6,7 @@ import React, { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import type { CheckboxProps as CheckboxPrimitiveProps } from "@radix-ui/react-checkbox"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
-import { useCheckboxGroupContext } from "../checkbox/checkbox-group"
+import { useCheckboxGroupContext } from "."
 import { ShowOnly } from "../show-only"
 
 

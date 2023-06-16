@@ -6,6 +6,7 @@
     "dev:web": "turbo run dev --filter=web",
     "dev:docs": "turbo run dev --filter=docs",
     "dev:chalk": "turbo run dev --filter=chalk-ui",
+    "dev:workshop": "turbo run dev --filter=workshop",
     "dev:ui": "turbo run dev --filter=ui --filter=chalk-ui --filter=workshop",
     "build:ui": "turbo run build --filter=ui",
     "build:storybook": "turbo run build --filter=workshop",

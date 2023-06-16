@@ -143,7 +143,7 @@ p li a:hover {
   ------------------------ */
 
 .nextra-nav-container {
-    border-top: 4px solid var(--docs-accent-color);
+    /*border-top: 4px solid var(--docs-accent-color);*/
 }
 
 .nextra-nav-container .nextra-nav-container-blur {

@@ -1,14 +1,13 @@
 "use client"
 
 import React, { useState } from "react"
-import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { cn, ColorPalette, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { Bar, BarChart as ReChartsBarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, } from "recharts"
 import { BaseChartProps } from "./types"
 import { constructCategoryColors, defaultValueFormatter, getYAxisDomain } from "./utils"
 import type { AxisDomain } from "recharts/types/util/types"
 import { ChartTooltip } from "./chart-tooltip"
-import { ColorPalette } from "../core/color-theme"
 import { ChartLegend } from "./chart-legend"
 
 /* -------------------------------------------------------------------------------------------------

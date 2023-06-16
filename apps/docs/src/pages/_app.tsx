@@ -4,10 +4,11 @@ import "../../styles.css"
 import "../styles/globals.css"
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-   
-   return (
-      <UIProvider>
-         <Component {...pageProps} />
-      </UIProvider>
-   )
+
+    return (
+        <UIProvider>
+            {/* @ts-expect-error */}
+            <Component {...pageProps} />
+        </UIProvider>
+    )
 }

@@ -81,7 +81,7 @@ export function createJSONSnapshot(): DirectoryData[] {
                 /**
                  * Populate dependencies
                  */
-                const dependencies = analyzeFile(content, packageJsonContent)
+                const dependencies = extractComponentDependencies(content, packageJsonContent)
                 dependencies.map(d => {
                     if (!directoryData.dependencies.map((n: any) => n[0]).includes(d[0])) {
                         directoryData.dependencies.push(d)
@@ -170,7 +170,7 @@ function findDependencies(fileContent: string): DependencyDef[] {
     return dependenciesArr
 }
 
-function analyzeFile(fileContent: string, packageJsonContent: string): string[][] {
+function extractComponentDependencies(fileContent: string, packageJsonContent: string): string[][] {
     const dependencies = findDependencies(fileContent)
     const packageJson = JSON.parse(packageJsonContent)
 

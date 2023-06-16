@@ -1,11 +1,12 @@
 import { UIProvider } from "ui"
 import type { Preview } from "@storybook/react"
 import "../src/globals.css" // replace with the name of your tailwind css file
+import "../src/styles.css" // replace with the name of your tailwind css file
 const withUI = (StoryFn: Function) => {
    return (
-      <UIProvider>
-         <StoryFn />
-      </UIProvider>
+       <UIProvider>
+          <StoryFn/>
+       </UIProvider>
    )
 }
 

@@ -6,6 +6,7 @@ import _ from "lodash"
 import path from "path"
 import * as process from "process"
 import { DependencyDef } from "@/src/helpers/dependencies"
+import { logger } from "@/src/utils/logger"
 
 const baseUrl = process.env.COMPONENTS_BASE_URL ?? "https://chalk.rahim.app"
 
@@ -42,9 +43,43 @@ export function getAvailableComponents() {
     })
 }
 
+/**
+ *
+ */
 export function getAvailableComponentDependencyList() {
     const availableComponents = getAvailableComponents()
     return _.flatten(availableComponents.map(c => c.dependencies?.map(n => n[0]))).filter(n => n!.length > 0) as string[]
+}
+
+/**
+ *
+ */
+export async function getInstalledComponents(dir: string) {
+    const availableComponents = getAvailableComponents()
+    const installedComponents = await getInstalledComponentList(dir)
+    return installedComponents.map(name => availableComponents.filter(comp => comp.component === name)[0])
+}
+
+/**
+ *
+ */
+export async function getInstalledComponentDependencyList(dir: string) {
+    const components = await getInstalledComponents(dir)
+    return _.flatten(components.map(c => c.dependencies?.map(n => n[0]))).filter(n => n!.length > 0) as string[]
+}
+
+export async function getInstalledComponentList(dir: string) {
+    try {
+
+        const directoryEntries = await fs.readdir(dir, { withFileTypes: true })
+
+        return directoryEntries
+            .filter((entry) => entry.isDirectory())
+            .map((entry) => entry.name)
+    } catch (error) {
+        console.error("Error occurred while reading directory names:", error)
+        return []
+    }
 }
 
 
@@ -61,11 +96,12 @@ export async function script_addComponents(
 ) {
 
     const availableComponents = await getAvailableComponents()
+    const installedComponents = await getInstalledComponents(componentDestination)
 
     let componentsToAdd: Component[] = components
     let dependenciesToInstall: DependencyDef[] = []
 
-    for (const component of components) {
+    for (const component of componentsToAdd) {
         // Insert component's family in list only if it isn't already added
         if (component.family?.length && component.family.length > 0) {
             component.family.filter(n => !componentsToAdd.map(s => s.component).includes(n)).map(n => {
@@ -77,6 +113,9 @@ export async function script_addComponents(
 
     // Add core folder
     componentsToAdd.push(availableComponents.filter(n => n.component === "core")[0]!)
+
+    // Get uninstalled components
+    componentsToAdd = _.differenceBy(componentsToAdd, installedComponents, "component")
 
     for (const component of componentsToAdd) {
         const componentSpinner = ora(`${component.name}...`).start()
@@ -111,6 +150,11 @@ export async function script_addComponents(
 
         componentSpinner.succeed(component.name)
 
+    }
+
+    if (componentsToAdd.length === 0) {
+        logger.warn("Component(s) already added.")
+        return []
     }
 
     // Remove duplicates

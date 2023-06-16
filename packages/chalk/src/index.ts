@@ -1,11 +1,17 @@
 #!/usr/bin/env node
-import { Component, getAvailableComponents, script_addComponents } from "@/src/helpers/components"
+import {
+    Component,
+    getAvailableComponents,
+    getInstalledComponentDependencyList,
+    getInstalledComponents,
+    script_addComponents
+} from "@/src/helpers/components"
 import { mainDependencies, script_installDependencies } from "@/src/helpers/dependencies"
 import { getProjectInfo } from "@/src/helpers/project"
 import { createJSONSnapshot } from "@/src/helpers/snapshot"
 import { STYLES, TAILWIND_CONFIG } from "@/src/templates/files"
 import { logger } from "@/src/utils/logger"
-import { getInstalledComponentDependencyList, getPackageInfo, getPackageManager } from "@/src/utils/package"
+import { getComponentDependencyListFromPackage, getPackageInfo, getPackageManager } from "@/src/utils/package"
 /**/
 import _ from "lodash"
 import { Command } from "commander"
@@ -15,6 +21,8 @@ import ora from "ora"
 import path from "path"
 import * as process from "process"
 import prompts from "prompts"
+
+// TODO: upgrade command
 
 async function main() {
     const packageInfo = await getPackageInfo()
@@ -60,7 +68,7 @@ async function main() {
             const spinner = ora(`Uninstalling component dependencies...`).start()
 
             // Get only component dependencies that are installed in the project
-            let installedDependencies = getInstalledComponentDependencyList()
+            let installedDependencies = getComponentDependencyListFromPackage()
 
             // FIXME ONLY FOR TEST
             installedDependencies = installedDependencies.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
@@ -82,7 +90,7 @@ async function main() {
             // Delete directory if it exists.
             const componentDir = path.resolve(componentDestination)
             if (existsSync(componentDir)) {
-                await fs.rmdir(componentDir, { recursive: true }) // ./src/components/ui
+                await fs.rm(componentDir, { recursive: true }) // ./src/components/ui
             }
 
             spinner2.succeed()
@@ -192,8 +200,18 @@ async function main() {
             logger.warn("Make sure you have committed your changes before proceeding.")
             logger.warn("")
 
+            const { dir } = await prompts([
+                {
+                    type: "text",
+                    name: "dir",
+                    message: "[Checking installed components] Where are your components located?",
+                    initial: "./src/components/ui",
+                },
+            ])
+
             // 1. Get available components
             const availableComponents = getAvailableComponents()
+            const installedComponents = await getInstalledComponents(dir)
 
             if (!availableComponents?.length) {
                 logger.error("An error occurred while fetching components. Please try again.",)
@@ -216,13 +234,10 @@ async function main() {
             logger.warn("Run the 'init' command first if you haven't. Add components in the same folder where the core directory is located.")
             logger.warn("")
 
-            // 4. Ask for destination
-            const componentDestination = await promptForComponentDestination()
-
             logger.success(`Writing components...`)
 
             // 5. Write components
-            const dependenciesToInstall = await script_addComponents({ components: selectedComponents, projectInfo, componentDestination })
+            const dependenciesToInstall = await script_addComponents({ components: selectedComponents, projectInfo, componentDestination: dir })
 
             // 6. Install dependencies
             await script_installDependencies(dependenciesToInstall)
@@ -234,12 +249,21 @@ async function main() {
         .description("Remove UI components")
         .argument("[components...]", "name of components")
         .action(async (components: string[]) => {
-            logger.warn("Running the following command will overwrite existing files.")
             logger.warn("Make sure you have committed your changes before proceeding.")
             logger.warn("")
 
+            const { dir } = await prompts([
+                {
+                    type: "text",
+                    name: "dir",
+                    message: "[Checking installed components] Where are your components located?",
+                    initial: "./src/components/ui",
+                },
+            ])
+
             // Get available components
             const availableComponents = getAvailableComponents()
+            const installedComponentDependencies = await getInstalledComponentDependencyList(dir)
 
             if (!availableComponents?.length) {
                 logger.error("An error occurred while fetching components. Please try again.",)
@@ -248,11 +272,6 @@ async function main() {
 
             // Filter selected components from the parameters
             let selectedComponents = availableComponents.filter((component) => components.includes(component.component))
-
-            // If nothing was passed as parameter, prompt for components to add
-            if (!selectedComponents?.length) {
-                selectedComponents = await promptForComponents(availableComponents)
-            }
 
             if (!selectedComponents?.length) {
                 logger.warn("No components selected.")
@@ -272,44 +291,45 @@ async function main() {
             const { proceed: depUnProceed } = await prompts({
                 type: "confirm",
                 name: "proceed",
-                message: "Do you want to uninstall the components' dependencies? This can likely uninstall shared dependencies",
-                initial: false,
+                message: "Do you want to uninstall the associated dependencies? This will not remove shared dependencies.",
+                initial: true,
             })
+
+            const selectedComponentDependencies = _.flatten(selectedComponents.map(n => _.flatten(n.dependencies?.map(o => o[0]))))
 
             if (depUnProceed) {
                 const spinner = ora(`Uninstalling dependencies...`).start()
-                // Get only component dependencies that are installed in the project
-                let installedDependencies = _.intersection(getInstalledComponentDependencyList(), _.flatten(selectedComponents.map(n => _.flatten(n.dependencies))))
+                // Get dependencies that are used by the components we will remove
+                let dependenciesToRemove = _.intersection(installedComponentDependencies, selectedComponentDependencies)
+
+                const dependencyCounts = _.countBy(installedComponentDependencies)
+                let unusedDependencies = _.filter(dependenciesToRemove, (dependency) => dependencyCounts[dependency] === 1)
 
                 // FIXME ONLY FOR TEST
-                installedDependencies = installedDependencies.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
+                unusedDependencies = unusedDependencies.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
 
-                if (installedDependencies.length > 0) {
+                if (unusedDependencies.length > 0) {
                     await execa(packageManager, [
                         packageManager === "npm" ? "uninstall" : "remove",
-                        ...installedDependencies,
+                        ...unusedDependencies,
                     ])
                 }
                 spinner.succeed()
             }
 
-
-            // Prompt for components and hooks directories
-            const componentDestination = await promptForComponentDestination() // prompt for ui dir
-
             const spinner = ora(`Removing components...`).start()
 
             for (const component of selectedComponents) {
                 // Delete directory if it exists.
-                const componentDir = path.resolve(componentDestination + "/" + component.component)
+                const componentDir = path.resolve(dir + "/" + component.component)
                 if (existsSync(componentDir)) {
-                    await fs.rmdir(componentDir, { recursive: true }) // ./src/components/ui/xxx
+                    await fs.rm(componentDir, { recursive: true }) // ./src/components/ui/xxx
                 }
             }
 
             spinner.succeed()
 
-            logger.success("Components uninstalled")
+            logger.success("Component(s) removed.")
 
         })
 

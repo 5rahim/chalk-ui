@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { UIColor } from "../core/color-theme"
+import { UIColor } from "../core"
 import { Legend } from "./legend"
 
 /* -------------------------------------------------------------------------------------------------
