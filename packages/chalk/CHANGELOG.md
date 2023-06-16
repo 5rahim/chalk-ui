@@ -1,5 +1,11 @@
 # @rahimstack/chalk-ui
 
+## 0.2.0
+
+### Minor Changes
+
+- [`4d9fe2b`](https://github.com/5rahim/chalk-ui/commit/4d9fe2ba05bb5217e687f6faaf6fdc30b5770c8c) Thanks [@5rahim](https://github.com/5rahim)! - "add" will now detect already added components. "remove" will not uninstall shared dependencies.
+
 ## 0.1.0
 
 ### Minor Changes
