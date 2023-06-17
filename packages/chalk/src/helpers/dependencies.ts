@@ -20,17 +20,6 @@ export const mainDependencies: DependencyDef[] = [
 ]
 export type AvailableDependencies = keyof typeof mainDependencies;
 
-export const legacy_addDependencies = (arr: string[] | string[][]) => {
-    const withVersions = Array.isArray(arr[0])
-    const dependencies = (withVersions ? arr.map(a => a[0] + "@" + a[1]) : arr as string[]).filter(Boolean)
-    const pm = getPackageManager()
-    // return execa(pm, [
-    //    pm === "npm" ? "install" : "add",
-    //    ...dependencies,
-    // ])
-    return ""
-}
-
 export const script_installDependencies = async (arr: string[][]) => {
     if (arr.length > 0) {
         const spinner = ora(`Installing dependencies...`).start()
@@ -41,21 +30,25 @@ export const script_installDependencies = async (arr: string[][]) => {
         const text = `${pm} ${pm === "npm" ? "install" : "add"} ${normalDeps.join(" ")}`
         const text2 = `${pm} ${pm === "npm" ? "install" : "add"} ${devDeps.join(" ")} -D`
 
-        if (normalDeps.length > 0) {
-            await execa(pm, [
-                pm === "npm" ? "install" : "add",
-                ...normalDeps,
-            ])
-        }
-        if (devDeps.length > 0) {
-            await execa(pm, [
-                pm === "npm" ? "install" : "add",
-                ...devDeps,
-                "-D"
-            ])
+        try {
+            if (normalDeps.length > 0) {
+                await execa(pm, [
+                    pm === "npm" ? "install" : "add",
+                    ...normalDeps,
+                ])
+            }
+            if (devDeps.length > 0) {
+                await execa(pm, [
+                    pm === "npm" ? "install" : "add",
+                    ...devDeps,
+                    "-D"
+                ])
+            }
+        } catch (e) {
+            logger.error("\n An error occurred while installing dependencies.")
         }
 
-        logger.info("\nYou can copy and paste the following script to install dependencies manually in case of an error: ")
+        logger.info("\nYou can copy and paste the following script to install dependencies manually: ")
         logger.info("---")
         logger.text(text)
         if (devDeps.length > 0) {

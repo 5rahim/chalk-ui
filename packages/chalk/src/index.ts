@@ -1,11 +1,5 @@
 #!/usr/bin/env node
-import {
-    Component,
-    getAvailableComponents,
-    getInstalledComponentDependencyList,
-    getInstalledComponents,
-    script_addComponents
-} from "@/src/helpers/components"
+import { Component, getAvailableComponents, getInstalledComponentDependencyList, script_addComponents } from "@/src/helpers/components"
 import { mainDependencies, script_installDependencies } from "@/src/helpers/dependencies"
 import { getProjectInfo } from "@/src/helpers/project"
 import { createJSONSnapshot } from "@/src/helpers/snapshot"
@@ -65,18 +59,27 @@ async function main() {
     program.command("clean")
         .action(async () => {
 
+            const { proceed } = await prompts({
+                type: "confirm",
+                name: "proceed",
+                message: "Running this command will delete component files and remove their dependencies. Proceed?",
+                initial: false,
+            })
+
+            if (!proceed) process.exit(0)
+
             const spinner = ora(`Uninstalling component dependencies...`).start()
 
             // Get only component dependencies that are installed in the project
-            let installedDependencies = getComponentDependencyListFromPackage()
+            let deps = getComponentDependencyListFromPackage()
 
             // FIXME ONLY FOR TEST
-            installedDependencies = installedDependencies.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
+            deps = deps.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
 
-            if (installedDependencies.length > 0) {
+            if (deps.length > 0) {
                 await execa(packageManager, [
                     packageManager === "npm" ? "uninstall" : "remove",
-                    ...installedDependencies,
+                    ...deps,
                 ])
             }
 
@@ -118,11 +121,6 @@ async function main() {
 
                 if (!proceed) process.exit(0)
             }
-
-            // 1. Install main dependencies.
-            const dependenciesSpinner = ora(`Installing dependencies... (${packageManager})`).start()
-            await script_installDependencies(mainDependencies)
-            dependenciesSpinner.succeed()
 
             // 2. Ensure styles directory exists. (Only for non-appDir apps)
             if (!projectInfo?.appDir) {
@@ -186,8 +184,10 @@ async function main() {
 
             const dependenciesToInstall = await script_addComponents({ components: selectedComponents, projectInfo, componentDestination })
 
-            await script_installDependencies(dependenciesToInstall)
+            // Install main dependencies.
+            await script_installDependencies(mainDependencies)
 
+            await script_installDependencies(dependenciesToInstall)
 
         })
 
@@ -211,7 +211,7 @@ async function main() {
 
             // 1. Get available components
             const availableComponents = getAvailableComponents()
-            const installedComponents = await getInstalledComponents(dir)
+            // const installedComponents = await getInstalledComponents(dir)
 
             if (!availableComponents?.length) {
                 logger.error("An error occurred while fetching components. Please try again.",)
@@ -339,7 +339,7 @@ async function main() {
 
 async function promptForComponents(components: Component[]) {
     const { components: selectedComponents } = await prompts({
-        type: "autocompleteMultiselect",
+        type: "multiselect",
         name: "components",
         message: "Which component(s) would you like to add?",
         hint: "Space to select. A to select all. I to invert selection.",
