@@ -1,5 +1,11 @@
 # @rahimstack/chalk-ui
 
+## 0.3.1
+
+### Patch Changes
+
+- [`5b74393`](https://github.com/5rahim/chalk-ui/commit/5b7439321e49f9237bd1dc26f590792e9829a5b6) Thanks [@5rahim](https://github.com/5rahim)! - Fix incorrect package.json
+
 ## 0.3.0
 
 ### Minor Changes
