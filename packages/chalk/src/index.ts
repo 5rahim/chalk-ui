@@ -73,7 +73,7 @@ async function main() {
             // Get only component dependencies that are installed in the project
             let deps = getComponentDependencyListFromPackage()
 
-            // FIXME ONLY FOR TEST
+            // FIXME
             deps = deps.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
 
             if (deps.length > 0) {
@@ -86,12 +86,19 @@ async function main() {
             spinner.succeed()
 
             // Prompt for components and hooks directories
-            const componentDestination = await promptForComponentDestination() // prompt for ui dir
+            const { dir } = await prompts([
+                {
+                    type: "text",
+                    name: "dir",
+                    message: "Where are your components located?",
+                    initial: "./src/components/ui",
+                },
+            ])
 
             const spinner2 = ora(`Removing components...`).start()
 
             // Delete directory if it exists.
-            const componentDir = path.resolve(componentDestination)
+            const componentDir = path.resolve(dir)
             if (existsSync(componentDir)) {
                 await fs.rm(componentDir, { recursive: true }) // ./src/components/ui
             }
@@ -302,10 +309,12 @@ async function main() {
                 // Get dependencies that are used by the components we will remove
                 let dependenciesToRemove = _.intersection(installedComponentDependencies, selectedComponentDependencies)
 
+                // Unused dependencies, meaning dependencies ONLY used by the components we will remove
+                // This basically filters out dependencies that are used by other components
                 const dependencyCounts = _.countBy(installedComponentDependencies)
                 let unusedDependencies = _.filter(dependenciesToRemove, (dependency) => dependencyCounts[dependency] === 1)
 
-                // FIXME ONLY FOR TEST
+                // FIXME
                 unusedDependencies = unusedDependencies.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
 
                 if (unusedDependencies.length > 0) {
