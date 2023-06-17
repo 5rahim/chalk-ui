@@ -1,5 +1,12 @@
 # @rahimstack/chalk-ui
 
+## 0.3.0
+
+### Minor Changes
+
+- [`3ee61b7`](https://github.com/5rahim/chalk-ui/commit/3ee61b76a9268dcd31a1f616b5a962702170ba4a) Thanks [@5rahim](https://github.com/5rahim)! - "clean" will now ask for confirmation. "init" will install main dependencies after writing files. Catch errors when
+  installing dependencies.
+
 ## 0.2.0
 
 ### Minor Changes
