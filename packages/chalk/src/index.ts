@@ -10,7 +10,7 @@ import { getComponentDependencyListFromPackage, getPackageInfo, getPackageManage
 import _ from "lodash"
 import { Command } from "commander"
 import { execa } from "execa"
-import { existsSync, mkdirSync, promises as fs, writeFileSync } from "fs"
+import { existsSync, promises as fs, writeFileSync } from "fs"
 import ora from "ora"
 import path from "path"
 import * as process from "process"
@@ -42,7 +42,9 @@ async function main() {
             // Create the "snapshot" directory if it doesn't exist
             const snapshotDir = path.resolve("snapshot")
             if (!existsSync(snapshotDir)) {
-                mkdirSync(snapshotDir)
+                // mkdirSync(snapshotDir)
+                logger.error("An error occurred.")
+                process.exit(0)
             }
 
             // Generate the timestamp for the snapshot file name
@@ -73,8 +75,11 @@ async function main() {
             // Get only component dependencies that are installed in the project
             let deps = getComponentDependencyListFromPackage()
 
-            // FIXME
-            deps = deps.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
+
+            // DEVNOTE - Dev only
+            if (packageInfo.name === "@rahimstack/chalk-ui") {
+                deps = deps.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
+            }
 
             if (deps.length > 0) {
                 await execa(packageManager, [
@@ -104,6 +109,8 @@ async function main() {
             }
 
             spinner2.succeed()
+
+            logger.success("\nProject cleaned.")
 
         })
 
@@ -191,10 +198,20 @@ async function main() {
 
             const dependenciesToInstall = await script_addComponents({ components: selectedComponents, projectInfo, componentDestination })
 
-            // Install main dependencies.
-            await script_installDependencies(mainDependencies)
 
-            await script_installDependencies(dependenciesToInstall)
+            const { willInstall } = await prompts({
+                type: "confirm",
+                name: "willInstall",
+                message: "Do you want to automatically install the dependencies?",
+                initial: true,
+            })
+
+            // Install main dependencies
+            await script_installDependencies(mainDependencies, willInstall)
+            // Install component dependencies
+            await script_installDependencies(dependenciesToInstall, willInstall)
+
+            logger.success("\nInstallation complete.")
 
         })
 
@@ -203,7 +220,7 @@ async function main() {
         .description("Add UI components")
         .argument("[components...]", "name of components")
         .action(async (components: string[]) => {
-            logger.warn("Running the following command will overwrite existing files.")
+            logger.warn("Run the 'init' command first if you haven't.")
             logger.warn("Make sure you have committed your changes before proceeding.")
             logger.warn("")
 
@@ -211,7 +228,7 @@ async function main() {
                 {
                     type: "text",
                     name: "dir",
-                    message: "[Checking installed components] Where are your components located?",
+                    message: "Where are your components located?",
                     initial: "./src/components/ui",
                 },
             ])
@@ -238,7 +255,6 @@ async function main() {
                 process.exit(0)
             }
 
-            logger.warn("Run the 'init' command first if you haven't. Add components in the same folder where the core directory is located.")
             logger.warn("")
 
             logger.success(`Writing components...`)
@@ -246,8 +262,15 @@ async function main() {
             // 5. Write components
             const dependenciesToInstall = await script_addComponents({ components: selectedComponents, projectInfo, componentDestination: dir })
 
+            const { willInstall } = await prompts({
+                type: "confirm",
+                name: "willInstall",
+                message: "Do you want to automatically install the dependencies?",
+                initial: true,
+            })
+
             // 6. Install dependencies
-            await script_installDependencies(dependenciesToInstall)
+            await script_installDependencies(dependenciesToInstall, willInstall)
 
         })
 
@@ -314,8 +337,10 @@ async function main() {
                 const dependencyCounts = _.countBy(installedComponentDependencies)
                 let unusedDependencies = _.filter(dependenciesToRemove, (dependency) => dependencyCounts[dependency] === 1)
 
-                // FIXME
-                unusedDependencies = unusedDependencies.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
+                // DEVNOTE - Dev only
+                if (packageInfo.name === "@rahimstack/chalk-ui") {
+                    unusedDependencies = unusedDependencies.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
+                }
 
                 if (unusedDependencies.length > 0) {
                     await execa(packageManager, [

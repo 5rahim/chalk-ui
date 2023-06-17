@@ -12,9 +12,14 @@
   },
   "dependencies": {
     "@rahimstack/tailwind-utils": "^0.3.0",
+    "class-variance-authority": "0.6.0",
+    "clsx": "1.2.1",
     "lodash": "4.17.21",
     "react": "^18.2.0",
+    "react-aria": "3.24.0",
     "react-dom": "^18.2.0",
+    "tailwind-merge": "1.13.1",
+    "tailwindcss-animate": "^1.0.6",
     "ui": "workspace:*"
   },
   "devDependencies": {
