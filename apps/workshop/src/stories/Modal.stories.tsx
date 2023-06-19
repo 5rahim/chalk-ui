@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "react"
-import { Button, Modal } from "ui"
+import { Modal } from "../components/ui/modal"
+import { Button } from "../components/ui/button"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
@@ -10,12 +11,23 @@ const meta = {
 
       return <>
          <Button onClick={() => setOpen(true)}>Open</Button>
-         <Modal isOpen={open} onClose={() => setOpen(false)} {...args} />
+         <Modal {...args} isOpen={open} onClose={() => setOpen(false)}/>
       </>
    },
    args: {
       title: "Modal title",
       children: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur debitis labore quae quas sequi tempora vel voluptas. Dolore, enim ex harum labore molestiae nam nesciunt qui totam ullam voluptatibus voluptatum?",
+      size: "md",
+      className: "",
+      panelClassName: "",
+      titleClassName: "",
+      closeButtonClassName: "",
+      outsideContainerClassName: "",
+      bodyClassName: "",
+      overlayClassName: "",
+      isClosable: true,
+      mobilePlacement: "bottom",
+      closeButtonIntent: "gray-outline",
    },
    tags: ["autodocs"],
 } satisfies Meta<typeof Modal>
@@ -23,12 +35,6 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>;
 
-export const Base: Story = {
+export const Base: any = {
    args: {},
-}
-
-export const isClosable: Story = {
-    args: {
-        isClosable: true,
-    },
 }

@@ -32,8 +32,8 @@ function addCommentToContent(content: string, filename: string, date: string): s
 }
 
 export function createJSONSnapshot(): DirectoryData[] {
-    const srcPath = path.resolve("../../apps/web/src/components/ui")
-    const packageJsonPath = path.resolve("../../apps/web/package.json")
+    const srcPath = path.resolve("../../apps/workshop/src/components/ui")
+    const packageJsonPath = path.resolve("../../apps/workshop/package.json")
 
     const packageJsonContent = readFileSync(packageJsonPath, "utf-8")
 

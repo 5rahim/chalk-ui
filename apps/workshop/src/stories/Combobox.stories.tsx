@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { Combobox } from "ui"
+import { Combobox } from "../components/ui/combobox"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
@@ -19,12 +19,6 @@ const meta = {
          { value: "3", label: "Option 3" },
          { value: "4", label: "Option 4" },
       ],
-   },
-   argTypes: {
-      returnValueOrLabel: {
-         options: ["label", "value"],
-         type: "radio",
-      },
    },
 } satisfies Meta<typeof Combobox>
 

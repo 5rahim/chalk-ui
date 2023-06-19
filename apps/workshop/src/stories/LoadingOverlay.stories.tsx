@@ -1,5 +1,5 @@
 import type { Args, Meta, StoryObj } from "@storybook/react"
-import { LoadingOverlay } from "ui"
+import { LoadingOverlay } from "../components/ui/loading-spinner"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {

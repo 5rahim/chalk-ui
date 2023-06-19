@@ -1,0 +1,45 @@
+import { Meta } from '@storybook/blocks';
+import { APIButton } from "../components/APIButton";
+import * as Stories from '../stories/Combobox.stories';
+
+<Meta of={Stories} name="Info"/>
+
+# Combobox
+
+An input widget with an associated popup that enables users to select a value from a collection of possible values or enter custom values.
+
+## Installation
+
+In order to install the component, run the following command:
+
+```shell
+npx @rahimstack/chalk-ui add combobox
+```
+
+## Reference
+
+Knowing the dependencies can help you customize or extend the component with additional functionality.
+
+<APIButton href={"https://zagjs.com/components/react/combobox#usage"}>Zag</APIButton>
+
+## Usage
+
+### options
+
+- The `options` prop expects an array of objects, where each object has a `value` and an optional `label` property.
+- The `value` property represents the actual value of the option, while the `label` property represents the text to display in the dropdown.
+- If the `label` property is not provided, the `value` will be used as the label.
+
+### returnValueOrLabel
+
+By default, the `returnValueOrLabel` prop is set to "value," meaning the selected value is returned in the `onChange` callback.
+However, you can change it to "label" to receive the selected label instead.
+
+Returning the "label" instead of the "value" provides flexibility in certain scenarios where the selected value might not be needed.
+For example, it might be useful when you want to allow:
+- Custom values (address input, autocomplete, ...)
+
+
+## Family
+
+This component also uses `BasicField`, `Input`.

@@ -1,4 +1,4 @@
-import { Checkbox } from "ui"
+import { Checkbox } from "../components/ui/checkbox"
 import type { Meta, StoryObj } from "@storybook/react"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -22,12 +22,6 @@ export const Base: Story = {
 export const Disabled: Story = {
    args: {
       isDisabled: true,
-   },
-}
-
-export const Small: Story = {
-   args: {
-      size: "sm",
    },
 }
 

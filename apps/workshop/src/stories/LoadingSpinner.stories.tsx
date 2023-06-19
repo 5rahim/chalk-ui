@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { LoadingSpinner } from "ui"
+import { LoadingSpinner } from "../components/ui/loading-spinner"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {

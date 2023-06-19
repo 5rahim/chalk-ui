@@ -1,0 +1,18 @@
+{
+  "filters": {
+    "fr": "Filtres",
+    "en": "Filters"
+  },
+  "no-matching-result": {
+    "fr": "Aucun résultat ne correspond aux filtres",
+    "en": "No matching results"
+  },
+  "remove-filters": {
+    "fr": "Retirer les filtres",
+    "en": "Remove all filters"
+  },
+  "page": {
+    "fr": "Page",
+    "en": "Page"
+  }
+}

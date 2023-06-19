@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { PriceInput } from "ui"
+import { PriceInput } from "../components/ui/price-input"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {

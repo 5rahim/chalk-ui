@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { Button } from "ui"
+import { Button } from "../components/ui/button"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
@@ -55,28 +55,28 @@ export const Colors: Story = {
          <Button intent="primary-subtle">Button</Button>
          <Button intent="primary-outline">Button</Button>
          <Button intent="primary-link">Button</Button>
-         
-         <Button intent="alert">Button</Button>
+
+          <Button intent="alert">Button</Button>
          <Button intent="alert-subtle">Button</Button>
          <Button intent="alert-outline">Button</Button>
          <Button intent="alert-link">Button</Button>
-         
-         <Button intent="success">Button</Button>
+
+          <Button intent="success">Button</Button>
          <Button intent="success-subtle">Button</Button>
          <Button intent="success-outline">Button</Button>
          <Button intent="success-link">Button</Button>
-         
-         <Button intent="warning">Button</Button>
+
+          <Button intent="warning">Button</Button>
          <Button intent="warning-subtle">Button</Button>
          <Button intent="warning-outline">Button</Button>
          <Button intent="warning-link">Button</Button>
-         
-         <Button intent="gray">Button</Button>
+
+          <Button intent="gray">Button</Button>
          <Button intent="gray-subtle">Button</Button>
          <Button intent="gray-outline">Button</Button>
          <Button intent="gray-link">Button</Button>
-         
-         <Button intent="white">Button</Button>
+
+          <Button intent="white">Button</Button>
          <Button intent="white-subtle">Button</Button>
          <Button intent="white-outline">Button</Button>
          <Button intent="white-link">Button</Button>

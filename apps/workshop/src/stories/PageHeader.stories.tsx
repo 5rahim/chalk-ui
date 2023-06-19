@@ -1,5 +1,7 @@
-import { PageHeader, Avatar, Button } from "ui"
+import { PageHeader } from "../components/ui/page-header"
 import type { Meta, StoryObj } from "@storybook/react"
+import { Button } from "../components/ui/button"
+import { Avatar } from "../components/ui/avatar"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {

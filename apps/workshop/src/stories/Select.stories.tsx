@@ -1,4 +1,4 @@
-import { Select } from "ui"
+import { Select } from "../components/ui/select"
 import type { Meta, StoryObj } from "@storybook/react"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction

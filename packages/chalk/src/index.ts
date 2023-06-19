@@ -129,7 +129,7 @@ async function main() {
                 const { proceed } = await prompts({
                     type: "confirm",
                     name: "proceed",
-                    message: "Running this command will install dependencies and overwrite your existing tailwind.config.js. Proceed?",
+                    message: "Running this command will overwrite your existing tailwind.config.js and globals.css files. Proceed?",
                     initial: true,
                 })
 

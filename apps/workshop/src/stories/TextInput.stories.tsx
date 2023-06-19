@@ -1,4 +1,4 @@
-import { TextInput } from "ui"
+import { TextInput } from "../components/ui/text-input"
 import type { Meta, StoryObj } from "@storybook/react"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -17,20 +17,6 @@ const meta = {
       isRequired: false,
       leftIcon: undefined,
       rightIcon: undefined,
-   },
-   argTypes: {
-      size: {
-         options: ["sm", "md", "lg"],
-         control: { type: "radio" },
-      },
-      leftIcon: {
-         options: [undefined, <span>@</span>],
-         type: "radio",
-      },
-      rightIcon: {
-         options: [undefined, <span>@</span>],
-         type: "radio",
-      },
    },
 } satisfies Meta<typeof TextInput>
 

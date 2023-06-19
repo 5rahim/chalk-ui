@@ -1,10 +1,13 @@
 import { UIProvider } from "ui"
 import type { Preview } from "@storybook/react"
-import "../src/globals.css" // replace with the name of your tailwind css file
-import "../src/styles.css" // replace with the name of your tailwind css file
+import "../src/styles/globals.css"
+import "../src/styles.css"
+import { withThemeByDataAttribute } from "@storybook/addon-styling"
+
 const withUI = (StoryFn: Function) => {
    return (
        <UIProvider>
+          aaa
           <StoryFn/>
        </UIProvider>
    )
@@ -19,6 +22,11 @@ const preview: Preview = {
             date: /Date$/,
          },
       },
+      docs: {
+         story: {
+            inline: true
+         }
+      },
    },
 }
 
@@ -26,15 +34,16 @@ export default preview
 
 export const decorators = [
    withUI,
-   // withThemeByDataAttribute({
-   //    themes: {
-   //       dark: 'dark',
-   //    },
-   //    defaultTheme: 'light',
-   //    attributeName: 'data-mode',
-   // }),
+   withThemeByDataAttribute({
+      themes: {
+         light: "light",
+         dark: "dark",
+      },
+      defaultTheme: "light",
+      attributeName: "data-mode",
+   }),
 ]
 
 export const globalTypes = {
-   darkMode: true,
+   // darkMode: true,
 }
