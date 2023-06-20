@@ -164,7 +164,7 @@ NavbarNavigation.displayName = "NavbarNavigation"
 _Navbar.Layout = NavbarLayout
 _Navbar.Navigation = NavbarNavigation
 
-export const Navbar = createPolymorphicComponent<"div", NavbarProps, {
+export const Navbar = createPolymorphicComponent<"nav", NavbarProps, {
     Layout: typeof NavbarLayout
     Navigation: typeof NavbarNavigation
 }>(_Navbar)

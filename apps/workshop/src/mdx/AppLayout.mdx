@@ -1,0 +1,206 @@
+{/* AppLayout.mdx  */}
+
+
+import { Meta } from '@storybook/blocks';
+import * as Stories from '../stories/AppLayout.stories';
+
+<Meta
+    of={Stories}
+/>
+
+# AppLayout
+
+Overall layout of a page.
+
+## Installation
+
+In order to install the component, run the following command:
+
+```shell
+npx @rahimstack/chalk-ui add app-layout
+```
+
+## Stacked
+
+```tsx
+import { AppLayout } from '@/components/ui/app-layout'
+import { Navbar } from '@/components/ui/navbar'
+import { HorizontalNav } from '@/components/ui/horizontal-nav'
+import { DropdownMenu } from '@/components/ui/dropdown-menu'
+import { Card } from '@/components/ui/card'
+import { Avatar, AvatarShowcase } from '@/components/ui/avatar'
+
+const Layout = () => {
+    return (
+        <AppLayout>
+            <AppLayout.Header>
+                <Navbar>
+                    <Navbar.Layout>
+                        <Navbar.Navigation>
+                            <div className="font-black uppercase">Logo</div>
+                            <HorizontalNav
+                                switchToDrawerBelow="lg"
+                                items={[]}
+                            />
+                        </Navbar.Navigation>
+                        <DropdownMenu
+                            trigger={<AvatarShowcase
+                                avatar={<Avatar size="xs"/>}
+                                name="John Doe"
+                                className="cursor-pointer p-1 sm:pr-3 rounded-full hover:bg-[--highlight]"
+                                nameClassName="text-sm font-semibold text-[--muted] group-hover:text-[--text-color]"
+                                detailsContainerClassName="hidden sm:block"
+                            />}
+                            mobilePlacement={"top"}
+                        >
+                            <DropdownMenu.Item>My account</DropdownMenu.Item>
+                            <DropdownMenu.Item>Sign out</DropdownMenu.Item>
+                        </DropdownMenu>
+                    </Navbar.Layout>
+                </Navbar>
+            </AppLayout.Header>
+            <AppLayout.Content>
+                <div className="container max-w-7xl py-5">
+                    <Card>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi at consequatur debitis ea eum laudantium libero nihil
+                        quasi quidem quis, recusandae ullam ut vero! Consequuntur id minima natus quo voluptas.
+                    </Card>
+                </div>
+            </AppLayout.Content>
+            <AppLayout.Footer className="text-center font-medium text-[--muted] pb-10">
+                Made with ❤️ by 5rahim
+            </AppLayout.Footer>
+        </AppLayout>
+    )
+}
+```
+
+### Sidebar
+
+
+```tsx
+import { AppLayout, AppSidebarProvider, AppSidebar, AppSidebarTrigger } from '@/components/ui/app-layout'
+import { VerticalNav } from '@/components/ui/vertical-nav'
+import { Card } from '@/components/ui/card'
+import { Stats } from '@/components/ui/stats'
+import { Tooltip } from '@/components/ui/tooltip'
+import { TextInput } from '@/components/ui/text-input'
+import { PageHeader } from '@/components/ui/page-header'
+import { NavigationTabs } from '@/components/ui/navigation-tabs'
+
+const Layout = () => {
+    return (
+        <AppSidebarProvider>
+            <AppLayout withSidebar sidebarSize="md">
+                <AppLayout.Sidebar>
+                    <AppSidebar className="p-4">
+                        <div className="tracking-tighter font-[900] text-2xl mb-4">LOGO</div>
+                        <VerticalNav items={[]}/>
+                    </AppSidebar>
+                </AppLayout.Sidebar>
+                <AppLayout>
+                    <AppLayout.Header>
+                        <div className="w-full h-16 border-b border-[--border] flex items-center bg-[--paper] px-2">
+                            <AppSidebarTrigger/>
+                            <TextInput
+                                className="shadow-none border-none focus:border-none focus:ring-0"
+                                placeholder="Search..."
+                                leftIcon={<BiSearch className={"w-5 h-5 text-[--muted]"}/>}
+                            />
+                        </div>
+
+                        <NavigationTabs
+                            navClassName={"border-b border-[--border]"}
+                            items={[
+                                { name: "My Account", href: "#", isCurrent: false },
+                                { name: "Company", href: "#", isCurrent: false },
+                                { name: "Team Members", href: "#", isCurrent: true },
+                                { name: "Billing", href: "#", isCurrent: false },
+                            ]}
+                        />
+
+                        <PageHeader
+                            className="p-4 border-b border-[--border]"
+                            title="Dashboard"
+                            size="lg"
+                            action={<Button>Action</Button>}
+                        />
+                    </AppLayout.Header>
+                    <AppLayout.Content>
+
+                        <Stats
+                            items={[
+                                {
+                                    name: "Total Subscribers",
+                                    value: "71,897",
+                                    unit: "from 70,946",
+                                    change: "12%",
+                                    trend: "up",
+                                    icon: <BiGroup/>
+                                },
+                                { name: "Avg. Open Rate", value: "58.16%", unit: "from 56.14%", change: "2.02%", trend: "up" },
+                                { name: "Avg. Click Rate", value: "24.57%" },
+                            ]}
+                            className="border-b border-[--border]"
+                        />
+
+                        <div className="container max-w-full p-4">
+
+                            <AppLayout.Stack>
+                                <AppLayout.Grid cols={5}>
+                                    <div className="col-span-1">
+                                        <h4>Grid</h4>
+                                        <p className="text-sm text-[--muted]">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    </div>
+                                    <div className="col-span-4">
+                                        <Card>
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis
+                                            deserunt
+                                            distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero
+                                            voluptas!
+                                        </Card>
+                                    </div>
+                                </AppLayout.Grid>
+
+                                <AppLayout.Grid breakBelow="lg">
+                                    <div className="col-span-2">
+                                        <Card>
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis
+                                            deserunt
+                                            distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero
+                                            voluptas!
+                                        </Card>
+                                    </div>
+                                    <div className="col-span-1 basis-[40rem]">
+                                        <Card>
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis
+                                            deserunt
+                                            distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero
+                                            voluptas!
+                                        </Card>
+                                    </div>
+                                </AppLayout.Grid>
+
+
+                                <div className="flex items-center gap-2">
+                                    <h4>Performance History</h4>
+                                    <Tooltip trigger={<BiInfoCircle className="w-5 h-5 text-[--blue]"/>}>
+                                        Shows the trends
+                                    </Tooltip>
+                                </div>
+
+                                <DemoLineChart/>
+
+                            </AppLayout.Stack>
+
+                        </div>
+                    </AppLayout.Content>
+                    <AppLayout.Footer className="text-center font-medium text-[--muted] pb-10">
+                        &copy; 2023 5rahim
+                    </AppLayout.Footer>
+                </AppLayout>
+            </AppLayout>
+        </AppSidebarProvider>
+    )
+}
+```

@@ -33,8 +33,8 @@ export const ModalAnatomy = defineStyleAnatomy({
         },
     }),
     body: cva("UI-Modal__body mt-2"),
-    overlay: cva([
-        "UI-Modal__overlay",
+    backdrop: cva([
+        "UI-Modal__backdrop",
         "fixed inset-0 bg-black bg-opacity-25 dark:bg-opacity-70"
     ]),
     outsideContainer: cva([
@@ -86,7 +86,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>((props, ref) =
         closeButtonClassName,
         outsideContainerClassName,
         bodyClassName,
-        overlayClassName,
+        backdropClassName,
         isClosable,
         mobilePlacement,
         closeButtonIntent = "gray-outline",
@@ -106,7 +106,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>((props, ref) =
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <div className={cn(ModalAnatomy.overlay(), overlayClassName)}/>
+                        <div className={cn(ModalAnatomy.backdrop(), backdropClassName)}/>
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-y-auto">

@@ -20,19 +20,19 @@ export const HorizontalNavAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-HorizontalNav__item",
-        "group inline-flex items-center h-full select-none rounded-[--radius] p-3 leading-none no-underline outline-none transition-colors",
+        "group/item inline-flex items-center h-full select-none rounded-[--radius] p-3 leading-none no-underline outline-none transition-colors",
         "text-[--muted] hover:bg-[--highlight] hover:text-[--text-color] focus:bg-[--highlight]",
-        "data-[current=true]:text-[--brand]",
+        "data-[selected=true]:text-[--brand]",
         "text-sm font-[600] leading-none"
     ]),
     icon: cva([
         "UI-VerticalNav__icon",
         "flex-shrink-0 -ml-1 mr-3 h-6 w-6",
-        "text-[--muted] group-hover:text-[--text-color] data-[current=true]:text-[--brand] data-[current=true]:group-hover:text-[--brand]"
+        "text-[--muted] group-hover/item:text-[--text-color] data-[selected=true]:text-[--brand] data-[selected=true]:group-hover/item:text-[--brand]"
     ]),
     parentItemChevron: cva([
         "UI-VerticalNav__parentItemChevron",
-        "ml-2 w-4 h-4 transition-transform duration-200 group-hover:rotate-180",
+        "ml-2 w-4 h-4 transition-transform duration-200 group-hover/item:rotate-180",
     ]),
     desktopList: cva([
         "UI-VerticalNav__desktopList",
@@ -103,7 +103,7 @@ export interface HorizontalNavProps extends ComponentWithAnatomy<typeof Horizont
     drawerContent?: React.ReactNode
 }
 
-export const HorizontalNav: React.FC<HorizontalNavProps> = React.forwardRef<HTMLDivElement, HorizontalNavProps>((props, ref) => {
+export const HorizontalNav = React.forwardRef<HTMLDivElement, HorizontalNavProps>((props, ref) => {
 
     const {
         children,
@@ -130,7 +130,7 @@ export const HorizontalNav: React.FC<HorizontalNavProps> = React.forwardRef<HTML
             iconClassName,
         )}
         aria-hidden="true"
-        data-current={item.isCurrent}
+        data-selected={item.isCurrent}
     /> : null
 
     return (
@@ -190,9 +190,10 @@ export const HorizontalNav: React.FC<HorizontalNavProps> = React.forwardRef<HTML
                             <NavigationMenuPrimitive.Item key={item.name}>
                                 <NavigationMenuPrimitive.Trigger
                                     className={cn(
-                                        HorizontalNavAnatomy.item()
+                                        HorizontalNavAnatomy.item(),
+                                        itemClassName
                                     )}
-                                    data-current={item.isCurrent}
+                                    data-selected={item.isCurrent}
                                 >
                                     <Icon item={item}/>
                                     <span className="flex-none">{item.name}</span>
@@ -225,9 +226,10 @@ export const HorizontalNav: React.FC<HorizontalNavProps> = React.forwardRef<HTML
                                     <a
                                         href={item.href ?? "#"}
                                         className={cn(
-                                            HorizontalNavAnatomy.item()
+                                            HorizontalNavAnatomy.item(),
+                                            itemClassName
                                         )}
-                                        data-current={item.isCurrent}
+                                        data-selected={item.isCurrent}
                                     >
                                         <Icon item={item}/>
                                         <span className="flex-none">{item.name}</span>

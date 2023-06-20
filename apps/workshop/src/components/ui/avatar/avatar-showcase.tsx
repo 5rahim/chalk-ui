@@ -4,7 +4,7 @@ import React from "react"
 import { AvatarProps } from "."
 
 export const AvatarShowcaseAnatomy = defineStyleAnatomy({
-    container: cva("UI-AvatarShowcase__container group flex items-center"),
+    container: cva("UI-AvatarShowcase__container group/container flex items-center"),
     name: cva("UI-AvatarShowcase__name font-medium text-base text-[--text-color] tracking-tight"),
     description: cva("UI-AvatarShowcase__description block text-sm text-[--muted]"),
     detailsContainer: cva("UI-AvatarShowcase__detailsContainer ml-3"),

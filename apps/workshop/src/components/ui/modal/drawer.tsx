@@ -25,6 +25,10 @@ export const DrawerAnatomy = defineStyleAnatomy({
         "UI-Drawer__container",
         "flex h-full flex-col overflow-y-auto bg-[--paper] shadow-xl"
     ]),
+    backdrop: cva([
+        "UI-Drawer__backdrop",
+        "fixed inset-0 bg-black bg-opacity-70 transition-opacity"
+    ]),
     body: cva([
         "UI-Drawer__body",
         "relative flex-1 pl-4 pr-4 pb-4 sm:pl-6 sm:pr-6 sm:pb-6"
@@ -64,6 +68,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
         onClose,
         title,
         closeButtonClassName,
+        backdropClassName,
         panelClassName,
         titleClassName,
         headerClassName,
@@ -132,7 +137,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <div className="fixed inset-0 bg-black bg-opacity-70 transition-opacity"/>
+                        <div className={cn(DrawerAnatomy.backdrop(), backdropClassName)}/>
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-hidden">

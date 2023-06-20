@@ -58,7 +58,7 @@ export interface VerticalNavProps extends React.ComponentPropsWithRef<"div">, Co
     }[]
 }
 
-export const VerticalNav: React.FC<VerticalNavProps> = React.forwardRef<HTMLDivElement, VerticalNavProps>((props, ref) => {
+export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((props, ref) => {
 
     const {
         children,
