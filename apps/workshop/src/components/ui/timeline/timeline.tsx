@@ -63,7 +63,7 @@ export interface TimelineProps extends React.ComponentPropsWithRef<"div">, Compo
     }[]
 }
 
-export const Timeline: React.FC<TimelineProps> = React.forwardRef<HTMLDivElement, TimelineProps>((props, ref) => {
+export const Timeline = React.forwardRef<HTMLDivElement, TimelineProps>((props, ref) => {
 
     const {
         children,

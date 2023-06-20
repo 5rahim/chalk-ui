@@ -18,7 +18,6 @@ const meta = {
     },
 } satisfies Meta<TimelineProps>
 
-
 export default meta
 type Story = StoryObj<TimelineProps>;
 
