@@ -37,8 +37,6 @@
     "@zag-js/react": "^0.7.0",
     "date-fns": "^2.30.0",
     "dinero.js": "^1.9.1",
-    "jotai": "^2.1.0",
-    "jotai-immer": "^0.2.0",
     "libphonenumber-js": "^1.10.30",
     "lodash": "^4.17.21",
     "react-aria": "^3.24.0",

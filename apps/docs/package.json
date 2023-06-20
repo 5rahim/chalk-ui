@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "@rahimstack/tailwind-utils": "^0.3.0",
-    "jotai": "^2.1.0",
-    "jotai-immer": "^0.2.0",
     "lodash": "4.17.21",
     "next": "^13.4.2",
     "nextra": "^2.5.1",

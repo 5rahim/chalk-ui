@@ -38,12 +38,6 @@ importers:
       '@rahimstack/tailwind-utils':
         specifier: ^0.3.0
         version: 0.3.0(postcss@8.4.23)(typescript@5.0.4)
-      jotai:
-        specifier: ^2.1.0
-        version: 2.1.0(react@18.2.0)
-      jotai-immer:
-        specifier: ^0.2.0
-        version: 0.2.0(immer@10.0.2)(jotai@2.1.0)(react@18.2.0)
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -540,12 +534,6 @@ importers:
       dinero.js:
         specifier: ^1.9.1
         version: 1.9.1
-      jotai:
-        specifier: ^2.1.0
-        version: 2.1.0(react@18.2.0)
-      jotai-immer:
-        specifier: ^0.2.0
-        version: 0.2.0(immer@10.0.2)(jotai@2.1.0)(react@18.2.0)
       libphonenumber-js:
         specifier: ^1.10.30
         version: 1.10.30
@@ -10800,10 +10788,6 @@ packages:
     dev: true
     optional: true
 
-  /immer@10.0.2:
-    resolution: {integrity: sha512-Rx3CqeqQ19sxUtYV9CU911Vhy8/721wRFnJv3REVGWUmoAcIwzifTsdmJte/MV+0/XpM35LZdQMBGkRIoLPwQA==}
-    dev: false
-
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -11344,30 +11328,6 @@ packages:
   /jiti@1.18.2:
     resolution: {integrity: sha512-QAdOptna2NYiSSpv0O/BwoHBSmz4YhpzJHyi+fnMRTXFjp7B8i/YG5Z8IfusxB1ufjcD2Sre1F3R+nX3fvy7gg==}
     hasBin: true
-
-  /jotai-immer@0.2.0(immer@10.0.2)(jotai@2.1.0)(react@18.2.0):
-    resolution: {integrity: sha512-hahK8EPiROS9RoNWmX/Z8rY9WkAijspX4BZ1O7umpcwI4kPNkbcCpu/PhiQ8FMcpEcF6KmbpbMpSSj/GFmo8NA==}
-    peerDependencies:
-      immer: '*'
-      jotai: '>=1.11.0'
-      react: '>=17.0.0'
-    dependencies:
-      immer: 10.0.2
-      jotai: 2.1.0(react@18.2.0)
-      react: 18.2.0
-    dev: false
-
-  /jotai@2.1.0(react@18.2.0):
-    resolution: {integrity: sha512-fR82PtHAmEQrc/daMEYGc4EteW96/b6wodtDSCzLvoJA/6y4YG70er4hh2f8CYwYjqwQ0eZUModGfG4DmwkTyQ==}
-    engines: {node: '>=12.20.0'}
-    peerDependencies:
-      react: '>=17.0.0'
-    peerDependenciesMeta:
-      react:
-        optional: true
-    dependencies:
-      react: 18.2.0
-    dev: false
 
   /joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
