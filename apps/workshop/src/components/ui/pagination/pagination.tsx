@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { cn, ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy, getChildDisplayName } from "../core"
 import { cva } from "class-variance-authority"
 
 /* -------------------------------------------------------------------------------------------------
@@ -15,9 +15,9 @@ export const PaginationAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-Pagination__item",
-        "bg-transparent dark:bg-transparent text-md inline-flex h-10 w-10 items-center justify-center rounded border border-[--border] cursor-pointer",
-        "hover:bg-[--highlight] hover:border-[--highlight] select-none",
-        "data-selected:bg-brand-500 data-selected:border-transparent data-selected:text-white data-selected:hover:bg-brand-500 data-selected:pointer-events-none",
+        "bg-transparent dark:bg-transparent text-base inline-flex h-8 w-8 items-center justify-center rounded border border-[--border] cursor-pointer",
+        "hover:bg-[--highlight] dark:hover:bg-[--highlight] hover:border-[--highlight] select-none",
+        "data-[selected=true]:bg-brand-500 data-[selected=true]:border-transparent data-[selected=true]:text-white data-[selected=true]:hover:bg-brand-500 data-[selected=true]:pointer-events-none",
         "data-[disabled=true]:opacity-50 data-[disabled=true]:pointer-events-none data-[disabled=true]:cursor-not-allowed",
         "outline-none ring-[--ring] focus-visible:ring-2"
     ]),
@@ -48,7 +48,7 @@ const _Pagination = (props: PaginationProps) => {
     } = props
 
     const itemsWithProps = React.useMemo(() => React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
+        if (React.isValidElement(child) && (getChildDisplayName(child) === "PaginationItem")) {
             return React.cloneElement(child, { itemClassName } as any)
         }
         return child
@@ -176,8 +176,8 @@ const PaginationEllipsis: React.FC<PaginationEllipsisProps> = React.forwardRef<H
 
     const {
         className,
-        itemClassName, // Ignore
         ellipsisClassName,
+        itemClassName, // Ignore
         ...rest
     } = props
 

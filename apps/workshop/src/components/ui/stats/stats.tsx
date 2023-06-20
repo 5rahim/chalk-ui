@@ -33,7 +33,7 @@ export const StatsAnatomy = defineStyleAnatomy({
     trend: cva([
         "UI-Stats__trend",
         "inline-flex items-baseline text-sm font-medium",
-        "data-[trend=up]:text-green-500 data-[trend=down]:text-red-500"
+        "data-[trend=up]:text-[--green] data-[trend=down]:text-[--red]"
     ]),
     icon: cva([
         "UI-Stats_icon",
@@ -47,7 +47,7 @@ export const StatsAnatomy = defineStyleAnatomy({
 
 export interface StatsProps extends React.ComponentPropsWithRef<"dl">, ComponentWithAnatomy<typeof StatsAnatomy> {
     children?: React.ReactNode,
-    values: {
+    items: {
         name: string,
         value: string | number,
         unit?: string | number,
@@ -57,7 +57,7 @@ export interface StatsProps extends React.ComponentPropsWithRef<"dl">, Component
     }[]
 }
 
-export const Stats: React.FC<StatsProps> = React.forwardRef<HTMLDListElement, StatsProps>((props, ref) => {
+export const Stats = React.forwardRef<HTMLDListElement, StatsProps>((props, ref) => {
 
     const {
         children,
@@ -69,7 +69,7 @@ export const Stats: React.FC<StatsProps> = React.forwardRef<HTMLDListElement, St
         trendClassName,
         iconClassName,
         className,
-        values,
+        items,
         ...rest
     } = props
 
@@ -81,7 +81,7 @@ export const Stats: React.FC<StatsProps> = React.forwardRef<HTMLDListElement, St
                 {...rest}
                 ref={ref}
             >
-                {values.map((item) => (
+                {items.map((item) => (
                     <div
                         key={item.name}
                         className={cn(StatsAnatomy.item(), itemClassName)}

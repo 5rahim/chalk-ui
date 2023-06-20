@@ -5,7 +5,7 @@ import { Avatar } from "../components/ui/avatar"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
-   title: "Components/Data Display/PageHeader",
+   title: "Components/Layout/PageHeader",
    component: PageHeader,
    tags: ["autodocs"],
    args: {
@@ -15,10 +15,6 @@ const meta = {
       size: "xl",
    },
    argTypes: {
-      action: {
-         options: [undefined, <Button intent="gray-outline">Action</Button>],
-         control: { type: "radio" },
-      },
       size: {
          options: ["sm", "md", "lg", "xl"],
          control: { type: "radio" },

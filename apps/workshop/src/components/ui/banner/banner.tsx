@@ -35,7 +35,7 @@ export interface BannerProps extends React.ComponentPropsWithRef<"div">, Compone
     closeButtonProps?: CloseButtonProps
 }
 
-export const Banner: React.FC<BannerProps> = React.forwardRef<HTMLDivElement, BannerProps>((props, ref) => {
+export const Banner = React.forwardRef<HTMLDivElement, BannerProps>((props, ref) => {
 
     const {
         children,

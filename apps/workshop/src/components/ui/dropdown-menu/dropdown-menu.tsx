@@ -1,7 +1,7 @@
 "use client"
 
 import React, { Fragment } from "react"
-import { cn, ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy, useMediaQuery } from "../core"
+import { cn, ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy, getChildDisplayName, useMediaQuery } from "../core"
 import { cva, VariantProps } from "class-variance-authority"
 import { Menu, Transition } from "@headlessui/react"
 import { Divider, DividerProps } from "../divider"
@@ -104,7 +104,11 @@ const _DropdownMenu = (props: DropdownMenuProps) => {
 
     // Pass `itemClassName` to every child
     const itemsWithProps = React.useMemo(() => React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
+        if (React.isValidElement(child) && (
+            getChildDisplayName(child) === "DropdownMenuItem" ||
+            getChildDisplayName(child) === "DropdownMenuGroup" ||
+            getChildDisplayName(child) === "DropdownMenuLink")
+        ) {
             return React.cloneElement(child, { itemClassName } as any)
         }
         return child
@@ -287,11 +291,11 @@ DropdownMenuGroup.displayName = "DropdownMenuGroup"
  * DropdownMenu.Divider
  * -----------------------------------------------------------------------------------------------*/
 
-interface DropdownMenuDivider extends DividerProps, ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
+interface DropdownMenuDivider extends DividerProps {
 }
 
 const DropdownMenuDivider: React.FC<DropdownMenuDivider> = React.forwardRef<HTMLHRElement, DropdownMenuDivider>(
-    ({ itemClassName, ...props }, ref) => {
+    (props, ref) => {
 
         return <Divider {...props} ref={ref}/>
 

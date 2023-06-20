@@ -14,7 +14,7 @@ export const TimelineAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-Timeline__item",
-        "flex"
+        "flex text-md"
     ]),
     leftSection: cva([
         "UI-Timeline__leftSection",
@@ -51,6 +51,7 @@ export interface TimelineProps extends React.ComponentPropsWithRef<"div">, Compo
     items?: {
         title: React.ReactNode
         description?: React.ReactNode
+        content?: React.ReactNode
         icon: React.ReactNode
         unstyledTitle?: boolean
         unstyledDescription?: boolean
@@ -120,6 +121,8 @@ export const Timeline: React.FC<TimelineProps> = React.forwardRef<HTMLDivElement
                         )}>
                             {item.description}
                         </p>}
+
+                        {item.content}
 
                     </div>
                 </div>

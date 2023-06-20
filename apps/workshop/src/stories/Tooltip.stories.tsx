@@ -8,7 +8,7 @@ const meta = {
     render: (args) => {
         return (
             <Tooltip trigger={
-                <span>Open tooltip</span>
+                <span>Hover this</span>
             }>
                 Lorem ipsum dolor sit amet
             </Tooltip>

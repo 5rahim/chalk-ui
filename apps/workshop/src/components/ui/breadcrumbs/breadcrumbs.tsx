@@ -16,7 +16,7 @@ export const BreadcrumbsAnatomy = defineStyleAnatomy({
     ]),
     list: cva([
         "UI-Breadcrumbs__list",
-        "flex items-center space-x-3"
+        "flex items-center space-x-2"
     ]),
     chevronIcon: cva([
         "UI-Breadcrumbs__chevronIcon",
@@ -24,6 +24,10 @@ export const BreadcrumbsAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-Breadcrumbs__item",
+        "flex items-center",
+    ]),
+    itemLink: cva([
+        "UI-Breadcrumbs__itemLink",
         "text-sm font-medium text-[--muted] hover:text-[--text-color]",
         "data-[current=true]:pointer-events-none data-[current=true]:font-semibold data-[current=true]:text-[--text-color]"
     ]),
@@ -43,8 +47,9 @@ export const BreadcrumbsAnatomy = defineStyleAnatomy({
 
 export interface BreadcrumbsProps extends React.ComponentPropsWithRef<"nav">, ComponentWithAnatomy<typeof BreadcrumbsAnatomy> {
     homeHref?: string
-    pages: { name: string, href: string | null | undefined, isCurrent: boolean }[]
+    items: { name: string, href: string | null | undefined, isCurrent: boolean }[]
     showHomeButton?: boolean
+    homeIcon?: React.ReactElement
 }
 
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = React.forwardRef<HTMLElement, BreadcrumbsProps>((props, ref) => {
@@ -54,13 +59,15 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = React.forwardRef<HTMLElem
         containerClassName,
         listClassName,
         itemClassName,
+        itemLinkClassName,
         chevronIconClassName,
         homeIconClassName,
         homeItemClassName,
         className,
-        pages,
+        items,
         homeHref = "/",
         showHomeButton = true,
+        homeIcon,
         ...rest
     } = props
 
@@ -80,18 +87,19 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = React.forwardRef<HTMLElem
                                     href={homeHref}
                                     className={cn(BreadcrumbsAnatomy.homeItem(), homeItemClassName)}
                                 >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
-                                         className={cn(BreadcrumbsAnatomy.homeIcon(), homeIconClassName)}>
-                                        <path strokeLinecap="round" strokeLinejoin="round"
-                                              d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
-                                    </svg>
+                                    {homeIcon ? homeIcon :
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
+                                             className={cn(BreadcrumbsAnatomy.homeIcon(), homeIconClassName)}>
+                                            <path strokeLinecap="round" strokeLinejoin="round"
+                                                  d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
+                                        </svg>}
                                 </a>
                             </div>
                         </li>
                     </ShowOnly>
-                    {pages.map((page, idx) => (
+                    {items.map((page, idx) => (
                         <li key={page.name}>
-                            <div className="flex items-center">
+                            <div className={cn(BreadcrumbsAnatomy.item(), itemClassName)}>
                                 <ShowOnly when={!showHomeButton && idx > 0 || showHomeButton}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                          stroke="currentColor"
@@ -103,7 +111,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = React.forwardRef<HTMLElem
                                 </ShowOnly>
                                 <a
                                     href={page.href ?? "#"}
-                                    className={cn(BreadcrumbsAnatomy.item(), itemClassName)}
+                                    className={cn(BreadcrumbsAnatomy.itemLink(), itemLinkClassName)}
                                     data-current={page.isCurrent}
                                     aria-current={page.isCurrent ? "page" : undefined}
                                 >

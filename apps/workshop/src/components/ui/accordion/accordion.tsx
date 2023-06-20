@@ -126,7 +126,7 @@ const AccordionItem: React.FC<AccordionItemProps> = (
     )
 }
 
-AccordionItem.displayName = "AccordionAccordionItem"
+AccordionItem.displayName = "AccordionItem"
 
 /* -------------------------------------------------------------------------------------------------
  * Component

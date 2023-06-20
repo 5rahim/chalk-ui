@@ -9,7 +9,7 @@ import { cva } from "class-variance-authority"
 export const NavigationTabsAnatomy = defineStyleAnatomy({
     nav: cva([
         "UI-NavigationTabs__nav",
-        "flex bg-[--paper] w-full overflow-hidden overflow-x-auto"
+        "flex w-full overflow-hidden overflow-x-auto"
     ]),
     tab: cva([
         "UI-NavigationTabs__tab",
@@ -38,7 +38,7 @@ export interface NavigationTabsProps extends React.ComponentPropsWithRef<"nav">,
     }[]
 }
 
-export const NavigationTabs: React.FC<NavigationTabsProps> = React.forwardRef<HTMLElement, NavigationTabsProps>((props, ref) => {
+export const NavigationTabs = React.forwardRef<HTMLElement, NavigationTabsProps>((props, ref) => {
 
     const {
         children,
@@ -83,4 +83,4 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = React.forwardRef<HT
 
 })
 
-NavigationTabs.displayName = "Tabs"
+NavigationTabs.displayName = "NavigationTabs"

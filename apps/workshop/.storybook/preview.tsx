@@ -7,7 +7,6 @@ import { withThemeByDataAttribute } from "@storybook/addon-styling"
 const withUI = (StoryFn: Function) => {
    return (
        <UIProvider>
-          aaa
           <StoryFn/>
        </UIProvider>
    )
@@ -30,6 +29,18 @@ const preview: Preview = {
    },
 }
 
+const withBg = ((story, context) => {
+
+   const styleContent = `.docs-story {
+    background-color: ${context?.globals?.theme === "light" ? "#fff" : "#121212"}
+  }`
+
+   return <>
+      <style>{styleContent}</style>
+      <>{story(context)}</>
+   </>
+})
+
 export default preview
 
 export const decorators = [
@@ -42,8 +53,25 @@ export const decorators = [
       defaultTheme: "light",
       attributeName: "data-mode",
    }),
+   withBg,
 ]
 
 export const globalTypes = {
    // darkMode: true,
+   // theme: {
+   //    name: 'Theme',
+   //    description: 'Global theme for components',
+   //    defaultValue: 'light',
+   //    toolbar: {
+   //       // The icon for the toolbar item
+   //       icon: 'circlehollow',
+   //       // Array of options
+   //       items: [
+   //          { value: 'light', icon: 'circlehollow', title: 'light' },
+   //          { value: 'dark', icon: 'circle', title: 'dark' },
+   //       ],
+   //       // Property that specifies if the name of the item will be displayed
+   //       showName: true,
+   //    },
+   // },
 }

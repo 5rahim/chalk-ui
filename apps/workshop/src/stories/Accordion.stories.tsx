@@ -29,13 +29,6 @@ const meta = {
         panelClassName: "",
         itemClassName: "",
     },
-    parameters: {
-        docs: {
-            source: {
-                code: null
-            }
-        }
-    }
 } satisfies Meta<typeof Accordion>
 
 

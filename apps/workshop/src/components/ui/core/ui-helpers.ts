@@ -54,3 +54,11 @@ export function createPolymorphicComponent<ComponentDefaultType,
 
     return component as PolymorphicComponent
 }
+
+/* -------------------------------------------------------------------------------------------------
+ * Display Name
+ * -----------------------------------------------------------------------------------------------*/
+
+export const getChildDisplayName = (child: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined) => {
+    return (child as any)?.type?.displayName as (string | undefined)
+}
