@@ -12,16 +12,16 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
-   args: {
-      children: "Badge",
-   },
+export const Basic: Story = {
+    args: {
+        children: "Badge",
+    },
 }
 export const Large: Story = {
-   args: {
-      size: "lg",
-      children: "Badge",
-   },
+    args: {
+        size: "lg",
+        children: "Badge",
+    },
 }
 
 export const XLarge: Story = {

@@ -47,7 +47,7 @@ const meta = {
 export default meta
 type Story = StoryObj<NavbarProps>;
 
-export const Primary: Story = {
+export const Basic: Story = {
     args: {}
 }
 

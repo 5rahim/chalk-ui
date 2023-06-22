@@ -1,0 +1,66 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta
+    title="CLI"
+/>
+
+# CLI
+
+## Init
+
+- This command will prompt you for the components you want to install.
+- It will add shared components.
+- It will automatically install dependencies or update package.json.
+- It will overwrite tailwind.config.js and globals.scss.
+
+
+Caveats:
+- Ideally, `init` should only be run once.
+- Ideally, you should have a `src` folder to avoid unforeseen bugs.
+- Note that it will not install Tailwind or add `UIProvider` to your project.
+
+```shell
+npx @rahimstack/chalk-ui init
+```
+
+Arguments:
+- `--all`: Install all components.
+
+## Add
+
+- This command will add the components you pass as argument.
+- It will add shared components.
+- It will not add a component that already exists.
+- It will install dependencies or update package.json.
+
+Caveats:
+- You should have run `init` first.
+
+```shell
+npx @rahimstack/chalk-ui add [...components]
+```
+
+## Remove
+
+- This command will remove the components you pass as argument.
+- It will only uninstall dependencies that are not used by any other component.
+
+Caveats:
+- It will not remove unused shared components.
+
+```shell
+npx @rahimstack/chalk-ui remove [...components]
+```
+
+
+## Clean
+
+- This command will remove all components and uninstall all used dependencies.
+
+Caveats:
+- This can uninstall dependencies that you use elsewhere.
+- It will not change tailwind.config.js or globals.scss
+
+```shell
+npx @rahimstack/chalk-ui clean
+```

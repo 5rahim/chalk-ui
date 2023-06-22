@@ -21,7 +21,7 @@ const meta = {
 export default meta
 type Story = StoryObj<TimelineProps>;
 
-export const Primary: Story = {
+export const Basic: Story = {
     args: {}
 }
 

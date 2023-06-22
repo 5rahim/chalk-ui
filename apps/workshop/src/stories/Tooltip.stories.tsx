@@ -21,6 +21,6 @@ const meta = {
 export default meta
 type Story = StoryObj<Omit<TooltipProps, "trigger">>;
 
-export const Primary: Story = {
+export const Basic: Story = {
     args: {}
 }

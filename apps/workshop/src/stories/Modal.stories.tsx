@@ -24,7 +24,7 @@ const meta = {
       closeButtonClassName: "",
       outsideContainerClassName: "",
       bodyClassName: "",
-      overlayClassName: "",
+      backdropClassName: "",
       isClosable: true,
       mobilePlacement: "bottom",
       closeButtonIntent: "gray-outline",
@@ -35,6 +35,6 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>;
 
-export const Base: any = {
+export const Basic: any = {
    args: {},
 }

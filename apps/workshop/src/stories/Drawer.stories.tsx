@@ -27,6 +27,7 @@ const meta = {
         headerClassName: "",
         bodyClassName: "",
         containerClassName: "",
+        backdropClassName: "",
         closeButtonIntent: "gray-outline",
     },
 } satisfies Meta<typeof Drawer>
@@ -34,7 +35,7 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>;
 
-export const Base: any = {
+export const Basic: any = {
     args: {},
 }
 

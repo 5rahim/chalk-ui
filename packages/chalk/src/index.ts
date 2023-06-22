@@ -1,5 +1,12 @@
 #!/usr/bin/env node
-import { Component, getAvailableComponents, getInstalledComponentDependencyList, script_addComponents } from "@/src/helpers/components"
+import {
+    Component,
+    getAvailableComponentDependencyListFromDir,
+    getAvailableComponents,
+    getInstalledComponents,
+    script_addComponents,
+    script_updateComponents
+} from "@/src/helpers/components"
 import { mainDependencies, script_installDependencies } from "@/src/helpers/dependencies"
 import { getProjectInfo } from "@/src/helpers/project"
 import { createJSONSnapshot } from "@/src/helpers/snapshot"
@@ -157,7 +164,7 @@ async function main() {
             // 4. Update tailwind config
             const tailwindDestination = "./tailwind.config.js"
             const tailwindSpinner = ora(`Updating tailwind.config.js...`).start()
-            await fs.writeFile(tailwindDestination, TAILWIND_CONFIG, "utf8")
+            await fs.writeFile(tailwindDestination, TAILWIND_CONFIG(projectInfo?.srcDir), "utf8")
             tailwindSpinner.succeed()
             // ----
 
@@ -293,7 +300,7 @@ async function main() {
 
             // Get available components
             const availableComponents = getAvailableComponents()
-            const installedComponentDependencies = await getInstalledComponentDependencyList(dir)
+            const installedComponentDependencies = await getAvailableComponentDependencyListFromDir(dir)
 
             if (!availableComponents?.length) {
                 logger.error("An error occurred while fetching components. Please try again.",)
@@ -364,6 +371,53 @@ async function main() {
             spinner.succeed()
 
             logger.success("Component(s) removed.")
+
+        })
+
+    program
+        .command("update")
+        .description("Update UI components")
+        .action(async () => {
+            logger.info("This command will update installed components without changing the styles.")
+            logger.warn("Make sure you have committed your changes before proceeding.")
+
+            const { dir } = await prompts([
+                {
+                    type: "text",
+                    name: "dir",
+                    message: "[Checking installed components] Where are your components located?",
+                    initial: "./src/components/ui",
+                },
+            ])
+
+            // Get available components
+            const availableComponents = getAvailableComponents()
+            const installedComponents = await getInstalledComponents(dir)
+
+            if (!availableComponents?.length) {
+                logger.error("An error occurred while fetching components. Please try again.",)
+                process.exit(0)
+            }
+
+            if (!installedComponents?.length) {
+                logger.error("No components found.")
+                process.exit(0)
+            }
+
+            const { proceed } = await prompts({
+                type: "confirm",
+                name: "proceed",
+                message: "Running this command will overwrite component files. It will not change the styles. Proceed?",
+                initial: false,
+            })
+
+            if (!proceed) process.exit(0)
+
+            const a = script_updateComponents(availableComponents, installedComponents).map(n => n.files)
+            // console.log(a)
+
+
+            logger.success("Component(s) updated.")
 
         })
 

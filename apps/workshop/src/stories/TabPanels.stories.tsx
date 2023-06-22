@@ -40,7 +40,7 @@ const meta = {
 export default meta
 type Story = StoryObj<TabPanelsProps>;
 
-export const Primary: Story = {
+export const Basic: Story = {
     args: {}
 }
 

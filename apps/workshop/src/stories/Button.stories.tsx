@@ -15,15 +15,15 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
-   args: {
-      children: "Button",
-   },
+export const Basic: Story = {
+    args: {
+        children: "Button",
+    },
 }
 export const Loading: Story = {
-   args: {
-      isLoading: true,
-   },
+    args: {
+        isLoading: true,
+    },
 }
 export const Disabled: Story = {
    args: {

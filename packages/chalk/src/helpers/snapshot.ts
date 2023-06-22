@@ -4,13 +4,13 @@ import * as process from "process"
 import { DependencyDef, mainDependencies } from "@/src/helpers/dependencies"
 import _ from "lodash"
 
-interface FileData {
+type FileData = {
     name: string;
     dir: string;
     content: string;
 }
 
-interface DirectoryData {
+type DirectoryData = {
     component: string
     files: FileData[]
     name: string
@@ -31,9 +31,9 @@ function addCommentToContent(content: string, filename: string, date: string): s
     return content
 }
 
-export function createJSONSnapshot(): DirectoryData[] {
-    const srcPath = path.resolve("../../apps/workshop/src/components/ui")
-    const packageJsonPath = path.resolve("../../apps/workshop/package.json")
+export function createJSONSnapshot(_srcPath?: string, _packageJsonPath?: string): DirectoryData[] {
+    const srcPath = _srcPath ?? path.resolve("../../apps/workshop/src/components/ui")
+    const packageJsonPath = _packageJsonPath ?? path.resolve("../../apps/workshop/package.json")
 
     const packageJsonContent = readFileSync(packageJsonPath, "utf-8")
 

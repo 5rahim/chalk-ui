@@ -123,14 +123,16 @@ h5 {
 // ------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------- //
 
-export const TAILWIND_CONFIG = `const {colors} = require("tailwindcss/colors")
+export const TAILWIND_CONFIG = (srcDir: boolean) => `const {colors} = require("tailwindcss/colors")
 const {fontFamily} = require("tailwindcss/defaultTheme")
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     darkMode: ['class'],
     content: [
-        "src/**/*.{js,ts,jsx,tsx}",
+        '${srcDir ? "./src/" : "./"}pages/**/*.{ts,tsx}',
+        '${srcDir ? "./src/" : "./"}components/**/*.{ts,tsx}',
+        '${srcDir ? "./src/" : "./"}app/**/*.{ts,tsx}',
     ],
     theme: {
         container: {
