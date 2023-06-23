@@ -378,43 +378,50 @@ async function main() {
         .command("update")
         .description("Update UI components")
         .action(async () => {
-            logger.info("This command will update installed components without changing the styles.")
-            logger.warn("Make sure you have committed your changes before proceeding.")
+            // logger.info("This command will update installed components without changing the styles.")
+            logger.warn("Make sure you have committed your changes before proceeding.\n")
 
-            const { dir } = await prompts([
-                {
-                    type: "text",
-                    name: "dir",
-                    message: "[Checking installed components] Where are your components located?",
-                    initial: "./src/components/ui",
-                },
-            ])
+
+            const dir = "./src/components/ui"
+            // const { dir } = await prompts([
+            //     {
+            //         type: "text",
+            //         name: "dir",
+            //         message: "[Checking installed components] Where are your components located?",
+            //         initial: "./src/components/ui",
+            //     },
+            // ])
 
             // Get available components
             const availableComponents = getAvailableComponents()
             const installedComponents = await getInstalledComponents(dir)
 
-            if (!availableComponents?.length) {
-                logger.error("An error occurred while fetching components. Please try again.",)
-                process.exit(0)
+            // if (!availableComponents?.length) {
+            //     logger.error("An error occurred while fetching components. Please try again.",)
+            //     process.exit(0)
+            // }
+            //
+            // if (!installedComponents?.length) {
+            //     logger.error("No components found.")
+            //     process.exit(0)
+            // }
+            //
+            // const { proceed } = await prompts({
+            //     type: "confirm",
+            //     name: "proceed",
+            //     message: "Running this command will overwrite component files. It will not change the styles. Proceed?",
+            //     initial: false,
+            // })
+            //
+            // if (!proceed) process.exit(0)
+
+
+            // console.log(installedComponents.map(n => n.files))
+            const updatedComponents = await script_updateComponents(availableComponents, installedComponents, dir)
+
+            if (updatedComponents) {
+                script_addComponents({ components: updatedComponents, projectInfo, componentDestination: dir, isUpdating: true })
             }
-
-            if (!installedComponents?.length) {
-                logger.error("No components found.")
-                process.exit(0)
-            }
-
-            const { proceed } = await prompts({
-                type: "confirm",
-                name: "proceed",
-                message: "Running this command will overwrite component files. It will not change the styles. Proceed?",
-                initial: false,
-            })
-
-            if (!proceed) process.exit(0)
-
-            const a = script_updateComponents(availableComponents, installedComponents).map(n => n.files)
-            // console.log(a)
 
 
             logger.success("Component(s) updated.")
