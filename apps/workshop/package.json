@@ -10,6 +10,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
+  "packageManager": "pnpm@8.6.3",
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.15.2",
     "@headlessui/react": "^1.7.14",

@@ -43,16 +43,15 @@
     "node-fetch": "^3.3.1",
     "ora": "^6.3.1",
     "prompts": "^2.4.2",
-    "zod": "^3.21.4",
-    "@headlessui/react": "^1.7.14"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
-    "@types/lodash": "^4.14.194",
+    "@types/lodash": "^4.14.195",
     "@types/prompts": "^2.4.4",
     "rimraf": "^4.4.1",
     "tsup": "^6.7.0",
-    "type-fest": "^3.10.0",
-    "typescript": "^5.0.4"
+    "type-fest": "^3.12.0",
+    "typescript": "^5.1.3"
   }
 }
