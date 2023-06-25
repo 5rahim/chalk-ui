@@ -1,5 +1,20 @@
 # @rahimstack/chalk-ui
 
+## 0.4.0
+
+### Minor Changes
+
+- [`b037261`](https://github.com/5rahim/chalk-ui/commit/b037261f583c1c74ca945a1dd5ce27e0e492d0df) Thanks [@5rahim](https://github.com/5rahim)! - ### CLI
+
+  - Added "update" command
+  - Refactored some commands
+
+  ### Components
+
+  - Fixed Checkbox component visual shift
+  - Removed commented legacy code for Switch component
+  - Updated dependencies
+
 ## 0.3.2
 
 ### Patch Changes
