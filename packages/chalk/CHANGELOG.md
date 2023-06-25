@@ -1,11 +1,17 @@
 # @rahimstack/chalk-ui
 
+## 0.4.1
+
+### Patch Changes
+
+- [`7aa3a6f`](https://github.com/5rahim/chalk-ui/commit/7aa3a6faad5ebbdf6ab7eac38a7eaf7a196ff3be) Thanks [@5rahim](https://github.com/5rahim)! - Fix: Publish previous update
+
 ## 0.4.0
 
 ### Minor Changes
 
 - [`b037261`](https://github.com/5rahim/chalk-ui/commit/b037261f583c1c74ca945a1dd5ce27e0e492d0df) Thanks [@5rahim](https://github.com/5rahim)!
-  
+
   #### CLI
 
   - Added "update" command
