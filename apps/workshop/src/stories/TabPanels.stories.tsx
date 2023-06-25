@@ -5,6 +5,12 @@ import { BiCog } from "@react-icons/all-files/bi/BiCog"
 const meta = {
     title: "Components/Navigation/TabPanels",
     component: TabPanels,
+    // subcomponents: {
+    //     'TabPanels.Nav': TabPanels.Nav as any,
+    //     'TabPanels.Tab': TabPanels.Tab as any,
+    //     'TabPanels.Container': TabPanels.Container as any,
+    //     'TabPanels.Panel': TabPanels.Panel as any,
+    // },
     tags: ["autodocs"],
     render: (args) => {
         return (

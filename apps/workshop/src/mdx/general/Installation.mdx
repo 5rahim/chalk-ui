@@ -1,3 +1,6 @@
+{/* Installation.mdx */}
+
+
 import { Meta } from "@storybook/blocks";
 
 <Meta
@@ -63,9 +66,7 @@ interface ClientProvidersProps {
    children?: React.ReactNode
 }
 
-export const ClientProviders: React.FC<ClientProvidersProps> = (props) => {
-
-   const { children, ...rest } = props
+export const ClientProviders: React.FC<ClientProvidersProps> = ({ children, ...rest }) => {
 
    return (
       <UIProvider config={{ locale: "en", countrylocale: "en-US", country: "US" }}>

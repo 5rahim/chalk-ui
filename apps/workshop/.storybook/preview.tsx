@@ -27,6 +27,11 @@ const preview: Preview = {
             inline: true
          }
       },
+      options: {
+         storySort: {
+            order: ["Introduction", "Installation"]
+         }
+      }
    },
 }
 

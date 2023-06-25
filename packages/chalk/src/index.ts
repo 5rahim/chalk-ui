@@ -17,11 +17,12 @@ import { getComponentDependencyListFromPackage, getPackageInfo, getPackageManage
 import _ from "lodash"
 import { Command } from "commander"
 import { execa } from "execa"
-import { existsSync, promises as fs, writeFileSync } from "fs"
+import { existsSync, promises as fs } from "fs"
 import ora from "ora"
 import path from "path"
 import * as process from "process"
 import prompts from "prompts"
+import chalk from "chalk"
 
 // TODO: upgrade command
 
@@ -29,6 +30,7 @@ async function main() {
     const packageInfo = await getPackageInfo()
     const projectInfo = await getProjectInfo()
     const packageManager = getPackageManager()
+
 
     const program = new Command()
         .name("@rahimstack/chalk-ui")
@@ -44,12 +46,11 @@ async function main() {
      */
     program.command("snapshot")
         .description("Copy files and directories under \"./src/\" and transform them into JSON format.")
-        .action(() => {
+        .action(async () => {
 
             // Create the "snapshot" directory if it doesn't exist
             const snapshotDir = path.resolve("snapshot")
             if (!existsSync(snapshotDir)) {
-                // mkdirSync(snapshotDir)
                 logger.error("An error occurred.")
                 process.exit(0)
             }
@@ -59,10 +60,10 @@ async function main() {
             const snapshotFilename = `snapshot_${timestamp}.json`
             const snapshotPath = path.join(snapshotDir, snapshotFilename)
 
-            const jsonData = createJSONSnapshot()
+            const jsonData = await createJSONSnapshot()
             const jsonOutput = JSON.stringify(jsonData.filter(n => n.name.length > 0), null, 2)
-            writeFileSync(snapshotPath, jsonOutput)
-            logger.info(`Snapshot created: ${snapshotFilename}`)
+            await fs.writeFile(snapshotPath, jsonOutput, { encoding: "utf-8" })
+            logger.info(`✅ Snapshot created: ${snapshotFilename}`)
         })
 
     program.command("clean")
@@ -127,6 +128,15 @@ async function main() {
         .option("-y, --yes", "Skip confirmation prompt.")
         .option("--all", "Skip component selection.")
         .action(async (options) => {
+
+            console.log(chalk.dim(`       _           _ _    
+      | |         | | |   
+   ___| |__   __ _| | | __
+  / __| '_ \\ / _\` | | |/ /
+ | (__| | | | (_| | |   < 
+  \\___|_| |_|\\__,_|_|_|\\_\\
+                          `))
+
             logger.warn("Make sure your project is already configured with Tailwind.")
             logger.warn("")
 
@@ -240,7 +250,7 @@ async function main() {
                 },
             ])
 
-            // 1. Get available components
+            // Get available components
             const availableComponents = getAvailableComponents()
             // const installedComponents = await getInstalledComponents(dir)
 
@@ -249,10 +259,10 @@ async function main() {
                 process.exit(0)
             }
 
-            // 2. Filter selected components from the parameters
+            // Filter selected components from the parameters
             let selectedComponents = availableComponents.filter((component) => components.includes(component.component))
 
-            // 3. If nothing was passed as parameter, prompt for components to add
+            // If nothing was passed as parameter, prompt for components to add
             if (!selectedComponents?.length) {
                 selectedComponents = await promptForComponents(availableComponents)
             }
@@ -266,8 +276,10 @@ async function main() {
 
             logger.success(`Writing components...`)
 
-            // 5. Write components
+            // Write components
             const dependenciesToInstall = await script_addComponents({ components: selectedComponents, projectInfo, componentDestination: dir })
+
+            console.log("")
 
             const { willInstall } = await prompts({
                 type: "confirm",
@@ -276,7 +288,7 @@ async function main() {
                 initial: true,
             })
 
-            // 6. Install dependencies
+            // Install dependencies
             await script_installDependencies(dependenciesToInstall, willInstall)
 
         })
@@ -383,46 +395,15 @@ async function main() {
 
 
             const dir = "./src/components/ui"
-            // const { dir } = await prompts([
-            //     {
-            //         type: "text",
-            //         name: "dir",
-            //         message: "[Checking installed components] Where are your components located?",
-            //         initial: "./src/components/ui",
-            //     },
-            // ])
-
             // Get available components
             const availableComponents = getAvailableComponents()
             const installedComponents = await getInstalledComponents(dir)
 
-            // if (!availableComponents?.length) {
-            //     logger.error("An error occurred while fetching components. Please try again.",)
-            //     process.exit(0)
-            // }
-            //
-            // if (!installedComponents?.length) {
-            //     logger.error("No components found.")
-            //     process.exit(0)
-            // }
-            //
-            // const { proceed } = await prompts({
-            //     type: "confirm",
-            //     name: "proceed",
-            //     message: "Running this command will overwrite component files. It will not change the styles. Proceed?",
-            //     initial: false,
-            // })
-            //
-            // if (!proceed) process.exit(0)
-
-
-            // console.log(installedComponents.map(n => n.files))
             const updatedComponents = await script_updateComponents(availableComponents, installedComponents, dir)
 
             if (updatedComponents) {
-                script_addComponents({ components: updatedComponents, projectInfo, componentDestination: dir, isUpdating: true })
+                await script_addComponents({ components: updatedComponents, projectInfo, componentDestination: dir, isUpdating: true })
             }
-
 
             logger.success("Component(s) updated.")
 

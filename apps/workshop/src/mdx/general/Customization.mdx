@@ -1,10 +1,13 @@
+{/* Customization.mdx */}
+
+
 import { Meta } from "@storybook/blocks";
 
 <Meta
-    title="Dive Deeper"
+    title="Customization"
 />
 
-# Dive Deeper
+# Customization
 
 ## Theming
 
@@ -25,7 +28,7 @@ They also have other intents like `success`, `alert` and `warning`.
 
 Most components are designed with an "anatomy" paradigm. The anatomy approach defines the main parts of the component's styling using a function called `defineStyleAnatomy`.<br/>
 - Each part is represented by a distinct class-variance-authority (CVA) function. These functions define the Tailwind classes associated with each part of the component.
-  - For example, the **PageHeader** component has several parts such as `body`, `title`, `description`, etc..., each with its own styling.
+- For example, the **PageHeader** component has several parts such as `body`, `title`, `description`, etc..., each with its own styling.
 - CVA offers features like `variants` and `compoundVariants`. [Learn more about CVA](https://cva.style/docs/getting-started).
 
 I decided to decouple the Tailwind classes and the components to allow for re-usability and updatability.

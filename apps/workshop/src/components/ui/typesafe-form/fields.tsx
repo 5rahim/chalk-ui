@@ -430,11 +430,11 @@ const RadioCardsField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
         return <RadioGroup
             fieldClassName="w-full"
             fieldLabelClassName="text-md"
-            stackClassName="flex flex-col md:flex-row gap-2 space-y-0"
-            radioContainerClassName="block w-full p-4 cursor-pointer transition border border-gray-200 rounded-md data-checked:bg-white data-checked:ring-2 data-checked:ring-brand-500"
+            radioContainerClassName="block w-full p-4 cursor-pointer dark:bg-gray-900 transition border border-[--border] rounded-[--radius] data-checked:ring-2 data-checked:ring-[--ring]"
             radioControlClassName="absolute right-2 top-2 h-5 w-5 text-xs"
-            radioLabelClassName="font-semibold flex-none flex"
             radioHelpClassName="text-sm"
+            radioLabelClassName="font-semibold flex-none flex"
+            stackClassName="flex flex-col md:flex-row gap-2 space-y-0"
             {...props}
             ref={ref}
         />
@@ -468,13 +468,13 @@ const SegmentedControlField = React.memo(withControlledInput(forwardRef<HTMLInpu
         }, [controller.field])
 
         return <RadioGroup
-            fieldClassName="w-full"
+            fieldClassName="!w-fit"
             fieldLabelClassName="text-md"
-            stackClassName="flex flex-row gap-2 p-1 bg-gray-50 rounded-md border w-[fit-content] space-y-0"
-            radioContainerClassName="block w-[fit-content] py-1 px-3 cursor-pointer border border-transparent transition rounded-md data-checked:bg-white data-checked:border-gray-300 data-checked:shadow-sm text-gray-500 data-checked:text-black"
+            radioContainerClassName="block w-fit py-1 px-3 cursor-pointer border border-transparent transition rounded-[--radius] data-checked:bg-white dark:data-checked:bg-gray-700 data-checked:border-[--border] data-checked:shadow-sm text-[--muted] data-checked:text-[--text-color]"
             radioControlClassName="hidden"
-            radioLabelClassName="font-semibold flex-none flex"
             radioHelpClassName="text-base"
+            radioLabelClassName="font-semibold flex-none"
+            stackClassName="flex flex-row gap-2 p-1 bg-gray-50 dark:bg-gray-800 rounded-[--radius] w-fit space-y-0"
             {...props}
             ref={ref}
         />

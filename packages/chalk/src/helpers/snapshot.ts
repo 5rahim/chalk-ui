@@ -1,8 +1,9 @@
-import { existsSync, readdirSync, readFileSync, statSync } from "fs"
+import { promises as fs, statSync } from "fs"
 import path from "path"
 import * as process from "process"
 import { DependencyDef, mainDependencies } from "@/src/helpers/dependencies"
 import _ from "lodash"
+import { exists } from "fs-extra"
 
 type FileData = {
     name: string;
@@ -31,22 +32,22 @@ function addCommentToContent(content: string, filename: string, date: string): s
     return content
 }
 
-export function createJSONSnapshot(_srcPath?: string, _packageJsonPath?: string): DirectoryData[] {
+export async function createJSONSnapshot(_srcPath?: string, _packageJsonPath?: string): Promise<DirectoryData[]> {
     const srcPath = _srcPath ?? path.resolve("../../apps/workshop/src/components/ui")
     const packageJsonPath = _packageJsonPath ?? path.resolve("../../apps/workshop/package.json")
 
-    const packageJsonContent = readFileSync(packageJsonPath, "utf-8")
+    const packageJsonContent = await fs.readFile(packageJsonPath, "utf-8")
 
-    if (!existsSync(srcPath) || !existsSync(packageJsonPath)) {
+    if (!await exists(srcPath) || !await exists(packageJsonPath)) {
         console.error("Source directory or package.json does not exist.")
         process.exit(1)
     }
 
     const directories: any[] = [] // All components
 
-    function traverseDirectory(dirPath: string, componentName: string) {
+    async function traverseDirectory(dirPath: string, componentName: string) {
         // Get all the files/directories in the path
-        const files = readdirSync(dirPath)
+        const files = await fs.readdir(dirPath)
 
         // Format of the snapshot
         let directoryData: DirectoryData = {
@@ -58,15 +59,15 @@ export function createJSONSnapshot(_srcPath?: string, _packageJsonPath?: string)
         }
 
         // For each file/directory
-        files.forEach((file) => {
+        for (const file of files) {
             const filePath = path.join(dirPath, file) // Get path
             const stats = statSync(filePath) // Get info
 
             if (stats.isDirectory()) { // If it is a directory
-                traverseDirectory(filePath, file) // Traverse the directory (recursive)
+                await traverseDirectory(filePath, file) // Traverse the directory (recursive)
             } else if (stats.isFile()) { // If it is a file
 
-                const content = readFileSync(filePath, "utf8") // Get the content
+                const content = await fs.readFile(filePath, "utf8") // Get the content
 
                 /**
                  * Populate family
@@ -101,12 +102,12 @@ export function createJSONSnapshot(_srcPath?: string, _packageJsonPath?: string)
                 directoryData.files.push(fileData)
 
             }
-        })
+        }
 
         directories.push(directoryData) // Push component
     }
 
-    traverseDirectory(srcPath, "")
+    await traverseDirectory(srcPath, "")
 
     return directories
 }
@@ -116,6 +117,9 @@ export function createJSONSnapshot(_srcPath?: string, _packageJsonPath?: string)
  * Helpers
  * -----------------------------------------------------------------------------------------------*/
 
+/**
+ * This is used to get shared, used components
+ */
 function findRelativeImports(fileContent: string): string[] {
     const importPattern = /from\s+['"]\.\.\/([a-zA-Z0-9-]+)['"]/g
     const imports: string[] = []
@@ -130,6 +134,10 @@ function findRelativeImports(fileContent: string): string[] {
 }
 
 
+/**
+ * Find dependencies from imports
+ * -> ["<name>", "<version>", "<flag>"][]
+ */
 function findDependencies(fileContent: string): DependencyDef[] {
     const importPattern = /import\s+[^'"]+\s+from\s+['"]([^'"]+)['"]/gmi
     const dependenciesArr: DependencyDef[] = []
@@ -147,6 +155,7 @@ function findDependencies(fileContent: string): DependencyDef[] {
 
             let name = importedModule
             // Reformat some dependencies
+            // FIXME Find a better way
             if (name.includes("lodash")) name = "lodash"
             if (name.includes("date-fns")) name = "date-fns"
             if (name.includes("recharts")) name = "recharts"
@@ -156,6 +165,7 @@ function findDependencies(fileContent: string): DependencyDef[] {
                 dependencies.push(name)
 
                 // Include types dependencies
+                // FIXME Find a better way
                 if (name.includes("dinero")) {
                     dependencies.push("@types/dinero.js")
                 }
@@ -170,6 +180,10 @@ function findDependencies(fileContent: string): DependencyDef[] {
     return dependenciesArr
 }
 
+/**
+ * Find dependencies from package.json content
+ * -> ["<name>", "<version>", "<flag>"][]
+ */
 function extractComponentDependencies(fileContent: string, packageJsonContent: string): string[][] {
     const dependencies = findDependencies(fileContent)
     const packageJson = JSON.parse(packageJsonContent)

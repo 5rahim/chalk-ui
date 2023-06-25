@@ -52,8 +52,11 @@ export const CheckboxAnatomy = defineStyleAnatomy({
             size: "md",
         },
     }),
-    indicator: cva("UI-Checkbox__indicator flex h-full w-full items-center justify-center"),
-    icon: cva("UI-Checkbox__icon", {
+    indicator: cva([
+        "UI-Checkbox__indicator",
+        "flex h-full w-full items-center justify-center relative"
+    ]),
+    icon: cva("UI-Checkbox__icon absolute", {
         variants: {
             size: {
                 md: "h-4 w-4",

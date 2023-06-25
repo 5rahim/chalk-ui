@@ -1,28 +1,12 @@
-<br>
-<div align="center">
-  <img alt="Chalk Logo" src="https://github.com/5rahim/chalk-ui/blob/main/images/Chalk_Logo2.png?raw=true" height="250"/>
-<br>
+# 👨🏿‍🏫 Chalk UI
 
-</div>
+Reusable, customizable, Tailwind components + CLI.
 
-# Chalk
-
-Chalk UI is a command-line interface (CLI) tool designed to facilitate the integration of fully-functional,
-pre-made Tailwind components into your project.
-
-## Features
-
-- 🔥 TailwindCSS
-- 🔥 Useful and [fully customizable](https://chalk.rahim.app) components
-- 🔥 You own the code
-- 🔥 i18n
-
-## Documentation
+## 📋 Documentation
 
 https://chalk.rahim.app
 
-<!-- ROADMAP -->
-## Roadmap
+## 📦 Components
 
 - [x] Alert
 - [x] Avatar
@@ -92,33 +76,29 @@ https://chalk.rahim.app
 
 TODO: Sidebar scrollable content, sidebar footer, datagrid null value in filters
 
-## CLI Roadmap
+## ⌨️ CLI
 
 - [x] Init
 - [x] Add
-- [ ] Remove
-- [ ] Update
-- [ ] Migrate (scans the installed components and performs an update)
+- [x] Update
+- [x] Remove
+- [x] Clean
 
-## Dev
-
-- Develop the UI
+## 🧠 Dev
 
 ```shell
-pnpm dev:web
+pnpm dev:workshop
 ```
-
-- Develop the CLI
 
 ```shell
 pnpm dev:chalk
 ```
+
 ```shell
 cd packages/chalk && pnpm start:dev [command]
 ```
 
-
-## Contributing
+## 🤝🏾 Contributing
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request.
 
@@ -130,7 +110,8 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 ## Acknowledgements
 
-Inspired by [shadcn](https://ui.shadcn.com/)
+Project inspired by [shadcn](https://ui.shadcn.com/)
+Design inspired by Tailwind UI
 
 ## License
 

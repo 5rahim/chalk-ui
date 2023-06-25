@@ -1,3 +1,6 @@
+{/* CLI.mdx */}
+
+
 import { Meta } from "@storybook/blocks";
 
 <Meta
@@ -8,10 +11,10 @@ import { Meta } from "@storybook/blocks";
 
 ## Init
 
-- This command will prompt you for the components you want to install.
-- It will add shared components.
-- It will automatically install dependencies or update package.json.
-- It will overwrite tailwind.config.js and globals.scss.
+- ✅ Select the components you want to install.
+- ✅ Shared components will be automatically added.
+- ✅ Installs dependencies or updates package.json.
+- ✅ Updated tailwind.config.js and globals.scss.
 
 
 Caveats:
@@ -28,10 +31,10 @@ Arguments:
 
 ## Add
 
-- This command will add the components you pass as argument.
-- It will add shared components.
-- It will not add a component that already exists.
-- It will install dependencies or update package.json.
+- ✅ This command will add the components you pass as argument.
+- ✅ It will add shared components.
+- ✅ It will not add a component that already exists.
+- ✅ It will install dependencies or update package.json.
 
 Caveats:
 - You should have run `init` first.
@@ -40,10 +43,70 @@ Caveats:
 npx @rahimstack/chalk-ui add [...components]
 ```
 
+## Update
+
+- ⚠️ **This command will only work if you did not change the structure and names of component files and directories.**
+- ⚠️ Do not use this command to update components that you have heavily modified the logic or layout of.
+- ⚠️ Changes made to a component's logic or layout will be **overwritten**.
+- ⚠️ Make sure you take note of components with breaking changes. [CHANGELOG.md](https://github.com/5rahim/chalk-ui/blob/main/packages/chalk/CHANGELOG.md).
+
+```shell
+npx @rahimstack/chalk-ui@<version> update
+```
+
+- Run the command, replace \<version\> with the desired version or "latest".
+- You have the option to automatically preserves the changes you've made to the styling.
+  - This will preserve all changes made to `defineStyleAnatomy` functions.
+- The command will traverse all files and look for differences.
+- If a file is outdated, the command will create a new, temporary file in the UI directory called `TEMP_<filename>.(tsx,json)`, containing the upcoming changes
+- This approach allows you to verify upcoming changes, modify then **merge** or **skip**.
+  - Merging will overwrite the local file's content with the content of the temporary file.
+  - Skipping will keep the current content.
+
+### Example
+
+Let's say you want to update your `Dropzone` component.
+
+```text
+├── src
+│   ├── components
+│   │   ├── ui                      // Generated
+│   │   │   ├── file-upload
+│   │   │   │   ├── dropzone.tsx
+│   │   │   │   ├── helper.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── locales.json
+│   │   │   │   └── use-file-upload-handler.ts
+│   │   │   └── ...
+```
+
+```shell
+√ Do you want to maintain your custom component styles (anatomy classes)? ... yes
+Great, your anatomy functions will be preserved.
+[button/index.tsx]: No difference
+* Action required
+[file-upload/dropzone.tsx]: Temporary file created, modify it if necessary (*)
+C:\...\src\components\ui\TEMP_dropzone.tsx
+√ What do you want to do? [merge, skip] ...
+```
+
+- Open `TEMP_dropzone.tsx` to check the upcoming changes. You should see that your anatomy classes have been preserved.
+- If, for example, you've modified the original file icons, those changes will not be preserved.
+- In that case, I recommend using a tool like [Mergely](https://editor.mergely.com/) to merge your changes with the temporary file.
+- Save the changes made to `TEMP_dropzone.tsx`, then **merge** in the CLI.
+
+```shell
+* Action required
+[file-upload/locales.json]: Temporary file created, modify it if necessary (*)
+C:\...\src\components\ui\TEMP_locales.json
+```
+
+- In the case of a locale file, you should **skip** unless there is an addition in the upcoming changes.
+
 ## Remove
 
-- This command will remove the components you pass as argument.
-- It will only uninstall dependencies that are not used by any other component.
+- ✅ Removes component files and directories.
+- ✅ Uninstalls dependencies that are not used by any other component.
 
 Caveats:
 - It will not remove unused shared components.
@@ -52,14 +115,13 @@ Caveats:
 npx @rahimstack/chalk-ui remove [...components]
 ```
 
-
 ## Clean
 
-- This command will remove all components and uninstall all used dependencies.
+This command will remove all components and uninstall all used dependencies.
 
 Caveats:
-- This can uninstall dependencies that you use elsewhere.
-- It will not change tailwind.config.js or globals.scss
+- ⚠️ This can uninstall dependencies that you use elsewhere (like lodash).
+- ⚠️ It will not change tailwind.config.js or globals.scss
 
 ```shell
 npx @rahimstack/chalk-ui clean

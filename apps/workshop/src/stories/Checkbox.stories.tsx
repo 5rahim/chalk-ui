@@ -1,4 +1,4 @@
-import { Checkbox } from "../components/ui/checkbox"
+import { Checkbox, CheckboxProps } from "../components/ui/checkbox"
 import type { Meta, StoryObj } from "@storybook/react"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -9,7 +9,7 @@ const meta = {
    args: {
       label: "Label",
    },
-} satisfies Meta<typeof Checkbox>
+} satisfies Meta<CheckboxProps>
 
 
 export default meta

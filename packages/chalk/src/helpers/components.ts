@@ -1,7 +1,7 @@
 import * as z from "zod"
 import components from "../templates/components.json"
 import ora from "ora"
-import { existsSync, promises as fs } from "fs"
+import fs from "fs"
 import _ from "lodash"
 import path from "path"
 import * as process from "process"
@@ -47,7 +47,7 @@ export function getAvailableComponents() {
 }
 
 /**
- *
+ * Get the latest components from components.js
  */
 export function getAvailableComponentDependencyList() {
     const availableComponents = getAvailableComponents()
@@ -55,7 +55,7 @@ export function getAvailableComponentDependencyList() {
 }
 
 /**
- *
+ *  Get the latest components but only from installed components
  */
 export async function getAvailableComponentsFromDir(dir: string) {
     const availableComponents = getAvailableComponents()
@@ -64,22 +64,25 @@ export async function getAvailableComponentsFromDir(dir: string) {
 }
 
 /**
- *
+ * Get the latest component dependency list from installed components
  */
 export async function getAvailableComponentDependencyListFromDir(dir: string) {
     const components = await getAvailableComponentsFromDir(dir)
     return _.flatten(components.map(c => c.dependencies?.map(n => n[0]))).filter(n => n!.length > 0) as string[]
 }
 
+/**
+ * Get installed components
+ */
 export async function getInstalledComponents(dir: string) {
     const srcPath = path.resolve(dir)
-    return createJSONSnapshot(srcPath, path.resolve("./package.json"))
+    return await createJSONSnapshot(srcPath, path.resolve("./package.json"))
 }
 
 export async function getInstalledComponentList(dir: string) {
     try {
 
-        const directoryEntries = await fs.readdir(dir, { withFileTypes: true })
+        const directoryEntries = await fs.promises.readdir(dir, { withFileTypes: true })
 
         return directoryEntries
             .filter((entry) => entry.isDirectory())
@@ -111,6 +114,7 @@ export async function script_addComponents(
     let componentsToAdd: Component[] = components
     let dependenciesToInstall: DependencyDef[] = []
 
+    // Only add component family and core if we are not updating
     if (!isUpdating) {
         for (const component of componentsToAdd) {
             // Insert component's family in list only if it isn't already added
@@ -126,7 +130,8 @@ export async function script_addComponents(
         componentsToAdd.push(availableComponents.filter(n => n.component === "core")[0]!)
     }
 
-    // Overwrite components or filter
+    // Filter out components that are already added (only if we are not updating)
+    // This is done so that we don't excessively rewrite
     componentsToAdd = isUpdating ? componentsToAdd : _.differenceBy(componentsToAdd, installedComponents, "component")
 
     for (const component of componentsToAdd) {
@@ -145,14 +150,17 @@ export async function script_addComponents(
 
             // Create dir if it doesn't exist
             if (file.dir) {
-                if (!existsSync(path.resolve(componentDir))) {
-                    await fs.mkdir(path.resolve(componentDir), { recursive: true })
+                if (!fs.existsSync(path.resolve(componentDir))) {
+                    await fs.promises.mkdir(path.resolve(componentDir), { recursive: true })
                 }
             }
 
             // Write the content of the component to the directory
             const filePath = path.resolve(componentDir, file.name)
-            await fs.writeFile(filePath, file.content)
+            await fs.promises.writeFile(filePath, file.content, { encoding: "utf-8" })
+            // FIXME \/ Might not be needed
+            const fileHandle = await fs.promises.open(filePath, "r")
+            await fileHandle.close()
         }
 
         // Add dependencies to list to install
@@ -183,17 +191,19 @@ export async function script_updateComponents(
 
     const arr: Component[] = []
 
-    console.log(chalk.bold("Chalk UI Updater:"), "Thank you for using the Chalk UI CLI.")
-    console.log(chalk.italic(chalk.dim("Before updating your components beware of breaking components.\n")))
+    console.log(chalk.italic(chalk.dim("Before updating your components be mindful of breaking changes.\n")))
 
     const { maintainStyling } = await prompts({
         type: "confirm",
         name: "maintainStyling",
-        message: "Do you want to maintain the changes you've made to components' anatomies?",
+        message: "Do you want to maintain your custom component styles (anatomy classes)?",
         initial: true,
     })
 
-    const tempFilePath = path.resolve(dir + "/TEMP.tsx")
+    if (maintainStyling) {
+        console.log(chalk.dim("Great, your anatomy functions will be preserved."))
+    }
+
 
     for (const installedComponent of installedComponents) { // Go through installed components
 
@@ -206,34 +216,36 @@ export async function script_updateComponents(
 
             for (const updatedFile of updatedComponent.files) { // Go through each file
 
-                const prefix = chalk.bold(chalk.magentaBright(`[${updatedFile.dir}/${updatedFile.name}]`))
+                const tempFilePath = path.resolve(dir + `/TEMP_${updatedFile.name}`)
+
+                const prefix = chalk.bold(chalk.magentaBright(`[${updatedFile.dir}/${updatedFile.name}]:`))
 
                 const installedFile = installedComponent.files.find(f => f.name === updatedFile.name)
 
+                // If the file didn't exist before, add it and continue
                 if (!installedFile) {
-                    // add it
-                    return
+                    updatedFiles.push({
+                        name: updatedFile.name,
+                        dir: updatedFile.dir,
+                        content: updatedFile.content,
+                    })
+                    continue
                 }
 
+                // If there is no difference, continue
                 if (_.isEqual(updatedFile.content, installedFile.content)) {
-                    console.log(prefix, chalk.dim(`-> No difference`))
+                    console.log(prefix, chalk.dim(`No difference`))
                     continue
                 }
 
                 logger.warn("* Action required")
-                logger.info(prefix, `-> Temporary updated file created, modify the file if necessary`, chalk.bold(chalk.red("(*)")))
+                logger.info(prefix, `Temporary file created, modify it if necessary`, chalk.bold(chalk.red("(*)")))
+                console.log(chalk.dim(tempFilePath))
 
                 // Keep current anatomy functions intact or overwrite them
                 const content = maintainStyling ? mergeFileContent(installedFile.content, updatedFile.content) : updatedFile.content
 
-                await fs.writeFile(tempFilePath, content)
-
-                // const { proceed } = await prompts({
-                //     type: "confirm",
-                //     name: "proceed",
-                //     message: "Proceed?",
-                //     initial: true,
-                // })
+                await fs.promises.writeFile(tempFilePath, content, { encoding: "utf-8" })
 
                 while (true) {
 
@@ -248,24 +260,24 @@ export async function script_updateComponents(
 
                     if (command === "merge") {
 
-                        const finalContent = await fs.readFile(tempFilePath, "utf8")
+                        const finalContent = await fs.promises.readFile(tempFilePath, "utf8")
 
                         updatedFiles.push({
                             name: installedFile.name,
                             dir: installedFile.dir,
                             content: finalContent,
                         })
+                        logger.success("√ File merged")
+                        await fs.promises.rm(tempFilePath)
                         break
 
                     } else if (command === "skip") {
                         logger.success("√ File ignored")
-                        break
-                    } else {
+                        await fs.promises.rm(tempFilePath)
                         break
                     }
 
                 }
-
             }
 
             const finalComponent: Component = {
@@ -281,74 +293,20 @@ export async function script_updateComponents(
         }
     }
 
-    await fs.rm(tempFilePath)
+    console.log("")
+
 
     return arr
 
 }
 
-//
-// export function script_updateComponents(
-//     availableComponents: Component[],
-//     installedComponents: Component[],
-//     maintainCurrentStyling: boolean
-// ): Component[] {
-//     const arr: Component[] = []
-//
-//     for (const installedComponent of installedComponents) {
-//         const updatedComponents = availableComponents.find(
-//             (availableComponent) => availableComponent.component === installedComponent.component
-//         )
-//
-//         if (updatedComponents) {
-//             const updatedFiles: { name: string; dir: string; content: string }[] = []
-//
-//             for (const installedFile of installedComponent.files) {
-//                 const updatedFile = updatedComponents.files.find((availableFile) => availableFile.name === installedFile.name)
-//
-//                 if (updatedFile) {
-//
-//                     let updatedContent = updatedFile.content
-//
-//                     if (maintainCurrentStyling && updatedFile.content.includes("defineStyleAnatomy") && !updatedFile.content.includes("ComponentAnatomy")) {
-//                         updatedContent = mergeFileContent(installedFile.content, updatedFile.content)
-//                     }
-//
-//                     if (installedComponent.component === "vertical-nav") {
-//                         console.log(updatedContent)
-//                     }
-//                     updatedFiles.push({
-//                         name: installedFile.name,
-//                         dir: installedFile.dir,
-//                         content: updatedContent,
-//                     })
-//                 }
-//             }
-//
-//             const updatedComponent: Component = {
-//                 component: installedComponent.component,
-//                 name: installedComponent.name,
-//                 dependencies: updatedComponents.dependencies,
-//                 family: updatedComponents.family,
-//                 files: updatedFiles,
-//             }
-//
-//             arr.push(updatedComponent)
-//         }
-//     }
-//
-//     return arr
-// }
-//
 function mergeFileContent(originalContent: string, updatedContent: string): string {
     const originalLines = originalContent.split("\n")
     const updatedLines = updatedContent.split("\n")
-    // const mergedLines: string[] = originalLines
 
     const original = extractAnatomyFunctions(originalContent)
     const updated = extractAnatomyFunctions(updatedContent)
 
-    // console.log(original)
 
     let mergedLines = updatedLines
     for (const indices of updated.indices) {
@@ -371,9 +329,7 @@ function mergeFileContent(originalContent: string, updatedContent: string): stri
         }
     })
 
-    // console.log(mergedLines)
-
-    return mergedLines.join("")
+    return mergedLines.join("\n")
 }
 
 export function extractAnatomyFunctions(content: string) {
@@ -381,8 +337,6 @@ export function extractAnatomyFunctions(content: string) {
     let anatomyFuncs: string[] = []
     let indices: { start: number, end: number }[] = []
 
-    // console.log(content)
-    // logger.error("-------------------")
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i]
@@ -409,8 +363,6 @@ export function extractAnatomyFunctions(content: string) {
 
         }
     }
-
-    // console.log(anatomyFuncs)
 
     return {
         anatomyFuncs,

@@ -18,7 +18,7 @@ const meta = {
         tabClassName: "",
         iconClassName: "",
     },
-} satisfies Meta<NavigationTabsProps>
+} satisfies Meta<typeof NavigationTabs>
 
 
 export default meta
