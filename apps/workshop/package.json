@@ -47,7 +47,6 @@
     "recharts": "^2.7.2",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "latest",
-    "ui": "workspace:*",
     "use-debounce": "^9.0.4",
     "zod": "^3.21.4"
   },
