@@ -31,6 +31,7 @@
     "@zag-js/react": "^0.10.2",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
+    "csstype": "^3.0.10",
     "date-fns": "^2.30.0",
     "dinero.js": "^1.9.1",
     "libphonenumber-js": "^1.10.36",
