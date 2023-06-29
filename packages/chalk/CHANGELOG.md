@@ -1,5 +1,15 @@
 # @rahimstack/chalk-ui
 
+## 0.4.2
+
+### Patch Changes
+
+- [`c84e85f`](https://github.com/5rahim/chalk-ui/commit/c84e85fda32fdc5c3c81379d2495b13478720682) Thanks [@5rahim](https://github.com/5rahim)! - ### Components
+
+  - [TypesafeForm] Fixed RadioGroup, RadioCards, SegmentedControl default value not showing
+  - Changed `data-[current=]` to `data-[selected=]`
+  - Updated dependencies
+
 ## 0.4.1
 
 ### Patch Changes
