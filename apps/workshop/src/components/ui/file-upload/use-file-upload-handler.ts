@@ -51,7 +51,7 @@ export function useFileUploadHandler<A extends "single" | "multiple">(singleOrMu
             // if (!res.error && !!res.data) {
             //     setIsUploading(false)
             //     setIsUploaded(true)
-            //     results = objects!
+            //     results = singleOrMultiple === "single" ? res.data[0]! : res.data! as any
             // }
 
             return results

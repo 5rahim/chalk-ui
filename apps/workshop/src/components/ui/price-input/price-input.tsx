@@ -42,13 +42,7 @@ export const PriceInput = React.forwardRef<HTMLInputElement, PriceInputProps>((p
     const _decimalSeparator = config.decimalSeparator
     const _groupSeparator = config.groupSeparator
 
-    /**
-     * FIXME
-     * /!\ The formatting is incorrect when the value isn't 2 because of Dinero v1.x (#5)
-     * With Dinero v2.x the API will be able to support the correct formatting
-     * @link https://v2.dinerojs.com/docs/getting-started/quick-start
-     * This will be patched in future updates
-     */
+    // /!\ Change dinero.toFormat() options if you change this
     const _decimalSpace = 2
 
     const _multiplier = Math.pow(10, _decimalSpace) // eg: decimalSpace = 2 => 100

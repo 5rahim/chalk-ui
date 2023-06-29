@@ -20,7 +20,7 @@ export const VerticalNavAnatomy = defineStyleAnatomy({
         "hover:bg-[--highlight] hover:text-[--text-color]",
         "focus-visible:ring-2 ring-[--ring] outline-none",
         "text-[--muted]",
-        "data-[current=true]:text-[--brand]"
+        "data-[selected=true]:text-[--brand]"
     ]),
     parentItem: cva([
         "UI-VerticalNav__parentItem",
@@ -34,7 +34,7 @@ export const VerticalNavAnatomy = defineStyleAnatomy({
         "UI-VerticalNav__icon",
         "flex-shrink-0 -ml-1 mr-3 h-6 w-6",
         "text-[--muted]",
-        "group-hover/vnav:text-[--text-color] data-[current=true]:text-[--brand] data-[current=true]:group-hover/vnav:text-[--brand]"
+        "group-hover/vnav:text-[--text-color] data-[selected=true]:text-[--brand] data-[selected=true]:group-hover/vnav:text-[--brand]"
     ]),
     subList: cva([
         "UI-VerticalNav__subList",
@@ -88,7 +88,7 @@ export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((p
                         itemClassName,
                     )}
                     aria-current={item.isCurrent ? "page" : undefined}
-                    data-current={item.isCurrent}
+                    data-selected={item.isCurrent}
                 >
                     {item.icon && <item.icon
                         className={cn(
@@ -96,7 +96,7 @@ export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((p
                             iconClassName,
                         )}
                         aria-hidden="true"
-                        data-current={item.isCurrent}
+                        data-selected={item.isCurrent}
                     />}
                     <span>{item.name}</span>
                     {item.addon}
@@ -116,7 +116,7 @@ export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((p
                                     parentItemClassName,
                                 )}
                                 aria-current={item.isCurrent ? "page" : undefined}
-                                data-current={item.isCurrent}
+                                data-selected={item.isCurrent}
                             >
                                 <div className="w-full flex items-center">
                                     {item.icon && <item.icon
@@ -125,7 +125,7 @@ export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((p
                                             iconClassName,
                                         )}
                                         aria-hidden="true"
-                                        data-current={item.isCurrent}
+                                        data-selected={item.isCurrent}
                                     />}
                                     <span>{item.name}</span>
                                 </div>

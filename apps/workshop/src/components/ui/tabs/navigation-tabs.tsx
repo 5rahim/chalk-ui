@@ -17,7 +17,7 @@ export const NavigationTabsAnatomy = defineStyleAnatomy({
         "focus-visible:bg-[--highlight]",
         "text-[--muted]",
         "hover:text-[--text-color]",
-        "data-[current=true]:border-[--brand] data-[current=true]:font-semibold data-[current=true]:text-[--brand]"
+        "data-[selected=true]:border-[--brand] data-[selected=true]:font-semibold data-[selected=true]:text-[--brand]"
     ]),
     icon: cva([
         "UI-NavigationTabs__icon",
@@ -65,7 +65,7 @@ export const NavigationTabs = React.forwardRef<HTMLElement, NavigationTabsProps>
                         tabClassName,
                     )}
                     aria-current={tab.isCurrent ? "page" : undefined}
-                    data-current={tab.isCurrent}
+                    data-selected={tab.isCurrent}
                 >
                     {tab.icon && <tab.icon
                         className={cn(
@@ -73,7 +73,7 @@ export const NavigationTabs = React.forwardRef<HTMLElement, NavigationTabsProps>
                             iconClassName
                         )}
                         aria-hidden="true"
-                        data-current={tab.isCurrent}
+                        data-selected={tab.isCurrent}
                     />}
                     <span>{tab.name}</span>
                 </a>

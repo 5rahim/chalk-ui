@@ -226,7 +226,6 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         disableSortBy: true,
         disableGlobalFilter: true,
         header: ({ table }) => {
-            console.log(table.getIsSomeRowsSelected())
             return (
                 <Checkbox
                     checked={table.getIsSomeRowsSelected() ? "indeterminate" : table.getIsAllRowsSelected()}

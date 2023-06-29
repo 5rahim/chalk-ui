@@ -398,6 +398,7 @@ const RadioGroupField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
 
         return <RadioGroup
             {...props}
+            value={controller.field.value}
             ref={ref}
         />
     },
@@ -436,6 +437,7 @@ const RadioCardsField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
             radioLabelClassName="font-semibold flex-none flex"
             stackClassName="flex flex-col md:flex-row gap-2 space-y-0"
             {...props}
+            value={controller.field.value}
             ref={ref}
         />
     },
@@ -476,6 +478,7 @@ const SegmentedControlField = React.memo(withControlledInput(forwardRef<HTMLInpu
             radioLabelClassName="font-semibold flex-none"
             stackClassName="flex flex-row gap-2 p-1 bg-gray-50 dark:bg-gray-800 rounded-[--radius] w-fit space-y-0"
             {...props}
+            value={controller.field.value}
             ref={ref}
         />
     },
@@ -624,7 +627,7 @@ export const Field = createPolymorphicComponent<"div", FieldProps, {
 Field.displayName = "Field"
 
 // Utils
-const getFormError = (name: string, formState: FormState<{ [x: string]: any }>) => {
+export const getFormError = (name: string, formState: FormState<{ [x: string]: any }>) => {
     return get(formState.errors, name)
 }
 

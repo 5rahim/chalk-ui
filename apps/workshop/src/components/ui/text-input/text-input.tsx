@@ -37,7 +37,6 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
                     <InputIcon icon={leftIcon} size={size} side={"left"}/>
 
                     <input
-                        // type="" /!\ We do not put the type since it can be multiple
                         id={basicFieldProps.id}
                         name={basicFieldProps.name}
                         className={cn(

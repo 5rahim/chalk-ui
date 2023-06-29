@@ -1,8 +1,8 @@
-import { UIProvider } from "ui"
 import type { Preview } from "@storybook/react"
 import "../src/styles/globals.css"
 import "../src/styles.css"
 import { withThemeByDataAttribute } from "@storybook/addon-styling"
+import { UIProvider } from "../src/components/ui/core"
 
 const withUI = (StoryFn: Function) => {
    return (

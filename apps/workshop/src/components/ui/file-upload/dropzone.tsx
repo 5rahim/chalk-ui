@@ -184,7 +184,7 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
         noDrag,
         onError: (e) => {
             onError && onError(e)
-            console.log(e)
+            console.error(e)
         },
         validator,
         accept,
@@ -324,9 +324,8 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
             {withImagePreview && <div className={cn(DropzoneAnatomy.imagePreviewGrid(), imagePreviewGridClassName)}>
                 {files?.map((file: any, index) => {
                     return (
-                        <div className={cn(DropzoneAnatomy.imagePreviewContainer(), imagePreviewContainerClassName)}>
+                        <div key={file.name} className={cn(DropzoneAnatomy.imagePreviewContainer(), imagePreviewContainerClassName)}>
                             <div
-                                key={file.name}
                                 className={cn(DropzoneAnatomy.imagePreview(), imagePreviewClassName)}
                                 style={{
                                     backgroundImage: file ? `url(${file.preview})` : undefined,

@@ -53,7 +53,7 @@ export const Card: React.FC<CardProps> = React.forwardRef<HTMLDivElement, CardPr
 
     return (
         <Paper
-            className={cn(paperClassName, cardClassName)}
+            className={cn(paperClassName, cardClassName, className)}
         >
             {header && <div className={cn(CardAnatomy.header(), headerClassName)}>
                 {header}

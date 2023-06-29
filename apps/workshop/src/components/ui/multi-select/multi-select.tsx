@@ -145,14 +145,13 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
         setValues(v => v.filter(a => a !== value))
     }
 
-
     const closeList = () => {
         listDisclosure.close()
     }
 
     /**
      * When the user is focused on the input and hits enter,
-     * if the there's only one option and the tagInputValue is not empty, add the option to the selected values
+     * if there's only one option, and the tagInputValue is not empty, add the option to the selected values
      * @param event
      */
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
@@ -223,7 +222,6 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
             ulRef.current?.scrollTo({ top: 0, behavior: "smooth" })
         } else {
             node?.scrollIntoView({
-                // behavior: 'smooth',
                 block: "nearest",
                 inline: "end",
             })
@@ -306,7 +304,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                                         listDisclosure.close()
                                     }, 200)
                                 }}
-                                onKeyPress={e => {
+                                onKeyUp={e => {
                                     e.key === "Enter" && e.preventDefault()
                                 }}
                                 disabled={basicFieldProps.isDisabled || isLoading}

@@ -22,7 +22,7 @@ export const HorizontalNavAnatomy = defineStyleAnatomy({
         "UI-HorizontalNav__item",
         "group/item inline-flex items-center h-full select-none rounded-[--radius] p-3 leading-none no-underline outline-none transition-colors",
         "text-[--muted] hover:bg-[--highlight] hover:text-[--text-color] focus:bg-[--highlight]",
-        "data-[selected=true]:text-[--brand]",
+        "data-[selected=true]:text-[--brand]", // Selected
         "text-sm font-[600] leading-none"
     ]),
     icon: cva([

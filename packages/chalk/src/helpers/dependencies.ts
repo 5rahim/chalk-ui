@@ -8,13 +8,13 @@ import fs from "fs-extra"
 export type DependencyDef = string[];
 
 export const mainDependencies: DependencyDef[] = [
-    ["class-variance-authority", "^0.6.0", ""],
-    ["react-aria", "^3.24.0", ""],
+    ["class-variance-authority", "^0.6.1", ""],
+    ["react-aria", "^3.26.0", ""],
     ["lodash", "^4.17.21", ""],
-    ["@types/lodash", "^4.14.194", "-D"],
+    ["@types/lodash", "^4.14.195", "-D"],
     ["tailwindcss-animate", "latest", ""],
     ["clsx", "^1.2.1", ""],
-    ["tailwind-merge", "^1.13.1", ""]
+    ["tailwind-merge", "^1.13.2", ""]
 ]
 export type AvailableDependencies = keyof typeof mainDependencies;
 
