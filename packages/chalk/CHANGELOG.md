@@ -1,5 +1,14 @@
 # @rahimstack/chalk-ui
 
+## 0.5.1
+
+### Patch Changes
+
+- [`18eda32`](https://github.com/5rahim/chalk-ui/commit/18eda32b611989c597183b8d6f86e28047da4b1c) Thanks [@5rahim](https://github.com/5rahim)! - Changes
+
+  - **NumberInput**: Updated control border colors
+  - **Input**: Updated dark mode border colors
+
 ## 0.5.0
 
 ### Minor Changes
