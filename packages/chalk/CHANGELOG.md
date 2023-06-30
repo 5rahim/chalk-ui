@@ -1,5 +1,13 @@
 # @rahimstack/chalk-ui
 
+## 0.5.0
+
+### Minor Changes
+
+- [`c4ac966`](https://github.com/5rahim/chalk-ui/commit/c4ac966a7281d07cba276c1db1ec87010d13a4c8) Thanks [@5rahim](https://github.com/5rahim)! - - **CLI**: "update" can now install/update dependencies
+  - **MultiSelect**: Fixed "maximum update depth exceeded" error
+  - **Combobox**: (In the list) Display option's value when there is no label
+
 ## 0.4.2
 
 ### Patch Changes
