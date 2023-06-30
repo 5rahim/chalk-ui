@@ -24,7 +24,7 @@ export const InputAnatomy = defineStyleAnatomy({
                 lg: "px-4 py-3 text-md",
             },
             intent: {
-                basic: "hover:border-gray-300",
+                basic: "hover:border-gray-300 dark:hover:border-gray-600",
                 filled: "bg-gray-100 dark:bg-gray-800 border-transparent focus:bg-white",
             },
             hasError: {

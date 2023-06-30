@@ -29,9 +29,8 @@ export const NumberInputAnatomy = defineStyleAnatomy({
             "UI-NumberInput__control",
             "flex flex-none items-center justify-center w-10 border shadow-sm text-lg font-medium",
             "disabled:shadow-none disabled:pointer-events-none",
-            "hover:!bg-gray-100 transition",
-            "!bg-white border-gray-300 disabled:!bg-gray-50 disabled:!bg-gray-50 disabled:text-gray-300 disabled:border-gray-200",
-            "dark:!bg-gray-900 dark:border-gray-700 dark:hover:!bg-gray-800",
+            "transition",
+            "bg-[--paper] hover:bg-[--highlight] border-[--border] disabled:!bg-gray-50 disabled:!bg-gray-50 disabled:text-gray-300 disabled:border-gray-200",
             "dark:disabled:!bg-gray-800 dark:disabled:border-gray-800 dark:disabled:text-gray-700",
         ], {
             variants: {
