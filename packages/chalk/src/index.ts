@@ -402,7 +402,24 @@ async function main() {
             const updatedComponents = await script_updateComponents(availableComponents, installedComponents, dir)
 
             if (updatedComponents) {
-                await script_addComponents({ components: updatedComponents, projectInfo, componentDestination: dir, isUpdating: true })
+                const dependenciesToInstall = await script_addComponents({
+                    components: updatedComponents,
+                    projectInfo,
+                    componentDestination: dir,
+                    isUpdating: true
+                })
+
+                console.log("")
+
+                const { willInstall } = await prompts({
+                    type: "confirm",
+                    name: "willInstall",
+                    message: "Do you want to automatically install the dependencies?",
+                    initial: true,
+                })
+
+                // Install dependencies
+                await script_installDependencies(dependenciesToInstall, willInstall)
             }
 
             logger.success("Component(s) updated.")

@@ -261,7 +261,7 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>((props
                                         disabled: basicFieldProps.isDisabled,
                                     })}
                                 >
-                                    {item.label}
+                                    {item.label ?? item.value}
                                 </li>
                             ))}
                         </ul>

@@ -67,6 +67,7 @@ export interface MultiSelectProps extends Omit<TextInputProps, "defaultValue" | 
     isLoading?: boolean
     discrete?: boolean
     max?: number
+    loadingContent?: React.ReactNode
 }
 
 export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>((props, ref) => {
@@ -91,76 +92,100 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
         menuContainerClassName,
         menuItemClassName,
         menuItemImageClassName,
+        loadingContent = <p className="w-full text-center">...</p>,
         ...rest
     }, basicFieldProps] = extractBasicFieldProps<MultiSelectProps>(props, useId())
 
     const inputRef = useRef<HTMLInputElement>(null)
     const ulRef = useRef<HTMLUListElement>(null)
+
     const [values, setValues] = useState<MultiSelectOption["value"][]>((value ?? defaultValue) ?? [])
     const [tagInputValue, setTagInputValue] = useState("")
+
     const inputFocused = useDisclosure(false)
     const listDisclosure = useDisclosure(false)
-
     const [highlightedOptionIndex, setHighlightedOptionIndex] = useState(0)
 
+    // Options that are displayed in the list
     const selectOptions = useMemo(() => {
-        // if user types an input, filter by similar labels or values
-        // else show options which are not selected
+        // Filter by similar labels or values based on input
+        // Show options which are not selected if input is empty
         const filtered = _filter(options, o => !values.includes(o.value))
         return tagInputValue.length > 0 ? _filter(filtered, o => (o.label
             ? o.label.toLowerCase().includes(tagInputValue.toLowerCase())
             : o.value.toLowerCase().includes(tagInputValue.toLowerCase()))) : filtered
     }, [options, values, tagInputValue])
 
-    useEffect(() => {
-        onChange && onChange(values)
-    }, [values])
-
+    // Control value
     useEffect(() => {
         if (value) setValues(value)
     }, [value])
 
+    // Emit changes
+    function handleChange(v: MultiSelectOption["value"][]) {
+        onChange && onChange(v)
+    }
+
     function handleAddValue(value: string) {
         if (!!max) {
+            // Simply add new value
             if (max !== 1 && values.length < max) {
-                setValues([...values, value])
+                setValues(v => {
+                    const newValue = [...v, value]
+                    handleChange(newValue)
+                    return newValue
+                })
             }
+            // Truncate and add new value
             if (max !== 1 && values.length >= max) {
-                setValues([...values.slice(0, values.length - 1), value])
+                setValues(v => {
+                    const newValue = [...v.slice(0, v.length - 1), value]
+                    handleChange(newValue)
+                    return newValue
+                })
             }
+            // Replace current value
             if (max === 1) {
-                setValues([value])
+                setValues(v => {
+                    const newValue = [value]
+                    handleChange(newValue)
+                    return newValue
+                })
             }
-        }
-        if (!max) {
-            setValues([...values, value])
+        } else {
+            setValues(v => {
+                const newValue = [...v, value]
+                handleChange(newValue)
+                return newValue
+            })
         }
     }
 
     function handlePopValue() {
-        setValues(v => v.slice(0, v.length - 1))
+        setValues(v => {
+            const newValue = v.slice(0, v.length - 1)
+            handleChange(newValue)
+            return newValue
+        })
     }
 
     function handleRemoveValue(value: string) {
-        setValues(v => v.filter(a => a !== value))
+        setValues(v => {
+            const newValue = v.filter(a => a !== value)
+            handleChange(newValue)
+            return newValue
+        })
     }
 
-    const closeList = () => {
-        listDisclosure.close()
-    }
-
-    /**
-     * When the user is focused on the input and hits enter,
-     * if there's only one option, and the tagInputValue is not empty, add the option to the selected values
-     * @param event
-     */
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
         if (event.key === "Enter" && inputRef.current) {
-            if (selectOptions.length === 1 && selectOptions[0] && tagInputValue.length > 0) {
+            // Add the only option
+            if (selectOptions.length === 1 && !!selectOptions[0] && tagInputValue.length > 0) {
                 handleAddValue(selectOptions[0].value) // Add value
                 setTagInputValue("") // Reset input
-                closeList() // Close list
+                listDisclosure.close() // Close list
             }
+            // Add the highlighted option
             if (tagInputValue.length === 0 && selectOptions[highlightedOptionIndex]) {
                 handleAddValue(selectOptions[highlightedOptionIndex]!.value)
                 setHighlightedOptionIndex(0)
@@ -171,6 +196,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
         }
     }, [selectOptions, highlightedOptionIndex, tagInputValue])
 
+    // Handle key navigation
     const handleKeyUp = useCallback((e: KeyboardEvent) => {
         if (e.key === "ArrowDown") {
             setHighlightedOptionIndex(i => {
@@ -189,7 +215,6 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
     }, [selectOptions])
 
     useEffect(() => {
-
         window.addEventListener("keyup", handleKeyUp)
         if (inputRef.current) {
             inputRef.current.addEventListener("keydown", handleKeyDown)
@@ -207,7 +232,6 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
 
     function getMap() {
         if (!itemsRef.current) {
-            // Initialize the Map on first usage.
             itemsRef.current = new Map()
         }
         return itemsRef.current
@@ -260,11 +284,11 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                         }}
                     >
 
-
                         {isLoading ? (
-                            <p>...</p>
+                            <div>{loadingContent}</div>
                         ) : <>
 
+                            {/*List selected values*/}
                             {values.map((value, index) => (
                                 <span key={index}>
                                     <Badge
@@ -312,6 +336,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                                 ref={inputRef}
                             />
 
+                            {/*List*/}
                             <Transition
                                 show={listDisclosure.isOpen && selectOptions.length > 0}
                                 as={Fragment}
@@ -381,6 +406,10 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
 })
 
 MultiSelect.displayName = "MultiSelect"
+
+/* -------------------------------------------------------------------------------------------------
+ * Utils
+ * -----------------------------------------------------------------------------------------------*/
 
 function useDisclosure(
     initialState: boolean,
