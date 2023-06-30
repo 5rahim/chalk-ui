@@ -4,7 +4,9 @@
 
 ### Minor Changes
 
-- [`c4ac966`](https://github.com/5rahim/chalk-ui/commit/c4ac966a7281d07cba276c1db1ec87010d13a4c8) Thanks [@5rahim](https://github.com/5rahim)! - - **CLI**: "update" can now install/update dependencies
+- [`c4ac966`](https://github.com/5rahim/chalk-ui/commit/c4ac966a7281d07cba276c1db1ec87010d13a4c8) Thanks [@5rahim](https://github.com/5rahim)!
+
+  - **CLI**: "update" can now install/update dependencies
   - **MultiSelect**: Fixed "maximum update depth exceeded" error
   - **Combobox**: (In the list) Display option's value when there is no label
 
@@ -14,8 +16,8 @@
 
 - [`c84e85f`](https://github.com/5rahim/chalk-ui/commit/c84e85fda32fdc5c3c81379d2495b13478720682) Thanks [@5rahim](https://github.com/5rahim)!
 
-  - [TypesafeForm] Fixed RadioGroup, RadioCards, SegmentedControl default value not showing
-  - Changed `data-[current=]` to `data-[selected=]`
+  - **TypesafeForm**: Fixed RadioGroup, RadioCards, SegmentedControl default value not showing
+  - Changed attribute `data-[current=]` to `data-[selected=]`
   - Updated dependencies
 
 ## 0.4.1
@@ -37,8 +39,8 @@
 
   #### Components
 
-  - Fixed Checkbox component visual shift
-  - Removed commented legacy code for Switch component
+  - **Checkbox**: Fixed visual shift when selected
+  - **SWitch**: Removed commented legacy code
   - Updated dependencies
 
 ## 0.3.2
