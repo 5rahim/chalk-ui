@@ -96,8 +96,6 @@ function withControlledInput<T extends FieldBaseProps>(InputComponent: React.FC<
                             // defaultValue={get(formState.defaultValues, inputProps.name)} // Default prop, can be overridden in Field component definition
                             value={render.field.value} // Default prop, can be overridden in Field component definition
                             onChange={callAllHandlers(inputProps.onChange, render.field.onChange)} // Default prop, can be overridden in Field component
-                            // definition
-                            onBlur={callAllHandlers(inputProps.onBlur, render.field.onBlur)} // Default prop, can be overridden in Field component definition
                             isRequired={isRequired}
                             {...inputProps} // Props passed in <FieldComponent /> then props passed in <Field.Component />
                             // The props below will not be overridden.
@@ -406,14 +404,6 @@ const RadioGroupField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
 
 /**
  * @zod z.string()
- * @example
- * fieldClassName="flex w-full"
- * fieldLabelClassName="text-base sm:text-base md:text-base"
- * stackClassName="flex flex-col md:flex-row gap-2"
- * radioWrapperClassName="block w-full p-4 cursor-pointer transition border border-gray-200 rounded-md data-checked:bg-white data-checked:ring-2
- *    data-checked:ring-brand-500" radioControlClassName="absolute right-2 top-2 h-5 w-5 text-xs"
- * radioLabelClassName="font-semibold flex-none flex"
- * radioHelpClassName="text-sm"
  *
  */
 const RadioCardsField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<RadioGroupProps>>(
@@ -446,15 +436,6 @@ const RadioCardsField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
 
 /**
  * @zod z.string()
- *
- * @example
- * fieldClassName="flex w-full"
- * fieldLabelClassName="text-md"
- * stackClassName="flex flex-row gap-2 p-1 bg-gray-50 rounded-md border w-[fit-content]"
- * radioWrapperClassName="block w-[fit-content] py-1 px-3 cursor-pointer border border-transparent transition rounded-md data-checked:bg-white
- *    data-checked:border-gray-300 data-checked:shadow-sm text-gray-500 data-checked:text-black"
- * radioControlClassName="hidden"
- * radioLabelClassName="font-semibold flex-none flex" radioHelpClassName="text-base"
  *
  */
 const SegmentedControlField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<RadioGroupProps>>(

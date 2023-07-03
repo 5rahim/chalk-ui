@@ -133,6 +133,7 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
                                 RadioGroupAnatomy.radioContainer(),
                                 radioContainerClassName,
                             )}
+                            data-checked={api.value === opt.value}
                         >
 
                             <div
@@ -168,6 +169,7 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
                                 )}
                                 {...api.getRadioLabelProps({ value: opt.value })}
                                 data-disabled={!!basicFieldProps.isDisabled}
+                                data-checked={api.value === opt.value}
                             >
                                 {opt.label ?? opt.value}
                             </div>
@@ -178,6 +180,7 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
                                     radioHelpClassName,
                                 )}
                                 {...api.getRadioLabelProps({ value: opt.value })}
+                                data-checked={api.value === opt.value}
                             >
                                 {opt.help}
                             </div>}

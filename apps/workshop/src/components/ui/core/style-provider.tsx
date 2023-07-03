@@ -1,6 +1,5 @@
 "use client"
 import React from "react"
-import { SSRProvider } from "react-aria"
 
 /* -------------------------------------------------------------------------------------------------
  * Locale
@@ -51,16 +50,14 @@ export interface UIProviderProps {
  */
 export const UIProvider: React.FC<UIProviderProps> = ({ children, config }) => {
 
-    let localeConfig: UILocaleConfig = {
+    const localeConfig: UILocaleConfig = {
         ...__LocaleConfigDefaultValue,
         ...config,
     }
 
     return (
         <__LocaleConfigContext.Provider value={localeConfig}>
-            <SSRProvider>
-                {children}
-            </SSRProvider>
+            {children}
         </__LocaleConfigContext.Provider>
     )
 }

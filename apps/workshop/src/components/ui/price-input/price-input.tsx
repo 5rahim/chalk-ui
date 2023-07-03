@@ -1,7 +1,7 @@
 "use client"
 
 import Dinero, { Currency } from "dinero.js"
-import React, { ChangeEvent, useCallback, useEffect, useId, useMemo, useState } from "react"
+import React, { ChangeEvent, useCallback, useId, useMemo, useState } from "react"
 import { extractBasicFieldProps } from "../basic-field"
 import { useUILocaleConfig } from "../core"
 import { TextInput, TextInputProps } from "../text-input"
@@ -57,11 +57,6 @@ export const PriceInput = React.forwardRef<HTMLInputElement, PriceInputProps>((p
     const formattedValue = dineroObject.toFormat()
     // 6. Track user input (what the user sees), the initial state is formatted
     const [inputValue, setInputValue] = useState(formatNumber(dineroObject.toUnit().toString(), _locale, _decimalSpace))
-    // -------------------------------------------------------------------------------------------------
-    // Emit updates as dinero object changes
-    useEffect(() => {
-        onChange && onChange(amount)
-    }, [dineroObject])
 
 
     const toFloat = useCallback((value: string) => {
@@ -90,10 +85,12 @@ export const PriceInput = React.forwardRef<HTMLInputElement, PriceInputProps>((p
         } catch (e) {
             setInputValue("0")
             setAmount(_amount ?? 0)
+            onChange && onChange(_amount ?? 0)
         }
         // Maintain the precision (eg: precision 2 => 400 -> 40000)
         const _fixed = parseInt((_amount * _multiplier).toFixed(_decimalSpace))
         setAmount(_fixed) // Update dinero object (#4)
+        onChange && onChange(_fixed)
         setInputValue(_value) // Update displayed input (#6)
     }
 

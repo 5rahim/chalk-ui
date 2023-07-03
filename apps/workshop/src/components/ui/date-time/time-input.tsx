@@ -26,7 +26,7 @@ export const TimeInputAnatomy = defineStyleAnatomy({
  * TimeInput
  * -----------------------------------------------------------------------------------------------*/
 
-export interface TimeInputProps extends Omit<TimeFieldStateOptions, "locale">,
+export interface TimeInputProps extends Omit<TimeFieldStateOptions, "locale" | "label">,
     ComponentWithAnatomy<typeof TimeInputAnatomy>,
     BasicFieldOptions,
     InputStyling {
