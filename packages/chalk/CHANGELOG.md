@@ -1,5 +1,17 @@
 # @rahimstack/chalk-ui
 
+## 0.5.2
+
+### Patch Changes
+
+- [`ea8e19c`](https://github.com/5rahim/chalk-ui/commit/ea8e19c493c9aa6f6a1d95e86c3b96c6a4d094ce) Thanks [@5rahim](https://github.com/5rahim)! - Changes
+
+  - **Core**: Removed `SSRProvider` from UIProvider
+  - **PriceInput**: Fixed "maximum update depth exceeded" error
+  - **Fields**: Removed `onBlur` prop
+  - **RadioGroup**: Fixed `data-selected` props
+  - **TimeInput**: Fixed type error
+
 ## 0.5.1
 
 ### Patch Changes
