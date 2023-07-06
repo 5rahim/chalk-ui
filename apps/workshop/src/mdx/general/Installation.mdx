@@ -1,6 +1,7 @@
 {/* Installation.mdx */}
 
 
+
 import { Meta } from "@storybook/blocks";
 
 <Meta
@@ -10,23 +11,15 @@ import { Meta } from "@storybook/blocks";
 
 # Installation
 
-## Prerequisites
-
-Tailwind is required.<br/>
-
-To ensure proper configuration with Tailwind, it is recommended to set up your application using tools such as create-next-app or other suitable templates for new projects.<br/>
-Alternatively, you can manually install Tailwind by following the instructions provided in the [documentation.](https://tailwindcss.com/docs/installation).
-
 ## CLI
 
-- The installation will overwrite your **tailwind.config.js** file. Commit any changes beforehand.
-- This command will set up the required files as well as prompt you for which components you want to add.
-- The CLI can automatically install the necessary dependencies or just update your package.json.
-
-
 ```shell
-npx @rahimstack/chalk-ui init
+npx @rahimstack/chalk-ui@latest init
 ```
+
+- ✅ This command will set up the required files and dependencies.
+- ⚠️ The initialization will overwrite some of your files, commit any changes beforehand.
+- This also works with `pnpm dlx`
 
 
 ## Configuration

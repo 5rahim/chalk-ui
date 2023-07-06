@@ -1,6 +1,7 @@
 {/* CLI.mdx */}
 
 
+
 import { Meta } from "@storybook/blocks";
 
 <Meta
@@ -11,6 +12,8 @@ import { Meta } from "@storybook/blocks";
 
 ## Init
 
+Read the **Installation** section to complete the configuration.
+
 - ✅ Select the components you want to install.
 - ✅ Shared components will be automatically added.
 - ✅ Installs dependencies or updates package.json.
@@ -18,26 +21,23 @@ import { Meta } from "@storybook/blocks";
 
 
 Caveats:
-- Ideally, `init` should only be run once.
-- Ideally, you should have a `src` folder to avoid unforeseen bugs.
-- Note that it will not install Tailwind or add `UIProvider` to your project.
+- `init` should only be run once.
 
 ```shell
 npx @rahimstack/chalk-ui init
 ```
 
-Arguments:
-- `--all`: Install all components.
+Options:
+- `--all`: Skip component selection and add all of them.
 
 ## Add
 
 - ✅ This command will add the components you pass as argument.
 - ✅ It will add shared components.
-- ✅ It will not add a component that already exists.
 - ✅ It will install dependencies or update package.json.
 
 Caveats:
-- You should have run `init` first.
+- It will not add a component that already exists.
 
 ```shell
 npx @rahimstack/chalk-ui add [...components]
@@ -63,52 +63,10 @@ npx @rahimstack/chalk-ui@<version> update
   - Merging will overwrite the local file's content with the content of the temporary file.
   - Skipping will keep the current content.
 
-### Example
-
-Let's say you want to update your `Dropzone` component.
-
-```text
-├── src
-│   ├── components
-│   │   ├── ui                      // Generated
-│   │   │   ├── file-upload
-│   │   │   │   ├── dropzone.tsx
-│   │   │   │   ├── helper.ts
-│   │   │   │   ├── index.ts
-│   │   │   │   ├── locales.json
-│   │   │   │   └── use-file-upload-handler.ts
-│   │   │   └── ...
-```
-
-```shell
-√ Do you want to maintain your custom component styles (anatomy classes)? ... yes
-Great, your anatomy functions will be preserved.
-[button/index.tsx]: No difference
-* Action required
-[file-upload/dropzone.tsx]: Temporary file created, modify it if necessary (*)
-C:\...\src\components\ui\TEMP_dropzone.tsx
-√ What do you want to do? [merge, skip] ...
-```
-
-- Open `TEMP_dropzone.tsx` to check the upcoming changes. You should see that your anatomy classes have been preserved.
-- If, for example, you've modified the original file icons, those changes will not be preserved.
-- In that case, I recommend using a tool like [Mergely](https://editor.mergely.com/) to merge your changes with the temporary file.
-- Save the changes made to `TEMP_dropzone.tsx`, then **merge** in the CLI.
-
-```shell
-* Action required
-[file-upload/locales.json]: Temporary file created, modify it if necessary (*)
-C:\...\src\components\ui\TEMP_locales.json
-```
-
-- In the case of a locale file, you should **skip** unless there is an addition in the upcoming changes.
-
 ## Remove
 
 - ✅ Removes component files and directories.
 - ✅ Uninstalls dependencies that are not used by any other component.
-
-Caveats:
 - It will not remove unused shared components.
 
 ```shell
@@ -117,11 +75,11 @@ npx @rahimstack/chalk-ui remove [...components]
 
 ## Clean
 
-This command will remove all components and uninstall all used dependencies.
+- ✅ This command will remove all components and uninstall their dependencies.
 
 Caveats:
 - ⚠️ This can uninstall dependencies that you use elsewhere (like lodash).
-- ⚠️ It will not change tailwind.config.js or globals.scss
+- ⚠️ The **tailwind.config.js** and **globals.scss** files will stay the same
 
 ```shell
 npx @rahimstack/chalk-ui clean

@@ -7,6 +7,7 @@ import { UIProvider } from "../src/components/ui/core"
 const withUI = (StoryFn: Function) => {
    return (
        <UIProvider>
+          {/* @ts-expect-error */}
           <StoryFn/>
        </UIProvider>
    )
@@ -29,7 +30,7 @@ const preview: Preview = {
       },
       options: {
          storySort: {
-            order: ["Introduction", "Installation"]
+            order: ["Introduction", "Installation", "Dark mode", "CLI", "Customization"]
          }
       }
    },
