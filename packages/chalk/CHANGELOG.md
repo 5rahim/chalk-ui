@@ -1,5 +1,17 @@
 # @rahimstack/chalk-ui
 
+## 0.5.3
+
+### Patch Changes
+
+- [`c63d916`](https://github.com/5rahim/chalk-ui/commit/c63d91679d9d25cb60396c830c6ca431f0cb8798) Thanks [@5rahim](https://github.com/5rahim)! - Changes
+
+  - **PageHeader**: Fixed component props and ref
+  - **Fields**: Fixed _RadioCards_ and _SegmentedControl_ data attributes
+  - **PriceInput**: Remove unused import
+  - **CLI**: Refactored commands
+  - **CLI**: `update` can now display the differences in the terminal
+
 ## 0.5.2
 
 ### Patch Changes
