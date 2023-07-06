@@ -421,7 +421,7 @@ const RadioCardsField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
         return <RadioGroup
             fieldClassName="w-full"
             fieldLabelClassName="text-md"
-            radioContainerClassName="block w-full p-4 cursor-pointer dark:bg-gray-900 transition border border-[--border] rounded-[--radius] data-checked:ring-2 data-checked:ring-[--ring]"
+            radioContainerClassName="block w-full p-4 cursor-pointer dark:bg-gray-900 transition border border-[--border] rounded-[--radius] data-[checked=true]:ring-2 data-[checked=true]:ring-[--ring]"
             radioControlClassName="absolute right-2 top-2 h-5 w-5 text-xs"
             radioHelpClassName="text-sm"
             radioLabelClassName="font-semibold flex-none flex"
@@ -453,7 +453,7 @@ const SegmentedControlField = React.memo(withControlledInput(forwardRef<HTMLInpu
         return <RadioGroup
             fieldClassName="!w-fit"
             fieldLabelClassName="text-md"
-            radioContainerClassName="block w-fit py-1 px-3 cursor-pointer border border-transparent transition rounded-[--radius] data-checked:bg-white dark:data-checked:bg-gray-700 data-checked:border-[--border] data-checked:shadow-sm text-[--muted] data-checked:text-[--text-color]"
+            radioContainerClassName="block w-fit py-1 px-3 cursor-pointer border border-transparent transition rounded-[--radius] data-[checked=true]:bg-white dark:data-[checked=true]:bg-gray-700 data-[checked=true]:border-[--border] data-[checked=true]:shadow-sm text-[--muted] data-[checked=true]:text-[--text-color]"
             radioControlClassName="hidden"
             radioHelpClassName="text-base"
             radioLabelClassName="font-semibold flex-none"

@@ -2,8 +2,8 @@ import fs from "fs-extra"
 import path from "path"
 import { type PackageJson } from "type-fest"
 import _ from "lodash"
-import { mainDependencies } from "@/src/helpers/dependencies"
 import { getAvailableComponentDependencyList } from "@/src/helpers/components"
+import { mainDependencies } from "@/src/commands/init"
 
 export function getPackageInfo() {
    const packageJsonPath = path.join("package.json")

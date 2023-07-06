@@ -47,7 +47,7 @@ export const PageHeaderAnatomy = defineStyleAnatomy({
  * PageHeader
  * -----------------------------------------------------------------------------------------------*/
 
-export interface PageHeaderProps extends React.ComponentPropsWithRef<"div">,
+export interface PageHeaderProps extends React.ComponentPropsWithRef<"header">,
     ComponentWithAnatomy<typeof PageHeaderAnatomy>,
     VariantProps<typeof PageHeaderAnatomy.title> {
     title?: string
@@ -83,6 +83,8 @@ export const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>((pro
                     bodyClassName,
                     className,
                 )}
+                ref={ref}
+                {...rest}
             >
                 <div className={cn(PageHeaderAnatomy.detailsContainer(), detailsContainerClassName)}>
                     {image && <div className="flex-shrink-0">

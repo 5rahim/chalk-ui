@@ -1,9 +1,10 @@
 import { promises as fs, statSync } from "fs"
 import path from "path"
 import * as process from "process"
-import { DependencyDef, mainDependencies } from "@/src/helpers/dependencies"
+import { DependencyDef } from "@/src/helpers/dependencies"
 import _ from "lodash"
 import { exists } from "fs-extra"
+import { mainDependencies } from "@/src/commands/init"
 
 type FileData = {
     name: string;
