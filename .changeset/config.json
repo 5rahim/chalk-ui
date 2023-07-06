@@ -15,7 +15,6 @@
   "ignore": [
     "web",
     "docs",
-    "workshop",
-    "ui"
+    "workshop"
   ]
 }
