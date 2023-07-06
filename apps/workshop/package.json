@@ -48,7 +48,6 @@
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "latest",
     "use-debounce": "^9.0.4",
-    "webpack": "5.88.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
