@@ -1,5 +1,21 @@
 # @rahimstack/chalk-ui
 
+## 0.5.5
+
+### Patch Changes
+
+- [`8484500`](https://github.com/5rahim/chalk-ui/commit/8484500c4bfc26067b0c67880377f451e90c9c67) Thanks [@5rahim](https://github.com/5rahim)! - Changes
+
+  - **DataGrid**: Made `isLoading` and `enableRowSelection` optional
+  - **DataGrid**: Introduced `getFilteringType` for `createDataGridColumns`. Allowed the use of other meta props with
+    helpers like `withFiltering` through decoupling
+  - **Toast**: Toast element is now customizable
+  - **Calendar**: Fixed title style
+  - **LoadingSpinner**: Introduced standalone `Spinner` component
+  - [BREAKING] **TypesafeForm**: `submit-field`. Property `loadingScreen` renamed to `loadingOverlay` .
+    Property `showLoadingScreenOnSuccess` renamed to `showLoadingOverlayOnSuccess`
+  - **Fields**: Updated some comments
+
 ## 0.5.4
 
 ### Patch Changes
