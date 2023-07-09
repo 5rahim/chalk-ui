@@ -1,5 +1,11 @@
 # @rahimstack/chalk-ui
 
+## 0.5.6
+
+### Patch Changes
+
+- [`4084628`](https://github.com/5rahim/chalk-ui/commit/40846284bf536528d1d82a957e6d29f194ff8a3f) Thanks [@5rahim](https://github.com/5rahim)! - Fixed `update` prompt
+
 ## 0.5.5
 
 ### Patch Changes
