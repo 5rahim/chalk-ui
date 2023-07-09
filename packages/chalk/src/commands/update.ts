@@ -36,7 +36,7 @@ export const update = new Command()
             {
                 type: "text",
                 name: "dir",
-                message: "Where would you like to add the components?",
+                message: "Where are your components located?",
                 initial: projectInfo?.srcDir ? "./src/components/ui" : "./components/ui",
             },
             {
