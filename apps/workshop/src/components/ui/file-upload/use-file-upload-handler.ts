@@ -37,7 +37,7 @@ export function useFileUploadHandler<A extends "single" | "multiple">(singleOrMu
         /**
          * @example
          * type FileUploadObject = { url: string, ext: string }
-         * const res = await profilePictureUploader.uploadSingleFile()
+         * const res = await profilePictureUploader.uploadFiles()
          * if (res) mutate({ ...data, picture: res.url })
          */
         uploadFiles: async () => {

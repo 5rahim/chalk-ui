@@ -1,10 +1,10 @@
 import { APIButton } from "../components/APIButton";
 import { Meta } from '@storybook/blocks';
-import * as Stories from '../stories/Tooltip.stories';
+import * as Stories from '../stories/Toast.stories';
 
 <Meta of={Stories} name="README"/>
 
-# Tooltip
+# Toast
 
 Display information related to an element when the element receives keyboard focus or the mouse hovers over it.
 
@@ -13,11 +13,26 @@ Display information related to an element when the element receives keyboard foc
 In order to install the component, run the following command:
 
 ```shell
-npx @rahimstack/chalk-ui add tooltip
+npx @rahimstack/chalk-ui add toast
 ```
 
 ## Reference
 
 Knowing the dependencies can help you customize or extend the component with additional functionality.
 
-<APIButton href={"https://www.radix-ui.com/docs/primitives/components/tooltip#api-reference"}>Radix</APIButton>
+<APIButton href={"https://react-hot-toast.com/docs/toast"}>Radix</APIButton>
+
+## Use
+
+Add `ToastProvider` at the root of your project
+
+```tsx
+const Layout = () => {
+    return (
+        <UIProvider>
+            <App/>
+            <ToastProvider/>
+        </UIProvider>
+    )
+}
+```

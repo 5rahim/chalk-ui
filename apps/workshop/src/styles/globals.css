@@ -4,9 +4,6 @@
 
 @layer base {
 
-    body {
-        @apply dark:bg-[#121212] dark:text-white min-h-screen relative;
-    }
 
     :root {
         --radius: 0.375rem;
@@ -105,22 +102,22 @@ html {
 /*    @apply text-gray-800 dark:text-gray-100*/
 /*}*/
 
-/*h1 {*/
-/*    @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl*/
-/*}*/
+h1 {
+    @apply scroll-m-20 !text-4xl font-extrabold tracking-tight lg:text-5xl
+}
 
-/*h2 {*/
-/*    @apply scroll-m-20 text-3xl font-bold tracking-tight first:mt-0*/
-/*}*/
+h2 {
+    @apply scroll-m-20 !text-3xl font-bold tracking-tight first:mt-0
+}
 
-/*h3 {*/
-/*    @apply scroll-m-20 text-2xl font-bold tracking-tight*/
-/*}*/
+h3 {
+    @apply scroll-m-20 !text-2xl font-bold tracking-tight
+}
 
-/*h4 {*/
-/*    @apply scroll-m-20 text-xl font-bold tracking-tight*/
-/*}*/
+h4 {
+    @apply scroll-m-20 !text-xl font-bold tracking-tight
+}
 
-/*h5 {*/
-/*    @apply scroll-m-20 text-lg font-bold tracking-tight*/
-/*}*/
+h5 {
+    @apply scroll-m-20 !text-lg font-bold tracking-tight
+}

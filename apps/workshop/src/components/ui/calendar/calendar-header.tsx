@@ -2,7 +2,7 @@
 
 import _capitalize from "lodash/capitalize"
 import React from "react"
-import { AriaButtonProps, useDateFormatter, VisuallyHidden } from "react-aria"
+import { AriaButtonProps, VisuallyHidden } from "react-aria"
 import { CalendarState, RangeCalendarState } from "react-stately"
 import { IconButton } from "../button"
 import { useUILocaleConfig } from "../core"
@@ -27,11 +27,6 @@ export function CalendarHeader({
                                    locale,
                                }: CalendarHeaderProps) {
     const { countryLocale } = useUILocaleConfig()
-    let monthDateFormatter = useDateFormatter({
-        month: "long",
-        year: "numeric",
-        timeZone: state.timeZone,
-    })
 
     const { onPress: prevButtonOnPress, ...prevButtonRest } = prevButtonProps
     const { onPress: nextButtonOnPress, ...nextButtonRest } = nextButtonProps
@@ -58,31 +53,25 @@ export function CalendarHeader({
                 prevButtonOnPress && prevButtonOnPress(e as any)
             }}
             />
-            <h2
+            <h3
                 // We have a visually hidden heading describing the entire visible range,
                 // and the calendar itself describes the individual month
                 // so we don't need to repeat that here for screen reader users.
                 aria-hidden
                 className="flex-1 align-center font-bold text-md text-center"
             >
-                {/*{monthDateFormatter.format(*/}
-                {/*   state.visibleRange.start.toDate(state.timeZone),*/}
-                {/*)}*/}
                 {_capitalize(Intl.DateTimeFormat((locale ?? countryLocale), {
                     month: "long", year: "numeric",
                 }).format(state.visibleRange.start.toDate(state.timeZone)))}
-            </h2>
-            <h2
+            </h3>
+            <h3
                 aria-hidden
                 className="flex-1 align-center font-bold text-md text-center"
             >
-                {/*{monthDateFormatter.format(*/}
-                {/*   state.visibleRange.start.add({ months: 1 }).toDate(state.timeZone),*/}
-                {/*)}*/}
                 {_capitalize(Intl.DateTimeFormat((locale ?? countryLocale), {
                     month: "long", year: "numeric",
                 }).format(state.visibleRange.start.add({ months: 1 }).toDate(state.timeZone)))}
-            </h2>
+            </h3>
             <IconButton
                 size="sm"
                 intent="primary-subtle"

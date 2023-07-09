@@ -245,6 +245,9 @@ importers:
 
   apps/workshop:
     dependencies:
+      '@faker-js/faker':
+        specifier: ^8.0.2
+        version: 8.0.2
       '@googlemaps/js-api-loader':
         specifier: ^1.16.2
         version: 1.16.2
@@ -281,6 +284,9 @@ importers:
       '@react-types/shared':
         specifier: ^3.18.1
         version: 3.18.1(react@18.2.0)
+      '@tanstack/react-query':
+        specifier: ^4.29.14
+        version: 4.29.14(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/react-table':
         specifier: ^8.9.3
         version: 8.9.3(react-dom@18.2.0)(react@18.2.0)
@@ -3260,7 +3266,6 @@ packages:
   /@faker-js/faker@8.0.2:
     resolution: { integrity: sha512-Uo3pGspElQW91PCvKSIAXoEgAUlRnH29sX2/p89kg7sP1m2PzCufHINd0FhTXQf6DYGiUlVncdSPa2F9wxed2A== }
     engines: { node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13' }
-    dev: true
 
   /@fal-works/esbuild-plugin-global-externals@2.1.2:
     resolution: { integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ== }

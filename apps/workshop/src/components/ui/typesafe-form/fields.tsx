@@ -27,21 +27,8 @@ import { AddressInput, AddressInputProps } from "../address-input"
 import { ColorInput, ColorInputProps } from "../color-input"
 import { Dropzone, DropzoneProps, FileUploadHandler } from "../file-upload"
 
-type Args<T extends Function> = T extends (...args: infer R) => any ? R : never
-
-function callAllHandlers<T extends (event: any) => void>(
-    ...fns: (T | undefined)[]
-) {
-    return function func(event: Args<T>[0]) {
-        fns.some((fn) => {
-            fn?.(event)
-            return event?.defaultPrevented
-        })
-    }
-}
-
 /**
- * Add the BasicField types to any Field since they are children
+ * Add the BasicField types to any Field
  */
 interface FieldBaseProps extends Omit<BasicFieldOptions, "name"> {
     name: string
@@ -110,9 +97,7 @@ function withControlledInput<T extends FieldBaseProps>(InputComponent: React.FC<
     )
 }
 
-/**
- * Causes hydration issues because it populates the input once the component is rendered on the client
- */
+
 const withUncontrolledInput = <T extends FieldBaseProps>(InputComponent: React.FC<T>) => {
     return forwardRef<HTMLInputElement, T>(
         (props, ref) => {
@@ -404,7 +389,6 @@ const RadioGroupField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
 
 /**
  * @zod z.string()
- *
  */
 const RadioCardsField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<RadioGroupProps>>(
     (props, ref) => {
@@ -436,7 +420,6 @@ const RadioCardsField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
 
 /**
  * @zod z.string()
- *
  */
 const SegmentedControlField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<RadioGroupProps>>(
     (props, ref) => {
@@ -529,6 +512,7 @@ const AddressField = React.memo(withControlledInput(forwardRef<HTMLInputElement,
 )))
 
 type DropzoneFieldProps = Omit<DropzoneProps, "onChange" | "uploadHandler"> & { uploadHandler: FileUploadHandler }
+
 /**
  * @zod presets.dropzone.min(1)
  * @example
@@ -537,10 +521,10 @@ type DropzoneFieldProps = Omit<DropzoneProps, "onChange" | "uploadHandler"> & { 
  * const file = await uploadHandler.uploadSingleFile()
  *
  * <Field.Dropzone
- *    label="Curriculum vitae"
+ *    label="Resume"
  *    name="resume"
  *    handler={uploadHandler}
- *    help="Document de 1 à 5 pages. (.pdf, .docx, .doc). < 5 MB."
+ *    help="1-5 pages. (.pdf, .docx, .doc). < 5 MB."
  * />
  */
 const DropzoneField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<DropzoneFieldProps>>((props, ref) => {
@@ -607,11 +591,13 @@ export const Field = createPolymorphicComponent<"div", FieldProps, {
 
 Field.displayName = "Field"
 
-// Utils
+/* -------------------------------------------------------------------------------------------------
+ * Utils
+ * -----------------------------------------------------------------------------------------------*/
+
 export const getFormError = (name: string, formState: FormState<{ [x: string]: any }>) => {
     return get(formState.errors, name)
 }
-
 
 export type ReactRef<T> = React.RefCallback<T> | React.MutableRefObject<T>
 
@@ -644,6 +630,19 @@ export function mergeRefs<T>(...refs: (ReactRef<T> | null | undefined)[]) {
 export function useMergeRefs<T>(...refs: (ReactRef<T> | null | undefined)[]) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     return useMemo(() => mergeRefs(...refs), refs)
+}
+
+type Args<T extends Function> = T extends (...args: infer R) => any ? R : never
+
+function callAllHandlers<T extends (event: any) => void>(
+    ...fns: (T | undefined)[]
+) {
+    return function func(event: Args<T>[0]) {
+        fns.some((fn) => {
+            fn?.(event)
+            return event?.defaultPrevented
+        })
+    }
 }
 
 const isTouched = (

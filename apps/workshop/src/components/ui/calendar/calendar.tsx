@@ -62,12 +62,12 @@ export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "creat
                         prevButtonOnPress && prevButtonOnPress(e as any)
                     }}
                 />
-                <h2 className={cn(CalendarAnatomy.title())}>
+                <h4 className={cn(CalendarAnatomy.title())}>
                     {_capitalize(
                         Intl.DateTimeFormat(countryLocale, { month: "long", year: "numeric", })
                             .format(state.visibleRange.start.toDate(state.timeZone))
                     )}
-                </h2>
+                </h4>
                 <IconButton
                     size="sm"
                     intent="primary-subtle"

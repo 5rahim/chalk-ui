@@ -15,8 +15,8 @@ export interface SubmitFieldProps extends Omit<ButtonProps, "type"> {
     role?: "submit" | "save" | "create" | "add" | "search" | "update"
     disabledOnSuccess?: boolean
     disableIfInvalid?: boolean
-    showLoadingScreenOnSuccess?: boolean
-    loadingScreen?: React.ReactNode
+    showLoadingOverlayOnSuccess?: boolean
+    loadingOverlay?: React.ReactNode
 }
 
 export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>((props, ref) => {
@@ -29,8 +29,8 @@ export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>
         role = "save",
         disabledOnSuccess = role === "create",
         disableIfInvalid = false,
-        showLoadingScreenOnSuccess = false,
-        loadingScreen,
+        showLoadingOverlayOnSuccess = false,
+        loadingOverlay,
         ...rest
     } = props
 
@@ -42,8 +42,8 @@ export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>
 
     return (
         <>
-            <ShowOnly when={role === "create" || showLoadingScreenOnSuccess}>
-                {loadingScreen ?? <LoadingOverlay show={formState.isSubmitSuccessful}/>}
+            <ShowOnly when={role === "create" || showLoadingOverlayOnSuccess}>
+                {loadingOverlay ?? <LoadingOverlay show={formState.isSubmitSuccessful}/>}
             </ShowOnly>
 
             <Button

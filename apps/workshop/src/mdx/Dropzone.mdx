@@ -1,0 +1,79 @@
+import { Meta } from '@storybook/blocks';
+import React from "react"
+import * as Stories from '../stories/Dropzone.stories';
+import { APIButton } from "../components/APIButton";
+
+<Meta of={Stories} name="README"/>
+
+# Dropzone
+
+## Installation
+
+In order to install the component, run the following command:
+
+```shell
+npx @rahimstack/chalk-ui add file-upload
+```
+
+## Reference
+
+Knowing the dependencies can help you customize or extend the component with additional functionality.
+
+<APIButton href={"https://react-dropzone.js.org/"}>React Dropzone</APIButton>
+
+
+## Use
+
+### Configuration
+
+You will need to configure the `useFileUploadHandler` hook in order to implement your own file upload API.
+
+- Go to `@/components/ui/file-upload/use-file-upload-handler.ts`
+- Update the **FileUploadObject** type with the **return type** of your upload API. It should **NOT** be an array.
+  - For example: `{ name: string, url: string }`. It all depends on your implementation.
+- Update the `uploadFiles` method. Uncomment the code and replace it with your API calls.
+- Make sure that your API handles **both cases** for `singleOrMultiple`.
+
+### Usage
+
+#### Options
+
+- Always pass the `uploadHandler` prop from the hook.
+- You can specify the `accept` prop. [Learn more](https://react-dropzone.org/#!/Accepting%20specific%20file%20types).
+- When uploading images, you can use the `withImagePreview` prop.
+
+#### Inside a form
+
+It is recommended to use `Dropzone` inside a form.
+
+```ts
+const uploadHandler = useFileUploadHandler("single")
+
+// onSuccess
+const res = await uploadHandler.uploadFiles()
+if (res) mutate({ ...data, picture: res.url })
+
+// Component
+<Field.Dropzone
+    name="picture"
+    label={"Picture"}
+    uploadHandler={uploadHandler}
+    accept={{ "image/png": [".png"] }}
+    withImagePreview
+/>
+```
+
+#### Outside a form
+
+```tsx
+const [files, setFiles] = useState<File[]>([])
+
+// Component
+<Dropzone
+    label={"Picture"}
+    uploadHandler={uploadHandler}
+    accept={{ "image/png": [".png"] }}
+    withImagePreview
+    onChange={setFiles}
+/>
+```

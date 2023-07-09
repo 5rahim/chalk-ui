@@ -12,15 +12,20 @@ export type DataGridFilteringProps = {
     valueFormatter?: (value: string) => string
 }
 
+/**
+ * Built-in filter functions supported DataGrid
+ */
+export type DataGridSupportedFilterFn = Extract<BuiltInFilterFn, "equalsString" | "arrIncludesSome">
+
 const withFiltering = (params: DataGridFilteringProps) => {
-    const fns: { [key: string]: BuiltInFilterFn } = {
+    const fns: { [key: string]: DataGridSupportedFilterFn } = {
         select: "equalsString",
         boolean: "equalsString",
         checkbox: "arrIncludesSome",
         radio: "equalsString"
     }
     return {
-        filterFn: fns[params.type] as BuiltInFilterFn,
+        filterFn: fns[params.type] as DataGridSupportedFilterFn,
         meta: {
             filter: {
                 name: params.name,
@@ -33,24 +38,36 @@ const withFiltering = (params: DataGridFilteringProps) => {
     }
 }
 
+const getFilteringType = (type: DataGridFilteringProps["type"]) => {
+    const fns: { [key: string]: DataGridSupportedFilterFn } = {
+        select: "equalsString",
+        boolean: "equalsString",
+        checkbox: "arrIncludesSome",
+        radio: "equalsString"
+    }
+    return fns[type] as DataGridSupportedFilterFn
+}
+
 /* -------------------------------------------------------------------------------------------------
  * Columns
  * -----------------------------------------------------------------------------------------------*/
 
-interface DataGridOptions {
+export type DataGridColumnDefOptions = {
     withFiltering: typeof withFiltering
+    getFilteringType: typeof getFilteringType
 }
 
 /**
  * Return
  * @example
- * const columns = useMemo(() => createDataGridColumns<Item>(() => [
+ * const columns = useMemo(() => createDataGridColumns<T>(() => [
  *  ...
  * ]), [])
  * @param callback
  */
-export function createDataGridColumns<T extends Record<string, any>>(callback: (options: DataGridOptions) => ColumnDef<T>[]) {
+export function createDataGridColumns<T extends Record<string, any>>(callback: (options: DataGridColumnDefOptions) => ColumnDef<T>[]) {
     return callback({
-        withFiltering
+        withFiltering,
+        getFilteringType
     })
 }

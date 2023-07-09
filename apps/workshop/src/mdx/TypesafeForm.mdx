@@ -1,0 +1,142 @@
+import { Meta } from '@storybook/blocks';
+import React from "react"
+import * as Stories from '../stories/TypesafeForm.stories';
+
+<Meta of={Stories} name="README"/>
+
+# TypesafeForm
+
+This group of components takes advantage of librairies like `react-hook-form` and `zod` to provide an ideal
+developer experience for building client-side forms.
+
+## Installation
+
+In order to install the component, run the following command:
+
+```shell
+npx @rahimstack/chalk-ui add datagrid
+```
+
+## Usage
+
+### Schema
+
+First, you need to define a `zod` schema using the `createTypesafeFormSchema` helper function.
+
+```tsx
+const testSchema = createTypesafeFormSchema(({ z, presets }) => z.object({
+    name: z.string().min(2),
+    birthday: presets.datePicker,
+    phone: presets.phone,
+    profilePicture: presets.dropzone
+}))
+```
+
+#### createTypesafeFormSchema
+
+This helper function provides multiple presets to use in conjunction with related `Field` components.
+You can find these presets here: `@/components/ui/typesafe-form/schema-presets.ts`.
+
+### Anatomy
+
+Then, you need to define the layout of your form in accordance with the schema you define.
+
+- Use the `Field` polymorphic component to add various form components. These field components are purposefully defined and have built-in control and integration with TypesafeForm.
+- By using `InferType` you ensure that `data` is correctly typed.
+- Field registering and error handling is built-in.
+
+Here is an example with the schema defined above:
+
+```tsx
+import {createTypesafeFormSchema, Field, InferType, TypesafeForm} from "@/components/ui/typesafe-form"
+import {useFileUploadHandler} from "@/components/ui/file-upload"
+
+// Schema
+const testSchema = createTypesafeFormSchema(({ z, presets }) => z.object({
+    name: z.string().min(2),
+    birthday: presets.datePicker,
+    phone: presets.phone,
+    profilePicture: presets.dropzone
+}))
+
+const Demo = () => {
+
+    const uploadHandler = useFileUploadHandler("single")
+
+    return (
+        <TypesafeForm<InferType<typeof testSchema>>
+            schema={testSchema}
+            onSuccess={async data => {
+                    const image = await uploadHandler.uploadFiles()
+                    if (image) {
+                        mutate({ ...data, image: image.url })
+                    }
+              }}
+            onError={console.log}
+        >
+            <Field.Text
+                label={"Name"}
+                name={"name"}
+            />
+            <Field.DatePicker
+                label={"Birthday"}
+                name={"birthday"}
+            />
+            <Field.PhoneNumber
+                label={"Phone"}
+                name={"phone"}
+            />
+            <Field.Dropzone
+                label={"Profile picture"}
+                name={"profilePicture"}
+                accept={{ "image/*": [".png", ".jpeg", ".jpg"] }}
+                withImagePreview
+                uploadHandler={uploadHandler}
+            />
+            <Field.Submit>Submit</Field.Submit>
+        </TypesafeForm>
+    )
+
+}
+```
+
+### Fields
+
+See `@/components/ui/typesafe-form/fields.tsx` to understand how each field component is defined along with their `zod` type and examples.
+
+#### Field.Submit
+
+- This components can have multiple roles defined by the `role` prop: `"submit" | "save" | "create" | "add" | "search" | "update"`
+- The default role is **save**.
+- By default, when a form is submitted with a `role` of **create**, a `LoadingOverlay` will be shown. You can turn this behavior off by setting `disabledOnSuccess` to `false`.
+- `disableIfInvalid`, default `false`.
+- `showLoadingOverlayOnSuccess`, default `false`.
+- You can change the loading overlay using the `loadingOverlay` prop of type `React.ReactNode`.
+
+### Function as child
+
+- `form` can be used to control the form. [Learn more](https://react-hook-form.com/docs/useform)
+
+```tsx
+<TypesafeForm<InferType<typeof testSchema>>
+    {...args}
+>
+    {(form) => <>
+        <div>
+            ...
+        </div>
+    </>}
+</TypesafeForm>
+```
+
+## DangerZone
+
+`DangerZone` is a utility component to facilitate deletion.
+
+### Use
+
+```tsx
+<ShowOnly when={role === "update"}>
+    <DangerZone actionText="Delete this offer" onDelete={() => deleteOffer({ id: offer.id })}/>
+</ShowOnly>
+```
