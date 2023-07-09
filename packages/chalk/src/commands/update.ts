@@ -31,7 +31,6 @@ export const update = new Command()
 
         if (!proceed) process.exit(0)
 
-
         const { dir, willInstall, maintainStyling } = await prompts([
             {
                 type: "text",
@@ -161,6 +160,7 @@ export const update = new Command()
                             console.log("")
                         } else {
                             await fs.promises.rm(tempFilePath)
+                            process.exit(0)
                             break
                         }
 
