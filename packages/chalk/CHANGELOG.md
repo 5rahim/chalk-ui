@@ -1,5 +1,11 @@
 # @rahimstack/chalk-ui
 
+## 0.5.7
+
+### Patch Changes
+
+- [`d001e34`](https://github.com/5rahim/chalk-ui/commit/d001e3431609b299b8e37b0ea4f277ef1612c8b2) Thanks [@5rahim](https://github.com/5rahim)! - Publish changes from v0.5.5 and v0.5.6, allow `update` to exit process while in loop
+
 ## 0.5.6
 
 ### Patch Changes
