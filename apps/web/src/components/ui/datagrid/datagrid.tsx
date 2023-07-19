@@ -121,7 +121,7 @@ export type DataGridFetchingHandler = {
     getIsFiltering: () => boolean
 }
 
-export interface DataGridProps<T extends Record<string, any>> extends React.ComponentPropsWithoutRef<"div">,
+export interface DataGridProps<T extends Record<string, any> | null | undefined> extends React.ComponentPropsWithoutRef<"div">,
     ComponentWithAnatomy<typeof DataGridAnatomy> {
     data: T[] | null | undefined
     children?: React.ReactNode
@@ -137,12 +137,12 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
      */
     rowCount: number
     // Display loading spinner when data is loading
-    isLoading: boolean
+    isLoading?: boolean
     /**
      * Enables and displays checkboxes for each row.
      * Use in conjunction with onItemSelected()
      */
-    enableRowSelection: boolean
+    enableRowSelection?: boolean
     /**
      * Returns selected rows.
      *
@@ -175,7 +175,7 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
     isFetching?: boolean
 }
 
-export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>) {
+export function DataGrid<T extends Record<string, any> | null | undefined>(props: DataGridProps<T>) {
 
     const { locale: lng } = useUILocaleConfig()
 
@@ -204,9 +204,9 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         data = [],
         rowCount,
         hideColumns = [],
-        isLoading,
-        isFetching,
-        enableRowSelection,
+        isLoading = false,
+        isFetching = false,
+        enableRowSelection = false,
         onItemSelected,
         itemsPerPage: _limit = 5,
         /**/
@@ -222,11 +222,10 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
      */
     const _columns = useMemo<ColumnDef<T>[]>(() => [{
         id: "select",
-        size: 1,
+        size: 0,
         disableSortBy: true,
         disableGlobalFilter: true,
         header: ({ table }) => {
-            console.log(table.getIsSomeRowsSelected())
             return (
                 <Checkbox
                     checked={table.getIsSomeRowsSelected() ? "indeterminate" : table.getIsAllRowsSelected()}
@@ -399,6 +398,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                     )}
                 </div>
 
+                {/*Display filters*/}
                 {(selectedFilteredColumns.length > 0) && <div className={cn(DataGridAnatomy.filterContainer(), filterContainerClassName)}>
                     {/*Display selected filters*/}
                     {table.getAllLeafColumns().filter(n => columnFilters.map(a => a.id).includes(n.id)).map(col => {

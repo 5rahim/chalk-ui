@@ -7,7 +7,7 @@ import React from "react"
  * -----------------------------------------------------------------------------------------------*/
 
 export const PageHeaderAnatomy = defineStyleAnatomy({
-    body: cva("UI-PageHeader__body md:flex md:items-center md:justify-between md:space-x-5"),
+    body: cva("UI-PageHeader__body md:flex md:items-center md:justify-between space-y-2 md:space-y-0 md:space-x-5"),
     title: cva("UI-PageHeader__title font-bold text-gray-900 dark:text-gray-200", {
         variants: {
             size: {
@@ -23,7 +23,7 @@ export const PageHeaderAnatomy = defineStyleAnatomy({
     }),
     actionContainer: cva([
         "UI-PageHeader__actionContainer",
-        "justify-stretch mt-6 flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end",
+        "justify-stretch flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end",
         "sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3"
     ]),
     description: cva([
@@ -99,9 +99,9 @@ export const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>((pro
                         </p>}
                     </div>
                 </div>
-                <div className={cn(PageHeaderAnatomy.actionContainer(), actionContainerClassName)}>
+                {!!action && <div className={cn(PageHeaderAnatomy.actionContainer(), actionContainerClassName)}>
                     {action}
-                </div>
+                </div>}
             </header>
         </>
     )

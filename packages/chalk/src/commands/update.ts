@@ -8,7 +8,6 @@ import { script_installDependencies } from "@/src/helpers/dependencies"
 import { getProjectInfo } from "@/src/helpers/project"
 import chalk from "chalk"
 import path from "path"
-import _ from "lodash"
 import fs from "fs"
 import { diffLines } from "diff"
 
@@ -95,8 +94,11 @@ export const update = new Command()
                         content = mergeFileContent(installedFile.content, updatedFile.content)
                     }
 
+                    // Get diffs
+                    const diffs = diffLines(installedFile.content, content)
+
                     // If there is no difference, continue
-                    if (_.isEqual(content, installedFile.content)) {
+                    if (!diffs.some(change => !!change.removed || !!change.added)) {
                         console.log(prefix, chalk.dim(`No updates found`))
                         continue
                     }

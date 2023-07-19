@@ -27,19 +27,19 @@ export const CalendarAnatomy = defineStyleAnatomy({
 export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "createCalendar" | "locale"> & { locale?: string }) {
 
     let { countryLocale } = useUILocaleConfig()
+    const _locale = locale ?? countryLocale
+
     let state = useCalendarState({
         ...props,
-        locale: locale ?? countryLocale,
+        locale: _locale,
         createCalendar,
     })
-
 
     let ref = useRef<HTMLDivElement>(null)
     let {
         calendarProps,
         prevButtonProps: { onPress: prevButtonOnPress, ...prevButtonProps },
         nextButtonProps: { onPress: nextButtonOnPress, ...nextButtonProps },
-        title,
     } = useCalendar(
         props,
         state,
@@ -64,7 +64,7 @@ export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "creat
                 />
                 <h4 className={cn(CalendarAnatomy.title())}>
                     {_capitalize(
-                        Intl.DateTimeFormat(countryLocale, { month: "long", year: "numeric", })
+                        Intl.DateTimeFormat(_locale, { month: "long", year: "numeric", })
                             .format(state.visibleRange.start.toDate(state.timeZone))
                     )}
                 </h4>
@@ -89,4 +89,3 @@ export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "creat
 }
 
 Calendar.displayName = "Calendar"
-

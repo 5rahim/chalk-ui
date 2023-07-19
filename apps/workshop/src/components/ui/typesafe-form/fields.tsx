@@ -1,9 +1,8 @@
 "use client"
 
-import { DateValue, getLocalTimeZone, parseDate, Time } from "@internationalized/date"
-import { RangeValue } from "@react-types/shared"
+import { getLocalTimeZone, parseDate, Time } from "@internationalized/date"
 import addDays from "date-fns/addDays"
-import React, { forwardRef, useEffect, useMemo, useState } from "react"
+import React, { forwardRef, useCallback, useEffect, useMemo } from "react"
 import { Controller, FormState, get, useController, useFormContext } from "react-hook-form"
 import { createPolymorphicComponent } from "./polymorphic-component"
 import { SubmitField } from "./submit-field"
@@ -26,6 +25,7 @@ import { currencies } from "../price-input/currencies"
 import { AddressInput, AddressInputProps } from "../address-input"
 import { ColorInput, ColorInputProps } from "../color-input"
 import { Dropzone, DropzoneProps, FileUploadHandler } from "../file-upload"
+import { TimeValue } from "react-aria"
 
 /**
  * Add the BasicField types to any Field
@@ -62,7 +62,7 @@ const _Field: any = {}
 function withControlledInput<T extends FieldBaseProps>(InputComponent: React.FC<T>) {
     return forwardRef<FieldProps, T>(
         (inputProps, ref) => {
-            const { control, formState } = useFormContext()
+            const { control, formState, ...context } = useFormContext()
             const { shape } = useFormSchema()
 
             /* Automatically get the required status from the Zod Schema */
@@ -73,7 +73,7 @@ function withControlledInput<T extends FieldBaseProps>(InputComponent: React.FC<
                     name={inputProps.name}
                     control={control}
                     rules={{ required: inputProps.isRequired }}
-                    render={(render) => (
+                    render={({ field: { ref: _ref, ...field } }) => (
                         /**
                          * We pass "value, onChange, onBlur, error, isRequired" to all components that will be defined using the wrapper.
                          * For other components like "Switch" and "Checkbox" which do not use the "value" prop, you need to deconstruct it to avoid it
@@ -81,14 +81,14 @@ function withControlledInput<T extends FieldBaseProps>(InputComponent: React.FC<
                          */
                         <InputComponent
                             // defaultValue={get(formState.defaultValues, inputProps.name)} // Default prop, can be overridden in Field component definition
-                            value={render.field.value} // Default prop, can be overridden in Field component definition
-                            onChange={callAllHandlers(inputProps.onChange, render.field.onChange)} // Default prop, can be overridden in Field component
+                            value={field.value} // Default prop, can be overridden in Field component definition
+                            onChange={callAllHandlers(inputProps.onChange, field.onChange)} // Default prop, can be overridden in Field component
                             isRequired={isRequired}
                             {...inputProps} // Props passed in <FieldComponent /> then props passed in <Field.Component />
                             // The props below will not be overridden.
                             // e.g: <Field.ComponentField error="Error" /> will not work
-                            error={getFormError(render.field.name, render.formState)?.message}
-                            ref={useMergeRefs(ref, render.field.ref)}
+                            error={getFormError(field.name, formState)?.message}
+                            ref={useMergeRefs(ref, _ref)}
                         />
                     )}
                 />
@@ -96,7 +96,6 @@ function withControlledInput<T extends FieldBaseProps>(InputComponent: React.FC<
         },
     )
 }
-
 
 const withUncontrolledInput = <T extends FieldBaseProps>(InputComponent: React.FC<T>) => {
     return forwardRef<HTMLInputElement, T>(
@@ -120,20 +119,21 @@ const withUncontrolledInput = <T extends FieldBaseProps>(InputComponent: React.F
 
 
 const TextInputField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<TextInputProps>>(
-    ({ value, ...props }, ref) => {
+    (props, ref) => {
         return <TextInput
-            value={value ?? ""}
             {...props}
+            value={props.value ?? ""}
             ref={ref}
         />
     },
 )))
 
 const TextareaField = React.memo(withControlledInput(forwardRef<HTMLTextAreaElement, FieldComponent<TextareaProps>>(
-    ({ value, ...props }, ref) => {
+    (props, ref) => {
+        const context = useFormContext()
         return <Textarea
-            value={value ?? ""}
             {...props}
+            value={props.value ?? ""}
             ref={ref}
         />
     },
@@ -157,6 +157,13 @@ const ColorInputField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
 })))
 
 /**
+ * /!\ DEVNOTE
+ * DatePickerField and DateRangePickerField's implementation is changed from the React-Aria defaults so that they use and return the Date type
+ */
+
+type DatePickerFieldProps = Omit<DatePickerProps, "value"> & { value?: Date }
+
+/**
  * @zod z.date()
  * @example
  * <Field.DateRangePicker
@@ -165,25 +172,34 @@ const ColorInputField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
  *    minValue={today(getLocalTimeZone())}
  * />
  */
-const DatePickerField = React.memo(withControlledInput(forwardRef<HTMLDivElement, FieldComponent<DatePickerProps>>((props, ref) => {
+const DatePickerField = React.memo(withControlledInput(forwardRef<HTMLDivElement, FieldComponent<DatePickerFieldProps>>((
+    { value, ...props }, ref) => {
+
     const context = useFormContext()
     const controller = useController({ name: props.name })
 
-    const defaultValue = useMemo(() => get(context.formState.defaultValues, props.name), [])
+    const defaultValue = useMemo(() => value ?? get(context.formState.defaultValues, props.name), [])
 
-    const [value, setValue] = React.useState<DateValue | undefined>(defaultValue ? parseDate(defaultValue.toISOString().split("T")[0]!) : undefined)
-
-    useEffect(() => {
-        controller.field.onChange(value?.toDate(getLocalTimeZone()))
-    }, [value])
+    const toCalendarDate = useCallback((value: Date) => {
+        const split = value.toISOString().split("T")
+        if (!!value && !!split[0]) {
+            return parseDate(split[0])
+        }
+        return parseDate(value.toISOString())
+    }, [])
 
     return <DatePicker
         {...props}
-        value={value}
-        onChange={setValue}
+        value={value ? toCalendarDate(value) : undefined}
+        onChange={value => {
+            controller.field.onChange(value?.toDate(getLocalTimeZone()))
+        }}
+        defaultValue={defaultValue ? toCalendarDate(defaultValue) : undefined}
         ref={ref}
     />
 })))
+
+type DateRangePickerFieldProps = Omit<DateRangePickerProps, "value"> & { value?: { start: Date, end: Date } }
 
 /**
  * @zod z.object({ start: z.custom<Date>(), end: z.custom<Date>() })
@@ -195,27 +211,35 @@ const DatePickerField = React.memo(withControlledInput(forwardRef<HTMLDivElement
  *    leftAddon="Date range"
  * />
  */
-const DateRangePickerField = React.memo(withControlledInput(forwardRef<HTMLDivElement, FieldComponent<DateRangePickerProps>>((props, ref) => {
+const DateRangePickerField = React.memo(withControlledInput(forwardRef<HTMLDivElement, FieldComponent<DateRangePickerFieldProps>>((
+    { value, ...props }, ref) => {
+
     const context = useFormContext()
     const controller = useController({ name: props.name })
 
     const defaultValue = useMemo(() => get(context.formState.defaultValues, props.name), [])
 
-    const [value, setValue] = React.useState<RangeValue<DateValue> | undefined>(defaultValue ? {
-        start: defaultValue.start ? parseDate(defaultValue.start.toISOString().split("T")[0]!) : parseDate(new Date().toISOString().split("T")[0]!),
-        end: defaultValue.end
-            ? parseDate(defaultValue.end.toISOString().split("T")[0]!)
-            : parseDate(addDays(new Date(), 1).toISOString().split("T")[0]!),
-    } : undefined)
-
-    useEffect(() => {
-        controller.field.onChange({ start: value?.start.toDate(getLocalTimeZone()), end: value?.end.toDate(getLocalTimeZone()) })
-    }, [value])
+    const toCalendarDate = useCallback((value: Date) => {
+        const split = value.toISOString().split("T")
+        if (!!value && !!split[0]) {
+            return parseDate(split[0])
+        }
+        return parseDate(value.toISOString())
+    }, [])
 
     return <DateRangePicker
         {...props}
-        value={value}
-        onChange={setValue}
+        value={value ? {
+            start: toCalendarDate(value.start),
+            end: toCalendarDate(value.end),
+        } : undefined}
+        onChange={value => {
+            controller.field.onChange({ start: value?.start.toDate(getLocalTimeZone()), end: value?.end.toDate(getLocalTimeZone()) })
+        }}
+        defaultValue={defaultValue ? {
+            start: defaultValue.start ? toCalendarDate(defaultValue.start) : toCalendarDate(new Date()),
+            end: defaultValue.end ? toCalendarDate(defaultValue.end) : toCalendarDate(addDays(new Date(), 1)),
+        } : undefined}
         ref={ref}
     />
 })))
@@ -223,31 +247,31 @@ const DateRangePickerField = React.memo(withControlledInput(forwardRef<HTMLDivEl
 
 export type TimeFieldObject = { hour: number, minute: number }
 
-const dateValueToTimeObject = (value: DateValue): TimeFieldObject => {
-    return { hour: (value as any).hour, minute: (value as any).minute }
+const dateValueToTimeObject = (value: TimeValue): TimeFieldObject => {
+    return { hour: value.hour, minute: value.minute }
 }
+
+export type TimeInputFieldProps = Omit<TimeInputProps, "value" | "defaultValue"> & { value?: TimeFieldObject }
 
 /**
  * @zod presets.time | z.object({ hour: z.number().min(0).max(23), minute: z.number().min(0).max(59) })
  * @example
  * <Field.Time name="time" leftAddon="Time" />
  */
-const TimeField = React.memo(withControlledInput(forwardRef<HTMLDivElement, FieldComponent<TimeInputProps>>((props, ref) => {
+const TimeField = React.memo(withControlledInput(forwardRef<HTMLDivElement, FieldComponent<TimeInputFieldProps>>((
+    { value, ...props }, ref) => {
+
     const context = useFormContext()
     const controller = useController({ name: props.name })
 
     const defaultValue = useMemo<TimeFieldObject | undefined>(() => get(context.formState.defaultValues, props.name), [])
 
-    const [value, setValue] = useState<any | undefined>(defaultValue ? new Time(defaultValue.hour, defaultValue.minute) : undefined)
-
-    useEffect(() => {
-        controller.field.onChange(dateValueToTimeObject(value))
-    }, [value])
 
     return <TimeInput
         {...props}
-        value={value}
-        onChange={setValue}
+        value={value ? new Time(value.hour, value.minute) : undefined}
+        onChange={value => controller.field.onChange(dateValueToTimeObject(new Time(value.hour, value.minute)))}
+        defaultValue={defaultValue ? new Time(defaultValue.hour, defaultValue.minute) : undefined}
         ref={ref}
     />
 })))
@@ -302,7 +326,7 @@ const ComboboxField = React.memo(withControlledInput(forwardRef<HTMLInputElement
         const context = useFormContext()
         return <Combobox
             {...props}
-            value={get(context.formState.defaultValues, props.name)} // Cannot be overridden
+            defaultValue={get(context.formState.defaultValues, props.name)} // Cannot be overridden
             ref={ref}
         />
     },
@@ -381,7 +405,6 @@ const RadioGroupField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
 
         return <RadioGroup
             {...props}
-            value={controller.field.value}
             ref={ref}
         />
     },
@@ -411,7 +434,6 @@ const RadioCardsField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
             radioLabelClassName="font-semibold flex-none flex"
             stackClassName="flex flex-col md:flex-row gap-2 space-y-0"
             {...props}
-            value={controller.field.value}
             ref={ref}
         />
     },
@@ -442,7 +464,6 @@ const SegmentedControlField = React.memo(withControlledInput(forwardRef<HTMLInpu
             radioLabelClassName="font-semibold flex-none"
             stackClassName="flex flex-row gap-2 p-1 bg-gray-50 dark:bg-gray-800 rounded-[--radius] w-fit space-y-0"
             {...props}
-            value={controller.field.value}
             ref={ref}
         />
     },

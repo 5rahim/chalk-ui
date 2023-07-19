@@ -140,6 +140,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, r
                     ButtonAnatomy.button({
                         size,
                         intent,
+                        rounded,
                         contentWidth,
                         isUppercase,
                         isDisabled: isDisabled || isLoading,

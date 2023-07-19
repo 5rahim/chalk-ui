@@ -49,7 +49,7 @@ interface DataGridOptions {
  * ]), [])
  * @param callback
  */
-export function createDataGridColumns<T extends Record<string, any>>(callback: (options: DataGridOptions) => ColumnDef<T>[]) {
+export function createDataGridColumns<T extends Record<string, any> | null | undefined>(callback: (options: DataGridOptions) => ColumnDef<T>[]) {
     return callback({
         withFiltering
     })

@@ -14,5 +14,13 @@
   "page": {
     "fr": "Page",
     "en": "Page"
+  },
+  "rows-selected": {
+    "fr": "lignes sélectionnées",
+    "en": "rows selected"
+  },
+  "row-selected": {
+    "fr": "ligne sélectionnée",
+    "en": "row selected"
   }
 }

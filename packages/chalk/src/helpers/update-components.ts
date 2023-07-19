@@ -23,7 +23,7 @@ export function mergeFileContent(originalContent: string, updatedContent: string
     }
 
     mergedLines.map((line, idx) => {
-        if (line.trim().includes("*") && line.includes("Anatomy")) { // * Anatomy
+        if (line.trim().startsWith("*") && line.includes("Anatomy")) { // * Anatomy
             let injectionIndex = idx + 3
             mergedLines.splice(injectionIndex, 0, ..._.flatten(preservedLines))
         }

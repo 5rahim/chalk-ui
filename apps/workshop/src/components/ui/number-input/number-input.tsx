@@ -30,7 +30,7 @@ export const NumberInputAnatomy = defineStyleAnatomy({
             "flex flex-none items-center justify-center w-10 border shadow-sm text-lg font-medium",
             "disabled:shadow-none disabled:pointer-events-none",
             "transition",
-            "bg-[--paper] hover:bg-[--highlight] border-[--border] disabled:!bg-gray-50 disabled:!bg-gray-50 disabled:text-gray-300 disabled:border-gray-200",
+            "bg-[--paper] hover:bg-gray-50 dark:hover:bg-gray-800 border-[--border] disabled:!bg-gray-50 disabled:!bg-gray-50 disabled:text-gray-300 disabled:border-gray-200",
             "dark:disabled:!bg-gray-800 dark:disabled:border-gray-800 dark:disabled:text-gray-700",
         ], {
             variants: {
@@ -120,8 +120,14 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     }))
 
     useEffect(() => {
-        api.setValue(defaultValue)
+        if (!value) {
+            api.setValue(defaultValue)
+        }
     }, [])
+
+    useEffect(() => {
+        value && api.setValue(value)
+    }, [value])
 
     const api = numberInput.connect(state, send, normalizeProps)
     return (

@@ -71,7 +71,7 @@ const _data = makeData(30)
 
 export async function fetchData() {
     // Simulate some network latency
-    await new Promise(r => setTimeout(r, 0))
+    await new Promise(r => setTimeout(r, 1000))
     return {
         rows: _data,
     }

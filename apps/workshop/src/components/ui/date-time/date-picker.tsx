@@ -1,7 +1,7 @@
 "use client"
 
 import { DateValue } from "@internationalized/date"
-import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
 import React, { useId, useRef } from "react"
 import { useDatePicker } from "react-aria"
@@ -56,6 +56,9 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
         ...datePickerProps
     }, basicFieldProps] = extractBasicFieldProps<DatePickerProps>(props, useId())
 
+    const { countryLocale } = useUILocaleConfig()
+    const _locale = locale ?? countryLocale
+
     let state = useDatePickerState(datePickerProps)
 
     let _ref = useRef<HTMLDivElement>(null)
@@ -66,9 +69,9 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
         buttonProps,
         dialogProps,
         calendarProps,
-    } = useDatePicker(datePickerProps, state, _ref)
+    } = useDatePicker({ ...datePickerProps, "aria-label": basicFieldProps.name }, state, _ref)
 
-    const { onPress, ...restButtonProps } = buttonProps
+    const { onPress, onFocusChange, ...restButtonProps } = buttonProps
 
     return (
         <BasicField
@@ -98,7 +101,7 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
                     )}
                 >
                     <div className="flex">
-                        <DateField {...fieldProps} />
+                        <DateField {...fieldProps} locale={_locale}/>
                     </div>
 
                     <IconButton
@@ -128,7 +131,7 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>((pro
                 {...dialogProps}
             >
                 <div className="flex justify-center">
-                    <Calendar {...calendarProps} />
+                    <Calendar {...calendarProps} locale={_locale}/>
                 </div>
             </Modal>
 

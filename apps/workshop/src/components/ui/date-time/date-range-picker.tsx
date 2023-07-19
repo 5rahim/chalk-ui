@@ -1,6 +1,6 @@
 "use client"
 
-import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
 import React, { useId, useRef } from "react"
 import { useDateRangePicker } from "react-aria"
@@ -37,6 +37,7 @@ export interface DateRangePickerProps extends Omit<DateRangePickerStateOptions, 
     ComponentWithAnatomy<typeof DateRangePickerAnatomy>,
     BasicFieldOptions,
     InputStyling {
+    locale?: string
 }
 
 export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerProps>((props, ref) => {
@@ -50,8 +51,12 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
         rightAddon,
         inputClassName,
         iconButtonClassName,
+        locale,
         ...datePickerProps
     }, basicFieldProps] = extractBasicFieldProps<DateRangePickerProps>(props, useId())
+
+    const { countryLocale } = useUILocaleConfig()
+    const _locale = locale ?? countryLocale
 
     let state = useDateRangePickerState(datePickerProps)
     let _ref = useRef<HTMLDivElement>(null)
@@ -65,7 +70,7 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
         calendarProps,
     } = useDateRangePicker(datePickerProps, state, _ref)
 
-    let { onPress, ...restButtonProps } = buttonProps
+    let { onPress, onFocusChange, ...restButtonProps } = buttonProps
 
     return (
         <BasicField
@@ -95,7 +100,9 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
                     )}
                 >
                     <div className="flex">
-                        <DateField {...startFieldProps} /> <span aria-hidden="true" className="px-1"> – </span> <DateField {...endFieldProps} />
+                        <DateField {...startFieldProps} locale={_locale}/>
+                        <span aria-hidden="true" className="px-1"> – </span>
+                        <DateField {...endFieldProps} locale={_locale}/>
                     </div>
                     <IconButton
                         intent="gray-basic"
@@ -122,7 +129,7 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
                     size="xl" isOpen={state.isOpen} onClose={state.close} isClosable
                     {...dialogProps}
                 >
-                    <div className="flex justify-center"><RangeCalendar {...calendarProps} /></div>
+                    <div className="flex justify-center"><RangeCalendar {...calendarProps} locale={_locale}/></div>
                 </Modal>
 
             </div>
