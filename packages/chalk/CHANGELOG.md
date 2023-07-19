@@ -1,5 +1,19 @@
 # @rahimstack/chalk-ui
 
+## 0.5.8
+
+### Patch Changes
+
+- [`c8859e5`](https://github.com/5rahim/chalk-ui/commit/c8859e5ba50262ae920b5768ca4b86549c9b1b1f) Thanks [@5rahim](https://github.com/5rahim)! - Changes
+
+  - **DatePicker**, **DateRangePicker**, **Calendar**: Fixed locale
+  - **NumberInput**: Fixed control transparency
+  - **PageHeader**: Fixed spacing issue on small screens
+  - **Button**: Fixed rounded property
+  - **DataGrid**: Changed loading style, disables pagination on loading, introduced selected row count
+  - **CLI**: Fixed `update` anatomy detection
+  - **CLI**: `update`: use diff.js to detect changes
+
 ## 0.5.7
 
 ### Patch Changes
