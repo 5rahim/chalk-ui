@@ -1,5 +1,5 @@
 import { BuiltInFilterFn, ColumnDef } from "@tanstack/react-table"
-import { z, ZodSchema } from "zod"
+import { AnyZodObject, z } from "zod"
 import { DataGridCellInputFieldContext } from "./datagrid-cell-input-field"
 import React from "react"
 
@@ -7,14 +7,14 @@ import React from "react"
  * Editing
  * -----------------------------------------------------------------------------------------------*/
 
-export type DataGridEditingHelperProps<S extends ZodSchema, Key extends keyof z.infer<S>> = {
+export type DataGridEditingHelperProps<S extends AnyZodObject, Key extends keyof z.infer<S>> = {
     schema: S,
     key: Key
     field: (props: DataGridCellInputFieldContext<S, Key>) => React.ReactElement,
     valueFormatter?: (value: unknown) => unknown
 }
 
-function withEditing<S extends ZodSchema, K extends keyof z.infer<S>>(params: DataGridEditingHelperProps<S, K>) {
+function withEditing<S extends AnyZodObject, K extends keyof z.infer<S>>(params: DataGridEditingHelperProps<S, K>) {
     return {
         editable: {
             ...params,

@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { DataGridEditingHelperProps } from "./helpers.ts"
 import _ from "lodash"
 import { DataGridCellInputFieldProps } from "./datagrid-cell-input-field.tsx"
-import { AnyZodObject, ZodSchema } from "zod"
+import { AnyZodObject } from "zod"
 import { useToast } from "../toast"
 
 interface DataGridEditingHookProps<T> {
@@ -40,7 +40,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
     const [activeValue, setActiveValue] = useState<unknown>(undefined)
     const [rowData, setRowData] = useState<T | undefined>(undefined)
     const [key, setKey] = useState<PropertyKey | undefined>(undefined)
-    const [schema, setSchema] = useState<ZodSchema | undefined>(undefined)
+    const [schema, setSchema] = useState<AnyZodObject | undefined>(undefined)
 
     // Keep track of editable columns (columns defined with the `withEditing` helper)
     const editableColumns = useMemo(() => {
@@ -115,7 +115,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
     const saveEdit = useCallback(() => {
         if (schema && rowData && key && typeof key === "string") {
             console.log(schema)
-            const parsed = (schema as AnyZodObject).shape[key].safeParse(rowData[key])
+            const parsed = schema.shape[key].safeParse(rowData[key])
 
             if (!parsed.success) {
                 toast.error(JSON.parse((parsed.error as any).message)?.[0]?.message)
@@ -155,7 +155,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
 
     }, [activeValue, rowData, data, onDataChange, isMutating])
     /**/
-    const handleUpdateValue = useCallback<DataGridCellInputFieldProps<ZodSchema, T, any>["onValueUpdated"]>((value, row, cell, schema, key) => {
+    const handleUpdateValue = useCallback<DataGridCellInputFieldProps<AnyZodObject, T, any>["onValueUpdated"]>((value, row, cell, schema, key) => {
         setActiveValue(value)
         setSchema(schema)
         setKey(key)

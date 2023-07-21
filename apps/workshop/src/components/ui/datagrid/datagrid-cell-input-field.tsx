@@ -4,7 +4,7 @@ import React from "react"
 import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { DataGridEditingHelperProps } from "./helpers.ts"
-import { z, ZodSchema } from "zod"
+import { AnyZodObject, z } from "zod"
 import { Cell, Row } from "@tanstack/react-table"
 
 /* -------------------------------------------------------------------------------------------------
@@ -21,21 +21,21 @@ export const DataGridCellInputFieldAnatomy = defineStyleAnatomy({
  * DataGridCellInputField
  * -----------------------------------------------------------------------------------------------*/
 
-export type DataGridCellInputFieldContext<Schema extends ZodSchema, Key extends keyof z.infer<Schema>> = {
+export type DataGridCellInputFieldContext<Schema extends AnyZodObject, Key extends keyof z.infer<Schema>> = {
     value: Extract<z.infer<Schema>, Key>,
     onChange: (value: z.infer<Schema>[Key]) => void
     ref: React.MutableRefObject<any>
 }
 
-export interface DataGridCellInputFieldProps<S extends ZodSchema, T extends Record<string, any>, K extends keyof z.infer<S>>
+export interface DataGridCellInputFieldProps<S extends AnyZodObject, T extends Record<string, any>, K extends keyof z.infer<S>>
     extends ComponentWithAnatomy<typeof DataGridCellInputFieldAnatomy> {
     meta: DataGridEditingHelperProps<S, K>
     cell: Cell<T, unknown>
     row: Row<T>
-    onValueUpdated: (value: unknown, row: Row<T>, cell: Cell<T, unknown>, schema: ZodSchema, key: keyof z.infer<S>) => void
+    onValueUpdated: (value: unknown, row: Row<T>, cell: Cell<T, unknown>, schema: AnyZodObject, key: keyof z.infer<S>) => void
 }
 
-export function DataGridCellInputField<S extends ZodSchema, T extends Record<string, any>, K extends keyof z.infer<S>>(props: DataGridCellInputFieldProps<S, T, K>) {
+export function DataGridCellInputField<S extends AnyZodObject, T extends Record<string, any>, K extends keyof z.infer<S>>(props: DataGridCellInputFieldProps<S, T, K>) {
 
     const {
         rootClassName,
