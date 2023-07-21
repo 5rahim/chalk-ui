@@ -577,6 +577,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                         data-editing={getIsCellActivelyEditing(cell.id)}
                                                         style={{ width: cell.column.getSize(), maxWidth: cell.column.columnDef.maxSize }}
                                                         onDoubleClick={() => startTransition(() => onCellDoubleClick(cell.id))}
+                                                        // tabIndex={0}
                                                     >
                                                         {((!getIsCellEditable(cell.id) || !getIsCellActivelyEditing(cell.id))) && flexRender(
                                                             cell.column.columnDef.cell,

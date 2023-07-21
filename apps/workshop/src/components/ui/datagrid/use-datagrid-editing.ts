@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { DataGridEditingHelperProps } from "./helpers.ts"
 import _ from "lodash"
 import { DataGridCellInputFieldProps } from "./datagrid-cell-input-field.tsx"
-import { ZodSchema } from "zod"
+import { AnyZodObject, ZodSchema } from "zod"
 import { useToast } from "../toast"
 
 interface DataGridEditingHookProps<T> {
@@ -39,6 +39,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
     // Track updated value
     const [activeValue, setActiveValue] = useState<unknown>(undefined)
     const [rowData, setRowData] = useState<T | undefined>(undefined)
+    const [key, setKey] = useState<PropertyKey | undefined>(undefined)
     const [schema, setSchema] = useState<ZodSchema | undefined>(undefined)
 
     // Keep track of editable columns (columns defined with the `withEditing` helper)
@@ -56,7 +57,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
 
     // Get a column's editing meta (onChange etc...)
     const getColumnEditingMeta = useCallback((colId: string) => {
-        return (editableColumns.find(col => col.id === colId)?.columnDef?.meta as any)?.editable as DataGridEditingHelperProps<any> | undefined
+        return (editableColumns.find(col => col.id === colId)?.columnDef?.meta as any)?.editable as DataGridEditingHelperProps<any, any> | undefined
     }, [])
 
     // Set/update editable cells
@@ -112,8 +113,9 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
     }, [isMutating])
 
     const saveEdit = useCallback(() => {
-        if (schema && rowData) {
-            const parsed = schema.safeParse(rowData)
+        if (schema && rowData && key && typeof key === "string") {
+            console.log(schema)
+            const parsed = (schema as AnyZodObject).shape[key].safeParse(rowData[key])
 
             if (!parsed.success) {
                 toast.error(JSON.parse((parsed.error as any).message)?.[0]?.message)
@@ -153,9 +155,10 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
 
     }, [activeValue, rowData, data, onDataChange, isMutating])
     /**/
-    const handleUpdateValue = useCallback<DataGridCellInputFieldProps<ZodSchema, T>["onValueUpdated"]>((value, row, cell, schema) => {
+    const handleUpdateValue = useCallback<DataGridCellInputFieldProps<ZodSchema, T, any>["onValueUpdated"]>((value, row, cell, schema, key) => {
         setActiveValue(value)
         setSchema(schema)
+        setKey(key)
         setRowData({
             ...row.original,
             [cell.column.id]: value,

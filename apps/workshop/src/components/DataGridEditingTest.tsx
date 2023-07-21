@@ -34,6 +34,7 @@ type Product = {
     availability: "in_stock" | "out_of_stock"
     price: number
     category: string | null
+    random_date: Date
 }
 
 const range = (len: number) => {
@@ -62,6 +63,7 @@ const newProduct = (): Product => {
             null,
             null,
         ])[0]!,
+        random_date: faker.date.anytime(),
     }
 }
 
@@ -157,6 +159,7 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
             meta: {
                 ...withEditing({
                     schema: schema,
+                    key: "name",
                     field: (ctx) => (
                         <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"}/>
                     ),
@@ -172,6 +175,7 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
             meta: {
                 ...withEditing({
                     schema: schema,
+                    key: "price",
                     field: (ctx) => (
                         <NumberInput {...ctx} step={1} discrete maxFractionDigits={0} intent={"unstyled"}/>
                     ),
@@ -194,6 +198,7 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                 }),
                 ...withEditing({
                     schema: schema,
+                    key: "category",
                     field: (ctx) => (
                         <Select
                             {...ctx}
@@ -258,6 +263,7 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                 }),
                 ...withEditing({
                     schema: schema,
+                    key: "visible",
                     field: (ctx) => (
                         <Select
                             {...ctx}
@@ -270,6 +276,37 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                 }),
             },
         },
+        // {
+        //     accessorKey: "random_date",
+        //     header: "Visible",
+        //     cell: info => <Badge intent={info.getValue() ? "success" : "gray"}>{info.getValue() ? "Visible" : "Hidden"}</Badge>,
+        //     size: 0,
+        //     filterFn: getFilteringType("boolean"),
+        //     meta: {
+        //         ...withFiltering({
+        //             name: "Visible",
+        //             type: "boolean",
+        //             icon: <BiLowVision/>,
+        //             valueFormatter: (value) => {
+        //                 if (value === "true") return "Yes"
+        //                 if (value === "false") return "No"
+        //                 return ""
+        //             },
+        //         }),
+        //         ...withEditing({
+        //             schema: schema,
+        //             field: (ctx) => (
+        //                 <Select
+        //                     {...ctx}
+        //                     value={ctx.value ? "visible" : "hidden"}
+        //                     onChange={e => ctx.onChange(e.target.value === "visible")}
+        //                     options={[{ value: "visible", label: "Visible" }, { value: "hidden", label: "Hidden" }]}
+        //                     intent={"unstyled"}
+        //                 />
+        //             ),
+        //         }),
+        //     },
+        // },
         {
             id: "actions",
             size: 10,

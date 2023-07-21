@@ -1,21 +1,20 @@
 import { BuiltInFilterFn, ColumnDef } from "@tanstack/react-table"
-import { ZodSchema } from "zod"
-import { DataGridCellInputFieldControlProps } from "./datagrid-cell-input-field"
+import { z, ZodSchema } from "zod"
+import { DataGridCellInputFieldContext } from "./datagrid-cell-input-field"
 import React from "react"
 
 /* -------------------------------------------------------------------------------------------------
  * Editing
  * -----------------------------------------------------------------------------------------------*/
 
-
-export type DataGridEditingHelperProps<S> = {
+export type DataGridEditingHelperProps<S extends ZodSchema, Key extends keyof z.infer<S>> = {
     schema: S,
-    field: (props: DataGridCellInputFieldControlProps) => React.ReactElement,
+    key: Key
+    field: (props: DataGridCellInputFieldContext<S, Key>) => React.ReactElement,
     valueFormatter?: (value: unknown) => unknown
 }
 
-function withEditing<S extends ZodSchema>(params: DataGridEditingHelperProps<S>) {
-
+function withEditing<S extends ZodSchema, K extends keyof z.infer<S>>(params: DataGridEditingHelperProps<S, K>) {
     return {
         editable: {
             ...params,
@@ -69,7 +68,7 @@ const getFilteringType = (type: FilteringTypes) => {
  * Columns
  * -----------------------------------------------------------------------------------------------*/
 
-export type DataGridColumnDefOptions = {
+export type DataGridColumnDefHelpers = {
     withFiltering: typeof withFiltering
     getFilteringType: typeof getFilteringType
     withEditing: typeof withEditing
@@ -84,7 +83,7 @@ export type DataGridColumnDefOptions = {
  * @param callback
  */
 export function createDataGridColumns<T extends Record<string, any>>(
-    callback: (options: DataGridColumnDefOptions) => ColumnDef<T>[],
+    callback: (helpers: DataGridColumnDefHelpers) => ColumnDef<T>[],
 ) {
     return callback({
         withFiltering,

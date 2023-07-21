@@ -4,7 +4,7 @@ import React from "react"
 import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import { DataGridEditingHelperProps } from "./helpers.ts"
-import { ZodSchema } from "zod"
+import { z, ZodSchema } from "zod"
 import { Cell, Row } from "@tanstack/react-table"
 
 /* -------------------------------------------------------------------------------------------------
@@ -21,21 +21,21 @@ export const DataGridCellInputFieldAnatomy = defineStyleAnatomy({
  * DataGridCellInputField
  * -----------------------------------------------------------------------------------------------*/
 
-export type DataGridCellInputFieldControlProps = {
-    value: any,
-    onChange: (value: any) => void
+export type DataGridCellInputFieldContext<Schema extends ZodSchema, Key extends keyof z.infer<Schema>> = {
+    value: Extract<z.infer<Schema>, Key>,
+    onChange: (value: z.infer<Schema>[Key]) => void
     ref: React.MutableRefObject<any>
 }
 
-export interface DataGridCellInputFieldProps<S extends ZodSchema, T extends Record<string, any>>
+export interface DataGridCellInputFieldProps<S extends ZodSchema, T extends Record<string, any>, K extends keyof z.infer<S>>
     extends ComponentWithAnatomy<typeof DataGridCellInputFieldAnatomy> {
-    meta: DataGridEditingHelperProps<S>
+    meta: DataGridEditingHelperProps<S, K>
     cell: Cell<T, unknown>
-    row: Row<any>
-    onValueUpdated: (value: unknown, row: Row<T>, cell: Cell<T, unknown>, schema: ZodSchema) => void
+    row: Row<T>
+    onValueUpdated: (value: unknown, row: Row<T>, cell: Cell<T, unknown>, schema: ZodSchema, key: keyof z.infer<S>) => void
 }
 
-export function DataGridCellInputField<S extends ZodSchema, T extends Record<string, any>>(props: DataGridCellInputFieldProps<S, T>) {
+export function DataGridCellInputField<S extends ZodSchema, T extends Record<string, any>, K extends keyof z.infer<S>>(props: DataGridCellInputFieldProps<S, T, K>) {
 
     const {
         rootClassName,
@@ -44,6 +44,7 @@ export function DataGridCellInputField<S extends ZodSchema, T extends Record<str
         onValueUpdated, // Emit updates
         meta: {
             schema,
+            key,
             field,
             valueFormatter: _valueFormatter,
         },
@@ -56,15 +57,15 @@ export function DataGridCellInputField<S extends ZodSchema, T extends Record<str
     const cellValue = valueFormatter(cell.getContext().getValue())
     const inputRef = React.useRef<any>(null)
 
-    const [value, setValue] = React.useState<unknown>(cellValue)
+    const [value, setValue] = React.useState<Extract<z.infer<S>, K>>(cellValue)
 
     React.useEffect(() => {
-        onValueUpdated(cellValue, row, cell, schema)
+        onValueUpdated(cellValue, row, cell, schema, key)
         inputRef.current?.focus()
     }, [])
 
     React.useLayoutEffect(() => {
-        onValueUpdated(valueFormatter(value), row, cell, schema)
+        onValueUpdated(valueFormatter(value), row, cell, schema, key)
     }, [value])
 
 
