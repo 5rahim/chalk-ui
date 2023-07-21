@@ -1,9 +1,8 @@
 "use client"
 
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import React, { startTransition, useEffect, useMemo, useState } from "react"
 import { cn, ComponentWithAnatomy, defineStyleAnatomy, UIIcons, useUILocaleConfig } from "../core"
 import {
-    Column,
     ColumnDef,
     ColumnFiltersState,
     flexRender,
@@ -12,23 +11,27 @@ import {
     getSortedRowModel,
     PaginationState,
     SortingState,
-    useReactTable
+    useReactTable,
 } from "@tanstack/react-table"
 
 import { cva } from "class-variance-authority"
 import { TextInput, TextInputProps } from "../text-input"
 import { Checkbox } from "../checkbox"
-import { useDataGridSize } from "./use-datagrid-size"
 import { Select } from "../select"
 import { NumberInput } from "../number-input"
 import { LoadingSpinner } from "../loading-spinner"
 import { Pagination } from "../pagination"
 import { DataGridFilter } from "./datagrid-filter"
 import { DropdownMenu } from "../dropdown-menu"
-import { DataGridFilteringProps } from "./helpers"
-import { IconButton } from "../button"
+import { Button, IconButton } from "../button"
 import { Tooltip } from "../tooltip"
 import locales from "./locales.json"
+import { useDataGridFiltering } from "./use-datagrid-filtering.ts"
+import { useDataGridResponsiveness } from "./use-datagrid-responsiveness.ts"
+import { useDataGridRowSelection } from "./use-datagrid-row-selection.ts"
+import { useDataGridEditing } from "./use-datagrid-editing.ts"
+import { DataGridCellInputField } from "./datagrid-cell-input-field.tsx"
+import { Transition } from "@headlessui/react"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -40,19 +43,19 @@ export const DataGridAnatomy = defineStyleAnatomy({
     ]),
     header: cva([
         "UI-DataGrid__header",
-        "block space-y-4 w-full mb-4"
+        "block space-y-4 w-full mb-4",
     ]),
     filterContainer: cva([
         "UI-DataGrid__filterContainer",
-        "flex w-full items-center gap-4 flex-wrap"
+        "flex w-full items-center gap-4 flex-wrap",
     ]),
     tableWrapper: cva([
         "UI-DataGrid__tableWrapper",
-        "flex flex-col overflow-x-auto"
+        "flex flex-col overflow-x-auto",
     ]),
     tableContainer: cva([
         "UI-DataGrid__tableContainer",
-        "align-middle inline-block min-w-full relative"
+        "align-middle inline-block min-w-full relative",
     ]),
     table: cva([
         "UI-DataGrid__table",
@@ -60,52 +63,53 @@ export const DataGridAnatomy = defineStyleAnatomy({
     ]),
     tableHead: cva([
         "UI-DataGrid__tableHead",
-        "border-b border-[--border]"
+        "border-b border-[--border]",
     ]),
     th: cva([
         "UI-DataGrid__th group/th",
         "px-3 h-12 text-left text-sm font-bold",
-        "data-[row-selection=true]:px-3 data-[row-selection=true]:sm:px-1 data-[row-selection=true]:text-center"
+        "data-[row-selection=true]:px-3 data-[row-selection=true]:sm:px-1 data-[row-selection=true]:text-center",
     ]),
     titleChevronContainer: cva([
         "UI-DataGrid__titleChevronContainer",
-        "absolute flex items-center inset-y-0 top-1 -right-9 group"
+        "absolute flex items-center inset-y-0 top-1 -right-9 group",
     ]),
     titleChevron: cva([
         "UI-DataGrid__titleChevron",
-        "mr-3 h-4 w-4 text-gray-400 group-hover:text-gray-500 relative bottom-0.5"
+        "mr-3 h-4 w-4 text-gray-400 group-hover:text-gray-500 relative bottom-0.5",
     ]),
     tableBody: cva([
         "UI-DataGrid__tableBody",
-        "bg-[--paper] divide-y divide-[--border] w-full"
+        "bg-[--paper] divide-y divide-[--border] w-full",
     ]),
     td: cva([
         "UI-DataGrid__td",
-        "px-2 py-2 whitespace-nowrap text-sm font-medium text-[--text-color]",
+        "px-2 py-2 whitespace-nowrap text-base font-medium text-[--text-color]",
         "data-[row-selection=true]:px-2 data-[row-selection=true]:sm:px-0 data-[row-selection=true]:text-center",
         "data-[action-column=false]:truncate data-[action-column=false]:overflow-ellipsis",
-        "data-[row-selected=true]:bg-brand-50 dark:data-[row-selected=true]:bg-gray-700"
+        "data-[row-selected=true]:bg-brand-50 dark:data-[row-selected=true]:bg-gray-700",
+        "data-[editing=true]:ring-1 ring-[--ring] ring-inset",
     ]),
     tr: cva([
         "UI-DataGrid__tr",
-        "hover:bg-[--highlight] truncate"
+        "hover:bg-[--highlight] truncate",
     ]),
     footer: cva([
         "UI-DataGrid__footer",
-        "flex flex-col sm:flex-row w-full items-center gap-2 justify-between p-2 mt-2 overflow-x-auto max-w-full"
+        "flex flex-col sm:flex-row w-full items-center gap-2 justify-between p-2 mt-2 overflow-x-auto max-w-full",
     ]),
     footerPageDisplayContainer: cva([
         "UI-DataGrid__footerPageDisplayContainer",
-        "flex flex-none items-center gap-1 ml-2 text-sm"
+        "flex flex-none items-center gap-1 ml-2 text-sm",
     ]),
     footerPaginationInputContainer: cva([
         "UI-DataGrid__footerPaginationInputContainer",
-        "flex flex-none items-center gap-2"
+        "flex flex-none items-center gap-2",
     ]),
     filterDropdownButton: cva([
         "UI-DataGrid__filterDropdownButton",
         "flex gap-2 items-center bg-[--paper] border border-[--border] rounded-[--radius] py-1 px-2 cursor-pointer hover:bg-[--highlight]",
-        "select-none focus-visible:ring-2 outline-none focus-visible:ring-[--ring]"
+        "select-none focus-visible:ring-2 outline-none focus-visible:ring-[--ring]",
     ]),
 })
 
@@ -169,9 +173,28 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
      *
      * - When it is true, the filters will not be applied, you can then manually filter the data using the returned values
      */
-    withManualFiltering?: boolean
+    enableManualFiltering?: boolean
     // Display loading spinner when new data is coming in
     isFetching?: boolean
+    /**
+     * Use in combination with the `withEditing` helper
+     */
+    onItemEdited?: (value: T) => void
+    /**
+     * Use in combination with the `withEditing` helper.
+     * When this is true, DataGrid will block the
+     */
+    isItemMutating?: boolean
+    /**
+     * Use in combination with the `withEditing` helper
+     */
+    enableOptimisticUpdates?: boolean
+    /**
+     * Use in combination with the `withEditing` helper and `enableOptimisticUpdates`
+     * The key that will be used to identify the row that will be updated
+     * @example id
+     */
+    optimisticUpdatePrimaryKey?: string
 }
 
 export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>) {
@@ -209,17 +232,25 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         onItemSelected,
         itemsPerPage: _limit = 5,
         /**/
-        withManualFiltering = false,
+        enableManualFiltering = false,
         fetchingHandler,
+        onItemEdited,
+        isItemMutating,
+        enableOptimisticUpdates = false,
+        optimisticUpdatePrimaryKey,
         ...rest
     } = props
 
     const withFetching = !!fetchingHandler
     const isInLoadingState = isLoading || (withFetching && isFetching)
 
-    /**
-     * Selection checkboxes
-     */
+
+    const [_data, setData] = useState(data ?? [])
+
+    useEffect(() => {
+        setData(data ?? [])
+    }, [data])
+
     const _columns = useMemo<ColumnDef<T>[]>(() => [{
         id: "select",
         size: 0,
@@ -256,7 +287,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
     // Keep track of pages
     const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: _limit })
     // Pagination object
-    const pagination = useMemo(() => ({ pageIndex, pageSize, }), [pageIndex, pageSize])
+    const pagination = useMemo(() => ({ pageIndex, pageSize }), [pageIndex, pageSize])
     // Calculate page count
     const pageCount = useMemo(() => Math.ceil(rowCount / pageSize) ?? -1, [rowCount, pageSize])
 
@@ -266,11 +297,8 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         }
     }, [globalFilter, pageSize, pageIndex])
 
-    /**
-     * Table
-     */
     const table = useReactTable({
-        data: data ?? [],
+        data: _data,
         columns: enableRowSelection ? _columns : columns,
         pageCount: pageCount,
         globalFilterFn: (row, columnId, filterValue) => {
@@ -297,65 +325,63 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         onRowSelectionChange: setRowSelection,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: (withFetching && withManualFiltering) ? undefined : getFilteredRowModel(), // Control filtering
+        getFilteredRowModel: (withFetching && enableManualFiltering) ? undefined : getFilteredRowModel(), // Control filtering
         manualPagination: withFetching,
     })
 
-    /**
-     * Responsively hide columns
-     */
-    const [tableRef, { width: tableWidth }] = useDataGridSize<HTMLDivElement>()
-    useEffect(() => {
-        hideColumns.map(({ below, hide }) => {
-            table.getAllLeafColumns().map(column => {
-                if (hide.includes(column.id)) {
-                    if (tableWidth !== 0 && tableWidth < below) {
-                        if (column.getIsVisible()) column.toggleVisibility(false)
-                    } else {
-                        if (!column.getIsVisible()) column.toggleVisibility(true)
-                    }
-                }
-            })
-        })
-    }, [hideColumns, tableWidth])
+    const displayedRows = useMemo(() => {
+        return withFetching ? table.getRowModel().rows : table.getRowModel().rows.slice(table.getState().pagination.pageIndex * pageSize, (table.getState().pagination.pageIndex + 1) * pageSize)
+    }, [withFetching, pageSize, table.getRowModel().rows, table.getState().pagination])
 
+    // Responsively hide columns
+    const { tableRef } = useDataGridResponsiveness({ table, hideColumns })
 
-    /**
-     * Item selection
-     */
-    useEffect(() => {
-        const selectedIndexArr = Object.keys(table.getState().rowSelection).map(v => parseInt(v))
-        onItemSelected && onItemSelected(data?.filter((v, i) => selectedIndexArr.includes(i)) ?? [])
-    }, [table.getState().rowSelection])
+    // Row selection
+    const {
+        selectedRowCount,
+    } = useDataGridRowSelection({
+        table,
+        onSelection: onItemSelected,
+        data,
+    })
 
-    const selectedRowCount = Object.keys(table.getState().rowSelection).length
+    // Filtering
+    const {
+        getFilterDefaultValue,
+        unselectedFilterableColumns,
+        selectedFilteredColumns,
+        filterableColumns,
+    } = useDataGridFiltering({
+        table,
+        columnFilters,
+    })
 
-    /**
-     * Item filtering
-     */
-    const filterableColumns = table.getAllLeafColumns().filter(n => n.getCanFilter() && (n.columnDef.meta as any)?.filter)
-    const unselectedFilterableColumns = filterableColumns.filter(n => !columnFilters.map(c => c.id).includes(n.id))
-    const selectedFilteredColumns = table.getAllLeafColumns().filter(n => columnFilters.map(a => a.id).includes(n.id))
-
-    // Get the default value for a filter when the user selects it
-    const getFilterDefaultValue = useCallback((col: Column<any>) => {
-        // Since the column is filterable, get options
-        const options = (col.columnDef.meta as any)?.filter as DataGridFilteringProps
-        if (options.type === "select" || options.type === "radio") {
-            return options.options?.[0]?.value ?? ""
-        } else if (options.type === "boolean") {
-            return "true"
-        } else if (options.type === "checkbox") {
-            return options.options?.map(n => n.value) ?? []
-        }
-        return null
-    }, [])
-
+    // Fetching
     useEffect(() => {
         fetchingHandler?.setParams({ filters: columnFilters })
     }, [columnFilters])
 
-    const displayedRows = withFetching ? table.getRowModel().rows : table.getRowModel().rows.slice(table.getState().pagination.pageIndex * pageSize, (table.getState().pagination.pageIndex + 1) * pageSize)
+    // Editing
+    const {
+        onCellDoubleClick,
+        getIsCellActivelyEditing,
+        getIsCellEditable,
+        getColumnEditingMeta,
+        getIsCurrentlyEditing,
+        cancelEditing,
+        saveEdit,
+        handleUpdateValue,
+    } = useDataGridEditing({
+        table,
+        data: _data,
+        rows: displayedRows,
+        onSave: onItemEdited,
+        isMutating: isItemMutating,
+        enableOptimisticUpdates: enableOptimisticUpdates,
+        optimisticUpdatePrimaryKey: optimisticUpdatePrimaryKey,
+        onDataChange: setData,
+    })
+
 
     return (
         <div className={cn(DataGridAnatomy.root(), rootClassName)}>
@@ -386,7 +412,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                         key={col.id}
                                         onClick={() => setColumnFilters(p => [...p, { id: col.id, value: defaultValue }])}
                                     >
-                                        <span className={"text-lg"}>{icon && icon}</span>
+                                        {icon && <span className={"text-lg"}>{icon}</span>}
                                         <span>{(col.columnDef.meta as any)?.filter?.name}</span>
                                     </DropdownMenu.Item>
                                 )
@@ -400,7 +426,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                             {locales["remove-filters"][lng]}
                         </Tooltip>
                     )}
-
+                    {/*Selected row count*/}
                     {(selectedRowCount > 0) && <div className={"text-sm"}>
                         {selectedRowCount} {locales[`row${selectedRowCount > 1 ? "s" : ""}-selected`][lng]}
                     </div>}
@@ -425,6 +451,25 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                         return undefined
                     })}
                 </div>}
+
+                {/*Manage editing*/}
+                <Transition
+                    appear
+                    show={getIsCurrentlyEditing()}
+                    className={"fixed top-2 left-0 right-0 flex justify-center z-20"}
+                    enter="transition-all duration-150"
+                    enterFrom="opacity-0 scale-50"
+                    enterTo="opacity-100 scale-100"
+                    leave="transition-all duration-150"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-75"
+                >
+                    <div className={"flex items-center gap-2 rounded-md p-4 bg-[--paper] border border-[--brand] shadow-sm z-20"}>
+                        <span className={"font-semibold"}>Updating</span>
+                        <Button size={"sm"} onClick={saveEdit} isDisabled={isItemMutating}>Save</Button>
+                        <Button size={"sm"} onClick={cancelEditing} intent={"gray-outline"} isDisabled={isItemMutating}>Cancel</Button>
+                    </div>
+                </Transition>
 
             </div>
 
@@ -495,7 +540,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                                      className={cn(
                                                                          DataGridAnatomy.titleChevron(),
                                                                          "w-4 h-4 opacity-0 transition-opacity group-hover/th:opacity-100",
-                                                                         titleChevronClassName
+                                                                         titleChevronClassName,
                                                                      )}>
                                                                     <path d="m7 15 5 5 5-5"/>
                                                                     <path d="m7 9 5-5 5 5"/>
@@ -529,11 +574,21 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                         data-row-selection={`${index === 0 && enableRowSelection}`}
                                                         data-action-column={`${cell.column.id === "actions"}`}
                                                         data-row-selected={cell.getContext().row.getIsSelected()}
+                                                        data-editing={getIsCellActivelyEditing(cell.id)}
                                                         style={{ width: cell.column.getSize(), maxWidth: cell.column.columnDef.maxSize }}
+                                                        onDoubleClick={() => startTransition(() => onCellDoubleClick(cell.id))}
                                                     >
-                                                        {flexRender(
+                                                        {((!getIsCellEditable(cell.id) || !getIsCellActivelyEditing(cell.id))) && flexRender(
                                                             cell.column.columnDef.cell,
                                                             cell.getContext(),
+                                                        )}
+                                                        {getIsCellActivelyEditing(cell.id) && (
+                                                            <DataGridCellInputField
+                                                                cell={cell}
+                                                                row={cell.row}
+                                                                meta={getColumnEditingMeta(cell.column.id)!}
+                                                                onValueUpdated={handleUpdateValue}
+                                                            />
                                                         )}
                                                     </td>
                                                 )
@@ -616,7 +671,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                             }}
                             options={[Number(_limit), ...[5, 10, 20, 30, 40, 50].filter(n => n !== Number(_limit))].map(pageSize => ({
                                 value: pageSize,
-                                label: `${pageSize}`
+                                label: `${pageSize}`,
                             }))}
                             fieldClassName="w-auto"
                             className="w-auto pr-8"
@@ -658,7 +713,7 @@ DataGrid.displayName = "DataGrid"
  *
  * return (
  *     <DataGrid<any>
- *         withManualFiltering={true}
+ *         enableManualFiltering={true}
  *         fetchingHandler={fetchingHandler}
  *         isFetching={dataQuery.isFetching}
  *     />

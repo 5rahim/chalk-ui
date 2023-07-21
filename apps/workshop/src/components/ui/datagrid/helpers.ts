@@ -1,49 +1,66 @@
 import { BuiltInFilterFn, ColumnDef } from "@tanstack/react-table"
+import { ZodSchema } from "zod"
+import { DataGridCellInputFieldControlProps } from "./datagrid-cell-input-field"
+import React from "react"
+
+/* -------------------------------------------------------------------------------------------------
+ * Editing
+ * -----------------------------------------------------------------------------------------------*/
+
+
+export type DataGridEditingHelperProps<S> = {
+    schema: S,
+    field: (props: DataGridCellInputFieldControlProps) => React.ReactElement,
+    valueFormatter?: (value: unknown) => unknown
+}
+
+function withEditing<S extends ZodSchema>(params: DataGridEditingHelperProps<S>) {
+
+    return {
+        editable: {
+            ...params,
+        },
+    }
+}
 
 /* -------------------------------------------------------------------------------------------------
  * Filtering
  * -----------------------------------------------------------------------------------------------*/
 
-export type DataGridFilteringProps = {
-    type: "select" | "radio" | "checkbox" | "boolean"
+type FilteringTypes = "select" | "radio" | "checkbox" | "boolean"
+
+type DefaultFilteringProps<T extends FilteringTypes> = {
+    type: T
     name: string,
     icon?: React.ReactElement
-    options?: { value: string, label?: React.ReactNode }[]
+    options: { value: string, label?: T extends "select" ? string : React.ReactNode }[]
     valueFormatter?: (value: string) => string
 }
+
+export type DataGridFilteringHelperProps<T extends FilteringTypes = "select"> =
+    T extends Extract<FilteringTypes, "select" | "radio" | "checkbox">
+        ? DefaultFilteringProps<T>
+        : Omit<DefaultFilteringProps<T>, "options">
 
 /**
  * Built-in filter functions supported DataGrid
  */
 export type DataGridSupportedFilterFn = Extract<BuiltInFilterFn, "equalsString" | "arrIncludesSome">
 
-const withFiltering = (params: DataGridFilteringProps) => {
-    const fns: { [key: string]: DataGridSupportedFilterFn } = {
-        select: "equalsString",
-        boolean: "equalsString",
-        checkbox: "arrIncludesSome",
-        radio: "equalsString"
-    }
+function withFiltering<T extends FilteringTypes>(params: DataGridFilteringHelperProps<T>) {
     return {
-        filterFn: fns[params.type] as DataGridSupportedFilterFn,
-        meta: {
-            filter: {
-                name: params.name,
-                type: params.type,
-                icon: params.icon,
-                options: params.options,
-                valueFormatter: params.valueFormatter
-            },
-        }
+        filter: {
+            ...params,
+        },
     }
 }
 
-const getFilteringType = (type: DataGridFilteringProps["type"]) => {
+const getFilteringType = (type: FilteringTypes) => {
     const fns: { [key: string]: DataGridSupportedFilterFn } = {
         select: "equalsString",
         boolean: "equalsString",
         checkbox: "arrIncludesSome",
-        radio: "equalsString"
+        radio: "equalsString",
     }
     return fns[type] as DataGridSupportedFilterFn
 }
@@ -55,6 +72,7 @@ const getFilteringType = (type: DataGridFilteringProps["type"]) => {
 export type DataGridColumnDefOptions = {
     withFiltering: typeof withFiltering
     getFilteringType: typeof getFilteringType
+    withEditing: typeof withEditing
 }
 
 /**
@@ -65,9 +83,12 @@ export type DataGridColumnDefOptions = {
  * ]), [])
  * @param callback
  */
-export function createDataGridColumns<T extends Record<string, any>>(callback: (options: DataGridColumnDefOptions) => ColumnDef<T>[]) {
+export function createDataGridColumns<T extends Record<string, any>>(
+    callback: (options: DataGridColumnDefOptions) => ColumnDef<T>[],
+) {
     return callback({
         withFiltering,
-        getFilteringType
+        getFilteringType,
+        withEditing,
     })
 }

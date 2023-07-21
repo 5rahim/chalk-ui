@@ -24,7 +24,6 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>((props, r
         leftAddon,
         rightAddon,
         rightIcon,
-        defaultValue,
         options = [],
         placeholder,
         ...rest

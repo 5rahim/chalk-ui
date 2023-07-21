@@ -3,7 +3,7 @@
 import React, { useCallback } from "react"
 import { cn, ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
-import { DataGridAnatomy, DataGridFilteringProps } from "."
+import { DataGridAnatomy, DataGridFilteringHelperProps } from "."
 import { Select } from "../select"
 import { ColumnDef } from "@tanstack/react-table"
 import { ShowOnly } from "../show-only"
@@ -39,7 +39,7 @@ export interface DataGridFilterProps extends React.ComponentPropsWithRef<"div">,
     column: ColumnDef<any>
     filterValue: any
     setFilterValue: (updater: any) => void
-    filteringOptions: DataGridFilteringProps
+    filteringOptions: DataGridFilteringHelperProps
     onRemove: () => void
 }
 
@@ -179,23 +179,25 @@ export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HT
 DataGridFilter.displayName = "DataGridFilter"
 
 
-interface DataGridActiveFilterProps extends React.ComponentPropsWithRef<"button">, ComponentWithAnatomy<typeof DataGridActiveFilterAnatomy> {
+interface DataGridActiveFilterProps extends Omit<React.ComponentPropsWithRef<"button">, "value">,
+    ComponentWithAnatomy<typeof DataGridActiveFilterAnatomy> {
     children?: React.ReactNode
-    options: DataGridFilteringProps
-    value: any
+    options: DataGridFilteringHelperProps
+    value: unknown
 }
 
 export const DataGridActiveFilter: React.FC<DataGridActiveFilterProps> = React.forwardRef((props, ref) => {
 
     const { children, options, value, ...rest } = props
 
-    const formattedValue = Array.isArray(value) ? (value.length > 2 ? [...value.slice(0, 2), "..."].join(", ") : value.join(", ")) : String(value)
+    // Truncate and join the value to be displayed if it is an array
+    const displayedValue = Array.isArray(value) ? (value.length > 2 ? [...value.slice(0, 2), "..."].join(", ") : value.join(", ")) : String(value)
 
     return (
         <button className={cn(DataGridAnatomy.filterDropdownButton(), "truncate overflow-ellipsis")} {...rest} ref={ref}>
             {options.icon && <span>{options.icon}</span>}
             <span>{options.name}:</span>
-            <span className={"font-semibold flex flex-none overflow-hidden whitespace-normal"}>{formattedValue}</span>
+            <span className={"font-semibold flex flex-none overflow-hidden whitespace-normal"}>{displayedValue}</span>
         </button>
     )
 

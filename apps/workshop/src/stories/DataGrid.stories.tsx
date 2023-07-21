@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React from "react"
 import { DataGridTest } from "../components/DataGridTest"
+import { DataGridEditingTest } from "../components/DataGridEditingTest.tsx"
 
 const meta = {
     title: "Advanced/DataGrid",
@@ -14,5 +15,9 @@ export default meta
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-    args: {}
+    args: {},
+}
+
+export const WithEditing: Story = {
+    render: () => <DataGridEditingTest/>,
 }

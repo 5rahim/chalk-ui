@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { faker } from "@faker-js/faker"
-import { createDataGridColumns, DataGrid, DataGridFetchingHandlerParams, useDataGridFetchingHandler } from "./ui/datagrid"
+import { createDataGridColumns, DataGrid } from "./ui/datagrid"
 import { Badge } from "./ui/badge"
 import { DropdownMenu } from "./ui/dropdown-menu"
 import { IconButton } from "./ui/button"
@@ -10,10 +10,21 @@ import { BiLowVision } from "@react-icons/all-files/bi/BiLowVision"
 import { BiBasket } from "@react-icons/all-files/bi/BiBasket"
 import { BiCheck } from "@react-icons/all-files/bi/BiCheck"
 import { BiEditAlt } from "@react-icons/all-files/bi/BiEditAlt"
+import { createTypesafeFormSchema } from "./ui/typesafe-form"
+import { TextInput } from "./ui/text-input"
+import { NumberInput } from "./ui/number-input"
+import { Select } from "./ui/select"
 
-interface DataGridTestProps {
+interface DataGridEditingTestProps {
     children?: React.ReactNode
 }
+
+const schema = createTypesafeFormSchema(({ z }) => z.object({
+    name: z.string().min(3),
+    price: z.number().min(3),
+    category: z.string().nullable(),
+    visible: z.boolean(),
+}))
 
 type Product = {
     id: string
@@ -67,7 +78,7 @@ export function makeData(...lens: number[]) {
     return makeDataLevel()
 }
 
-const _data = makeData(30)
+const _data = makeData(6)
 
 export async function fetchData() {
     // Simulate some network latency
@@ -77,31 +88,56 @@ export async function fetchData() {
     }
 }
 
-export async function fetchFromFakeServer(options: DataGridFetchingHandlerParams) {
-    let a: Product[] = []
+export async function fakeMutation(object: Product) {
     // Simulate some network latency
     await new Promise(r => setTimeout(r, 1000))
-    // Filter by name
-    a = _data.filter(n => options.globalFilterValue !== "" ? n.name.toLowerCase().trim().includes(options.globalFilterValue.toLowerCase().trim()) : true)
-    // Filter by other criteria
-    options.filters.map(v => {
-        if (v.id === "category" && typeof v.value === "string") {
-            a = a.filter(n => n.category === v.value)
-        }
-    })
-    console.log(a)
+    let clone = structuredClone(_data)
+    let index = clone.findIndex(p => p.id === object.id)
+    if (clone[index]) {
+        clone[index] = object
+    }
     return {
-        rows: limitOffset(a, options.limit, options.offset),
-        rowCount: a.length
+        rows: clone,
+    }
+}
+
+export function useFakeMutation(
+    { onSuccess }: { onSuccess: (data: Product[] | undefined) => void },
+) {
+    const [isLoading, setIsLoading] = useState(false)
+    const [data, setData] = useState<Product[] | undefined>(undefined)
+
+    const handleMutate = useCallback((object: Product) => {
+        setIsLoading(true)
+
+        async function execute() {
+            const res = await fakeMutation(object)
+            setIsLoading(false)
+            setData(res.rows)
+            onSuccess(res.rows)
+        }
+
+        execute()
+    }, [])
+    return {
+        mutate: handleMutate,
+        isLoading,
     }
 }
 
 
-export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
+export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) => {
 
     const { children, ...rest } = props
 
     const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
+    const { mutate, isLoading: isMutating } = useFakeMutation({
+        onSuccess: data => {
+            if (data) {
+                setClientData(data)
+            }
+        },
+    })
 
     useEffect(() => {
         async function fetch() {
@@ -112,12 +148,20 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         fetch()
     }, [])
 
-    const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilteringType }) => [
+    const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilteringType, withEditing }) => [
         {
             accessorKey: "name",
             header: "Name",
             cell: info => info.getValue(),
             size: 40,
+            meta: {
+                ...withEditing({
+                    schema: schema,
+                    field: (ctx) => (
+                        <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"}/>
+                    ),
+                }),
+            },
         },
         {
             accessorKey: "price",
@@ -125,6 +169,14 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
             cell: info => "$" + Intl.NumberFormat("en-US").format(info.getValue() as number),
             footer: props => props.column.id,
             size: 10,
+            meta: {
+                ...withEditing({
+                    schema: schema,
+                    field: (ctx) => (
+                        <NumberInput {...ctx} step={1} discrete maxFractionDigits={0} intent={"unstyled"}/>
+                    ),
+                }),
+            },
         },
         {
             accessorKey: "category",
@@ -137,10 +189,22 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                 ...withFiltering({
                     name: "Category",
                     type: "radio",
-                    options: [{ value: "Electronics" }, { value: "Food" }],
+                    options: [{ value: "Electronics" }, { value: "Food" }, { value: "Drink" }],
                     icon: <BiFolder/>,
-                })
-            }
+                }),
+                ...withEditing({
+                    schema: schema,
+                    field: (ctx) => (
+                        <Select
+                            {...ctx}
+                            value={ctx.value ?? ""}
+                            onChange={e => ctx.onChange(e.target.value.length > 0 ? e.target.value : null)}
+                            options={[{ value: "", label: "No category" }, { value: "Electronics" }, { value: "Food" }, { value: "Drink" }]}
+                            intent={"unstyled"}
+                        />
+                    ),
+                }),
+            },
         },
         {
             accessorKey: "availability",
@@ -192,6 +256,18 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                         return ""
                     },
                 }),
+                ...withEditing({
+                    schema: schema,
+                    field: (ctx) => (
+                        <Select
+                            {...ctx}
+                            value={ctx.value ? "visible" : "hidden"}
+                            onChange={e => ctx.onChange(e.target.value === "visible")}
+                            options={[{ value: "visible", label: "Visible" }, { value: "hidden", label: "Hidden" }]}
+                            intent={"unstyled"}
+                        />
+                    ),
+                }),
             },
         },
         {
@@ -211,41 +287,8 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         },
     ]), [])
 
-    // Server
-
-    const fetchingHandler = useDataGridFetchingHandler()
-
-    // const dataQuery = useQuery({
-    //     queryKey: ["data", fetchingHandler.getParams()],
-    //     queryFn: () => fetchFromFakeServer(fetchingHandler.getParams()),
-    //     keepPreviousData: true, refetchOnWindowFocus: false
-    // })
-
-    useEffect(() => {
-        console.log(fetchingHandler.getParams())
-    }, [fetchingHandler])
-
     return (
         <>
-            {/*<DataGrid<Product>*/}
-            {/*    withManualFiltering={true}*/}
-            {/*    fetchingHandler={fetchingHandler}*/}
-            {/*    isFetching={dataQuery.isFetching}*/}
-            {/*    columns={columns}*/}
-            {/*    data={dataQuery.data?.rows}*/}
-            {/*    rowCount={fetchingHandler.getIsFiltering() ? (dataQuery.data?.rowCount ?? 0) : _data.length}*/}
-            {/*    isLoading={dataQuery.isLoading}*/}
-            {/*    hideColumns={[*/}
-            {/*        { below: 850, hide: ["availability", "price"] },*/}
-            {/*        { below: 600, hide: ["action"] },*/}
-            {/*        { below: 515, hide: ["category"] },*/}
-            {/*        { below: 400, hide: ["visible"] },*/}
-            {/*    ]}*/}
-            {/*    enableRowSelection={true}*/}
-            {/*    onItemSelected={data => {*/}
-            {/*        console.log(data)*/}
-            {/*    }}*/}
-            {/*/>*/}
             <DataGrid<Product>
                 columns={columns}
                 data={clientData}
@@ -257,10 +300,17 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                     { below: 515, hide: ["category"] },
                     { below: 400, hide: ["visible"] },
                 ]}
-                enableRowSelection={true}
+                enableRowSelection
                 onItemSelected={data => {
                     console.log(data)
                 }}
+                isItemMutating={isMutating}
+                onItemEdited={data => {
+                    console.log(data)
+                    mutate(data)
+                }}
+                // enableOptimisticUpdates
+                // optimisticUpdatePrimaryKey={"id"}
             />
         </>
     )
