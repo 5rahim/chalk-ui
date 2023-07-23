@@ -1,14 +1,13 @@
 "use client"
 
-import { DateDuration, endOfMonth } from "@internationalized/date"
+import { DateDuration, endOfMonth, getWeeksInMonth } from "@internationalized/date"
 import { cn, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
-import getWeeksInMonth from "date-fns/getWeeksInMonth"
 import { useMemo } from "react"
 import { useCalendarGrid } from "react-aria"
 import { CalendarState, RangeCalendarState } from "react-stately"
 import { CalendarCell } from "./calendar-cell"
-import { getDateLocaleLibrary } from "./locale"
+import { getShortenedWeekDays } from "./locale"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -30,32 +29,21 @@ interface CalendarGridProps {
 }
 
 export function CalendarGrid({ locale, state, offset = {} }: CalendarGridProps) {
-    let { countryLocale } = useUILocaleConfig()
-    let startDate = state.visibleRange.start.add(offset)
-    let endDate = endOfMonth(startDate)
+    const { countryLocale } = useUILocaleConfig()
+    const _locale = locale ?? countryLocale
+
+    const startDate = state.visibleRange.start.add(offset)
+    const endDate = endOfMonth(startDate)
+
     let { gridProps, headerProps, weekDays } = useCalendarGrid(
-        {
-            startDate,
-            endDate,
-        },
+        { startDate, endDate },
         state,
     )
 
-    const _locale = locale ?? countryLocale
+    // Get the number of weeks in the month, so we can render the proper number of rows.
+    const weeksInMonth = useMemo(() => getWeeksInMonth(startDate, _locale), [startDate, _locale])
 
-    // Get the number of weeks in the month so we can render the proper number of rows.
-    let weeksInMonth = useMemo(() => getWeeksInMonth(startDate.toDate(state.timeZone), { locale: getDateLocaleLibrary(_locale) }), [_locale])
-
-    const frWeekdays = useMemo(() => ["L", "M", "M", "J", "V", "S", "D"], [])
-
-    weekDays = useMemo(() => {
-        const [first, ...r] = weekDays
-        const arr = [...r!, first!]
-        if (_locale.includes("fr")) {
-            return frWeekdays
-        }
-        return arr
-    }, [_locale])
+    weekDays = useMemo(() => getShortenedWeekDays(weekDays, _locale), [_locale])
 
     return (
         <table {...gridProps} cellPadding="0" className={cn(CalendarGridAnatomy.table())}>

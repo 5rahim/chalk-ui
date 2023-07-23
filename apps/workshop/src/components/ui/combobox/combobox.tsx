@@ -23,7 +23,7 @@ export const ComboboxAnatomy = defineStyleAnatomy({
     ]),
     menuItem: cva([
         "UI-Combobox__menuItem",
-        "relative cursor-pointer py-2 pl-3 pr-9 rounded-[--radius] data-highlighted:bg-[--highlight] text-base",
+        "relative cursor-pointer py-2 pl-3 pr-9 rounded-[--radius] data-[highlighted]:bg-[--highlight] text-base",
     ]),
     menuNoOptionText: cva([
         "UI-Combobox__menuNoOptionText",

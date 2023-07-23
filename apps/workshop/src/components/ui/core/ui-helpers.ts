@@ -1,5 +1,6 @@
 import { ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import React from "react"
 
 /* -------------------------------------------------------------------------------------------------
  * Tailwind
@@ -61,4 +62,25 @@ export function createPolymorphicComponent<ComponentDefaultType,
 
 export const getChildDisplayName = (child: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined) => {
     return (child as any)?.type?.displayName as (string | undefined)
+}
+
+/* -------------------------------------------------------------------------------------------------
+ * Refs
+ * -----------------------------------------------------------------------------------------------*/
+
+export function mergeRefs<T>(...refs: React.ForwardedRef<T>[]) {
+    const targetRef = React.useRef<T>(null)
+
+    React.useLayoutEffect(() => {
+        refs.forEach(ref => {
+            if (!ref) return
+            if (typeof ref === "function") {
+                ref(targetRef.current)
+            } else {
+                ref.current = targetRef.current
+            }
+        })
+    }, [refs])
+
+    return targetRef
 }

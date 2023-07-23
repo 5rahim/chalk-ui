@@ -19,14 +19,17 @@ interface CalendarHeaderProps {
     locale?: string
 }
 
-export function CalendarHeader({
-                                   state,
-                                   calendarProps,
-                                   prevButtonProps,
-                                   nextButtonProps,
-                                   locale,
-                               }: CalendarHeaderProps) {
+export function CalendarHeader(
+    {
+        state,
+        calendarProps,
+        prevButtonProps,
+        nextButtonProps,
+        locale,
+    }: CalendarHeaderProps,
+) {
     const { countryLocale } = useUILocaleConfig()
+    const _locale = locale ?? countryLocale
 
     const { onPress: prevButtonOnPress, ...prevButtonRest } = prevButtonProps
     const { onPress: nextButtonOnPress, ...nextButtonRest } = nextButtonProps
@@ -60,7 +63,7 @@ export function CalendarHeader({
                 aria-hidden
                 className="flex-1 align-center font-bold text-md text-center"
             >
-                {_capitalize(Intl.DateTimeFormat((locale ?? countryLocale), {
+                {_capitalize(Intl.DateTimeFormat((_locale), {
                     month: "long", year: "numeric",
                 }).format(state.visibleRange.start.toDate(state.timeZone)))}
             </h3>
@@ -68,7 +71,7 @@ export function CalendarHeader({
                 aria-hidden
                 className="flex-1 align-center font-bold text-md text-center"
             >
-                {_capitalize(Intl.DateTimeFormat((locale ?? countryLocale), {
+                {_capitalize(Intl.DateTimeFormat((_locale), {
                     month: "long", year: "numeric",
                 }).format(state.visibleRange.start.add({ months: 1 }).toDate(state.timeZone)))}
             </h3>

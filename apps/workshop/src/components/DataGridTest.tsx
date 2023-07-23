@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { faker } from "@faker-js/faker"
-import { createDataGridColumns, DataGrid, DataGridFetchingHandlerParams, useDataGridFetchingHandler } from "./ui/datagrid"
+import { createDataGridColumns, DataGrid, DataGridFetchingHandlerParams, DataGridProps, useDataGridFetchingHandler } from "./ui/datagrid"
 import { Badge } from "./ui/badge"
 import { DropdownMenu } from "./ui/dropdown-menu"
 import { IconButton } from "./ui/button"
@@ -12,7 +12,7 @@ import { BiCheck } from "@react-icons/all-files/bi/BiCheck"
 import { BiEditAlt } from "@react-icons/all-files/bi/BiEditAlt"
 
 interface DataGridTestProps {
-    children?: React.ReactNode
+    tableProps?: Partial<DataGridProps<any>>
 }
 
 type Product = {
@@ -99,7 +99,7 @@ export async function fetchFromFakeServer(options: DataGridFetchingHandlerParams
 
 export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
 
-    const { children, ...rest } = props
+    const { tableProps } = props
 
     const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
 
@@ -261,6 +261,7 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                 onItemSelected={data => {
                     console.log(data)
                 }}
+                {...tableProps as any}
             />
         </>
     )

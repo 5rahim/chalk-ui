@@ -5,7 +5,7 @@ import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import _filter from "lodash/filter"
 import _find from "lodash/find"
-import React, { Fragment, useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
+import React, { Fragment, startTransition, useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { Badge } from "../badge"
 import { BasicField, extractBasicFieldProps } from "../basic-field"
 import { InputAddon, InputAnatomy, inputContainerStyle, InputIcon, InputStyling } from "../input"
@@ -18,11 +18,12 @@ import type { TextInputProps } from "../text-input"
 export const MultiSelectAnatomy = defineStyleAnatomy({
     input: cva([
         "UI-MultiSelect__input",
-        "relative flex flex-wrap gap-2 cursor-text p-2"
+        "relative flex flex-wrap gap-2 cursor-text p-2",
+        "focus-within:ring-1 ring-[--ring] focus-within:border-brand-500 focus-within:hover:border-brand-500",
     ], {
         variants: {
             isOpen: {
-                true: "border-brand-500 hover:border-brand-500 ring-1 ring-[--ring]",
+                true: "",
                 false: null,
             },
         },
@@ -102,7 +103,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
     const [values, setValues] = useState<MultiSelectOption["value"][]>((value ?? defaultValue) ?? [])
     const [tagInputValue, setTagInputValue] = useState("")
 
-    const inputFocused = useDisclosure(false)
+    const inputFocus = useDisclosure(false)
     const listDisclosure = useDisclosure(false)
     const [highlightedOptionIndex, setHighlightedOptionIndex] = useState(0)
 
@@ -275,10 +276,10 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                                 hasLeftAddon: !!leftAddon,
                                 hasLeftIcon: !!leftIcon,
                             }),
-                            MultiSelectAnatomy.input({ isOpen: inputFocused.isOpen }),
+                            MultiSelectAnatomy.input({ isOpen: inputFocus.isOpen }),
                         )}
-                        onClick={(e) => {
-                            if (!inputFocused.isOpen && !isLoading) {
+                        onClick={() => {
+                            if (!inputFocus.isOpen && !isLoading) {
                                 inputRef.current?.focus()
                             }
                         }}
@@ -308,23 +309,23 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                                 id={basicFieldProps.id}
                                 value={tagInputValue}
                                 onChange={e => {
-                                    inputFocused.open()
+                                    inputFocus.open()
                                     setTagInputValue(e.target.value ?? "")
                                     if (selectOptions.length > 0) {
                                         listDisclosure.open()
                                     }
                                 }}
                                 onFocus={() => {
-                                    inputFocused.open()
+                                    inputFocus.open()
                                     listDisclosure.open()
                                 }}
                                 onClick={() => {
-                                    inputFocused.open()
+                                    inputFocus.open()
                                     listDisclosure.open()
                                 }}
                                 onBlur={() => {
                                     setTimeout(() => {
-                                        inputFocused.close()
+                                        inputFocus.close()
                                         listDisclosure.close()
                                     }, 200)
                                 }}
@@ -332,7 +333,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                                     e.key === "Enter" && e.preventDefault()
                                 }}
                                 disabled={basicFieldProps.isDisabled || isLoading}
-                                className={cn("outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 !bg-transparent", { "w-1": !inputFocused.isOpen })}
+                                className={cn("outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 !bg-transparent", { "w-1": !inputFocus.isOpen })}
                                 ref={inputRef}
                             />
 
@@ -364,7 +365,9 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                                                     setTagInputValue("")
                                                 }}
                                                 onMouseMove={() => {
-                                                    setHighlightedOptionIndex(index)
+                                                    startTransition(() => {
+                                                        setHighlightedOptionIndex(index)
+                                                    })
                                                 }}
                                                 ref={(node) => {
                                                     const map = getMap()

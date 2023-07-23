@@ -20,7 +20,7 @@ import { Checkbox, CheckboxGroup, CheckboxGroupProps, CheckboxProps } from "../c
 import { RadioGroup, RadioGroupProps } from "../radio-group"
 import { PhoneNumberInput, PhoneNumberInputProps } from "../phone-number-input"
 import { PriceInput, PriceInputProps } from "../price-input"
-import { useUILocaleConfig } from "../core"
+import { cn, useUILocaleConfig } from "../core"
 import { currencies } from "../price-input/currencies"
 import { AddressInput, AddressInputProps } from "../address-input"
 import { ColorInput, ColorInputProps } from "../color-input"
@@ -428,7 +428,10 @@ const RadioCardsField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
         return <RadioGroup
             fieldClassName="w-full"
             fieldLabelClassName="text-md"
-            radioContainerClassName="block w-full p-4 cursor-pointer dark:bg-gray-900 transition border border-[--border] rounded-[--radius] data-[checked=true]:ring-2 data-[checked=true]:ring-[--ring]"
+            radioContainerClassName={cn(
+                "block w-full p-4 cursor-pointer dark:bg-gray-900 transition border border-[--border] rounded-[--radius]",
+                "data-[checked=true]:ring-2 data-[checked=true]:ring-[--ring]",
+            )}
             radioControlClassName="absolute right-2 top-2 h-5 w-5 text-xs"
             radioHelpClassName="text-sm"
             radioLabelClassName="font-semibold flex-none flex"
@@ -458,11 +461,15 @@ const SegmentedControlField = React.memo(withControlledInput(forwardRef<HTMLInpu
         return <RadioGroup
             fieldClassName="!w-fit"
             fieldLabelClassName="text-md"
-            radioContainerClassName="block w-fit py-1 px-3 cursor-pointer border border-transparent transition rounded-[--radius] data-[checked=true]:bg-white dark:data-[checked=true]:bg-gray-700 data-[checked=true]:border-[--border] data-[checked=true]:shadow-sm text-[--muted] data-[checked=true]:text-[--text-color]"
+            radioContainerClassName={cn(
+                "block w-fit py-1 px-3 cursor-pointer border border-transparent transition rounded-[--radius]",
+                "data-[checked=true]:bg-white dark:data-[checked=true]:bg-gray-700 data-[checked=true]:border-[--border] data-[checked=true]:shadow-sm",
+                "text-[--muted] data-[checked=true]:text-[--text-color]",
+            )}
             radioControlClassName="hidden"
             radioHelpClassName="text-base"
             radioLabelClassName="font-semibold flex-none"
-            stackClassName="flex flex-row gap-2 p-1 bg-gray-50 dark:bg-gray-800 rounded-[--radius] w-fit space-y-0"
+            stackClassName="flex flex-row gap-2 p-1 bg-gray-50 dark:bg-gray-800 rounded-[--radius] w-fit space-y-0 focus-within:ring-2 ring-[--ring]"
             {...props}
             ref={ref}
         />

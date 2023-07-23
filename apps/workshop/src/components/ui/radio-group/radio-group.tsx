@@ -16,12 +16,13 @@ export const RadioGroupAnatomy = defineStyleAnatomy({
     radioControl: cva([
         "UI-RadioGroup__radioControl",
         "inline-flex flex-none justify-center items-center border border-gray-300 rounded-full text-white bg-white cursor-pointer transition duration-10 relative",
-        "data-focus:outline-none data-focus:ring-2 ring-offset-1 data-focus:ring-[--ring]",
+        "data-[focus]:outline-none data-[focus]:ring-2 ring-offset-1 ring-[--ring]",
         "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-[disabled=true]:cursor-not-allowed",
         "bg-white border-gray-300 hover:bg-gray-100 hover:text-brand-100",
         "data-[checked=true]:bg-brand-500 data-[checked=true]:dark:bg-brand-500 data-[checked=true]:border-brand-500",
         "dark:bg-gray-700 dark:border-gray-700 dark:hover:bg-gray-700",
-        "data-[error=true]:border-red-500"
+        "data-[error=true]:border-red-500",
+        "peer-[.is-focused]:ring-2",
     ], {
         variants: {
             size: {
@@ -35,7 +36,7 @@ export const RadioGroupAnatomy = defineStyleAnatomy({
     }),
     radioLabel: cva([
         "UI-RadioGroup__radioLabel font-normal flex-none",
-        "data-[disabled=true]:opacity-50"
+        "data-[disabled=true]:opacity-50",
     ], {
         variants: {
             size: {
@@ -52,7 +53,7 @@ export const RadioGroupAnatomy = defineStyleAnatomy({
     ]),
     radioContainer: cva([
         "UI-RadioGroup__radioContainer",
-        "inline-flex w-full gap-2 items-center relative"
+        "inline-flex w-full gap-2 items-center relative",
     ]),
     radioIcon: cva([
         "UI-RadioGroup__radioIcon",
@@ -74,7 +75,7 @@ export interface RadioGroupProps extends BasicFieldOptions, ComponentWithAnatomy
     checkedIcon?: React.ReactNode
 }
 
-export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((props, ref) => {
+export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>((props, ref) => {
 
     const [{
         size = "md",
@@ -120,12 +121,10 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
         <>
             <BasicField
                 {...basicFieldProps}
-                ref={ref}
             >
-                <div className={cn(RadioGroupAnatomy.stack(), stackClassName)} {...api.rootProps}>
+                <div className={cn(RadioGroupAnatomy.stack(), stackClassName)} {...api.rootProps} ref={ref}>
 
                     {options.map((opt) => (
-
                         <label
                             key={opt.value}
                             {...api.getRadioProps({ value: opt.value })}
@@ -134,7 +133,10 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
                                 radioContainerClassName,
                             )}
                             data-checked={api.value === opt.value}
+                            tabIndex={-1}
                         >
+
+                            <input {...api.getRadioInputProps({ value: opt.value })} />
 
                             <div
                                 className={cn(RadioGroupAnatomy.radioControl({ size }), radioControlClassName)}
@@ -185,10 +187,8 @@ export const RadioGroup = React.forwardRef<HTMLInputElement, RadioGroupProps>((p
                                 {opt.help}
                             </div>}
 
-                            <input {...api.getRadioInputProps({ value: opt.value })} ref={ref}/>
 
                         </label>
-
                     ))}
 
                 </div>

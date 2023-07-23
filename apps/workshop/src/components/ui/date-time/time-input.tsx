@@ -1,6 +1,6 @@
 "use client"
 
-import { cn, ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy, mergeRefs, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
 import React, { useId, useRef } from "react"
 import { useTimeField } from "react-aria"
@@ -53,13 +53,13 @@ export const TimeInput = React.forwardRef<HTMLDivElement, TimeInputProps>((props
     }, basicFieldProps] = extractBasicFieldProps<TimeInputProps>(props, useId())
 
     const { countryLocale } = useUILocaleConfig()
-    let state = useTimeFieldState({
+    const state = useTimeFieldState({
         ...datePickerProps,
         locale: locale ?? countryLocale,
     })
 
-    let _ref = useRef<HTMLDivElement>(null)
-    let { labelProps, fieldProps } = useTimeField(datePickerProps, state, _ref)
+    const _ref = mergeRefs(ref, useRef<HTMLDivElement>(null))
+    const { labelProps, fieldProps } = useTimeField(datePickerProps, state, _ref)
 
     return (
         <BasicField

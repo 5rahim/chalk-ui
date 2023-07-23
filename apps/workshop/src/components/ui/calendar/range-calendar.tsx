@@ -13,16 +13,18 @@ import { CalendarHeader } from "./calendar-header"
  * -----------------------------------------------------------------------------------------------*/
 
 export function RangeCalendar({ locale, ...props }: Omit<RangeCalendarStateOptions, "createCalendar" | "locale"> & { locale?: string }) {
-    let { countryLocale } = useUILocaleConfig()
-    let state = useRangeCalendarState({
+    const { countryLocale } = useUILocaleConfig()
+    const _locale = locale ?? countryLocale
+
+    const state = useRangeCalendarState({
         ...props,
         visibleDuration: { months: 2 },
-        locale: locale ?? countryLocale,
+        locale: _locale,
         createCalendar,
     })
 
-    let ref = useRef<HTMLDivElement>(null)
-    let {
+    const ref = useRef<HTMLDivElement>(null)
+    const {
         calendarProps,
         prevButtonProps,
         nextButtonProps,
@@ -42,8 +44,8 @@ export function RangeCalendar({ locale, ...props }: Omit<RangeCalendarStateOptio
             />
             <div className="flex items-center gap-2 pb-4 w-fit">
                 <div className="flex flex-col md:flex-row gap-8">
-                    <CalendarGrid state={state} offset={{}}/>
-                    <CalendarGrid state={state} offset={{ months: 1 }}/>
+                    <CalendarGrid state={state} offset={{}} locale={_locale}/>
+                    <CalendarGrid state={state} offset={{ months: 1 }} locale={_locale}/>
                 </div>
             </div>
         </div>

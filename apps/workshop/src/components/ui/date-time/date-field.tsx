@@ -14,8 +14,9 @@ import { DateFieldState, DateFieldStateOptions, DateSegment, useDateFieldState }
 export const DateSegmentAnatomy = defineStyleAnatomy({
     segment: cva([
         "UI-DateSegment__segment",
-        "px-0.5 box-content tabular-nums text-right outline-none rounded-sm",
-        "focus:bg-brand-50 dark:focus:bg-transparent focus:text-brand-500 dark:focus:text-white focus:font-semibold group shadow-none"
+        "box-content tabular-nums text-right outline-none rounded-sm",
+        "group shadow-none",
+        "focus:font-bold focus:text-[--brand] dark:focus:text-[--brand]",
     ], {
         variants: {
             isEditable: {
@@ -30,23 +31,21 @@ export const DateSegmentAnatomy = defineStyleAnatomy({
     ]),
 })
 
-DateField.displayName = "DateField"
-
 /* -------------------------------------------------------------------------------------------------
  * DateField
  * -----------------------------------------------------------------------------------------------*/
 
 export function DateField({ locale, ...props }: Omit<DateFieldStateOptions, "locale" | "createCalendar"> & { locale?: string }) {
-    let { countryLocale } = useUILocaleConfig()
+    const { countryLocale } = useUILocaleConfig()
 
-    let state = useDateFieldState({
+    const state = useDateFieldState({
         ...props,
         locale: locale ?? countryLocale,
         createCalendar,
     })
 
-    let ref = useRef<HTMLDivElement>(null)
-    let { fieldProps } = useDateField(props, state, ref)
+    const ref = useRef<HTMLDivElement>(null)
+    const { fieldProps } = useDateField(props, state, ref)
 
     return (
         <div {...fieldProps} ref={ref} className="flex">
@@ -65,8 +64,8 @@ DateField.displayName = "DateField"
  * -----------------------------------------------------------------------------------------------*/
 
 export function DateSegmentComponent({ segment, state }: { segment: DateSegment, state: DateFieldState }) {
-    let ref = useRef<HTMLDivElement>(null)
-    let { segmentProps } = useDateSegment(segment, state, ref)
+    const ref = useRef<HTMLDivElement>(null)
+    const { segmentProps } = useDateSegment(segment, state, ref)
 
     return (
         <div

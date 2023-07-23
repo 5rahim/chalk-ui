@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "../core"
-import React, { createContext, useContext, useEffect, useId, useState } from "react"
+import React, { createContext, useContext, useId, useLayoutEffect, useState } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { Checkbox, CheckboxProps } from "."
 
@@ -54,18 +54,11 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
     const [selectedValues, setSelectedValues] = useState<string[]>(value ?? defaultValue)
 
     // Control the state
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (value) {
             setSelectedValues(value)
         }
     }, [value])
-
-    // Emit changes
-    useEffect(() => {
-        if (onChange) {
-            onChange(selectedValues)
-        }
-    }, [selectedValues])
 
 
     return (
@@ -78,7 +71,7 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
                     ref={ref}
                 >
                     <div className={cn("space-y-1", stackClassName)}>
-                        {options.map((opt, idx) => (
+                        {options.map((opt) => (
                             <Checkbox
                                 key={opt.value}
                                 label={opt.label}
@@ -92,6 +85,9 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
                                         } else if (checked === false) {
                                             newArr = newArr.filter(v => v !== opt.value)
                                         }
+                                        if (onChange) {
+                                            onChange(newArr)
+                                        }
                                         return newArr
                                     })
                                 }}
@@ -103,7 +99,7 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
                                 iconClassName={checkboxIconClassName}
                                 isDisabled={basicFieldProps.isDisabled}
                                 isReadOnly={basicFieldProps.isReadOnly}
-                                tabIndex={idx}
+                                tabIndex={0}
                             />
                         ))}
                     </div>

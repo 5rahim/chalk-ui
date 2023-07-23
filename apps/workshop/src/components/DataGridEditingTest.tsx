@@ -14,6 +14,8 @@ import { createTypesafeFormSchema } from "./ui/typesafe-form"
 import { TextInput } from "./ui/text-input"
 import { NumberInput } from "./ui/number-input"
 import { Select } from "./ui/select"
+import { DatePicker } from "./ui/date-time"
+import { getLocalTimeZone, parseAbsoluteToLocal } from "@internationalized/date"
 
 interface DataGridEditingTestProps {
     children?: React.ReactNode
@@ -23,7 +25,9 @@ const schema = createTypesafeFormSchema(({ z }) => z.object({
     name: z.string().min(3),
     price: z.number().min(3),
     category: z.string().nullable(),
+    availability: z.string(),
     visible: z.boolean(),
+    random_date: z.date(),
 }))
 
 type Product = {
@@ -242,6 +246,19 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                         return value
                     },
                 }),
+                ...withEditing({
+                    schema: schema,
+                    key: "availability",
+                    field: (ctx) => (
+                        <Select
+                            {...ctx}
+                            value={ctx.value ?? ""}
+                            onChange={e => ctx.onChange(e.target.value)}
+                            options={[{ value: "in_stock", label: "In stock" }, { value: "out_of_stock", label: "Out of stock" }]}
+                            intent={"unstyled"}
+                        />
+                    ),
+                }),
             },
         },
         {
@@ -276,39 +293,32 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                 }),
             },
         },
-        // {
-        //     accessorKey: "random_date",
-        //     header: "Visible",
-        //     cell: info => <Badge intent={info.getValue() ? "success" : "gray"}>{info.getValue() ? "Visible" : "Hidden"}</Badge>,
-        //     size: 0,
-        //     filterFn: getFilteringType("boolean"),
-        //     meta: {
-        //         ...withFiltering({
-        //             name: "Visible",
-        //             type: "boolean",
-        //             icon: <BiLowVision/>,
-        //             valueFormatter: (value) => {
-        //                 if (value === "true") return "Yes"
-        //                 if (value === "false") return "No"
-        //                 return ""
-        //             },
-        //         }),
-        //         ...withEditing({
-        //             schema: schema,
-        //             field: (ctx) => (
-        //                 <Select
-        //                     {...ctx}
-        //                     value={ctx.value ? "visible" : "hidden"}
-        //                     onChange={e => ctx.onChange(e.target.value === "visible")}
-        //                     options={[{ value: "visible", label: "Visible" }, { value: "hidden", label: "Hidden" }]}
-        //                     intent={"unstyled"}
-        //                 />
-        //             ),
-        //         }),
-        //     },
-        // },
         {
-            id: "actions",
+            accessorKey: "random_date",
+            header: "Visible",
+            cell: info => Intl.DateTimeFormat("fr").format(info.getValue() as any),
+            size: 30,
+            meta: {
+                ...withEditing({
+                    schema: schema,
+                    key: "random_date",
+                    field: (ctx) => {
+                        return (
+                            <DatePicker
+                                value={parseAbsoluteToLocal(ctx.value.toISOString())}
+                                onChange={value => ctx.onChange(value.toDate(getLocalTimeZone()))}
+                                intent={"unstyled"}
+                                locale={"fr"}
+                                hideTimeZone
+                                granularity={"day"}
+                            />
+                        )
+                    },
+                }),
+            },
+        },
+        {
+            id: "_actions",
             size: 10,
             enableSorting: false,
             enableGlobalFilter: false,
@@ -331,23 +341,23 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                 data={clientData}
                 rowCount={_data.length}
                 isLoading={!clientData}
-                hideColumns={[
-                    { below: 850, hide: ["availability", "price"] },
-                    { below: 600, hide: ["action"] },
-                    { below: 515, hide: ["category"] },
-                    { below: 400, hide: ["visible"] },
-                ]}
+                // hideColumns={[
+                //     { below: 850, hide: ["availability", "price"] },
+                //     { below: 600, hide: ["action"] },
+                //     { below: 515, hide: ["category"] },
+                //     { below: 400, hide: ["visible"] },
+                // ]}
                 enableRowSelection
                 onItemSelected={data => {
-                    console.log(data)
+                    console.log("selection", data)
                 }}
                 isItemMutating={isMutating}
                 onItemEdited={data => {
-                    console.log(data)
+                    console.log("editing", data)
                     mutate(data)
                 }}
-                // enableOptimisticUpdates
-                // optimisticUpdatePrimaryKey={"id"}
+                enableOptimisticUpdates
+                optimisticUpdatePrimaryKey={"id"}
             />
         </>
     )

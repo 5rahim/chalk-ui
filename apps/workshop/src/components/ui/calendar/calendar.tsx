@@ -26,27 +26,27 @@ export const CalendarAnatomy = defineStyleAnatomy({
 
 export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "createCalendar" | "locale"> & { locale?: string }) {
 
-    let { countryLocale } = useUILocaleConfig()
+    const { countryLocale } = useUILocaleConfig()
     const _locale = locale ?? countryLocale
 
-    let state = useCalendarState({
+    const state = useCalendarState({
         ...props,
         locale: _locale,
         createCalendar,
     })
 
-    let ref = useRef<HTMLDivElement>(null)
-    let {
+    const ref = useRef<HTMLDivElement>(null)
+    const {
         calendarProps,
-        prevButtonProps: { onPress: prevButtonOnPress, ...prevButtonProps },
-        nextButtonProps: { onPress: nextButtonOnPress, ...nextButtonProps },
+        prevButtonProps: { onPress: prevButtonOnPress },
+        nextButtonProps: { onPress: nextButtonOnPress },
     } = useCalendar(
         props,
         state,
     )
 
     return (
-        <div {...calendarProps} ref={ref} className={cn(CalendarAnatomy.container())}>
+        <div {...calendarProps} ref={ref} className={cn(CalendarAnatomy.container())} tabIndex={0}>
             <div className={cn(CalendarAnatomy.header())}>
                 <IconButton
                     size="sm"
@@ -56,7 +56,6 @@ export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "creat
                             d="M9.78 12.78a.75.75 0 0 1-1.06 0L4.47 8.53a.75.75 0 0 1 0-1.06l4.25-4.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L6.06 8l3.72 3.72a.75.75 0 0 1 0 1.06Z"></path>
                     </svg>)}
                     rounded
-                    {...prevButtonProps}
                     onClick={e => {
                         e.preventDefault()
                         prevButtonOnPress && prevButtonOnPress(e as any)
@@ -76,14 +75,13 @@ export function Calendar({ locale, ...props }: Omit<CalendarStateOptions, "creat
                             d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"></path>
                     </svg>)}
                     rounded
-                    {...nextButtonProps}
                     onClick={e => {
                         e.preventDefault()
                         nextButtonOnPress && nextButtonOnPress(e as any)
                     }}
                 />
             </div>
-            <CalendarGrid state={state} offset={{}}/>
+            <CalendarGrid state={state} locale={_locale} offset={{}}/>
         </div>
     )
 }

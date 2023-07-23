@@ -54,12 +54,15 @@ interface CalendarCellProps {
     state: CalendarState | RangeCalendarState
     date: CalendarDate
     currentMonth: DateValue
+    locale?: string
 }
 
-export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
+export function CalendarCell({ state, date, currentMonth, locale }: CalendarCellProps) {
+    const { countryLocale } = useUILocaleConfig()
+    const _locale = locale ?? countryLocale
 
-    let ref = useRef<HTMLDivElement>(null)
-    let {
+    const ref = useRef<HTMLDivElement>(null)
+    const {
         cellProps,
         buttonProps,
         isSelected,
@@ -68,14 +71,14 @@ export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
         formattedDate,
     } = useCalendarCell({ date }, state, ref)
 
-    let isOutsideMonth = !isSameMonth(currentMonth, date)
+    const isOutsideMonth = !isSameMonth(currentMonth, date)
 
     // The start and end date of the selected range will have
     // an emphasized appearance.
-    let isSelectionStart = (state as RangeCalendarState).highlightedRange
+    const isSelectionStart = (state as RangeCalendarState).highlightedRange
         ? isSameDay(date, (state as RangeCalendarState).highlightedRange.start)
         : isSelected
-    let isSelectionEnd = (state as RangeCalendarState).highlightedRange
+    const isSelectionEnd = (state as RangeCalendarState).highlightedRange
         ? isSameDay(date, (state as RangeCalendarState).highlightedRange.end)
         : isSelected
 
@@ -83,15 +86,14 @@ export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
     // the first day of each week, and the start date of the selection.
     // We add rounded corners on the right for the last day of the month,
     // the last day of each week, and the end date of the selection.
-    let { countryLocale } = useUILocaleConfig()
-    let dayOfWeek = getDayOfWeek(date, countryLocale)
-    let isRoundedLeft =
+    const dayOfWeek = getDayOfWeek(date, _locale)
+    const isRoundedLeft =
         isSelected && (isSelectionStart)
-    let isRoundedRight =
+    const isRoundedRight =
         isSelected &&
         (isSelectionEnd)
 
-    let { focusProps, isFocusVisible } = useFocusRing()
+    const { focusProps, isFocusVisible } = useFocusRing()
 
     return (
         <td

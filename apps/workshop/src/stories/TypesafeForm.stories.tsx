@@ -33,6 +33,31 @@ const meta = {
                     label={"Phone"}
                     name={"phone"}
                 />
+                <Field.Combobox
+                    label={"Gender"}
+                    name={"test"}
+                    options={[{ value: "F" }, { value: "H" }]}
+                />
+                <Field.MultiSelect
+                    label={"Gender"}
+                    name={"test2"}
+                    options={[{ value: "F" }, { value: "H" }]}
+                />
+                <Field.CheckboxGroup
+                    label={"Gender"}
+                    name={"gender2"}
+                    options={[{ value: "F" }, { value: "H" }]}
+                />
+                <Field.RadioGroup
+                    label={"Gender"}
+                    name={"gender3"}
+                    options={[{ value: "F" }, { value: "H" }]}
+                />
+                <Field.SegmentedControl
+                    label={"Gender"}
+                    name={"gender"}
+                    options={[{ value: "F" }, { value: "H" }]}
+                />
                 <Field.Dropzone
                     label={"Profile picture"}
                     name={"profilePicture"}

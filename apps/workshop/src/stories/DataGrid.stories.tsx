@@ -18,6 +18,13 @@ export const Basic: Story = {
     args: {},
 }
 
+export const NonResponsive: Story = {
+    render: () => <DataGridTest tableProps={{
+        tableClassName: "min-w-[1040px]",
+        hideColumns: undefined,
+    }}/>,
+}
+
 export const WithEditing: Story = {
     render: () => <DataGridEditingTest/>,
 }

@@ -7,14 +7,14 @@ import React from "react"
  * Editing
  * -----------------------------------------------------------------------------------------------*/
 
-export type DataGridEditingHelperProps<S extends AnyZodObject, Key extends keyof z.infer<S>> = {
-    schema: S,
+export type DataGridEditingHelperProps<Schema extends AnyZodObject, Key extends keyof z.infer<Schema>> = {
+    schema: Schema,
     key: Key
-    field: (props: DataGridCellInputFieldContext<S, Key>) => React.ReactElement,
-    valueFormatter?: (value: unknown) => unknown
+    field: (props: DataGridCellInputFieldContext<Schema, Key>) => React.ReactElement,
+    valueFormatter?: (value: z.infer<Schema>[Key]) => z.infer<Schema>[Key]
 }
 
-function withEditing<S extends AnyZodObject, K extends keyof z.infer<S>>(params: DataGridEditingHelperProps<S, K>) {
+function withEditing<Schema extends AnyZodObject, Key extends keyof z.infer<Schema>>(params: DataGridEditingHelperProps<Schema, Key>) {
     return {
         editable: {
             ...params,

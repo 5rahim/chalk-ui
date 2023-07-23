@@ -1,6 +1,6 @@
 "use client"
 
-import { cn, ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
+import { cn, ComponentWithAnatomy, defineStyleAnatomy, mergeRefs, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
 import React, { useId, useRef } from "react"
 import { useDateRangePicker } from "react-aria"
@@ -58,9 +58,9 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
     const { countryLocale } = useUILocaleConfig()
     const _locale = locale ?? countryLocale
 
-    let state = useDateRangePickerState(datePickerProps)
-    let _ref = useRef<HTMLDivElement>(null)
-    let {
+    const state = useDateRangePickerState(datePickerProps)
+    const _ref = mergeRefs(ref, useRef<HTMLDivElement>(null))
+    const {
         groupProps,
         labelProps,
         startFieldProps,
@@ -68,9 +68,9 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
         buttonProps,
         dialogProps,
         calendarProps,
-    } = useDateRangePicker(datePickerProps, state, _ref)
+    } = useDateRangePicker({ ...datePickerProps, "aria-label": basicFieldProps.name }, state, _ref)
 
-    let { onPress, onFocusChange, ...restButtonProps } = buttonProps
+    const { onPress, onFocusChange, ...restButtonProps } = buttonProps
 
     return (
         <BasicField

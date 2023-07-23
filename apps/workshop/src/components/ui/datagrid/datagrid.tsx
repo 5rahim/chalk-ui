@@ -84,11 +84,13 @@ export const DataGridAnatomy = defineStyleAnatomy({
     ]),
     td: cva([
         "UI-DataGrid__td",
-        "px-2 py-2 whitespace-nowrap text-base font-medium text-[--text-color]",
+        "px-2 py-2 w-full whitespace-nowrap text-base font-medium text-[--text-color]",
         "data-[row-selection=true]:px-2 data-[row-selection=true]:sm:px-0 data-[row-selection=true]:text-center",
         "data-[action-column=false]:truncate data-[action-column=false]:overflow-ellipsis",
         "data-[row-selected=true]:bg-brand-50 dark:data-[row-selected=true]:bg-gray-700",
         "data-[editing=true]:ring-1 ring-[--ring] ring-inset",
+        "data-[editable=true]:hover:bg-[--highlight] data-[editable=true]:focus:ring-2",
+        "focus:outline-none",
     ]),
     tr: cva([
         "UI-DataGrid__tr",
@@ -252,8 +254,9 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
     }, [data])
 
     const _columns = useMemo<ColumnDef<T>[]>(() => [{
-        id: "select",
-        size: 0,
+        id: "_select",
+        size: 1,
+        maxSize: 1,
         disableSortBy: true,
         disableGlobalFilter: true,
         header: ({ table }) => {
@@ -330,7 +333,10 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
     })
 
     const displayedRows = useMemo(() => {
-        return withFetching ? table.getRowModel().rows : table.getRowModel().rows.slice(table.getState().pagination.pageIndex * pageSize, (table.getState().pagination.pageIndex + 1) * pageSize)
+        if (withFetching) {
+            return table.getRowModel().rows
+        }
+        return table.getRowModel().rows.slice(table.getState().pagination.pageIndex * pageSize, (table.getState().pagination.pageIndex + 1) * pageSize)
     }, [withFetching, pageSize, table.getRowModel().rows, table.getState().pagination])
 
     // Responsively hide columns
@@ -368,6 +374,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         getIsCellEditable,
         getColumnEditingMeta,
         getIsCurrentlyEditing,
+        getFirstCellBeingEdited,
         cancelEditing,
         saveEdit,
         handleUpdateValue,
@@ -567,6 +574,10 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                     return (
                                         <tr key={row.id} className={cn(DataGridAnatomy.tr(), trClassName)}>
                                             {row.getVisibleCells().map((cell, index) => {
+
+                                                const isCurrentlyEditable = getIsCellEditable(cell.id) && !getIsCellActivelyEditing(cell.id)
+                                                    && (!getIsCurrentlyEditing() || getFirstCellBeingEdited()?.rowId === cell.row.id)
+
                                                 return (
                                                     <td
                                                         key={cell.id}
@@ -575,9 +586,13 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                         data-action-column={`${cell.column.id === "actions"}`}
                                                         data-row-selected={cell.getContext().row.getIsSelected()}
                                                         data-editing={getIsCellActivelyEditing(cell.id)}
+                                                        data-editable={isCurrentlyEditable}
                                                         style={{ width: cell.column.getSize(), maxWidth: cell.column.columnDef.maxSize }}
                                                         onDoubleClick={() => startTransition(() => onCellDoubleClick(cell.id))}
-                                                        // tabIndex={0}
+                                                        onKeyUp={event => {
+                                                            if (event.key === "Enter") startTransition(() => onCellDoubleClick(cell.id))
+                                                        }}
+                                                        tabIndex={isCurrentlyEditable ? 0 : undefined}
                                                     >
                                                         {((!getIsCellEditable(cell.id) || !getIsCellActivelyEditing(cell.id))) && flexRender(
                                                             cell.column.columnDef.cell,
@@ -617,70 +632,70 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                     </div>
                 </div>
 
-                <div className={cn(DataGridAnatomy.footer(), footerClassName)}>
+            </div>
 
-                    <Pagination>
-                        <Pagination.Trigger
-                            direction={"left"}
-                            isChevrons
-                            onClick={() => table.setPageIndex(0)}
-                            isDisabled={!table.getCanPreviousPage() || isInLoadingState}
-                        />
-                        <Pagination.Trigger
-                            direction={"left"}
-                            onClick={() => table.previousPage()}
-                            isDisabled={!table.getCanPreviousPage() || isInLoadingState}
-                        />
-                        <Pagination.Trigger
-                            direction={"right"}
-                            onClick={() => table.nextPage()}
-                            isDisabled={!table.getCanNextPage() || isInLoadingState}
-                        />
-                        <Pagination.Trigger
-                            direction={"right"}
-                            isChevrons
-                            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                            isDisabled={!table.getCanNextPage() || isInLoadingState}
-                        />
-                    </Pagination>
+            <div className={cn(DataGridAnatomy.footer(), footerClassName)}>
 
-                    <div className={cn(DataGridAnatomy.footerPageDisplayContainer(), footerPageDisplayContainerClassName)}>
-                        <div>{locales["page"][lng]}</div>
-                        <strong>
-                            {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
-                        </strong>
-                    </div>
+                <Pagination>
+                    <Pagination.Trigger
+                        direction={"left"}
+                        isChevrons
+                        onClick={() => table.setPageIndex(0)}
+                        isDisabled={!table.getCanPreviousPage() || isInLoadingState}
+                    />
+                    <Pagination.Trigger
+                        direction={"left"}
+                        onClick={() => table.previousPage()}
+                        isDisabled={!table.getCanPreviousPage() || isInLoadingState}
+                    />
+                    <Pagination.Trigger
+                        direction={"right"}
+                        onClick={() => table.nextPage()}
+                        isDisabled={!table.getCanNextPage() || isInLoadingState}
+                    />
+                    <Pagination.Trigger
+                        direction={"right"}
+                        isChevrons
+                        onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                        isDisabled={!table.getCanNextPage() || isInLoadingState}
+                    />
+                </Pagination>
 
-                    <div className={cn(DataGridAnatomy.footerPaginationInputContainer(), footerPaginationInputContainerClassName)}>
-                        <NumberInput
-                            discrete
-                            defaultValue={table.getState().pagination.pageIndex + 1}
-                            min={1}
-                            max={pageCount}
-                            onChange={v => {
-                                const page = v ? v - 1 : 0
-                                table.setPageIndex(page)
-                            }}
-                            className={"inline-flex flex-none items-center w-[3rem]"}
-                            isDisabled={isInLoadingState}
-                            size={"sm"}
-                        />
-                        <Select
-                            value={table.getState().pagination.pageSize}
-                            onChange={e => {
-                                table.setPageSize(Number(e.target.value))
-                            }}
-                            options={[Number(_limit), ...[5, 10, 20, 30, 40, 50].filter(n => n !== Number(_limit))].map(pageSize => ({
-                                value: pageSize,
-                                label: `${pageSize}`,
-                            }))}
-                            fieldClassName="w-auto"
-                            className="w-auto pr-8"
-                            isDisabled={isInLoadingState}
-                            size={"sm"}
-                        />
-                    </div>
+                <div className={cn(DataGridAnatomy.footerPageDisplayContainer(), footerPageDisplayContainerClassName)}>
+                    <div>{locales["page"][lng]}</div>
+                    <strong>
+                        {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+                    </strong>
+                </div>
 
+                <div className={cn(DataGridAnatomy.footerPaginationInputContainer(), footerPaginationInputContainerClassName)}>
+                    <NumberInput
+                        discrete
+                        defaultValue={table.getState().pagination.pageIndex + 1}
+                        min={1}
+                        max={pageCount}
+                        onChange={v => {
+                            const page = v ? v - 1 : 0
+                            table.setPageIndex(page)
+                        }}
+                        className={"inline-flex flex-none items-center w-[3rem]"}
+                        isDisabled={isInLoadingState}
+                        size={"sm"}
+                    />
+                    <Select
+                        value={table.getState().pagination.pageSize}
+                        onChange={e => {
+                            table.setPageSize(Number(e.target.value))
+                        }}
+                        options={[Number(_limit), ...[5, 10, 20, 30, 40, 50].filter(n => n !== Number(_limit))].map(pageSize => ({
+                            value: pageSize,
+                            label: `${pageSize}`,
+                        }))}
+                        fieldClassName="w-auto"
+                        className="w-auto pr-8"
+                        isDisabled={isInLoadingState}
+                        size={"sm"}
+                    />
                 </div>
 
             </div>
