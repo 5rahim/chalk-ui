@@ -1,5 +1,6 @@
 import { RadioGroup } from "../components/ui/radio-group"
 import type { Meta, StoryObj } from "@storybook/react"
+import { cn } from "../components/ui/core"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
@@ -56,7 +57,10 @@ export const Cards: Story = {
       fieldClassName: "w-full",
       fieldLabelClassName: "text-md",
       stackClassName: "flex flex-col md:flex-row gap-2 space-y-0",
-      radioContainerClassName: "block w-full p-4 cursor-pointer dark:bg-gray-900 transition border border-[--border] rounded-[--radius] data-checked:ring-2 data-checked:ring-[--ring]",
+      radioContainerClassName: cn(
+          "block w-full p-4 cursor-pointer dark:bg-gray-900 transition border border-[--border] rounded-[--radius]",
+          "data-[checked=true]:ring-2 ring-[--ring]",
+      ),
       radioControlClassName: "absolute right-2 top-2 h-5 w-5 text-xs",
       radioLabelClassName: "font-semibold flex-none flex",
       radioHelpClassName: "text-sm",
@@ -69,8 +73,12 @@ export const SegmentedControl: Story = {
       defaultValue: "1",
       fieldClassName: "!w-fit",
       fieldLabelClassName: "text-md",
-      stackClassName: "flex flex-row gap-2 p-1 bg-gray-50 dark:bg-gray-800 rounded-[--radius] w-fit space-y-0",
-      radioContainerClassName: "block w-fit py-1 px-3 cursor-pointer border border-transparent transition rounded-[--radius] data-checked:bg-white dark:data-checked:bg-gray-700 data-checked:border-[--border] data-checked:shadow-sm text-[--muted] data-checked:text-[--text-color]",
+      stackClassName: "flex flex-row gap-2 p-1 bg-gray-50 dark:bg-gray-800 rounded-[--radius] w-fit space-y-0 focus-within:ring-2 ring-[--ring]",
+      radioContainerClassName: cn(
+          "block w-fit py-1 px-3 cursor-pointer border border-transparent transition rounded-[--radius]",
+          "data-[checked=true]:bg-white dark:data-[checked=true]:bg-gray-700 data-[checked=true]:border-[--border] data-[checked=true]:shadow-sm",
+          "text-[--muted] data-[checked=true]:text-[--text-color]",
+      ),
       radioControlClassName: "hidden",
       radioLabelClassName: "font-semibold flex-none",
       radioHelpClassName: "text-base",

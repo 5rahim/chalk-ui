@@ -4,17 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { cn } from "../core"
 import _isEmpty from "lodash/isEmpty"
 import React, { createContext, useContext, useEffect, useMemo } from "react"
-import {
-    DeepPartial,
-    FieldValues,
-    FormProvider,
-    SubmitErrorHandler,
-    SubmitHandler,
-    useForm,
-    UseFormProps,
-    UseFormReturn,
-    WatchObserver,
-} from "react-hook-form"
+import { FieldValues, FormProvider, SubmitErrorHandler, SubmitHandler, useForm, UseFormProps, UseFormReturn, WatchObserver } from "react-hook-form"
 import { z } from "zod"
 import { getZodDefaults } from "./zod-resolver"
 
@@ -94,7 +84,7 @@ export const TypesafeForm = <TFields extends FieldValues>(props: TypesafeFormPro
         return {
             ...getZodDefaults(schema),
             ..._defaultValues,
-        } as DeepPartial<TFields>
+        } as any
     }, [])
 
     const form = {

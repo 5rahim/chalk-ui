@@ -88,8 +88,8 @@ export const DataGridAnatomy = defineStyleAnatomy({
         "data-[row-selection=true]:px-2 data-[row-selection=true]:sm:px-0 data-[row-selection=true]:text-center",
         "data-[action-column=false]:truncate data-[action-column=false]:overflow-ellipsis",
         "data-[row-selected=true]:bg-brand-50 dark:data-[row-selected=true]:bg-gray-700",
-        "data-[editing=true]:ring-1 ring-[--ring] ring-inset",
-        "data-[editable=true]:hover:bg-[--highlight] data-[editable=true]:focus:ring-2",
+        "data-[editing=true]:ring-1 data-[editing=true]:ring-[--ring] ring-inset",
+        "data-[editable=true]:hover:bg-[--highlight] data-[editable=true]:focus:ring-2 data-[editable=true]:focus:ring-[--slate]",
         "focus:outline-none",
     ]),
     tr: cva([
@@ -111,7 +111,7 @@ export const DataGridAnatomy = defineStyleAnatomy({
     filterDropdownButton: cva([
         "UI-DataGrid__filterDropdownButton",
         "flex gap-2 items-center bg-[--paper] border border-[--border] rounded-[--radius] py-1 px-2 cursor-pointer hover:bg-[--highlight]",
-        "select-none focus-visible:ring-2 outline-none focus-visible:ring-[--ring]",
+        "select-none focus-visible:ring-2 outline-none ring-[--ring]",
     ]),
 })
 
@@ -472,9 +472,10 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                     leaveTo="opacity-0 scale-75"
                 >
                     <div className={"flex items-center gap-2 rounded-md p-4 bg-[--paper] border border-[--brand] shadow-sm z-20"}>
-                        <span className={"font-semibold"}>Updating</span>
-                        <Button size={"sm"} onClick={saveEdit} isDisabled={isItemMutating}>Save</Button>
-                        <Button size={"sm"} onClick={cancelEditing} intent={"gray-outline"} isDisabled={isItemMutating}>Cancel</Button>
+                        <span className={"font-semibold"}>{locales["updating"][lng]}</span>
+                        <Button size={"sm"} onClick={saveEdit} isDisabled={isItemMutating}>{locales["save"][lng]}</Button>
+                        <Button size={"sm"} onClick={cancelEditing} intent={"gray-outline"}
+                                isDisabled={isItemMutating}>{locales["cancel"][lng]}</Button>
                     </div>
                 </Transition>
 

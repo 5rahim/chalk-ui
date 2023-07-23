@@ -22,5 +22,17 @@
   "row-selected": {
     "fr": "ligne sélectionnée",
     "en": "row selected"
+  },
+  "save": {
+    "fr": "Enregistrer",
+    "en": "Save"
+  },
+  "cancel": {
+    "fr": "Annuler",
+    "en": "Cancel"
+  },
+  "updating": {
+    "fr": "Modification",
+    "en": "Updating"
   }
 }

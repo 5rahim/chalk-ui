@@ -1,6 +1,6 @@
 "use client"
 
-import { getLocalTimeZone, parseDate, Time } from "@internationalized/date"
+import { getLocalTimeZone, parseAbsoluteToLocal, Time } from "@internationalized/date"
 import addDays from "date-fns/addDays"
 import React, { forwardRef, useCallback, useEffect, useMemo } from "react"
 import { Controller, FormState, get, useController, useFormContext } from "react-hook-form"
@@ -42,7 +42,7 @@ type FieldComponent<T> = T & FieldBaseProps
 interface FieldProps extends React.ComponentPropsWithRef<"div"> {
 }
 
-const _Field: any = {}
+const _Field = () => <></>
 
 /**
  * @description This wrapper makes it easier to work with custom form components by controlling their state.
@@ -65,7 +65,7 @@ function withControlledInput<T extends FieldBaseProps>(InputComponent: React.FC<
             const { control, formState, ...context } = useFormContext()
             const { shape } = useFormSchema()
 
-            /* Automatically get the required status from the Zod Schema */
+            /* Get the `required` status from the Schema */
             const isRequired = useMemo(() => !!get(shape, inputProps.name)?.nonempty, [shape])
 
             return (
@@ -83,6 +83,7 @@ function withControlledInput<T extends FieldBaseProps>(InputComponent: React.FC<
                             // defaultValue={get(formState.defaultValues, inputProps.name)} // Default prop, can be overridden in Field component definition
                             value={field.value} // Default prop, can be overridden in Field component definition
                             onChange={callAllHandlers(inputProps.onChange, field.onChange)} // Default prop, can be overridden in Field component
+                            onBlur={callAllHandlers(inputProps.onBlur, field.onBlur)} // Default prop, can be overridden in Field component
                             isRequired={isRequired}
                             {...inputProps} // Props passed in <FieldComponent /> then props passed in <Field.Component />
                             // The props below will not be overridden.
@@ -181,14 +182,11 @@ const DatePickerField = React.memo(withControlledInput(forwardRef<HTMLDivElement
     const defaultValue = useMemo(() => value ?? get(context.formState.defaultValues, props.name), [])
 
     const toCalendarDate = useCallback((value: Date) => {
-        const split = value.toISOString().split("T")
-        if (!!value && !!split[0]) {
-            return parseDate(split[0])
-        }
-        return parseDate(value.toISOString())
+        return parseAbsoluteToLocal(value.toISOString())
     }, [])
 
     return <DatePicker
+        granularity={"day"}
         {...props}
         value={value ? toCalendarDate(value) : undefined}
         onChange={value => {
@@ -220,14 +218,11 @@ const DateRangePickerField = React.memo(withControlledInput(forwardRef<HTMLDivEl
     const defaultValue = useMemo(() => get(context.formState.defaultValues, props.name), [])
 
     const toCalendarDate = useCallback((value: Date) => {
-        const split = value.toISOString().split("T")
-        if (!!value && !!split[0]) {
-            return parseDate(split[0])
-        }
-        return parseDate(value.toISOString())
+        return parseAbsoluteToLocal(value.toISOString())
     }, [])
 
     return <DateRangePicker
+        granularity={"day"}
         {...props}
         value={value ? {
             start: toCalendarDate(value.start),
@@ -430,7 +425,7 @@ const RadioCardsField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
             fieldLabelClassName="text-md"
             radioContainerClassName={cn(
                 "block w-full p-4 cursor-pointer dark:bg-gray-900 transition border border-[--border] rounded-[--radius]",
-                "data-[checked=true]:ring-2 data-[checked=true]:ring-[--ring]",
+                "data-[checked=true]:ring-2 ring-[--ring]",
             )}
             radioControlClassName="absolute right-2 top-2 h-5 w-5 text-xs"
             radioHelpClassName="text-sm"
@@ -671,13 +666,6 @@ function callAllHandlers<T extends (event: any) => void>(
             return event?.defaultPrevented
         })
     }
-}
-
-const isTouched = (
-    name: string,
-    formState: FormState<{ [x: string]: any }>,
-) => {
-    return get(formState.touchedFields, name)
 }
 
 export type As<Props = any> = React.ElementType<Props>

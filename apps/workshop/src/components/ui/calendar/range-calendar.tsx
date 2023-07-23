@@ -41,6 +41,7 @@ export function RangeCalendar({ locale, ...props }: Omit<RangeCalendarStateOptio
                 calendarProps={calendarProps}
                 prevButtonProps={prevButtonProps}
                 nextButtonProps={nextButtonProps}
+                locale={_locale}
             />
             <div className="flex items-center gap-2 pb-4 w-fit">
                 <div className="flex flex-col md:flex-row gap-8">
