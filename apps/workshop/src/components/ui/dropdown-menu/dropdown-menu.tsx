@@ -263,7 +263,11 @@ const DropdownMenuGroup: React.FC<DropdownMenuGroupProps> = React.forwardRef<HTM
 
     // Pass `itemClassName` to every child
     const itemsWithProps = React.useMemo(() => React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
+        if (React.isValidElement(child) && (
+            getChildDisplayName(child) === "DropdownMenuItem" ||
+            getChildDisplayName(child) === "DropdownMenuGroup" ||
+            getChildDisplayName(child) === "DropdownMenuLink")
+        ) {
             return React.cloneElement(child, { itemClassName } as any)
         }
         return child
