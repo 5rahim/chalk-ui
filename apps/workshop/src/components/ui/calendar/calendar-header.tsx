@@ -56,7 +56,7 @@ export function CalendarHeader(
                 prevButtonOnPress && prevButtonOnPress(e as any)
             }}
             />
-            <h3
+            <h4
                 // We have a visually hidden heading describing the entire visible range,
                 // and the calendar itself describes the individual month
                 // so we don't need to repeat that here for screen reader users.
@@ -66,15 +66,15 @@ export function CalendarHeader(
                 {_capitalize(Intl.DateTimeFormat((_locale), {
                     month: "long", year: "numeric",
                 }).format(state.visibleRange.start.toDate(state.timeZone)))}
-            </h3>
-            <h3
+            </h4>
+            <h4
                 aria-hidden
                 className="flex-1 align-center font-bold text-md text-center"
             >
                 {_capitalize(Intl.DateTimeFormat((_locale), {
                     month: "long", year: "numeric",
                 }).format(state.visibleRange.start.add({ months: 1 }).toDate(state.timeZone)))}
-            </h3>
+            </h4>
             <IconButton
                 size="sm"
                 intent="primary-subtle"
