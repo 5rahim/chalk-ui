@@ -22,6 +22,7 @@ type Props<T> = {
     enableOptimisticUpdates: boolean
     onDataChange: React.Dispatch<React.SetStateAction<T[]>>
     optimisticUpdatePrimaryKey: string | undefined
+    isServerSideMode: boolean
 }
 
 export type DataGridRowEditedEvent<T> = {
@@ -40,6 +41,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
         onDataChange,
         enableOptimisticUpdates,
         optimisticUpdatePrimaryKey,
+        isServerSideMode,
     } = props
 
     const toast = useToast()
@@ -63,6 +65,17 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
     const editableColumns = useMemo(() => {
         return leafColumns.filter(n => n.getIsVisible() && !!(n.columnDef.meta as any)?.editingMeta)
     }, [leafColumns])
+
+    useEffect(() => {
+        if (isServerSideMode) {
+            setActiveValue(undefined)
+            setRowData(undefined)
+            setKey(undefined)
+            setSchema(undefined)
+            setRow(undefined)
+            setEditableCellStates([])
+        }
+    }, [table.getState().pagination.pageIndex])
 
     // Keep track of editable cells (cells whose columns are editable)
     const editableCells = useMemo(() => {

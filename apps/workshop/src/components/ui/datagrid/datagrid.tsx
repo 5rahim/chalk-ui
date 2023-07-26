@@ -411,10 +411,11 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         table,
         data: data,
         rows: displayedRows,
-        onRowEdit: onRowEdit,
-        isDataMutating: isDataMutating,
-        enableOptimisticUpdates: enableOptimisticUpdates,
-        optimisticUpdatePrimaryKey: optimisticUpdatePrimaryKey,
+        onRowEdit,
+        isDataMutating,
+        enableOptimisticUpdates,
+        optimisticUpdatePrimaryKey,
+        isServerSideMode,
         onDataChange: setData,
     })
 
