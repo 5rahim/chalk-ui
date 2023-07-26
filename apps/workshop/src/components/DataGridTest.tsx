@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { faker } from "@faker-js/faker"
-import { createDataGridColumns, DataGrid, DataGridFetchingHandlerParams, DataGridProps, useDataGridFetchingHandler } from "./ui/datagrid"
+import { createDataGridColumns, DataGrid, DataGridProps } from "./ui/datagrid"
 import { Badge } from "./ui/badge"
 import { DropdownMenu } from "./ui/dropdown-menu"
 import { IconButton } from "./ui/button"
@@ -77,25 +77,6 @@ export async function fetchData() {
     }
 }
 
-export async function fetchFromFakeServer(options: DataGridFetchingHandlerParams) {
-    let a: Product[] = []
-    // Simulate some network latency
-    await new Promise(r => setTimeout(r, 1000))
-    // Filter by name
-    a = _data.filter(n => options.globalFilterValue !== "" ? n.name.toLowerCase().trim().includes(options.globalFilterValue.toLowerCase().trim()) : true)
-    // Filter by other criteria
-    options.filters.map(v => {
-        if (v.id === "category" && typeof v.value === "string") {
-            a = a.filter(n => n.category === v.value)
-        }
-    })
-    console.log(a)
-    return {
-        rows: limitOffset(a, options.limit, options.offset),
-        rowCount: a.length
-    }
-}
-
 
 export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
 
@@ -112,7 +93,7 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         fetch()
     }, [])
 
-    const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilteringType }) => [
+    const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilterFn, withValueFormatter }) => [
         {
             accessorKey: "name",
             header: "Name",
@@ -132,27 +113,28 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
             cell: info => info.getValue(),
             footer: props => props.column.id,
             size: 20,
-            filterFn: getFilteringType("radio"),
+            filterFn: getFilterFn("radio"),
             meta: {
                 ...withFiltering({
                     name: "Category",
                     type: "radio",
                     options: [{ value: "Electronics" }, { value: "Food" }],
                     icon: <BiFolder/>,
-                })
-            }
+                }),
+            },
         },
         {
             accessorKey: "availability",
             header: "Availability",
-            cell: info => {
-                if (info.getValue() === "out_of_stock") return "Out of stock"
-                if (info.getValue() === "in_stock") return "In stock"
-                return info.getValue()
-            },
+            cell: info => info.getValue(),
             size: 0,
-            filterFn: getFilteringType("checkbox"),
+            filterFn: getFilterFn("checkbox"),
             meta: {
+                ...withValueFormatter<string>(value => {
+                    if (value === "out_of_stock") return "Out of stock"
+                    if (value === "in_stock") return "In stock"
+                    return value
+                }),
                 ...withFiltering({
                     name: "Availability",
                     type: "checkbox",
@@ -167,11 +149,6 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                             label: <span className={"flex items-center gap-2"}><BiBasket className={"text-green-500"}/><span>In stock</span></span>,
                         },
                     ],
-                    valueFormatter: (value) => {
-                        if (value === "out_of_stock") return "Out of stock"
-                        if (value === "in_stock") return "In stock"
-                        return value
-                    },
                 }),
             },
         },
@@ -180,7 +157,7 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
             header: "Visible",
             cell: info => <Badge intent={info.getValue() ? "success" : "gray"}>{info.getValue() ? "Visible" : "Hidden"}</Badge>,
             size: 0,
-            filterFn: getFilteringType("boolean"),
+            filterFn: getFilterFn("boolean"),
             meta: {
                 ...withFiltering({
                     name: "Visible",
@@ -195,7 +172,7 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
             },
         },
         {
-            id: "actions",
+            id: "_actions",
             size: 10,
             enableSorting: false,
             enableGlobalFilter: false,
@@ -211,41 +188,8 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         },
     ]), [])
 
-    // Server
-
-    const fetchingHandler = useDataGridFetchingHandler()
-
-    // const dataQuery = useQuery({
-    //     queryKey: ["data", fetchingHandler.getParams()],
-    //     queryFn: () => fetchFromFakeServer(fetchingHandler.getParams()),
-    //     keepPreviousData: true, refetchOnWindowFocus: false
-    // })
-
-    useEffect(() => {
-        console.log(fetchingHandler.getParams())
-    }, [fetchingHandler])
-
     return (
         <>
-            {/*<DataGrid<Product>*/}
-            {/*    withManualFiltering={true}*/}
-            {/*    fetchingHandler={fetchingHandler}*/}
-            {/*    isFetching={dataQuery.isFetching}*/}
-            {/*    columns={columns}*/}
-            {/*    data={dataQuery.data?.rows}*/}
-            {/*    rowCount={fetchingHandler.getIsFiltering() ? (dataQuery.data?.rowCount ?? 0) : _data.length}*/}
-            {/*    isLoading={dataQuery.isLoading}*/}
-            {/*    hideColumns={[*/}
-            {/*        { below: 850, hide: ["availability", "price"] },*/}
-            {/*        { below: 600, hide: ["action"] },*/}
-            {/*        { below: 515, hide: ["category"] },*/}
-            {/*        { below: 400, hide: ["visible"] },*/}
-            {/*    ]}*/}
-            {/*    enableRowSelection={true}*/}
-            {/*    onItemSelected={data => {*/}
-            {/*        console.log(data)*/}
-            {/*    }}*/}
-            {/*/>*/}
             <DataGrid<Product>
                 columns={columns}
                 data={clientData}
@@ -258,7 +202,7 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                     { below: 400, hide: ["visible"] },
                 ]}
                 enableRowSelection={true}
-                onItemSelected={data => {
+                onRowSelect={data => {
                     console.log(data)
                 }}
                 {...tableProps as any}
@@ -266,23 +210,4 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         </>
     )
 
-}
-
-
-export function limitOffset<T>(array: T[], limit: number, offset: number): T[] {
-    if (!array) return []
-
-    const length = array.length
-
-    if (!length) {
-        return []
-    }
-    if (offset > length - 1) {
-        return []
-    }
-
-    const start = Math.min(length - 1, offset)
-    const end = Math.min(length, offset + limit)
-
-    return array.slice(start, end)
 }

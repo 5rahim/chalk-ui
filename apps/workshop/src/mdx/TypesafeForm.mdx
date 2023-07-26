@@ -42,13 +42,12 @@ You can find these presets here: `@/components/ui/typesafe-form/schema-presets.t
 Then, you need to define the layout of your form in accordance with the schema you define.
 
 - Use the `Field` polymorphic component to add various form components. These field components are purposefully defined and have built-in control and integration with TypesafeForm.
-- By using `InferType` you ensure that `data` is correctly typed.
 - Field registering and error handling is built-in.
 
 Here is an example with the schema defined above:
 
 ```tsx
-import {createTypesafeFormSchema, Field, InferType, TypesafeForm} from "@/components/ui/typesafe-form"
+import {createTypesafeFormSchema, Field, TypesafeForm} from "@/components/ui/typesafe-form"
 import {useFileUploadHandler} from "@/components/ui/file-upload"
 
 // Schema
@@ -64,14 +63,14 @@ const Demo = () => {
     const uploadHandler = useFileUploadHandler("single")
 
     return (
-        <TypesafeForm<InferType<typeof testSchema>>
+        <TypesafeForm
             schema={testSchema}
             onSuccess={async data => {
-                    const image = await uploadHandler.uploadFiles()
-                    if (image) {
-                        mutate({ ...data, image: image.url })
-                    }
-              }}
+                const image = await uploadHandler.uploadFiles()
+                if (image) {
+                    mutate({ ...data, image: image.url })
+                }
+            }}
             onError={console.log}
         >
             <Field.Text
@@ -118,7 +117,7 @@ See `@/components/ui/typesafe-form/fields.tsx` to understand how each field comp
 - `form` can be used to control the form. [Learn more](https://react-hook-form.com/docs/useform)
 
 ```tsx
-<TypesafeForm<InferType<typeof testSchema>>
+<TypesafeForm
     {...args}
 >
     {(form) => <>

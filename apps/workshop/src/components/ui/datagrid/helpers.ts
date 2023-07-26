@@ -1,4 +1,4 @@
-import { BuiltInFilterFn, ColumnDef } from "@tanstack/react-table"
+import { BuiltInFilterFn, Column, ColumnDef } from "@tanstack/react-table"
 import { AnyZodObject, z } from "zod"
 import { DataGridCellInputFieldContext } from "./datagrid-cell-input-field"
 import React from "react"
@@ -7,16 +7,16 @@ import React from "react"
  * Editing
  * -----------------------------------------------------------------------------------------------*/
 
-export type DataGridEditingHelperProps<Schema extends AnyZodObject, Key extends keyof z.infer<Schema>> = {
+export type DataGridEditingHelper<Schema extends AnyZodObject, Key extends keyof z.infer<Schema>> = {
     schema: Schema,
     key: Key
     field: (props: DataGridCellInputFieldContext<Schema, Key>) => React.ReactElement,
     valueFormatter?: (value: z.infer<Schema>[Key]) => z.infer<Schema>[Key]
 }
 
-function withEditing<Schema extends AnyZodObject, Key extends keyof z.infer<Schema>>(params: DataGridEditingHelperProps<Schema, Key>) {
+function withEditing<Schema extends AnyZodObject, Key extends keyof z.infer<Schema>>(params: DataGridEditingHelper<Schema, Key>) {
     return {
-        editable: {
+        editingMeta: {
             ...params,
         },
     }
@@ -26,7 +26,19 @@ function withEditing<Schema extends AnyZodObject, Key extends keyof z.infer<Sche
  * Filtering
  * -----------------------------------------------------------------------------------------------*/
 
-type FilteringTypes = "select" | "radio" | "checkbox" | "boolean"
+type FilteringTypes = "select" | "radio" | "checkbox" | "boolean" | "date-range"
+
+export interface FilterFns {
+    dateRangeFilter: any
+}
+
+type _DefaultFilteringProps = {
+    type: FilteringTypes
+    name: string,
+    icon?: React.ReactElement
+    options?: { value: string, label?: any }[]
+    valueFormatter?: (value: string) => string
+}
 
 type DefaultFilteringProps<T extends FilteringTypes> = {
     type: T
@@ -36,7 +48,8 @@ type DefaultFilteringProps<T extends FilteringTypes> = {
     valueFormatter?: (value: string) => string
 }
 
-export type DataGridFilteringHelperProps<T extends FilteringTypes = "select"> =
+// Improve type safety by removing "options" when the type doesn't need it
+export type DataGridFilteringHelper<T extends FilteringTypes = "select"> =
     T extends Extract<FilteringTypes, "select" | "radio" | "checkbox">
         ? DefaultFilteringProps<T>
         : Omit<DefaultFilteringProps<T>, "options">
@@ -44,34 +57,52 @@ export type DataGridFilteringHelperProps<T extends FilteringTypes = "select"> =
 /**
  * Built-in filter functions supported DataGrid
  */
-export type DataGridSupportedFilterFn = Extract<BuiltInFilterFn, "equalsString" | "arrIncludesSome">
+export type DataGridSupportedFilterFn = Extract<BuiltInFilterFn, "equalsString" | "arrIncludesSome" | "inNumberRange"> | "dateRangeFilter"
 
-function withFiltering<T extends FilteringTypes>(params: DataGridFilteringHelperProps<T>) {
+function withFiltering<T extends FilteringTypes>(params: DataGridFilteringHelper<T>) {
     return {
-        filter: {
+        filteringMeta: {
             ...params,
         },
     }
 }
 
-const getFilteringType = (type: FilteringTypes) => {
+const getFilterFn = (type: FilteringTypes) => {
     const fns: { [key: string]: DataGridSupportedFilterFn } = {
         select: "equalsString",
         boolean: "equalsString",
         checkbox: "arrIncludesSome",
         radio: "equalsString",
+        "date-range": "dateRangeFilter",
     }
-    return fns[type] as DataGridSupportedFilterFn
+    return fns[type] as any
 }
 
 /* -------------------------------------------------------------------------------------------------
- * Columns
+ * Value formatter
  * -----------------------------------------------------------------------------------------------*/
 
-export type DataGridColumnDefHelpers = {
+function withValueFormatter<T extends any>(callback: (value: T) => T) {
+    return {
+        valueFormatter: callback,
+    }
+}
+
+export function getValueFormatter<T>(column: Column<T>): (value: any) => any {
+    return (column.columnDef.meta as any)?.valueFormatter || ((value: any) => value)
+}
+
+/* -------------------------------------------------------------------------------------------------
+ * Column Def Helpers
+ * -----------------------------------------------------------------------------------------------*/
+
+export type DataGridHelpers = "filteringMeta" | "editingMeta" | "valueFormatter"
+
+export type DataGridColumnDefHelpers<T extends Record<string, any>> = {
     withFiltering: typeof withFiltering
-    getFilteringType: typeof getFilteringType
+    getFilterFn: typeof getFilterFn
     withEditing: typeof withEditing
+    withValueFormatter: typeof withValueFormatter
 }
 
 /**
@@ -83,11 +114,22 @@ export type DataGridColumnDefHelpers = {
  * @param callback
  */
 export function createDataGridColumns<T extends Record<string, any>>(
-    callback: (helpers: DataGridColumnDefHelpers) => ColumnDef<T>[],
+    callback: (helpers: DataGridColumnDefHelpers<T>) => Array<ColumnDef<T>>,
 ) {
     return callback({
         withFiltering,
-        getFilteringType,
+        getFilterFn,
         withEditing,
+        withValueFormatter,
     })
+}
+
+
+export function getColumnHelperMeta<T, K extends DataGridHelpers>(column: Column<T>, helper: K) {
+    return (column.columnDef.meta as any)?.[helper] as (
+        K extends "filteringMeta" ? _DefaultFilteringProps :
+            K extends "editingMeta" ? DataGridEditingHelper<any, any> :
+                K extends "valueFormatter" ? ReturnType<typeof withValueFormatter> :
+                    never
+        ) | undefined
 }

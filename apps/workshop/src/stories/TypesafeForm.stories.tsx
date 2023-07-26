@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { createTypesafeFormSchema, Field, InferType, TypesafeForm, TypesafeFormProps } from "../components/ui/typesafe-form"
+import { createTypesafeFormSchema, Field, TypesafeForm, TypesafeFormProps } from "../components/ui/typesafe-form"
 import { useFileUploadHandler } from "../components/ui/file-upload"
 
 
@@ -18,7 +18,7 @@ const meta = {
     render: (args) => {
         const uploadHandler = useFileUploadHandler("single")
         return (
-            <TypesafeForm<InferType<typeof testSchema>>
+            <TypesafeForm
                 schema={testSchema}
                 onSubmit={data => {
                     console.log(data)
@@ -35,6 +35,11 @@ const meta = {
                 <Field.PhoneNumber
                     label={"Phone"}
                     name={"phone"}
+                />
+                <Field.SegmentedControl
+                    label={"Phone"}
+                    name={"test"}
+                    options={[{ value: "F" }, { value: "H" }]}
                 />
                 <Field.Dropzone
                     label={"Profile picture"}

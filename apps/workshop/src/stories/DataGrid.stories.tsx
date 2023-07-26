@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import React from "react"
 import { DataGridTest } from "../components/DataGridTest"
 import { DataGridEditingTest } from "../components/DataGridEditingTest.tsx"
+import { DataGridServerSideTest } from "../components/DataGridServerSideTest.tsx"
 
 const meta = {
     title: "Advanced/DataGrid",
@@ -27,4 +28,9 @@ export const NonResponsive: Story = {
 
 export const WithEditing: Story = {
     render: () => <DataGridEditingTest/>,
+}
+
+
+export const ServerSide: Story = {
+    render: () => <DataGridServerSideTest/>,
 }

@@ -1,30 +1,42 @@
 import { Row, Table } from "@tanstack/react-table"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { DataGridEditingHelperProps } from "./helpers.ts"
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react"
 import _ from "lodash"
 import { DataGridCellInputFieldProps } from "./datagrid-cell-input-field.tsx"
-import { AnyZodObject } from "zod"
+import { z } from "zod"
 import { useToast } from "../toast"
 
-interface DataGridEditingHookProps<T> {
+/**
+ * DataGrid Prop
+ */
+export type DataGridOnRowEdit<T> = (event: DataGridRowEditedEvent<T>) => void
+
+/**
+ * Hook props
+ */
+type Props<T> = {
     data: T[]
     table: Table<T>
     rows: Row<T>[]
-    onSave?: (data: T) => void
-    isMutating: boolean | undefined
+    onRowEdit?: DataGridOnRowEdit<T>
+    isDataMutating: boolean | undefined
     enableOptimisticUpdates: boolean
     onDataChange: React.Dispatch<React.SetStateAction<T[]>>
     optimisticUpdatePrimaryKey: string | undefined
 }
 
-export function useDataGridEditing<T extends Record<string, any>>(props: DataGridEditingHookProps<T>) {
+export type DataGridRowEditedEvent<T> = {
+    row: Row<T>,
+    data: T
+}
+
+export function useDataGridEditing<T extends Record<string, any>>(props: Props<T>) {
 
     const {
         data,
         table,
         rows,
-        onSave,
-        isMutating,
+        onRowEdit,
+        isDataMutating,
         onDataChange,
         enableOptimisticUpdates,
         optimisticUpdatePrimaryKey,
@@ -43,13 +55,13 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
     // Track current key being updated
     const [key, setKey] = useState<PropertyKey | undefined>(undefined)
     // Track schema
-    const [schema, setSchema] = useState<AnyZodObject | undefined>(undefined)
+    const [schema, setSchema] = useState<z.ZodObject<z.ZodRawShape> | undefined>(undefined)
     // Track current row being updated
     const [row, setRow] = useState<Row<T> | undefined>(undefined)
 
     // Keep track of editable columns (columns defined with the `withEditing` helper)
     const editableColumns = useMemo(() => {
-        return leafColumns.filter(n => n.getIsVisible() && !!(n.columnDef.meta as any)?.editable)
+        return leafColumns.filter(n => n.getIsVisible() && !!(n.columnDef.meta as any)?.editingMeta)
     }, [leafColumns])
 
     // Keep track of editable cells (cells whose columns are editable)
@@ -60,13 +72,8 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
         return []
     }, [rows])
 
-    // Get a column's editing meta (onChange etc...)
-    const getColumnEditingMeta = useCallback((colId: string) => {
-        return (editableColumns.find(col => col.id === colId)?.columnDef?.meta as any)?.editable as DataGridEditingHelperProps<any, any> | undefined
-    }, [])
-
     // Set/update editable cells
-    useEffect(() => {
+    useLayoutEffect(() => {
         // Control the states of individual cells that can be edited
         if (editableCells.length > 0) {
             editableCells.map(cell => {
@@ -123,14 +130,14 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
     const mutationRef = React.useRef<boolean>(false)
 
     useEffect(() => {
-        if (!isMutating && mutationRef.current) {
+        if (!isDataMutating && mutationRef.current) {
             cancelEditing()
             mutationRef.current = false
         }
-    }, [isMutating])
+    }, [isDataMutating])
 
     const saveEdit = () => {
-        if (schema && rowData && key && typeof key === "string") {
+        if (schema && rowData && row && key && typeof key === "string") {
 
             // Safely parse the schema object
             const parsed = schema.safeParse(rowData)
@@ -140,7 +147,10 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
                 toast.error(JSON.parse((parsed.error as any).message)?.[0]?.message)
             } else {
                 // Return new data
-                onSave && onSave(rowData)
+                onRowEdit && onRowEdit({
+                    data: rowData,
+                    row: row,
+                })
 
                 // Optimistic update
                 if (enableOptimisticUpdates && optimisticUpdatePrimaryKey) {
@@ -164,7 +174,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
                 if (enableOptimisticUpdates) {
                     cancelEditing()
                 } else {
-                    // Else, we send it to the queue so that we wait for `isMutating` to be false
+                    // Else, we send it to the queue so that we wait for `isDataMutating` to be false
                     mutationRef.current = true
                 }
             }
@@ -176,7 +186,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
     /**
      * This fires every time the user changes an input
      */
-    const handleUpdateValue = useCallback<DataGridCellInputFieldProps<AnyZodObject, T, any>["onValueUpdated"]>((value, _row, cell, schema, key) => {
+    const handleUpdateValue = useCallback<DataGridCellInputFieldProps<z.ZodObject<z.ZodRawShape>, T, any>["onValueUpdated"]>((value, _row, cell, schema, key) => {
         setActiveValue(value) // Set the updated value (could be anything)
         setSchema(schema) // Set the schema
         setKey(key) // Set the key being updated
@@ -194,7 +204,6 @@ export function useDataGridEditing<T extends Record<string, any>>(props: DataGri
         onCellDoubleClick,
         getIsCellActivelyEditing,
         getIsCellEditable,
-        getColumnEditingMeta,
         getIsCurrentlyEditing,
         getFirstCellBeingEdited,
         cancelEditing,

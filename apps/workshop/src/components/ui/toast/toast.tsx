@@ -15,7 +15,7 @@ import { Spinner } from "../loading-spinner"
 export const ToastAnatomy = defineStyleAnatomy({
     toast: cva([
         "UI-Toast__toast",
-        "relative transform py-3 px-6 flex rounded-lg shadow-md",
+        "relative transform py-2 px-5 flex rounded-lg shadow-md",
         "data-[type=error]:bg-red-500 data-[type=error]:text-white",
         "data-[type=success]:bg-green-500 data-[type=success]:text-white",
         "data-[type=loading]:bg-gray-50 dark:data-[type=loading]:bg-gray-800 data-[type=error]:text-white",

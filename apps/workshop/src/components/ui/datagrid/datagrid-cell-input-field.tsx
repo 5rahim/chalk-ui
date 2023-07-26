@@ -3,8 +3,8 @@
 import React from "react"
 import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { DataGridEditingHelperProps } from "./helpers.ts"
-import { AnyZodObject, z } from "zod"
+import { DataGridEditingHelper } from "./helpers.ts"
+import { z } from "zod"
 import { Cell, Row } from "@tanstack/react-table"
 
 /* -------------------------------------------------------------------------------------------------
@@ -24,26 +24,26 @@ export const DataGridCellInputFieldAnatomy = defineStyleAnatomy({
 /**
  * withEditing({ field: (ctx: DataGridCellInputFieldContext) => <></> })
  */
-export type DataGridCellInputFieldContext<Schema extends AnyZodObject, Key extends keyof z.infer<Schema>> = {
+export type DataGridCellInputFieldContext<Schema extends z.ZodObject<z.ZodRawShape>, Key extends keyof z.infer<Schema>> = {
     value: z.infer<Schema>[Key],
     onChange: (value: z.infer<Schema>[Key]) => void
     ref: React.MutableRefObject<any>
 }
 
 export interface DataGridCellInputFieldProps<
-    Schema extends AnyZodObject,
+    Schema extends z.ZodObject<z.ZodRawShape>,
     T extends Record<string, any>,
     Key extends keyof z.infer<Schema>
 >
     extends ComponentWithAnatomy<typeof DataGridCellInputFieldAnatomy> {
-    meta: DataGridEditingHelperProps<Schema, Key>
+    meta: DataGridEditingHelper<Schema, Key>
     cell: Cell<T, unknown>
     row: Row<T>
-    onValueUpdated: (value: unknown, row: Row<T>, cell: Cell<T, unknown>, schema: AnyZodObject, key: keyof z.infer<Schema>) => void
+    onValueUpdated: (value: unknown, row: Row<T>, cell: Cell<T, unknown>, schema: z.ZodObject<z.ZodRawShape>, key: any) => void
 }
 
 export function DataGridCellInputField<
-    Schema extends AnyZodObject,
+    Schema extends z.ZodObject<z.ZodRawShape>,
     T extends Record<string, any>,
     Key extends keyof z.infer<Schema>
 >(props: DataGridCellInputFieldProps<Schema, T, Key>) {

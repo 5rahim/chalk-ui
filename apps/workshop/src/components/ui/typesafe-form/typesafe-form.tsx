@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { cn } from "../core"
 import _isEmpty from "lodash/isEmpty"
 import React, { createContext, useContext, useEffect, useMemo } from "react"
-import { FieldValues, FormProvider, SubmitErrorHandler, SubmitHandler, useForm, UseFormProps, UseFormReturn, WatchObserver } from "react-hook-form"
-import { z } from "zod"
+import { FormProvider, SubmitErrorHandler, SubmitHandler, useForm, UseFormProps, UseFormReturn, WatchObserver } from "react-hook-form"
+import { z, ZodObject } from "zod"
 import { getZodDefaults } from "./zod-resolver"
 
 /* -------------------------------------------------------------------------------------------------
@@ -25,25 +25,25 @@ export const useFormSchema = (): { shape: z.ZodRawShape, schema: z.ZodObject<z.Z
  * TypesafeForm
  * -----------------------------------------------------------------------------------------------*/
 
-export interface TypesafeFormProps<TFields extends FieldValues = FieldValues>
-    extends UseFormProps<TFields>,
+export interface TypesafeFormProps<Schema extends z.ZodObject<z.ZodRawShape> = ZodObject<any>>
+    extends UseFormProps<z.infer<Schema>>,
         Omit<React.ComponentPropsWithRef<"form">, "children" | "onChange" | "onSubmit" | "onError" | "ref"> {
-    schema: z.ZodObject<z.ZodRawShape>
-    onSubmit: SubmitHandler<TFields>
-    onChange?: WatchObserver<TFields> // Triggers when any of the field change.
-    onError?: SubmitErrorHandler<TFields> // Triggers when there are validation errors.
+    schema: Schema
+    onSubmit: SubmitHandler<z.infer<Schema>>
+    onChange?: WatchObserver<z.infer<Schema>> // Triggers when any of the field change.
+    onError?: SubmitErrorHandler<z.infer<Schema>> // Triggers when there are validation errors.
     formRef?: React.RefObject<HTMLFormElement>
-    children?: MaybeRenderProp<UseFormReturn<TFields>>
+    children?: MaybeRenderProp<UseFormReturn<z.infer<Schema>>>
     /**
      * @default w-full gap-3
      */
     stackClassName?: string
-    mRef?: React.Ref<UseFormReturn<TFields>>
+    mRef?: React.Ref<UseFormReturn<z.infer<Schema>>>
 }
 
 /**
  * @example
- * <TypesafeForm<InferType<typeof definedSchema>>
+ * <TypesafeForm
  *     schema={definedSchema}
  *     onSubmit={console.log}
  *     onError={console.log}
@@ -55,7 +55,7 @@ export interface TypesafeFormProps<TFields extends FieldValues = FieldValues>
  * @param props
  * @constructor
  */
-export const TypesafeForm = <TFields extends FieldValues>(props: TypesafeFormProps<TFields>) => {
+export const TypesafeForm = <Schema extends z.ZodObject<z.ZodRawShape>>(props: TypesafeFormProps<Schema>) => {
 
     const {
         mode = "onTouched",

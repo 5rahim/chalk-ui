@@ -60,6 +60,7 @@ There are multiple types of filtering that you can use with the `withFiltering` 
 - Checkbox
 - Select
 - Radio
+- Boolean
 
 **withFiltering** offers a simple and easy way to enable filtering for a specific column thanks to built-in components.
 
@@ -78,33 +79,38 @@ Let's say you keep a record of the **availability** of an item as either "in_sto
         if (info.getValue() === "low_stock") return "Low stock"
         return info.getValue()
     },
-    ...withFiltering({
-        name: "Availability",
-        type: "checkbox",
-        icon: <BiCheck/>,
-        options: [
-            {
-                value: "out_of_stock",
-                label: <span className={"flex items-center gap-2"}><OutOfStockIcon/><span>Out of stock</span></span>
-            },
-            {
-                value: "in_stock",
-                label: <span className={"flex items-center gap-2"}><InStockIcon/><span>In stock</span></span>
-            },
-            {
-                value: "low_stock",
-                label: <span className={"flex items-center gap-2"}><LowStockIcon/><span>Low stock</span></span>
+    filterFn: getFilteringType("checkbox"),
+    meta: {
+        ...withFiltering({
+            name: "Availability",
+            type: "checkbox",
+            icon: <BiCheck/>,
+            options: [
+                {
+                    value: "out_of_stock",
+                    label: <span className={"flex items-center gap-2"}><OutOfStockIcon/><span>Out of stock</span></span>
+                },
+                {
+                    value: "in_stock",
+                    label: <span className={"flex items-center gap-2"}><InStockIcon/><span>In stock</span></span>
+                },
+                {
+                    value: "low_stock",
+                    label: <span className={"flex items-center gap-2"}><LowStockIcon/><span>Low stock</span></span>
+                }
+            ],
+            valueFormatter: (value) => {
+                if (value === "out_of_stock") return "Out of stock"
+                if (value === "in_stock") return "In stock"
+                if (value === "low_stock") return "Low stock"
+                return value
             }
-        ],
-        valueFormatter: (value) => {
-            if (value === "out_of_stock") return "Out of stock"
-            if (value === "in_stock") return "In stock"
-            if (value === "low_stock") return "Low stock"
-            return value
-        }
-    })
+        })
+    }
 },
 ```
+
+- `valueFormatter` formats the base value to be displayed in the filter indicator
 
 #### Radio
 
@@ -112,15 +118,18 @@ Let's say you keep a record of the **availability** of an item as either "in_sto
 {
     accessorKey: "category",
     header: "Category",
-    ...withFiltering({
-        name: "Category",
-        type: "radio",
-        options: [
-            { value: "Electronics", label: <span>Electronics</span> },
-            { value: "Food", label: <span>Food</span> }
-        ],
-        icon: <BiFolder/>
-    }),
+    filterFn: getFilteringType("radio"),
+    meta: {
+        ...withFiltering({
+            name: "Category",
+            type: "radio",
+            options: [
+                { value: "Electronics", label: <span>Electronics</span> },
+                { value: "Food", label: <span>Food</span> }
+            ],
+            icon: <BiFolder/>
+        }),
+    }
 },
 ```
 
@@ -130,12 +139,15 @@ Let's say you keep a record of the **availability** of an item as either "in_sto
 {
     accessorKey: "category",
     header: "Category",
-    ...withFiltering({
-        name: "Category",
-        type: "select",
-        options: [{ value: "Electronics" }, { value: "Food" }],
-        icon: <BiFolder/>
-    }),
+    filterFn: getFilteringType("select"),
+    meta: {
+        ...withFiltering({
+            name: "Category",
+            type: "select",
+            options: [{ value: "Electronics" }, { value: "Food" }],
+            icon: <BiFolder/>
+        }),
+    }
 },
 ```
 
@@ -146,16 +158,19 @@ Let's say you keep a record of the **availability** of an item as either "in_sto
     accessorKey: "visible",
     header: "Visible",
     cell: info => <Badge intent={info.getValue() ? "success" : "gray"}>{info.getValue() ? "Visible" : "Hidden"}</Badge>,
-    ...withFiltering({
-        name: "Visible",
-        type: "boolean",
-        icon: <BiLowVision/>,
-        valueFormatter: (value) => {
-            if (value === "true") return "Yes"
-            if (value === "false") return "No"
-            return ""
-        }
-    })
+    filterFn: getFilteringType("boolean"),
+    meta: {
+        ...withFiltering({
+            name: "Visible",
+            type: "boolean",
+            icon: <BiLowVision/>,
+            valueFormatter: (value) => {
+                if (value === "true") return "Yes"
+                if (value === "false") return "No"
+                return ""
+            }
+        })
+    }
 },
 ```
 
@@ -182,35 +197,6 @@ You can implement your own system for hiding columns, [learn more](https://tanst
 ### Sorting
 
 Sorting is built-in and based on the inference from TanStack/table.
-
-### Meta
-
-You can decouple the propagation of helper functions in the case you want to pass other **meta** props:
-
-```tsx
-const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilteringType }) => [
-    ...
-    {
-        accessorKey: "category",
-        header: "Category",
-        cell: info => info.getValue(),
-        footer: props => props.column.id,
-        size: 20,
-        filterFn: getFilteringType("radio"),
-        meta: {
-            ...withFiltering({
-                name: "Category",
-                type: "radio",
-                options: [{ value: "Electronics" }, { value: "Food" }],
-                icon: <BiFolder/>
-            }).meta,
-
-            myProp: "",
-        }
-    },
-...
-]), [])
-```
 
 [Learn more](https://tanstack.com/table/v8/docs/api/features/sorting)
 

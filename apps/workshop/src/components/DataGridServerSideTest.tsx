@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import React, { startTransition, useCallback, useEffect, useMemo, useState } from "react"
 import { faker } from "@faker-js/faker"
-import { createDataGridColumns, DataGrid } from "./ui/datagrid"
+import { createDataGridColumns, DataGrid, DataGridServerSideModelProps, useDataGridServerSideModel } from "./ui/datagrid"
 import { Badge } from "./ui/badge"
 import { DropdownMenu } from "./ui/dropdown-menu"
 import { IconButton } from "./ui/button"
@@ -11,14 +11,10 @@ import { BiBasket } from "@react-icons/all-files/bi/BiBasket"
 import { BiCheck } from "@react-icons/all-files/bi/BiCheck"
 import { BiEditAlt } from "@react-icons/all-files/bi/BiEditAlt"
 import { createTypesafeFormSchema } from "./ui/typesafe-form"
-import { TextInput } from "./ui/text-input"
-import { NumberInput } from "./ui/number-input"
-import { Select } from "./ui/select"
-import { DatePicker } from "./ui/date-time"
-import { getLocalTimeZone, parseAbsoluteToLocal } from "@internationalized/date"
 import { BiCalendar } from "@react-icons/all-files/bi/BiCalendar"
+import { TextInput } from "./ui/text-input"
 
-interface DataGridEditingTestProps {
+interface DataGridServerSideTestProps {
     children?: React.ReactNode
 }
 
@@ -85,11 +81,11 @@ export function makeData(...lens: number[]) {
     return makeDataLevel()
 }
 
-const _data = makeData(6)
+const _data = makeData(27)
 
 export async function fetchData() {
     // Simulate some network latency
-    await new Promise(r => setTimeout(r, 1000))
+    await new Promise(r => setTimeout(r, 500))
     return {
         rows: _data,
     }
@@ -132,28 +128,63 @@ export function useFakeMutation(
     }
 }
 
+export async function fetchFromFakeServer(_options: DataGridServerSideModelProps) {
+    let a: Product[] = []
+    const options = structuredClone(_options)
+    // Simulate some network latency
+    await new Promise(r => setTimeout(r, 1000))
+    // Filter by name
+    a = _data.filter(n => options.filtering.globalFilterValue !== "" ? n.name.toLowerCase().trim().includes(options.filtering.globalFilterValue.toLowerCase().trim()) : true)
+    // Filter by other criteria
+    options.filtering.filters.map(v => {
+        if (v.id === "category" && typeof v.value === "string") {
+            a = a.filter(n => n.category === v.value)
+        }
+    })
+    return {
+        rows: limitOffset(a, options.pagination.limit, options.pagination.pageIndex),
+        rowCount: a.length,
+    }
+}
 
-export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) => {
+function useFakeQuery(options: DataGridServerSideModelProps, { enabled }: { enabled?: boolean }) {
+    const [isLoading, setIsLoading] = useState(false)
+    const [data, setData] = useState<Product[] | undefined>(undefined)
+    const [totalCount, setTotalCount] = useState<number>(0)
+
+    useEffect(() => {
+        if (enabled) {
+            setIsLoading(true)
+
+            async function execute() {
+                console.warn("Fetch executed")
+                const res = await fetchFromFakeServer(options)
+                setTotalCount(res.rowCount)
+                setData(res.rows)
+                startTransition(() => setIsLoading(false))
+            }
+
+            execute().then()
+        }
+    }, [enabled, options.sorting, options.pagination, options.filtering])
+
+    return {
+        data,
+        totalCount,
+        isLoading,
+    }
+}
+
+
+export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (props) => {
 
     const { children, ...rest } = props
 
-    const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
-    const { mutate, isLoading: isMutating } = useFakeMutation({
-        onSuccess: data => {
-            if (data) {
-                setClientData(data)
-            }
-        },
+    const serverSideModel = useDataGridServerSideModel({
+        itemsPerPage: 5,
     })
 
-    useEffect(() => {
-        async function fetch() {
-            const res = await fetchData()
-            setClientData(res.rows)
-        }
-
-        fetch()
-    }, [])
+    const { data, totalCount, isLoading } = useFakeQuery(serverSideModel.models, { enabled: serverSideModel.paginationModel.limit > 0 })
 
     const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilterFn, withEditing, withValueFormatter }) => [
         {
@@ -174,18 +205,10 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
         {
             accessorKey: "price",
             header: () => "Price",
-            cell: info => "$" + Intl.NumberFormat("en-US").format(info.getValue() as number),
+            cell: info => "$" + Intl.NumberFormat("en-US").format(info.getValue<number>()),
             footer: props => props.column.id,
             size: 10,
-            meta: {
-                ...withEditing({
-                    schema: schema,
-                    key: "price",
-                    field: (ctx) => (
-                        <NumberInput {...ctx} step={1} discrete maxFractionDigits={0} intent={"unstyled"}/>
-                    ),
-                }),
-            },
+            meta: {},
         },
         {
             accessorKey: "category",
@@ -200,19 +223,6 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                     type: "radio",
                     options: [{ value: "Electronics" }, { value: "Food" }, { value: "Drink" }],
                     icon: <BiFolder/>,
-                }),
-                ...withEditing({
-                    schema: schema,
-                    key: "category",
-                    field: (ctx) => (
-                        <Select
-                            {...ctx}
-                            value={ctx.value ?? ""}
-                            onChange={e => ctx.onChange(e.target.value.length > 0 ? e.target.value : null)}
-                            options={[{ value: "", label: "No category" }, { value: "Electronics" }, { value: "Food" }, { value: "Drink" }]}
-                            intent={"unstyled"}
-                        />
-                    ),
                 }),
             },
         },
@@ -248,19 +258,6 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                         return value
                     },
                 }),
-                ...withEditing({
-                    schema: schema,
-                    key: "availability",
-                    field: (ctx) => (
-                        <Select
-                            {...ctx}
-                            value={ctx.value ?? ""}
-                            onChange={e => ctx.onChange(e.target.value)}
-                            options={[{ value: "in_stock", label: "In stock" }, { value: "out_of_stock", label: "Out of stock" }]}
-                            intent={"unstyled"}
-                        />
-                    ),
-                }),
             },
         },
         {
@@ -282,19 +279,6 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                     type: "boolean",
                     icon: <BiLowVision/>,
                 }),
-                ...withEditing({
-                    schema: schema,
-                    key: "visible",
-                    field: (ctx) => (
-                        <Select
-                            {...ctx}
-                            value={ctx.value ? "visible" : "hidden"}
-                            onChange={e => ctx.onChange(e.target.value === "visible")}
-                            options={[{ value: "visible", label: "Visible" }, { value: "hidden", label: "Hidden" }]}
-                            intent={"unstyled"}
-                        />
-                    ),
-                }),
             },
         },
         {
@@ -308,22 +292,6 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                     type: "date-range",
                     icon: <BiCalendar/>,
                     name: "Date",
-                }),
-                ...withEditing({
-                    schema: schema,
-                    key: "random_date",
-                    field: (ctx) => {
-                        return (
-                            <DatePicker
-                                value={parseAbsoluteToLocal(ctx.value.toISOString())}
-                                onChange={value => ctx.onChange(value.toDate(getLocalTimeZone()))}
-                                intent={"unstyled"}
-                                locale={"us"}
-                                hideTimeZone
-                                granularity={"day"}
-                            />
-                        )
-                    },
                 }),
             },
         },
@@ -344,31 +312,55 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
         },
     ]), [])
 
+
     return (
         <>
             <DataGrid<Product>
+                enableRowSelection
+                enableServerSideFiltering // Done
+                enableServerSidePagination // Done
+                enableServerSideRowSelection // Done
+                enableServerSideSorting
                 columns={columns}
-                data={clientData}
-                rowCount={_data.length}
-                isLoading={!clientData}
+                data={data}
+                serverSideModel={serverSideModel}
+                rowCount={totalCount}
+                isLoading={isLoading}
                 hideColumns={[
                     { below: 850, hide: ["availability", "price"] },
                     { below: 600, hide: ["_actions"] },
                     { below: 515, hide: ["category"] },
                     { below: 400, hide: ["visible", "random_date"] },
                 ]}
-                enableRowSelection
                 onRowSelect={data => {
                     console.log("selection", data)
                 }}
-                isDataMutating={isMutating}
                 enableOptimisticUpdates
                 optimisticUpdatePrimaryKey={"id"}
                 onRowEdit={data => {
-                    console.log("editing", data)
+                    // console.log("editing", data)
                 }}
             />
         </>
     )
 
+}
+
+
+export function limitOffset<T>(array: T[], limit: number, pageIndex: number): T[] {
+    if (!array) return []
+
+    const length = array.length
+
+    const offset = limit * (pageIndex)
+
+    if (offset > length - 1) {
+        return []
+    }
+
+
+    const start = offset
+    const end = offset + limit
+
+    return array.slice(start, end)
 }

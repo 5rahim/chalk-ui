@@ -10,8 +10,8 @@ export const SkeletonAnatomy = defineStyleAnatomy({
     skeleton: cva("UI-Skeleton__skeleton", {
         variants: {
             type: {
-                box: "h-14 bg-gray-200 w-full rounded-[--radius] animate-pulse",
-                text: "h-2 bg-gray-100 rounded-[--radius] animate-purple",
+                box: "h-14 bg-gray-100 dark:bg-gray-800 w-full rounded-[--radius] animate-pulse",
+                text: "h-2 bg-gray-100 dark:bg-gray-800 rounded-[--radius] animate-purple",
             },
         },
         defaultVariants: {},
@@ -24,7 +24,6 @@ export const SkeletonAnatomy = defineStyleAnatomy({
 
 export interface SkeletonProps extends React.ComponentPropsWithRef<"div">, VariantProps<typeof SkeletonAnatomy.skeleton>,
     ComponentWithAnatomy<typeof SkeletonAnatomy> {
-    type?: "box" | "text"
 }
 
 export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>((props, ref) => {

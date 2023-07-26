@@ -2,7 +2,7 @@
 
 import { getLocalTimeZone, parseAbsoluteToLocal, Time } from "@internationalized/date"
 import addDays from "date-fns/addDays"
-import React, { forwardRef, useCallback, useEffect, useMemo } from "react"
+import React, { forwardRef, useCallback, useMemo } from "react"
 import { Controller, FormState, get, useController, useFormContext } from "react-hook-form"
 import { createPolymorphicComponent } from "./polymorphic-component"
 import { SubmitField } from "./submit-field"
@@ -146,7 +146,7 @@ const ColorInputField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
 
     const defaultValue = useMemo(() => get(context.formState.defaultValues, props.name) ?? "#000000", [])
 
-    useEffect(() => {
+    React.useEffect(() => {
         controller.field.onChange(defaultValue)
     }, [])
 
@@ -277,11 +277,11 @@ const SelectField = React.memo(withControlledInput(forwardRef<HTMLSelectElement,
         const controller = useController({ name: props.name })
 
         /* Set the default value as the first option if no default value is passed */
-        useEffect(() => {
+        React.useEffect(() => {
             if (!get(context.formState.defaultValues, props.name) && !controller.field.value) {
                 controller.field.onChange(props.options?.[0]?.value)
             }
-        }, [controller.field])
+        }, [controller.field.value])
 
         return <Select
             {...props}
@@ -367,11 +367,11 @@ const CheckboxGroupField = React.memo(withControlledInput(forwardRef<HTMLDivElem
         const context = useFormContext()
         const controller = useController({ name: props.name })
 
-        useEffect(() => {
+        React.useEffect(() => {
             if (!get(context.formState.defaultValues, props.name) && !controller.field.value) {
                 controller.field.onChange([])
             }
-        }, [controller.field])
+        }, [controller.field.value])
 
         return <CheckboxGroup
             {...props}
@@ -392,14 +392,15 @@ const RadioGroupField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
         const controller = useController({ name: props.name })
 
         /* Set the default value as the first option if no default value is passed */
-        useEffect(() => {
+        React.useEffect(() => {
             if (!get(context.formState.defaultValues, props.name) && !controller.field.value) {
                 controller.field.onChange(props.options?.[0]?.value)
             }
-        }, [controller.field])
+        }, [controller.field.value])
 
         return <RadioGroup
             {...props}
+            value={controller.field.value}
             ref={ref}
         />
     },
@@ -414,11 +415,11 @@ const RadioCardsField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
         const controller = useController({ name: props.name })
 
         /* Set the default value as the first option if no default value is passed */
-        useEffect(() => {
+        React.useEffect(() => {
             if (!get(context.formState.defaultValues, props.name) && !controller.field.value) {
                 controller.field.onChange(props.options?.[0]?.value)
             }
-        }, [controller.field])
+        }, [controller.field.value])
 
         return <RadioGroup
             fieldClassName="w-full"
@@ -432,6 +433,7 @@ const RadioCardsField = React.memo(withControlledInput(forwardRef<HTMLInputEleme
             radioLabelClassName="font-semibold flex-none flex"
             stackClassName="flex flex-col md:flex-row gap-2 space-y-0"
             {...props}
+            value={controller.field.value}
             ref={ref}
         />
     },
@@ -447,11 +449,11 @@ const SegmentedControlField = React.memo(withControlledInput(forwardRef<HTMLInpu
         const controller = useController({ name: props.name })
 
         /* Set the default value as the first option if no default value is passed */
-        useEffect(() => {
+        React.useEffect(() => {
             if (!get(context.formState.defaultValues, props.name) && !controller.field.value) {
                 controller.field.onChange(props.options?.[0]?.value)
             }
-        }, [controller.field])
+        }, [controller.field.value])
 
         return <RadioGroup
             fieldClassName="!w-fit"
@@ -466,6 +468,7 @@ const SegmentedControlField = React.memo(withControlledInput(forwardRef<HTMLInpu
             radioLabelClassName="font-semibold flex-none"
             stackClassName="flex flex-row gap-2 p-1 bg-gray-50 dark:bg-gray-800 rounded-[--radius] w-fit space-y-0 focus-within:ring-2 ring-[--ring]"
             {...props}
+            value={controller.field.value}
             ref={ref}
         />
     },

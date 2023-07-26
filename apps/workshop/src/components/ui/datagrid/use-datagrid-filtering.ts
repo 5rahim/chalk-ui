@@ -1,6 +1,8 @@
 import { Column, ColumnFiltersState, Table } from "@tanstack/react-table"
 import React, { useMemo } from "react"
-import { DataGridFilteringHelperProps } from "./helpers.ts"
+import { getColumnHelperMeta } from "./helpers.ts"
+import addDays from "date-fns/addDays"
+import isSameDay from "date-fns/isSameDay"
 
 interface DataGridFilteringHookProps<T> {
     table: Table<T>,
@@ -17,10 +19,10 @@ export function useDataGridFiltering<T>(props: DataGridFilteringHookProps<T>) {
     /**
      * Item filtering
      */
-    const [filterableColumns, selectedFilteredColumns] = useMemo(() => {
+    const [filterableColumns, filteredColumns] = useMemo(() => {
         return [
-            table.getAllLeafColumns().filter(n => n.getCanFilter() && (n.columnDef.meta as any)?.filter),
-            table.getAllLeafColumns().filter(n => columnFilters.map(a => a.id).includes(n.id)),
+            table.getAllLeafColumns().filter(col => col.getCanFilter() && !!getColumnHelperMeta(col, "filteringMeta")),
+            table.getAllLeafColumns().filter(col => columnFilters.map(filter => filter.id).includes(col.id)),
         ]
     }, [table.getAllLeafColumns(), columnFilters])
     const unselectedFilterableColumns = filterableColumns.filter(n => !columnFilters.map(c => c.id).includes(n.id))
@@ -28,13 +30,17 @@ export function useDataGridFiltering<T>(props: DataGridFilteringHookProps<T>) {
     // Get the default value for a filter when the user selects it
     const getFilterDefaultValue = React.useCallback((col: Column<any>) => {
         // Since the column is filterable, get options
-        const options = (col.columnDef.meta as any)?.filter as DataGridFilteringHelperProps
-        if (options.type === "select" || options.type === "radio") {
-            return options.options?.[0]?.value ?? ""
-        } else if (options.type === "boolean") {
-            return "true"
-        } else if (options.type === "checkbox") {
-            return options.options?.map(n => n.value) ?? []
+        const options = getColumnHelperMeta(col, "filteringMeta")
+        if (options) {
+            if (options.type === "select" || options.type === "radio") {
+                return options.options?.[0]?.value ?? ""
+            } else if (options.type === "boolean") {
+                return "true"
+            } else if (options.type === "checkbox") {
+                return options.options?.map(n => n.value) ?? []
+            } else if (options.type === "date-range") {
+                return { start: new Date(), end: addDays(new Date(), 7) }
+            }
         }
         return null
     }, [])
@@ -42,8 +48,13 @@ export function useDataGridFiltering<T>(props: DataGridFilteringHookProps<T>) {
     return {
         getFilterDefaultValue,
         unselectedFilterableColumns,
-        selectedFilteredColumns,
+        filteredColumns,
         filterableColumns,
     }
 
+}
+
+export const dataRangeFilter = (row, columnId, filterValue) => {
+    const value: Date = row.getValue(columnId)
+    return (value >= filterValue.start && value <= filterValue.end) || isSameDay(value, filterValue.start) || isSameDay(value, filterValue.end)
 }

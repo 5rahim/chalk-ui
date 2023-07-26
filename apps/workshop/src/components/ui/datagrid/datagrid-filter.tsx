@@ -1,16 +1,17 @@
 "use client"
 
-import React, { useCallback } from "react"
+import React, { useCallback, useMemo } from "react"
 import { cn, ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
 import { cva } from "class-variance-authority"
-import { DataGridAnatomy, DataGridFilteringHelperProps } from "."
+import { DataGridAnatomy, DataGridFilteringHelper, getColumnHelperMeta, getValueFormatter } from "."
 import { Select } from "../select"
-import { ColumnDef } from "@tanstack/react-table"
-import { ShowOnly } from "../show-only"
+import { Column } from "@tanstack/react-table"
 import { CloseButton } from "../button"
 import { DropdownMenu } from "../dropdown-menu"
 import { CheckboxGroup } from "../checkbox"
 import { RadioGroup } from "../radio-group"
+import { getLocalTimeZone, parseAbsoluteToLocal } from "@internationalized/date"
+import { DateRangePicker } from "../date-time"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -19,73 +20,66 @@ import { RadioGroup } from "../radio-group"
 export const DataGridFilterAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-DataGridFilter__root",
-        "flex gap-2 items-center"
-    ])
+        "flex gap-2 items-center",
+    ]),
 })
 
 export const DataGridActiveFilterAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-DataGridActiveFilter__root",
-        "py-1 px-2 rounded-[--radius] border border-[--border] flex gap-2 items-center"
-    ])
+        "py-1 px-2 rounded-[--radius] border border-[--border] flex gap-2 items-center",
+    ]),
 })
 
 /* -------------------------------------------------------------------------------------------------
  * DataGridFilter
  * -----------------------------------------------------------------------------------------------*/
 
-export interface DataGridFilterProps extends React.ComponentPropsWithRef<"div">, ComponentWithAnatomy<typeof DataGridFilterAnatomy> {
-    children?: React.ReactNode
-    column: ColumnDef<any>
-    filterValue: any
-    setFilterValue: (updater: any) => void
-    filteringOptions: DataGridFilteringHelperProps
+export interface DataGridFilterProps<T extends Record<string, any>> extends React.ComponentPropsWithoutRef<"div">,
+    ComponentWithAnatomy<typeof DataGridFilterAnatomy> {
+    column: Column<T>
     onRemove: () => void
 }
 
-export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HTMLDivElement, DataGridFilterProps>((props, ref) => {
+export function DataGridFilter<T extends Record<string, any>>(props: DataGridFilterProps<T>) {
 
-    const { locale: lng } = useUILocaleConfig()
+    const { locale } = useUILocaleConfig()
 
     const {
         children,
         rootClassName,
         className,
-        /**/
         column,
-        filteringOptions,
-        filterValue,
-        setFilterValue,
         onRemove,
         ...rest
     } = props
 
-    const icon = filteringOptions.icon
+    const filterParams = getColumnHelperMeta(column, "filteringMeta")!
+    const filterValue: any = useMemo(() => column.getFilterValue(), [column.getFilterValue()])
+    const setFilterValue = useMemo(() => column.setFilterValue, [column.setFilterValue])
+    const icon = filterParams.icon
 
     // Value formatter - if undefined, use the default behavior
-    const valueFormatter = filteringOptions.valueFormatter || ((value: string) => value)
+    const valueFormatter = filterParams.valueFormatter || getValueFormatter(column)
 
     // Get the options
-    const options = filteringOptions.options ?? []
+    const options = filterParams.options ?? []
 
     // Update handler
     const handleUpdate = useCallback((value: any) => {
-        let finalValue = value
-        // Do something
-        setFilterValue(finalValue)
+        setFilterValue(value)
     }, [])
 
     return (
         <div
             className={cn(DataGridFilterAnatomy.root(), rootClassName, className)}
             {...rest}
-            ref={ref}
         >
-            <ShowOnly when={filteringOptions.type === "select" && (!options || options.length === 0)}>
+            {(filterParams.type === "select" && (!options || options.length === 0)) && (
                 <div className={"text-red-500"}>/!\ "Select" filtering option passed without options</div>
-            </ShowOnly>
+            )}
             {/*Select*/}
-            <ShowOnly when={filteringOptions.type === "select" && !!options && options.length > 0}>
+            {(filterParams.type === "select" && !!options && options.length > 0) && (
                 <Select
                     leftIcon={icon ? icon :
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -93,23 +87,21 @@ export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HT
                              strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
                             <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
                         </svg>}
-                    leftAddon={filteringOptions.name}
+                    leftAddon={filterParams.name}
                     options={[...options.map(n => ({ value: n.value, label: valueFormatter(n.value) }))]}
-                    onChange={e =>
-                        handleUpdate(e.target.value.toLowerCase())
-                    }
+                    onChange={e => handleUpdate(e.target.value.trim().toLowerCase())}
                     size={"sm"}
                     fieldClassName={"w-fit"}
                     className="sm:w-auto pr-8 md:max-w-sm"
                 />
-            </ShowOnly>
+            )}
             {/*Boolean*/}
-            <ShowOnly when={filteringOptions.type === "boolean"}>
+            {(filterParams.type === "boolean") && (
                 <DropdownMenu
                     dropdownClassName={"right-[inherit] left"}
                     trigger={
                         <DataGridActiveFilter
-                            options={filteringOptions}
+                            options={filterParams}
                             value={valueFormatter(filterValue)}
                         />
                     }>
@@ -122,21 +114,21 @@ export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HT
                         </DropdownMenu.Item>
                     </DropdownMenu.Group>
                 </DropdownMenu>
-            </ShowOnly>
+            )}
             {/*Checkbox*/}
-            <ShowOnly when={filteringOptions.type === "checkbox" && !!options.length}>
+            {(filterParams.type === "checkbox" && !!options.length) && (
                 <DropdownMenu
                     dropdownClassName={"right-[inherit] left"}
                     trigger={
                         <DataGridActiveFilter
-                            options={filteringOptions}
+                            options={filterParams}
                             value={Array.isArray(filterValue) ? filterValue.map((n: string) => valueFormatter(n)) : valueFormatter(filterValue)}
                         />}
                 >
                     <DropdownMenu.Group className={"p-1"}>
-                        {filteringOptions.options?.length && (
+                        {filterParams.options?.length && (
                             <CheckboxGroup
-                                options={filteringOptions.options}
+                                options={filterParams.options}
                                 value={filterValue}
                                 onChange={handleUpdate}
                                 checkboxContainerClassName={"flex flex-row-reverse w-full justify-between"}
@@ -145,21 +137,21 @@ export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HT
                         )}
                     </DropdownMenu.Group>
                 </DropdownMenu>
-            </ShowOnly>
+            )}
             {/*Radio*/}
-            <ShowOnly when={filteringOptions.type === "radio" && !!options.length}>
+            {(filterParams.type === "radio" && !!options.length) && (
                 <DropdownMenu
                     dropdownClassName={"right-[inherit] left"}
                     trigger={
                         <DataGridActiveFilter
-                            options={filteringOptions}
+                            options={filterParams}
                             value={Array.isArray(filterValue) ? filterValue.map((n: string) => valueFormatter(n)) : valueFormatter(filterValue)}
                         />}
                 >
                     <DropdownMenu.Group className={"p-1"}>
-                        {filteringOptions.options?.length && (
+                        {filterParams.options?.length && (
                             <RadioGroup
-                                options={filteringOptions.options}
+                                options={filterParams.options}
                                 value={filterValue}
                                 onChange={handleUpdate}
                                 radioContainerClassName={"flex flex-row-reverse w-full justify-between"}
@@ -168,13 +160,34 @@ export const DataGridFilter: React.FC<DataGridFilterProps> = React.forwardRef<HT
                         )}
                     </DropdownMenu.Group>
                 </DropdownMenu>
-            </ShowOnly>
+            )}
+            {/*Date*/}
+            {filterParams.type === "date-range" && (
+                <div className={cn(DataGridAnatomy.filterDropdownButton(), "truncate overflow-ellipsis")}>
+                    {filterParams.icon && <span>{filterParams.icon}</span>}
+                    <span>{filterParams.name}:</span>
+                    <DateRangePicker
+                        value={filterValue ? {
+                            start: parseAbsoluteToLocal(filterValue.start.toISOString()),
+                            end: parseAbsoluteToLocal(filterValue.end.toISOString()),
+                        } : undefined}
+                        onChange={value => handleUpdate({
+                            start: value?.start.toDate(getLocalTimeZone()),
+                            end: value?.end.toDate(getLocalTimeZone()),
+                        })}
+                        intent={"unstyled"}
+                        locale={locale}
+                        hideTimeZone
+                        granularity={"day"}
+                    />
+                </div>
+            )}
 
             <CloseButton onClick={onRemove} size={"sm"}/>
         </div>
     )
 
-})
+}
 
 DataGridFilter.displayName = "DataGridFilter"
 
@@ -182,7 +195,7 @@ DataGridFilter.displayName = "DataGridFilter"
 interface DataGridActiveFilterProps extends Omit<React.ComponentPropsWithRef<"button">, "value">,
     ComponentWithAnatomy<typeof DataGridActiveFilterAnatomy> {
     children?: React.ReactNode
-    options: DataGridFilteringHelperProps
+    options: DataGridFilteringHelper<any>
     value: unknown
 }
 
