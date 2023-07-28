@@ -168,7 +168,10 @@ function findDependencies(fileContent: string): DependencyDef[] {
                 // Include types dependencies
                 // FIXME Find a better way
                 if (name.includes("dinero")) {
-                    dependencies.push("@types/dinero.js")
+                    dependenciesArr.push(["@types/dinero.js", "^1.9.0", "-D"])
+                }
+                if (name.includes("@googlemaps")) {
+                    dependenciesArr.push(["@types/google.maps", "^3.53.5", "-D"])
                 }
             }
         }

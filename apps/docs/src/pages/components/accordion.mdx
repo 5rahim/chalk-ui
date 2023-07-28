@@ -1,0 +1,62 @@
+import { ComponentShowcase } from "../../components/Components";
+import { PropsTable } from "../../components/table/option-table";
+
+# Accordion
+
+<ComponentShowcase component={"accordion"}/>
+
+```shell copy
+npx @rahimstack/chalk-ui add accordion
+```
+
+## Usage
+
+```tsx
+import { Accordion } from "@/components/ui/accordion"
+
+export function Demo() {
+    return (
+        <Accordion>
+            <Accordion.Item title="Easy to use">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, aperiam.
+            </Accordion.Item>
+            <Accordion.Item title="Customizable">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, porro.
+            </Accordion.Item>
+            <Accordion.Item title="Tailwind">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur enim.
+            </Accordion.Item>
+        </Accordion>
+    )
+}
+```
+
+## Anatomy
+
+- **Container**: Root container
+- **Item**: Container of accordion item
+- **Trigger**: Trigger of accordion item
+- **Panel**: Content area of accordion item
+
+## API Reference
+
+### Accordion
+
+<PropsTable title="Props" options={[
+    ["className", "string?"],
+    ["containerClassName", "string?", "Same as `className`"],
+    ["itemClassName", "string?", "Applies to all children"],
+    ["panelClassName", "string?", "Applies to all children"],
+    ["triggerClassName", "string?", "Applies to all children"],
+]}/>
+
+
+### Accordion(.)Item
+
+<PropsTable title={"Props"} options={[
+    ["title", "string"],
+    ["className", "string?"],
+    ["itemClassName", "string?", "Same as `className`"],
+    ["triggerClassName", "string?"],
+    ["panelClassName", "string?"],
+]}/>

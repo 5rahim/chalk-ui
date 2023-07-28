@@ -1,59 +1,67 @@
-import {Callout} from "nextra-theme-docs";
-
 # Installation
-
-## Prerequisites
-
-To ensure proper configuration with Tailwind, it is recommended to set up your application using tools such as create-next-app or other suitable templates for new projects. Alternatively, you can manually install Tailwind by following the instructions provided in the [documentation.](https://tailwindcss.com/docs/installation).
 
 ## CLI
 
-<Callout type="warning">
-    The installation will overwrite your **tailwind.config.js** file. Commit any changes beforehand.
-</Callout>
-
-
 ```shell
-npx @rahimstack/chalk-ui init
+npx @rahimstack/chalk-ui@latest init
 ```
 
-- This command will set up the required files as well as prompt you for which components you want to add.
-- The CLI will automatically install the necessary dependencies.
+- ✅ This command will set up the required files and dependencies.
+- ⚠️ The initialization will overwrite some of your files, commit any changes beforehand.
+- This also works with `pnpm dlx`
+
 
 ## Configuration
 
 ### Next.js (appDir)
 
-Create a new `client-providers` file
+```text
+├── src
+│   ├── app
+│   │   ├── layout.tsx
+│   │   └── ...
+│   ├── components
+│   │   ├── ui                      // Generated
+│   │   │   ├── core
+│   │   │   └── ...
+│   │   ├── client-providers.tsx    // New file
+│   │   ├── your-component.tsx
+│   │   └── ...
+│   └── styles
+│       └── globals.css             // Updated
+├── next.config.js
+├── package.json                    // Updated
+├── postcss.config.js
+├── tailwind.config.js              // Updated
+└── tsconfig.json
+```
 
-```tsx filename="components/client-providers.tsx" copy
+```tsx {8-20,24-25,35,37}
+// src/components/client-providers.tsx
+
 "use client"
 
 import React from "react"
-import { UIProvider } from "./ui/core"
+import { UIProvider } from "@/components/ui/core"
 
 interface ClientProvidersProps {
    children?: React.ReactNode
 }
 
-export const ClientProviders: React.FC<ClientProvidersProps> = (props) => {
-   
-   const { children, ...rest } = props
-   
+export const ClientProviders: React.FC<ClientProvidersProps> = ({ children, ...rest }) => {
+
    return (
-      <UIProvider config={{ locale: "fr", countrylocale: "fr-CI", country: "ci" }}>
+      <UIProvider config={{ locale: "en", countrylocale: "en-US", country: "US" }}>
          {children}
       </UIProvider>
    )
-   
+
 }
-```
 
-Add the providers to `layout.tsx`
+// src/app/layout.tsx
 
-```tsx filename="app/layout.tsx" {12,14}
-import "./globals.css"
-import { ClientProviders } from "../components/client-providers"
+import "./styles/globals.css"
+import { ClientProviders } from "@/components/client-providers"
 
 export default function RootLayout({
    children,
@@ -72,43 +80,81 @@ export default function RootLayout({
 }
 ```
 
-### React
+### Next.js (pages)
 
-```tsx {1,3}
-<UIProvider config={{ locale: "fr", countrylocale: "fr-CI", country: "ci" }}>
- <App />
-</UIProvider>
-```
-
-## Structure
-
-<Callout type="warning">
-    It is advisable to organize all your files within a dedicated "src" folder.
-</Callout>
-
-- In Next.js, when using the **app** directory, the CSS file will be placed at `src/app/styles/globals.css`.
-- If you do not use the **app** directory or Next.js at all, the CSS file will placed at `src/styles/globals.css`.
-
-```text {4-5,8-13,19}
+```text
 ├── src
-│   ├── app
-│   │   ├── layout.tsx
-│   │   ├── styles                  // This folder will be generated or overwritten
-│   │   │   └── globals.css
+│   ├── pages
+│   │   ├── _app.tsx
 │   │   └── ...
 │   ├── components
-│   │   ├── ui                      // This folder will be generated
-│   │   │   ├── core                // This folder contains shared functions used by components
-│   │   │   │   └── ...
-│   │   │   ├── basic-field
-│   │   │   ├── text-input
+│   │   ├── ui                      // Generated
+│   │   │   ├── core
 │   │   │   └── ...
 │   │   ├── your-component.tsx
 │   │   └── ...
+│   └── styles
+│        └── globals.scss           // Generated
 ├── next.config.js
-├── package.json
+├── package.json                    // Updated
 ├── postcss.config.js
-├── tailwind.config.js
+├── tailwind.config.js              // Updated
 └── tsconfig.json
+```
 
+```tsx
+// src/pages/_app.tsx
+
+import { UIProvider } from "@/components/ui/core"
+import "../styles/globals.css"
+
+export default function MyApp({ Component, pageProps }) {
+
+    return (
+        <UIProvider config={...}>
+            <Component {...pageProps} />
+        </UIProvider>
+    )
+}
+```
+
+### React
+
+```text
+(Vite)
+
+├── src
+│   ├── containers
+│   │   └── ...
+│   ├── components
+│   │   ├── ui                      // Generated
+│   │   │   ├── core
+│   │   │   └── ...
+│   │   ├── your-component.tsx
+│   │   └── ...
+│   ├── styles
+│   │    └── globals.scss           // Generated
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── vite-env.d.ts
+├── next.config.js
+├── package.json                    // Updated
+├── postcss.config.js
+├── tailwind.config.js              // Updated
+└── tsconfig.json
+```
+
+```tsx
+// src/main.tsx
+
+import { UIProvider } from "@/components/ui/core"
+import "./styles/globals.css"
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+   <React.StrictMode>
+        <UIProvider config={...}>
+            <App />
+        </UIProvider>
+   </React.StrictMode>,
+)
 ```

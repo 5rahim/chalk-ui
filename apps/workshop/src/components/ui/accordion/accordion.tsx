@@ -31,8 +31,7 @@ export const AccordionAnatomy = defineStyleAnatomy({
  * Accordion
  * -----------------------------------------------------------------------------------------------*/
 
-export interface AccordionProps extends ComponentWithAnatomy<typeof AccordionAnatomy> {
-    children?: React.ReactNode
+export interface AccordionProps extends React.ComponentPropsWithoutRef<"div">, ComponentWithAnatomy<typeof AccordionAnatomy> {
 }
 
 const _Accordion = (props: AccordionProps) => {
@@ -43,6 +42,7 @@ const _Accordion = (props: AccordionProps) => {
         containerClassName,
         panelClassName,
         itemClassName,
+        className,
         ...rest
     } = props
 
@@ -55,7 +55,7 @@ const _Accordion = (props: AccordionProps) => {
     })
 
     return (
-        <div className={cn(AccordionAnatomy.container(), containerClassName)}>
+        <div className={cn(AccordionAnatomy.container(), containerClassName, className)}>
             {itemsWithProps}
         </div>
     )
@@ -71,28 +71,29 @@ interface AccordionItemProps extends React.ComponentPropsWithoutRef<"div">,
     title: string,
 }
 
-const AccordionItem: React.FC<AccordionItemProps> = (
+export const AccordionItem: React.FC<AccordionItemProps> = (
     {
         children,
         title,
         triggerClassName,
         panelClassName,
         itemClassName,
+        className,
         ...rest
     }) => {
 
     return (
         <Disclosure>
             {({ open }) => (
-                <div className={cn(AccordionAnatomy.item(), itemClassName)} {...rest}>
+                <div className={cn(AccordionAnatomy.item(), itemClassName, className)} {...rest}>
                     <Disclosure.Button className={cn(AccordionAnatomy.trigger(), triggerClassName)}>
                         {title}
                         <svg
                             className={cn(
                                 "ml-1.5 h-5 w-5 flex-shrink-0 transition duration-300",
                                 {
-                                    "-rotate-180": open
-                                }
+                                    "-rotate-180": open,
+                                },
                             )}
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"

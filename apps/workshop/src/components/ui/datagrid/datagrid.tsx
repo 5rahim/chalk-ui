@@ -35,7 +35,7 @@ import { DataGridCellInputField } from "./datagrid-cell-input-field"
 import { Transition } from "@headlessui/react"
 import { getColumnHelperMeta, getValueFormatter } from "./helpers"
 import { Skeleton } from "../skeleton"
-import { DataGridServerSideModel } from "./datagrid-server-side-model.ts"
+import { DataGridServerSideModel } from "."
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -93,7 +93,7 @@ export const DataGridAnatomy = defineStyleAnatomy({
         "data-[action-col=false]:truncate data-[action-col=false]:overflow-ellipsis",
         "data-[row-selected=true]:bg-brand-50 dark:data-[row-selected=true]:bg-gray-700",
         "data-[editing=true]:ring-1 data-[editing=true]:ring-[--ring] ring-inset",
-        "data-[editable=true]:hover:bg-[--highlight] data-[editable=true]:focus:ring-2 data-[editable=true]:focus:ring-[--slate]",
+        "data-[editable=true]:hover:bg-[--highlight] md:data-[editable=true]:focus:ring-2 md:data-[editable=true]:focus:ring-[--slate]",
         "focus:outline-none",
     ]),
     tr: cva([
@@ -130,7 +130,7 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
     columns: ColumnDef<T>[]
     /**
      * Manage responsiveness by hiding certain columns below a specific width.
-     * The width is based on the table, not the window
+     * The width is based on the table element.
      */
     hideColumns?: { below: number, hide: string[] }[]
     /**
@@ -138,16 +138,21 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
      * It can be fetched using an aggregation query via SSR.
      */
     rowCount: number
-    // Display skeleton when data is loading
+    /**
+     * Display a skeleton when data is loading
+     */
     isLoading?: boolean
-    // Limit the number of rows per page
+    /**
+     * Default number of rows per page.
+     * This will be overridden when using `serverSideModel`
+     */
     rowsPerPage?: number
     /* -------------------------------------------------------------------------------------------------
      * Row selection
      * -----------------------------------------------------------------------------------------------*/
     /**
      * Enables and displays checkboxes for each row.
-     * Use in conjunction with onRowSelect()
+     * Use in conjunction with `onRowSelect`
      */
     enableRowSelection?: boolean
     /**
@@ -155,8 +160,14 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
      */
     enableServerSideRowSelection?: boolean
     /**
-     * Returns selected rows.
-     * /!\ You should avoid using it with `serverSideModel` because you can only select visible rows
+     * Since ReactTable manages row selection using indices, specify a primary key--from the data given--that will be used to uniquely
+     * identify selected rows when paginating, even if they have the same index.
+     * @example id
+     */
+    rowSelectionPrimaryKey?: string
+    /**
+     * Use in conjunction with `enableRowSelection`
+     * Returns selected data and rows.
      */
     onRowSelect?: DataGridOnRowSelect<T>
     /* -------------------------------------------------------------------------------------------------
@@ -175,13 +186,15 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
      * rowCount={serverSideModel.getIsFiltering() ? (res.data?.rowCount ?? 0) : aggregationRes.count}
      */
     serverSideModel?: DataGridServerSideModel
-    // Display loading spinner when new data is coming in
+    /**
+     * Display loading spinner when new data is coming in
+     */
     isFetching?: boolean
     /* -------------------------------------------------------------------------------------------------
      * Filtering
      * -----------------------------------------------------------------------------------------------*/
     /**
-     * Use in combination with `serverSideModel`.
+     * Use in conjunction with `serverSideModel`.
      * When it is false, the column filters will only be applied to visible rows
      *
      * - When it is true, the filters will not be applied, you can then manually filter the data using the values from `serverSideModel`
@@ -190,25 +203,31 @@ export interface DataGridProps<T extends Record<string, any>> extends React.Comp
     /* -------------------------------------------------------------------------------------------------
      * Sorting
      * -----------------------------------------------------------------------------------------------*/
-    enableServerSideSorting?: boolean // TODO
+    /**
+     * Use in conjunction with `serverSideModel`.
+     */
+    enableServerSideSorting?: boolean
     /* -------------------------------------------------------------------------------------------------
      * Pagination
      * -----------------------------------------------------------------------------------------------*/
-    enableServerSidePagination?: boolean // TODO
+    /**
+     * Use in conjunction with `serverSideModel`.
+     */
+    enableServerSidePagination?: boolean
     /* -------------------------------------------------------------------------------------------------
      * Editing
      * -----------------------------------------------------------------------------------------------*/
     /**
-     * Use in combination with the `withEditing` helper
+     * Use in conjunction with the `withEditing` helper
      */
     onRowEdit?: DataGridOnRowEdit<T>
     /**
      * Use in combination with the `withEditing` helper.
-     * When this is true, DataGrid will block the
+     * When this is true and `enableOptimisticUpdates` are not enabled, DataGrid will pause before canceling editing.
      */
     isDataMutating?: boolean
     /**
-     * Use in combination with the `withEditing` helper
+     * Use in conjunction with `serverSideModel`.
      */
     enableOptimisticUpdates?: boolean
     /**
@@ -248,25 +267,27 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         isLoading = false,
         rowCount,
         hideColumns = [],
-        rowsPerPage = 5,
+        rowsPerPage,
         enableRowSelection = false,
-        /** SSR **/
+        onRowSelect,
+        onRowEdit,
+        /** Server side **/
+        serverSideModel,
         enableServerSideRowSelection = false,
         enableServerSideFiltering = false,
         enableServerSidePagination = false,
         enableServerSideSorting = false,
-        onRowSelect,
         isFetching = false,
-        serverSideModel,
-        onRowEdit,
-        isDataMutating,
+        isDataMutating = false,
         enableOptimisticUpdates = false,
         optimisticUpdatePrimaryKey,
+        rowSelectionPrimaryKey,
         ...rest
     } = props
 
     const isServerSideMode = !!serverSideModel
-    const isInLoadingState = isLoading || (isServerSideMode && isFetching)
+    const isInLoadingState = isLoading || isFetching || isDataMutating
+    const canPaginate = (isServerSideMode && enableServerSidePagination) || !isServerSideMode
 
     // Since some DataGrid plugins can change the data, store it in a mutable state
     const [data, setData] = useState(_actualData ?? [])
@@ -304,14 +325,17 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         },
     }, ...columns], [columns])
 
-    const [globalFilter, setGlobalFilter] = useState("")
+    const [globalFilter, setGlobalFilter] = useState(serverSideModel?.filteringModel?.globalFilterValue ?? "")
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
-    const [sorting, setSorting] = useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [sorting, setSorting] = useState<SortingState>(serverSideModel?.sortingModel.columns ?? [])
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(serverSideModel?.filteringModel?.filters ?? [])
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
     // Keep track of pages
-    const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: rowsPerPage })
+    const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+        pageIndex: serverSideModel?.paginationModel?.pageIndex ?? 0,
+        pageSize: serverSideModel?.paginationModel?.limit ?? (rowsPerPage ?? 5),
+    })
     // Pagination object
     const pagination = useMemo(() => ({ pageIndex, pageSize }), [pageIndex, pageSize])
     // Calculate page count
@@ -344,7 +368,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         onSortingChange: setSorting,
         onRowSelectionChange: setRowSelection,
         getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
+        getSortedRowModel: (isServerSideMode && enableServerSideSorting) ? undefined : getSortedRowModel(),
         getFilteredRowModel: (isServerSideMode && enableServerSideFiltering) ? undefined : getFilteredRowModel(),
         manualPagination: isServerSideMode && enableServerSideFiltering,
         filterFns: {
@@ -357,10 +381,10 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
             return table.getRowModel().rows
         }
         return table.getRowModel().rows.slice(table.getState().pagination.pageIndex * pageSize, (table.getState().pagination.pageIndex + 1) * pageSize)
-    }, [isServerSideMode, pageSize, table.getRowModel().rows, table.getState().pagination])
+    }, [pageSize, table.getRowModel().rows, table.getState().pagination])
 
     // Responsively hide columns
-    const { tableRef } = useDataGridResponsiveness({ table, hideColumns })
+    const { tableRef, tableWidth } = useDataGridResponsiveness({ table, hideColumns })
 
     // Row selection
     const {
@@ -371,7 +395,9 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         displayedRows,
         isServerSideMode,
         enableServerSideRowSelection,
-        onRowSelect: onRowSelect,
+        onRowSelect,
+        rowSelectionPrimaryKey,
+        enableRowSelection,
     })
 
     // Filtering
@@ -387,15 +413,21 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
 
     useEffect(() => {
         if (serverSideModel && enableServerSideFiltering) {
-            serverSideModel.setFilteringModel({ filters: columnFilters, globalFilterValue: globalFilter })
+            serverSideModel.internal_setFilteringModel({ filters: columnFilters, globalFilterValue: globalFilter })
         }
     }, [columnFilters, globalFilter])
 
     useEffect(() => {
         if (serverSideModel && enableServerSidePagination) {
-            serverSideModel.setPaginationModel({ pageIndex: pageIndex, limit: pageSize })
+            serverSideModel.internal_setPaginationModel({ pageIndex: pageIndex, limit: pageSize })
         }
     }, [pageSize, pageIndex])
+
+    useEffect(() => {
+        if (serverSideModel && enableServerSideSorting) {
+            serverSideModel.internal_setSortingModel({ columns: sorting })
+        }
+    }, [sorting])
 
     // Editing
     const {
@@ -617,7 +649,9 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                         data-editable={isCurrentlyEditable} // If cell is editable
                                                         data-row-editing={getFirstCellBeingEdited()?.rowId === cell.row.id} // If cell's row is being edited
                                                         style={{ width: cell.column.getSize(), maxWidth: cell.column.columnDef.maxSize }}
-                                                        onDoubleClick={() => startTransition(() => onCellDoubleClick(cell.id))}
+                                                        onDoubleClick={() => startTransition(() => {
+                                                            onCellDoubleClick(cell.id)
+                                                        })}
                                                         onKeyUp={event => {
                                                             if (event.key === "Enter") startTransition(() => onCellDoubleClick(cell.id))
                                                         }}
@@ -649,8 +683,8 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                         </table>
 
                         {/*Skeleton*/}
-                        {isInLoadingState && [...Array(Number(rowsPerPage)).keys()].map((i, idx) => (
-                            <Skeleton key={idx} className={"rounded-none"}/>
+                        {isInLoadingState && [...Array(Number(pageSize)).keys()].map((i, idx) => (
+                            <Skeleton key={idx} className={"rounded-none h-12"}/>
                         ))}
 
                         {/*No rows*/}
@@ -697,53 +731,59 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                         direction={"left"}
                         isChevrons
                         onClick={() => table.setPageIndex(0)}
-                        isDisabled={!table.getCanPreviousPage() || isInLoadingState}
+                        isDisabled={!table.getCanPreviousPage() || isInLoadingState || !canPaginate}
                     />
                     <Pagination.Trigger
                         direction={"left"}
                         onClick={() => table.previousPage()}
-                        isDisabled={!table.getCanPreviousPage() || isInLoadingState}
+                        isDisabled={!table.getCanPreviousPage() || isInLoadingState || !canPaginate}
                     />
                     <Pagination.Trigger
                         direction={"right"}
                         onClick={() => table.nextPage()}
-                        isDisabled={!table.getCanNextPage() || isInLoadingState}
+                        isDisabled={!table.getCanNextPage() || isInLoadingState || !canPaginate}
                     />
                     <Pagination.Trigger
                         direction={"right"}
                         isChevrons
                         onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                        isDisabled={!table.getCanNextPage() || isInLoadingState}
+                        isDisabled={!table.getCanNextPage() || isInLoadingState || !canPaginate}
                     />
                 </Pagination>
 
                 <div className={cn(DataGridAnatomy.footerPageDisplayContainer(), footerPageDisplayContainerClassName)}>
-                    <div>{locales["page"][lng]}</div>
-                    <strong>
-                        {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
-                    </strong>
+                    {table.getPageCount() > 0 && (
+                        <>
+                            <div>{locales["page"][lng]}</div>
+                            <strong>
+                                {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+                            </strong>
+                        </>
+                    )}
                 </div>
 
                 <div className={cn(DataGridAnatomy.footerPaginationInputContainer(), footerPaginationInputContainerClassName)}>
-                    <NumberInput
+                    {(data.length > 0) && <NumberInput
                         discrete
                         defaultValue={table.getState().pagination.pageIndex + 1}
                         min={1}
                         max={pageCount}
                         onChange={v => {
                             const page = v ? v - 1 : 0
-                            table.setPageIndex(page)
+                            startTransition(() => {
+                                table.setPageIndex(page)
+                            })
                         }}
                         className={"inline-flex flex-none items-center w-[3rem]"}
-                        isDisabled={isInLoadingState}
+                        // isDisabled={isInLoadingState}
                         size={"sm"}
-                    />
+                    />}
                     <Select
                         value={table.getState().pagination.pageSize}
                         onChange={e => {
                             table.setPageSize(Number(e.target.value))
                         }}
-                        options={[Number(rowsPerPage), ...[5, 10, 20, 30, 40, 50].filter(n => n !== Number(rowsPerPage))].map(pageSize => ({
+                        options={[Number(pageSize), ...[5, 10, 20, 30, 40, 50].filter(n => n !== Number(pageSize))].map(pageSize => ({
                             value: pageSize,
                             label: `${pageSize}`,
                         }))}

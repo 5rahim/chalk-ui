@@ -266,16 +266,12 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
         {
             accessorKey: "visible",
             header: "Visible",
-            cell: info => <Badge intent={info.getValue() === "Visible" ? "success" : "gray"}>{info.getValue() as string}</Badge>,
+            cell: info => <Badge intent={info.getValue() === "Visible" ? "success" : "gray"}>{info.getValue<string>()}</Badge>,
             size: 0,
             filterFn: getFilterFn("boolean"),
             meta: {
-                ...withValueFormatter<string | boolean>(value => {
-                    if (value === "true") return "Yes"
-                    if (value === "false") return "No"
-                    if (value === true) return "Visible"
-                    if (value === false) return "Hidden"
-                    return ""
+                ...withValueFormatter<boolean, string>(value => {
+                    return value ? "Visible" : "Hidden"
                 }),
                 ...withFiltering({
                     name: "Visible",
@@ -300,7 +296,7 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
         {
             accessorKey: "random_date",
             header: "Date",
-            cell: info => Intl.DateTimeFormat("us").format(info.getValue() as any),
+            cell: info => Intl.DateTimeFormat("us").format(info.getValue<Date>()),
             size: 30,
             filterFn: getFilterFn("date-range"),
             meta: {
@@ -358,6 +354,7 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                     { below: 400, hide: ["visible", "random_date"] },
                 ]}
                 enableRowSelection
+                rowSelectionPrimaryKey={"id"}
                 onRowSelect={data => {
                     console.log("selection", data)
                 }}

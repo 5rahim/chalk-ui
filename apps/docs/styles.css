@@ -191,7 +191,8 @@ html[class~="dark"] .nextra-search input::placeholder {
 .nextra-toc ul li a,
 .nextra-sidebar-container ul li.active > a,
 .nextra-sidebar-container ul li.active > a:hover {
-    font-weight: normal;
+    font-weight: 600;
+    /*color: var(--docs-accent-color);*/
 }
 
 html[class~="light"] .nextra-sidebar-container ul li a {
@@ -200,7 +201,7 @@ html[class~="light"] .nextra-sidebar-container ul li a {
 
 html[class~="light"] .nextra-sidebar-container ul li a:hover,
 html[class~="light"] .nextra-sidebar-container ul li.active > a:hover {
-    background-color: var(--docs-light-bg);
+    /*background-color: var(--docs-light-bg);*/
 }
 
 html[class~="dark"] .nextra-sidebar-container ul li a:hover,
@@ -294,7 +295,7 @@ svg:hover {
 /* Bold only on the header */
 .folderAsHeader .nextra-sidebar-container ul > li > a,
 .folderAsHeader .nextra-sidebar-container ul > li > a:hover {
-    font-weight: 600;
+    font-weight: 800;
     cursor: default;
     line-height: 1.3;
 }
@@ -407,17 +408,23 @@ html[class~="dark"] p code {
     padding-right: 1rem;
 }
 
-html[class~="light"] .nextra-callout {
-    color: rgb(65 65 65 / 90%);
-    background-color: var(--docs-light-bg);
-    border: none !important;
-}
+/*html[class~="light"] .nextra-callout {*/
+/*    color: rgb(65 65 65 / 90%);*/
+/*    background-color: var(--docs-light-bg);*/
+/*    border: none !important;*/
+/*}*/
 
-html[class~="dark"] .nextra-callout {
-    border: none !important;
-    background: var(--docs-dark-bg) !important;
-    color: #999999 !important;
-}
+/*html[class~="dark"] .nextra-callout {*/
+/*    border: none !important;*/
+/*    background: var(--docs-dark-bg) !important;*/
+/*    color: #999999 !important;*/
+/*}*/
+
+/*html[class~="dark"] .nextra-callout {*/
+/*    border: none !important;*/
+/*    background: var(--docs-dark-bg) !important;*/
+/*    color: #999999 !important;*/
+/*}*/
 
 html[class~="dark"] .nextra-callout h4 {
     color: #fff;
@@ -516,3 +523,7 @@ html[class~="dark"] article pre {
 /*    background-color: initial !important;*/
 /*    background-image: inherit !important;*/
 /*}*/
+
+[type='search'] {
+    border-color: transparent !important;
+}

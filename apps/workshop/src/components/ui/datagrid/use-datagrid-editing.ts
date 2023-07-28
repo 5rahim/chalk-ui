@@ -1,5 +1,5 @@
 import { Row, Table } from "@tanstack/react-table"
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react"
+import React, { startTransition, useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react"
 import _ from "lodash"
 import { DataGridCellInputFieldProps } from "./datagrid-cell-input-field.tsx"
 import { z } from "zod"
@@ -75,7 +75,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
             setRow(undefined)
             setEditableCellStates([])
         }
-    }, [table.getState().pagination.pageIndex])
+    }, [table.getState().pagination.pageIndex, table.getState().pagination.pageSize])
 
     // Keep track of editable cells (cells whose columns are editable)
     const editableCells = useMemo(() => {
@@ -138,7 +138,6 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
             return prev.map(n => ({ ...n, isEditing: false }))
         })
     }, [])
-    /**/
 
     const mutationRef = React.useRef<boolean>(false)
 
@@ -159,37 +158,48 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
                 // Show the first error message
                 toast.error(JSON.parse((parsed.error as any).message)?.[0]?.message)
             } else {
-                // Return new data
-                onRowEdit && onRowEdit({
-                    data: rowData,
-                    row: row,
-                })
 
-                // Optimistic update
-                if (enableOptimisticUpdates && optimisticUpdatePrimaryKey) {
-                    let clone = structuredClone(data)
-                    const index = clone.findIndex(p => {
-                        if (!p[optimisticUpdatePrimaryKey] || !rowData[optimisticUpdatePrimaryKey]) return false
-                        return p[optimisticUpdatePrimaryKey] === rowData[optimisticUpdatePrimaryKey]
-                    })
-                    if (clone[index] && index > -1) {
-                        clone[index] = rowData
-                        onDataChange(clone) // Emit optimistic update
+                startTransition(() => {
+
+                    // Compare data
+                    if (!_.isEqual(rowData, row.original)) {
+                        // Return new data
+                        onRowEdit && onRowEdit({
+                            data: rowData,
+                            row: row,
+                        })
+
+                        // Optimistic update
+                        if (enableOptimisticUpdates && optimisticUpdatePrimaryKey) {
+                            let clone = structuredClone(data)
+                            const index = clone.findIndex(p => {
+                                if (!p[optimisticUpdatePrimaryKey] || !rowData[optimisticUpdatePrimaryKey]) return false
+                                return p[optimisticUpdatePrimaryKey] === rowData[optimisticUpdatePrimaryKey]
+                            })
+                            if (clone[index] && index > -1) {
+                                clone[index] = rowData
+                                onDataChange(clone) // Emit optimistic update
+                            } else {
+                                console.error("[DataGrid] Could not perform optimistic update. Make sure `optimisticUpdatePrimaryKey` is a valid property.")
+                            }
+
+                        } else if (enableOptimisticUpdates) {
+                            console.error("[DataGrid] Could not perform optimistic update. Make sure `optimisticUpdatePrimaryKey` is defined.")
+                        }
+
+                        // Immediately stop edit if optimistic updates are enabled
+                        if (enableOptimisticUpdates) {
+                            cancelEditing()
+                        } else {
+                            // Else, we wait for `isDataMutating` to be false
+                            mutationRef.current = true
+                        }
                     } else {
-                        console.error("[DataGrid] Could not perform optimistic update. Make sure `optimisticUpdatePrimaryKey` is correct.")
+                        cancelEditing()
                     }
 
-                } else if (enableOptimisticUpdates) {
-                    console.error("[DataGrid] Could not perform optimistic update. Make sure `optimisticUpdatePrimaryKey` is defined.")
-                }
+                })
 
-                // Immediately stop edit if optimistic updates are enabled
-                if (enableOptimisticUpdates) {
-                    cancelEditing()
-                } else {
-                    // Else, we send it to the queue so that we wait for `isDataMutating` to be false
-                    mutationRef.current = true
-                }
             }
 
         }

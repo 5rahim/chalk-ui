@@ -1,0 +1,194 @@
+import { Tab, Tabs } from "nextra/components";
+import { PropsTable } from "../components/table/option-table";
+import Preview from "../components/Preview";
+import { Registry } from "../components/Components";
+
+# TypesafeForm
+
+Form component built on top of `react-hook-form`, `zod` and Chalk UI form components.
+
+- ✅ Type safety
+- ✅ Validation with `zod`
+- ✅ Pre-built inputs
+- ✅ Simplicity
+
+## Schema
+
+<Tabs items={['createTypesafeFormSchema', 'API']}>
+    <Tab>
+        A helper to create schemas.
+        The presets are defined in `@/components/ui/typesafe-form/schema-presets.ts`.
+    </Tab>
+    <Tab><PropsTable title="Presets" options={[
+        ["name", "z.string().min(2).trim()"],
+        ["phone", "z.string().min(10, \"Invalid phone number\")"],
+        ["select", "z.string().nonempty()"],
+        ["multiSelect", "z.array(z.string())"],
+        ["checkboxGroup", "z.array(z.string())"],
+        ["dropzone", "z.array(z.custom\<File\>()).refine()"],
+        ["time", "z.object({ hour: z.number().min(0).max(23), minute: z.number().min(0).max(59) })"],
+        ["price", "z.number().min(0)"],
+        ["switch", "z.boolean()"],
+        ["checkbox", "z.boolean()"],
+        ["file", "z.array(z.custom\<File\>()).refine()"],
+        ["dateRangePicker", "z.object({ start: z.date(), end: z.date() })"],
+        ["datePicker", "z.date()"],
+    ]}/>
+    </Tab>
+</Tabs>
+
+```tsx showLineNumbers
+import {createTypesafeFormSchema} from "@/components/ui/typesafe-form"
+
+const schema = createTypesafeFormSchema(({z, presets}) => z.object({
+    name: z.string().min(2),
+    birthday: presets.datePicker,
+    phone: presets.phone,
+    profilePicture: presets.dropzone,
+}))
+```
+
+## Form
+
+<Tabs items={['Component', 'API']}>
+    <Tab>
+
+    </Tab>
+    <Tab>
+
+        [Full API](https://react-hook-form.com/docs/useform)
+
+        <PropsTable title="Props" options={[
+            ["children", "MaybeRenderProp\<UseFormReturn\<z.infer\<Schema\>\>\>", "Components or Render function"],
+            ["schema", "Schema extends z.ZodObject\<z.ZodRawShape\>"],
+            ["onSubmit", "SubmitHandler\<z.infer<Schema\>\>"],
+            ["onChange?", "WatchObserver\<z.infer<Schema\>\>"],
+            ["onError?", "SubmitErrorHandler\<z.infer<Schema\>\>"],
+            ["defaultValues?", "AsyncDefaultValues?"],
+            ["stackClassName?", "string"],
+        ]}/>
+    </Tab>
+</Tabs>
+
+<Preview>
+    {Registry.find(n => n.name === "typesafe-form").render()}
+</Preview>
+
+```tsx showLineNumbers /full_name/ /phone/
+import { TypesafeForm, Field, createTypesafeFormSchema } from "@/components/ui/typesafe-form"
+
+const schema = createTypesafeFormSchema(({ z, presets }) => z.object({
+    full_name: z.string().min(2),
+    phone: presets.phone,
+}))
+
+export function Demo() {
+    return (
+        <TypesafeForm
+            schema={schema}
+            onSubmit={data => {     // Data is correctly typed
+                console.log(data)
+            }}
+        >
+            <Field.Text
+                label={"Full name"}
+                name={"full_name"}
+            />
+            <Field.PhoneNumber
+                label={"Phone"}
+                name={"phone"}
+            />
+            <Field.Submit>Submit</Field.Submit>
+        </TypesafeForm>
+    )
+}
+```
+
+## Field
+
+`Field` is a polymorphic component made with pre-built input components.
+
+You can see the implementation of these inputs in `@/components/ui/typesafe-form/fields.tsx`.
+
+- ✅ Fully-typed
+- ✅ Controlled inputs
+  - ✅ Error message handling
+  - ✅ Default value handling
+- ✅ Customizable
+
+
+### Field.Submit
+
+<Tabs items={['Component', 'API']}>
+    <Tab>
+
+    </Tab>
+    <Tab>
+
+        [Full API](https://react-hook-form.com/docs/useform)
+
+        <PropsTable title="Props" options={[
+            ["uploadHandler?", "any"],
+            ["role?", "\"submit\" | \"save\" | \"create\" | \"add\" | \"search\" | \"update\"", "Default: `save`"],
+            ["disableOnSuccess?", "boolean", "Default: role === `create`"],
+            ["disableIfInvalid?", "boolean", "Default: `false`"],
+            ["showLoadingOverlayOnSuccess?", "boolean", "Default: `false`"],
+            ["loadingOverlay?", "React.ReactNode"],
+        ]}/>
+    </Tab>
+</Tabs>
+
+This component can have multiple roles: `"submit" | "save" | "create" | "add" | "search" | "update"`
+- By default, when a form is submitted with a role of `create`, a **LoadingOverlay** will be shown. You can turn this behavior off by setting `disabledOnSuccess` to `false`.
+`disableIfInvalid`, default false.
+- `showLoadingOverlayOnSuccess`, default false.
+- You can change the loading overlay using the `loadingOverlay` prop of type `React.ReactNode`.
+
+#### Loading Overlay
+
+<Preview>
+    {Registry.find(n => n.name === "typesafe-form-loading-overlay").render()}
+</Preview>
+
+## Usage
+
+### With Dropzone
+
+```tsx showLineNumbers {8,18,31} /picture:/ /picture,/ /"picture"/
+import { createTypesafeFormSchema, Field, TypesafeForm } from "@/components/ui/typesafe-form"
+import { useFileUploadHandler } from "@/components/ui/file-upload"
+
+const Demo = () => {
+
+    const { mutate } = useFakeMutation(...)
+
+    const pictureHandler = useFileUploadHandler("single")
+
+    const schema = createTypesafeFormSchema(({ z, presets }) => z.object({
+        picture: presets.dropzone,
+    }))
+
+    return (
+        <TypesafeForm
+            schema={schema}
+            onSubmit={async ({ picture, ... data}) => {             // Here, `picture` is a File object
+                const image = await pictureHandler.uploadFiles()
+                if(image) {
+                    mutate({ ...data, picture: image.url })         // Store the url after upload
+                } else {
+                    // Notify user
+                }
+            }}
+        >
+            <Field.Dropzone
+                label={"Profile picture"}
+                name={"picture"}
+                accept={{ "image/*": [".png", ".jpeg", ".jpg"] }}
+                withImagePreview
+                uploadHandler={pictureHandler}
+            />
+            <Field.Submit role={"create"}/>
+        </TypesafeForm>
+    )
+}
+```

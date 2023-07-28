@@ -14,6 +14,13 @@ const meta = {
     title: "Advanced/Typesafe Form",
     component: TypesafeForm,
     tags: ["autodocs"],
+    parameters: {
+        docs: {
+            source: {
+                code: null,
+            },
+        },
+    },
     // @ts-ignore
     render: (args) => {
         const uploadHandler = useFileUploadHandler("single")

@@ -155,10 +155,13 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         {
             accessorKey: "visible",
             header: "Visible",
-            cell: info => <Badge intent={info.getValue() ? "success" : "gray"}>{info.getValue() ? "Visible" : "Hidden"}</Badge>,
+            cell: info => <Badge intent={info.getValue() === "Visible" ? "success" : "gray"}>{info.getValue<string>()}</Badge>,
             size: 0,
             filterFn: getFilterFn("boolean"),
             meta: {
+                ...withValueFormatter<boolean, string>(value => {
+                    return value ? "Visible" : "Hidden"
+                }),
                 ...withFiltering({
                     name: "Visible",
                     type: "boolean",
@@ -201,7 +204,8 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                     { below: 515, hide: ["category"] },
                     { below: 400, hide: ["visible"] },
                 ]}
-                enableRowSelection={true}
+                enableRowSelection
+                rowSelectionPrimaryKey={"id"}
                 onRowSelect={data => {
                     console.log(data)
                 }}

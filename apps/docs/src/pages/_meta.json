@@ -1,14 +1,21 @@
 {
-  "root-1": {
+  "gs": {
     "type": "separator",
     "title": "Getting Started"
   },
   "index": "Introduction",
   "installation": "Installation",
-  "dive-deeper": "Dive deeper",
-  "root-2": {
+  "dark-mode": "Dark Mode",
+  "cli": "CLI",
+  "r2": {
     "type": "separator",
-    "title": "References"
+    "title": "Dive deeper"
   },
-  "components": "Components"
+  "customization": "Customization",
+  "rf": {
+    "type": "separator",
+    "title": "Components"
+  },
+  "components": "Storybook",
+  "typesafe-form": "TypesafeForm"
 }

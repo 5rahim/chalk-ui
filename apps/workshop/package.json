@@ -66,6 +66,7 @@
     "@storybook/testing-library": "^0.2.0",
     "@storybook/theming": "^7.1.0",
     "@types/dinero.js": "^1.9.0",
+    "@types/google.maps": "^3.53.5",
     "@types/lodash": "^4.14.195",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",

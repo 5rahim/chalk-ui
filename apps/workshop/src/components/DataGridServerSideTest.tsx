@@ -1,6 +1,6 @@
 import React, { startTransition, useCallback, useEffect, useMemo, useState } from "react"
 import { faker } from "@faker-js/faker"
-import { createDataGridColumns, DataGrid, DataGridServerSideModelProps, useDataGridServerSideModel } from "./ui/datagrid"
+import { createDataGridColumns, DataGrid, DataGridServerSideModels, useDataGridServerSideModel } from "./ui/datagrid"
 import { Badge } from "./ui/badge"
 import { DropdownMenu } from "./ui/dropdown-menu"
 import { IconButton } from "./ui/button"
@@ -128,7 +128,7 @@ export function useFakeMutation(
     }
 }
 
-export async function fetchFromFakeServer(_options: DataGridServerSideModelProps) {
+export async function fetchFromFakeServer(_options: DataGridServerSideModels) {
     let a: Product[] = []
     const options = structuredClone(_options)
     // Simulate some network latency
@@ -147,7 +147,7 @@ export async function fetchFromFakeServer(_options: DataGridServerSideModelProps
     }
 }
 
-function useFakeQuery(options: DataGridServerSideModelProps, { enabled }: { enabled?: boolean }) {
+function useFakeQuery(options: DataGridServerSideModels, { enabled }: { enabled?: boolean }) {
     const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState<Product[] | undefined>(undefined)
     const [totalCount, setTotalCount] = useState<number>(0)
@@ -181,10 +181,16 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
     const { children, ...rest } = props
 
     const serverSideModel = useDataGridServerSideModel({
-        itemsPerPage: 5,
+        initialState: {
+            rowsPerPage: 5,
+        },
     })
 
-    const { data, totalCount, isLoading } = useFakeQuery(serverSideModel.models, { enabled: serverSideModel.paginationModel.limit > 0 })
+    useEffect(() => {
+        console.log(serverSideModel.sortingModel)
+    }, [serverSideModel.sortingModel])
+
+    const { data, totalCount, isLoading } = useFakeQuery(serverSideModel.all, { enabled: serverSideModel.paginationModel.limit > 0 })
 
     const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilterFn, withEditing, withValueFormatter }) => [
         {
@@ -263,16 +269,12 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
         {
             accessorKey: "visible",
             header: "Visible",
-            cell: info => <Badge intent={info.getValue() === "Visible" ? "success" : "gray"}>{info.getValue() as string}</Badge>,
+            cell: info => <Badge intent={info.getValue() === "Visible" ? "success" : "gray"}>{info.getValue<string>()}</Badge>,
             size: 0,
             filterFn: getFilterFn("boolean"),
             meta: {
-                ...withValueFormatter<string | boolean>(value => {
-                    if (value === "true") return "Yes"
-                    if (value === "false") return "No"
-                    if (value === true) return "Visible"
-                    if (value === false) return "Hidden"
-                    return ""
+                ...withValueFormatter<boolean, string>(value => {
+                    return value ? "Visible" : "Hidden"
                 }),
                 ...withFiltering({
                     name: "Visible",
@@ -320,25 +322,26 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
                 enableServerSideFiltering // Done
                 enableServerSidePagination // Done
                 enableServerSideRowSelection // Done
+                rowSelectionPrimaryKey={"id"}
                 enableServerSideSorting
                 columns={columns}
                 data={data}
                 serverSideModel={serverSideModel}
                 rowCount={totalCount}
                 isLoading={isLoading}
-                hideColumns={[
-                    { below: 850, hide: ["availability", "price"] },
-                    { below: 600, hide: ["_actions"] },
-                    { below: 515, hide: ["category"] },
-                    { below: 400, hide: ["visible", "random_date"] },
-                ]}
+                // hideColumns={[
+                //     { below: 850, hide: ["availability", "price"] },
+                //     { below: 600, hide: ["_actions"] },
+                //     { below: 515, hide: ["category"] },
+                //     { below: 400, hide: ["visible", "random_date"] },
+                // ]}
                 onRowSelect={data => {
                     console.log("selection", data)
                 }}
                 enableOptimisticUpdates
                 optimisticUpdatePrimaryKey={"id"}
                 onRowEdit={data => {
-                    // console.log("editing", data)
+                    console.log("editing", data)
                 }}
             />
         </>

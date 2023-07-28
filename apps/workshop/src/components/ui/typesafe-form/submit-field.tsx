@@ -13,7 +13,7 @@ import { Button, ButtonProps } from "../button"
 export interface SubmitFieldProps extends Omit<ButtonProps, "type"> {
     uploadHandler?: any
     role?: "submit" | "save" | "create" | "add" | "search" | "update"
-    disabledOnSuccess?: boolean
+    disableOnSuccess?: boolean
     disableIfInvalid?: boolean
     showLoadingOverlayOnSuccess?: boolean
     loadingOverlay?: React.ReactNode
@@ -27,7 +27,7 @@ export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>
         isDisabled,
         uploadHandler,
         role = "save",
-        disabledOnSuccess = role === "create",
+        disableOnSuccess = role === "create",
         disableIfInvalid = false,
         showLoadingOverlayOnSuccess = false,
         loadingOverlay,
@@ -37,7 +37,7 @@ export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>
     const { formState } = useFormContext()
     const { locale } = useUILocaleConfig()
 
-    const disableSuccess = useMemo(() => disabledOnSuccess ? formState.isSubmitSuccessful : false, [formState.isSubmitSuccessful])
+    const disableSuccess = useMemo(() => disableOnSuccess ? formState.isSubmitSuccessful : false, [formState.isSubmitSuccessful])
     const disableInvalid = useMemo(() => disableIfInvalid ? !formState.isValid : false, [formState.isValid])
 
     return (
