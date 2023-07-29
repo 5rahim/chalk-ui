@@ -32,9 +32,9 @@ export type DataGridServerSideModel = {
 }
 
 export interface DataGridServerSideModelProps {
-    initialState?: {
+    initialState: {
         pageIndex?: number
-        rowsPerPage?: number
+        rowsPerPage: number
         globalFilterValue?: string
         filters?: DataGridFilteringModel["filters"],
         sorting?: DataGridSortingModel["columns"]

@@ -26,31 +26,31 @@ function withEditing<Schema extends AnyZodObject, Key extends keyof z.infer<Sche
  * Filtering
  * -----------------------------------------------------------------------------------------------*/
 
-type FilteringTypes = "select" | "radio" | "checkbox" | "boolean" | "date-range"
+export type DataGridFilteringType = "select" | "radio" | "checkbox" | "boolean" | "date-range"
 
 export interface FilterFns {
     dateRangeFilter: any
 }
 
 type _DefaultFilteringProps = {
-    type: FilteringTypes
+    type: DataGridFilteringType
     name: string,
     icon?: React.ReactElement
     options?: { value: string, label?: any }[]
     valueFormatter?: (value: any) => any
 }
 
-type DefaultFilteringProps<T extends FilteringTypes> = {
+type DefaultFilteringProps<T extends DataGridFilteringType> = {
     type: T
     name: string,
     icon?: React.ReactElement
     options: { value: string, label?: T extends "select" ? string : React.ReactNode }[]
-    valueFormatter?: (value: string) => string
+    valueFormatter?: (value: any) => any
 }
 
 // Improve type safety by removing "options" when the type doesn't need it
-export type DataGridFilteringHelper<T extends FilteringTypes = "select"> =
-    T extends Extract<FilteringTypes, "select" | "radio" | "checkbox">
+export type DataGridFilteringHelper<T extends DataGridFilteringType = "select"> =
+    T extends Extract<DataGridFilteringType, "select" | "radio" | "checkbox">
         ? DefaultFilteringProps<T>
         : Omit<DefaultFilteringProps<T>, "options">
 
@@ -59,7 +59,7 @@ export type DataGridFilteringHelper<T extends FilteringTypes = "select"> =
  */
 export type DataGridSupportedFilterFn = Extract<BuiltInFilterFn, "equals" | "equalsString" | "arrIncludesSome" | "inNumberRange"> | "dateRangeFilter"
 
-function withFiltering<T extends FilteringTypes>(params: DataGridFilteringHelper<T>) {
+function withFiltering<T extends DataGridFilteringType>(params: DataGridFilteringHelper<T>) {
     return {
         filteringMeta: {
             ...params,
@@ -67,7 +67,7 @@ function withFiltering<T extends FilteringTypes>(params: DataGridFilteringHelper
     }
 }
 
-const getFilterFn = (type: FilteringTypes) => {
+const getFilterFn = (type: DataGridFilteringType) => {
     const fns: { [key: string]: DataGridSupportedFilterFn } = {
         select: "equalsString",
         boolean: "equals",
@@ -82,7 +82,7 @@ const getFilterFn = (type: FilteringTypes) => {
  * Value formatter
  * -----------------------------------------------------------------------------------------------*/
 
-function withValueFormatter<T extends any, R extends any = T>(callback: (value: T) => R) {
+function withValueFormatter<T extends any, R extends any = any>(callback: (value: T) => R) {
     return {
         valueFormatter: callback,
     }

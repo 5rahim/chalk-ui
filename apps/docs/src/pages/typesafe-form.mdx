@@ -70,6 +70,8 @@ const schema = createTypesafeFormSchema(({z, presets}) => z.object({
     </Tab>
 </Tabs>
 
+### Usage
+
 <Preview>
     {Registry.find(n => n.name === "typesafe-form").render()}
 </Preview>
@@ -149,6 +151,23 @@ This component can have multiple roles: `"submit" | "save" | "create" | "add" | 
 <Preview>
     {Registry.find(n => n.name === "typesafe-form-loading-overlay").render()}
 </Preview>
+
+```tsx showLineNumber /create/ /showLoadingScreenOnSuccess/
+function Demo() {
+    return (
+        <TypesafeForm
+            {...data}
+        >
+            <Field.Text
+                label={"Name"}
+                name={"name"}
+            />
+            <Field.Submit role={"create"}/>
+            {/*<Field.Submit role={"submit"} showLoadingScreenOnSuccess />*/}
+        </TypesafeForm>
+    )
+}
+```
 
 ## Usage
 

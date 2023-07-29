@@ -1,0 +1,63 @@
+import { PropsTable } from "../../components/table/option-table";
+
+## Sorting
+
+Sorting is automatically handled on a column-to-column basis.
+
+### Disable sorting
+
+```tsx showLineNumbers /enableSorting: false/
+const columns = useMemo(() => createDataGridColumns<Product>(() => [
+    ...,
+    {
+        id: "_actions",
+        enableSorting: false,
+        enableGlobalFilter: false,
+        cell: ({ row }) => {
+            return (
+                <div className={"flex justify-end w-full"}>
+                    <DropdownMenu trigger={<IconButton icon={<BiDotsHorizontal/>} intent={"gray-basic"} size={"sm"}/>}>
+                        <DropdownMenu.Item><BiEditAlt/> Edit</DropdownMenu.Item>
+                    </DropdownMenu>
+                </div>
+            )
+        },
+    },
+]), [])
+```
+
+### Server-side
+
+```tsx showLineNumbers {9,16,17}
+function Demo() {
+    const serverSideModel = useDataGridServerSideModel({
+        initialState: {
+            rowsPerPage: 5,
+        },
+    })
+
+    const { data, totalCount, isLoading } = useFakeQuery({
+        sorting: serverSideModel.sortingModel.columns // eg: [{ id: "price", desc: true }]
+    })
+
+    const columns = useMemo(() => createDataGridColumns<Product>(() => [...]))
+
+    return (
+        <DataGrid<Product>
+            serverSideModel={serverSideModel}
+            enableServerSideSorting
+            columns={columns}
+            data={data}
+            rowCount={totalCount}
+            isLoading={isLoading}
+        />
+    )
+
+}
+```
+
+#### Reference
+
+<PropsTable title="sortingModel" options={[
+    ["columns", `Array<{ id: string, desc: boolean }>`, "`id` represents the column key"],
+]}/>

@@ -17,5 +17,6 @@
     "title": "Components"
   },
   "components": "Storybook",
-  "typesafe-form": "TypesafeForm"
+  "typesafe-form": "TypesafeForm",
+  "datagrid": "DataGrid"
 }

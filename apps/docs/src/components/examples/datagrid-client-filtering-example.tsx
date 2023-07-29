@@ -1,21 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react"
-import { faker } from "@faker-js/faker"
-import { createDataGridColumns, DataGridProps, NewDataGrid } from "./ui/datagrid"
-import { Badge } from "./ui/badge"
-import { DropdownMenu } from "./ui/dropdown-menu"
-import { IconButton } from "./ui/button"
-import { BiDotsHorizontal } from "@react-icons/all-files/bi/BiDotsHorizontal"
+import { createDataGridColumns, DataGrid } from "@/components/ui/datagrid"
+import { fetchFakeData } from "@/components/examples/datagrid-fake-api"
 import { BiFolder } from "@react-icons/all-files/bi/BiFolder"
-import { BiLowVision } from "@react-icons/all-files/bi/BiLowVision"
-import { BiBasket } from "@react-icons/all-files/bi/BiBasket"
 import { BiCheck } from "@react-icons/all-files/bi/BiCheck"
+import { BiBasket } from "@react-icons/all-files/bi/BiBasket"
+import { BiLowVision } from "@react-icons/all-files/bi/BiLowVision"
+import { BiDotsHorizontal } from "@react-icons/all-files/bi/BiDotsHorizontal"
 import { BiEditAlt } from "@react-icons/all-files/bi/BiEditAlt"
+import { Badge } from "@/components/ui/badge"
+import { DropdownMenu } from "@/components/ui/dropdown-menu"
+import { IconButton } from "@/components/ui/button"
 
-interface DataGridTestProps {
-    tableProps?: Partial<DataGridProps<any>>
-}
 
-type Product = {
+export type Product = {
     id: string
     name: string
     image: string
@@ -25,68 +22,13 @@ type Product = {
     category: string | null
 }
 
-const range = (len: number) => {
-    const arr: any[] = []
-    for (let i = 0; i < len; i++) {
-        arr.push(i)
-    }
-    return arr
-}
-
-const newProduct = (): Product => {
-    return {
-        id: crypto.randomUUID(),
-        name: faker.commerce.productName(),
-        image: faker.image.urlLoremFlickr({ category: "food" }),
-        visible: faker.datatype.boolean(),
-        availability: faker.helpers.shuffle<Product["availability"]>([
-            "in_stock",
-            "out_of_stock",
-        ])[0]!,
-        price: faker.number.int({ min: 5, max: 1500 }),
-        category: faker.helpers.shuffle<Product["category"]>([
-            "Food",
-            "Electronics",
-            "Drink",
-            null,
-            null,
-        ])[0]!,
-    }
-}
-
-export function makeData(...lens: number[]) {
-    const makeDataLevel = (depth = 0): Product[] => {
-        const len = lens[depth]!
-        return range(len).map((d): Product => {
-            return {
-                ...newProduct(),
-            }
-        })
-    }
-
-    return makeDataLevel()
-}
-
-const _data = makeData(30)
-
-export async function fetchData() {
-    // Simulate some network latency
-    await new Promise(r => setTimeout(r, 1000))
-    return {
-        rows: _data,
-    }
-}
-
-
-export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
-
-    const { tableProps } = props
+export function DataGridClientFilteringExample() {
 
     const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
 
     useEffect(() => {
         async function fetch() {
-            const res = await fetchData()
+            const res = await fetchFakeData()
             setClientData(res.rows)
         }
 
@@ -97,24 +39,19 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         {
             accessorKey: "name",
             header: "Name",
+            cell: info => info.getValue(),
             size: 40,
         },
         {
             accessorKey: "price",
-            header: "Price",
-            cell: info => info.renderValue(),
+            header: () => "Price",
+            cell: info => "$" + Intl.NumberFormat("en-US").format(info.getValue() as number),
             size: 10,
-            meta: {
-                ...withValueFormatter<number>(value => {
-                    return "$" + Intl.NumberFormat("en-US").format(value)
-                }),
-            },
         },
         {
             accessorKey: "category",
             header: "Category",
             cell: info => info.getValue(),
-            footer: props => props.column.id,
             size: 20,
             filterFn: getFilterFn("radio"),
             meta: {
@@ -129,7 +66,7 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         {
             accessorKey: "availability",
             header: "Availability",
-            cell: info => info.renderValue(),
+            cell: info => info.getValue(),
             size: 20,
             filterFn: getFilterFn("checkbox"),
             meta: {
@@ -158,21 +95,19 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         {
             accessorKey: "visible",
             header: "Visible",
-            cell: info => <Badge intent={info.getValue<boolean>() ? "success" : "gray"}>{info.renderValue<string>()}</Badge>,
-            size: 0,
+            cell: info => <Badge intent={info.getValue() === "Visible" ? "success" : "gray"}>{info.getValue<string>()}</Badge>,
+            size: 20,
             filterFn: getFilterFn("boolean"),
             meta: {
-                ...withValueFormatter<boolean>(value => {
+                ...withValueFormatter<boolean, string>(value => {
                     return value ? "Visible" : "Hidden"
                 }),
                 ...withFiltering({
                     name: "Visible",
                     type: "boolean",
                     icon: <BiLowVision/>,
-                    valueFormatter: (value) => {
-                        if (value === "true") return "Yes"
-                        if (value === "false") return "No"
-                        return ""
+                    valueFormatter: (value) => {        // Overrides `withValueFormatter`
+                        return value ? "Yes" : "No"
                     },
                 }),
             },
@@ -196,23 +131,11 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
 
     return (
         <>
-            <NewDataGrid<Product>
+            <DataGrid<Product>
                 columns={columns}
                 data={clientData}
-                rowCount={_data.length}
+                rowCount={clientData?.length ?? 0}
                 isLoading={!clientData}
-                hideColumns={[
-                    { below: 850, hide: ["availability", "price"] },
-                    { below: 600, hide: ["_actions"] },
-                    { below: 515, hide: ["category"] },
-                    { below: 400, hide: ["visible"] },
-                ]}
-                enableRowSelection
-                rowSelectionPrimaryKey={"id"}
-                onRowSelect={data => {
-                    console.log(data)
-                }}
-                {...tableProps as any}
             />
         </>
     )

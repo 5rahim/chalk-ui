@@ -50,7 +50,7 @@ export function PropsTable({ title, options }: { title: "Props" | "Return" | "Sc
                className={
                    "overflow-x-auto overscroll-x-contain p-2 bg-gray-50 dark:bg-gray-900"}
            >
-               <table className="w-full border-collapse text-sm px-6 pb-4">
+               <table className="w-full border-collapse text-sm px-6 pb-4 table-fixed">
                    <thead>
                    <tr className="border-b py-4 text-left dark:border-neutral-700">
                        <th className="py-2 font-semibold">Property</th>
