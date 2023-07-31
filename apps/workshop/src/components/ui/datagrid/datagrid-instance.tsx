@@ -25,14 +25,14 @@ export type DataGridRefProps<T extends Record<string, any>> = {
 
     hideColumns?: { below: number, hide: string[] }[]
 
-    enableRowSelection: boolean | undefined
+    enableRowSelection?: boolean
     onRowSelect?: DataGridOnRowSelect<T>
     rowSelectionPrimaryKey?: string
-    enablePersistentRowSelection: boolean | undefined
+    enablePersistentRowSelection?: boolean
 
-    enableManualSorting: boolean | undefined
-    enableManualFiltering: boolean | undefined
-    enableManualPagination: boolean | undefined
+    enableManualSorting?: boolean
+    enableManualFiltering?: boolean
+    enableManualPagination?: boolean
 
     enableOptimisticUpdates?: boolean
     optimisticUpdatePrimaryKey?: string
@@ -144,6 +144,20 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridRefPro
         },
     }, ...columns], [columns])
 
+    const sortingState = React.useMemo(() => state?.sorting ?? sorting, [state?.sorting, sorting])
+    const paginationState = React.useMemo(() => state?.pagination ?? pagination, [state?.pagination, pagination])
+    const rowSelectionState = React.useMemo(() => state?.rowSelection ?? rowSelection, [state?.rowSelection, rowSelection])
+    const globalFilterState = React.useMemo(() => state?.globalFilter ?? globalFilter, [state?.globalFilter, globalFilter])
+    const columnFiltersState = React.useMemo(() => state?.columnFilters ?? columnFilters, [state?.columnFilters, columnFilters])
+    const columnVisibilityState = React.useMemo(() => state?.columnVisibility ?? columnVisibility, [state?.columnVisibility, columnVisibility])
+
+    const changeHandler = React.useCallback((func: any, func2: any) => {
+        return ((updaterOrValue) => {
+            if (func) func(updaterOrValue)
+            if (func2) func2(updaterOrValue)
+        }) as OnChangeFn<any>
+    }, [])
+
     const table = useReactTable<T>({
         data: data,
         columns: enableRowSelection ? columnsWithSelection : columns,
@@ -156,19 +170,19 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridRefPro
             return safeValue?.trim().toLowerCase().includes(filterValue.trim().toLowerCase())
         },
         state: {
-            sorting: state?.sorting ?? sorting,
-            pagination: state?.pagination ?? pagination,
-            rowSelection: state?.rowSelection ?? rowSelection,
-            globalFilter: state?.globalFilter ?? globalFilter,
-            columnFilters: state?.columnFilters ?? columnFilters,
-            columnVisibility: state?.columnVisibility ?? columnVisibility,
+            sorting: sortingState,
+            pagination: paginationState,
+            rowSelection: rowSelectionState,
+            globalFilter: globalFilterState,
+            columnFilters: columnFiltersState,
+            columnVisibility: columnVisibilityState,
         },
-        onSortingChange: onSortingChange ?? setSorting,
-        onPaginationChange: onPaginationChange ?? setPagination,
-        onRowSelectionChange: onRowSelectionChange ?? setRowSelection,
-        onGlobalFilterChange: onGlobalFilterChange ?? setGlobalFilter,
-        onColumnFiltersChange: onColumnFiltersChange ?? setColumnFilters,
-        onColumnVisibilityChange: onColumnVisibilityChange ?? setColumnVisibility,
+        onSortingChange: changeHandler(onSortingChange, setSorting),
+        onPaginationChange: changeHandler(onPaginationChange, setPagination),
+        onRowSelectionChange: changeHandler(onRowSelectionChange, setRowSelection),
+        onGlobalFilterChange: changeHandler(onGlobalFilterChange, setGlobalFilter),
+        onColumnFiltersChange: changeHandler(onColumnFiltersChange, setColumnFilters),
+        onColumnVisibilityChange: changeHandler(onColumnVisibilityChange, setColumnVisibility),
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: enableManualSorting ? undefined : getSortedRowModel(),
         getFilteredRowModel: enableManualFiltering ? undefined : getFilteredRowModel(),
@@ -180,24 +194,29 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridRefPro
     })
 
     const displayedRows = useMemo(() => {
+        const pn = table.getState().pagination
         if (enableManualPagination) {
             return table.getRowModel().rows
         }
-        return table.getRowModel().rows.slice(table.getState().pagination.pageIndex * pagination.pageSize, (table.getState().pagination.pageIndex + 1) * pagination.pageSize)
-    }, [pagination.pageSize, table.getRowModel().rows, table.getState().pagination])
+        return table.getRowModel().rows.slice(pn.pageIndex * pn.pageSize, (pn.pageIndex + 1) * pn.pageSize)
+    }, [table.getRowModel().rows, table.getState().pagination])
 
     return {
+        ...rest,
+
         table,
         displayedRows,
         setData,
         data,
+        pageCount,
 
-        sorting,
-        pagination,
-        rowSelection,
-        globalFilter,
-        columnFilters,
-        columnVisibility,
+        sorting: state?.sorting ?? sorting,
+        pagination: state?.pagination ?? pagination,
+        rowSelection: state?.rowSelection ?? rowSelection,
+        globalFilter: state?.globalFilter ?? globalFilter,
+        columnFilters: state?.columnFilters ?? columnFilters,
+        columnVisibility: state?.columnVisibility ?? columnVisibility,
+
         enableManualSorting,
         enableManualFiltering,
         enableManualPagination,
@@ -208,7 +227,6 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridRefPro
         handleGlobalFilterChange: props.onGlobalFilterChange ?? setGlobalFilter,
         handleColumnFiltersChange: props.onColumnFiltersChange ?? setColumnFilters,
 
-        ...rest,
     }
 
 }

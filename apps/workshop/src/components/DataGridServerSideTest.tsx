@@ -1,6 +1,6 @@
 import React, { startTransition, useCallback, useEffect, useMemo, useState } from "react"
 import { faker } from "@faker-js/faker"
-import { createDataGridColumns, DataGrid, DataGridServerSideModels, useDataGridServerSideModel } from "./ui/datagrid"
+import { createDataGridColumns, DataGrid } from "./ui/datagrid"
 import { Badge } from "./ui/badge"
 import { DropdownMenu } from "./ui/dropdown-menu"
 import { IconButton } from "./ui/button"
@@ -13,9 +13,21 @@ import { BiEditAlt } from "@react-icons/all-files/bi/BiEditAlt"
 import { createTypesafeFormSchema } from "./ui/typesafe-form"
 import { BiCalendar } from "@react-icons/all-files/bi/BiCalendar"
 import { TextInput } from "./ui/text-input"
+import { ColumnFiltersState, ColumnSort, PaginationState, SortingState } from "@tanstack/react-table"
+import _ from "lodash"
 
 interface DataGridServerSideTestProps {
     children?: React.ReactNode
+}
+
+type DataGridPaginationModel = { pageIndex: number, limit: number }
+type DataGridFilteringModel = { globalFilterValue: string, filters: { id: string, value: unknown }[] }
+type DataGridSortingModel = ColumnSort[]
+
+type DataGridServerSideModels = {
+    pagination: DataGridPaginationModel
+    filtering: DataGridFilteringModel
+    sorting: DataGridSortingModel
 }
 
 const schema = createTypesafeFormSchema(({ z }) => z.object({
@@ -152,13 +164,21 @@ function useFakeQuery(options: DataGridServerSideModels, { enabled }: { enabled?
     const [data, setData] = useState<Product[] | undefined>(undefined)
     const [totalCount, setTotalCount] = useState<number>(0)
 
+    const [_options, setOptions] = useState(options)
+
+    useEffect(() => {
+        if (!_.isEqual(options, _options)) {
+            setOptions(options)
+        }
+    }, [options])
+
     useEffect(() => {
         if (enabled) {
             setIsLoading(true)
 
             async function execute() {
                 console.warn("Fetch executed")
-                const res = await fetchFromFakeServer(options)
+                const res = await fetchFromFakeServer(_options)
                 setTotalCount(res.rowCount)
                 setData(res.rows)
                 startTransition(() => setIsLoading(false))
@@ -166,7 +186,7 @@ function useFakeQuery(options: DataGridServerSideModels, { enabled }: { enabled?
 
             execute().then()
         }
-    }, [enabled, options.sorting, options.pagination, options.filtering])
+    }, [enabled, _options])
 
     return {
         data,
@@ -180,17 +200,22 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
 
     const { children, ...rest } = props
 
-    const serverSideModel = useDataGridServerSideModel({
-        initialState: {
-            rowsPerPage: 5,
+    const [globalFilter, setGlobalFilter] = useState<string>("")
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 5, pageSize: 5 })
+
+    const { data, totalCount, isLoading } = useFakeQuery({
+        sorting: sorting,
+        filtering: {
+            globalFilterValue: globalFilter,
+            filters: columnFilters,
         },
-    })
-
-    useEffect(() => {
-        console.log(serverSideModel.sortingModel)
-    }, [serverSideModel.sortingModel])
-
-    const { data, totalCount, isLoading } = useFakeQuery(serverSideModel.all, { enabled: serverSideModel.paginationModel.limit > 0 })
+        pagination: {
+            pageIndex: pagination.pageIndex,
+            limit: pagination.pageSize,
+        },
+    }, { enabled: true })
 
     const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilterFn, withEditing, withValueFormatter }) => [
         {
@@ -210,9 +235,8 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
         },
         {
             accessorKey: "price",
-            header: () => "Price",
+            header: "Price",
             cell: info => "$" + Intl.NumberFormat("en-US").format(info.getValue<number>()),
-            footer: props => props.column.id,
             size: 10,
             meta: {},
         },
@@ -220,7 +244,6 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
             accessorKey: "category",
             header: "Category",
             cell: info => info.getValue(),
-            footer: props => props.column.id,
             size: 20,
             filterFn: getFilterFn("radio"),
             meta: {
@@ -235,7 +258,7 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
         {
             accessorKey: "availability",
             header: "Availability",
-            cell: info => info.getValue(),
+            cell: info => info.renderValue(),
             size: 0,
             filterFn: getFilterFn("checkbox"),
             meta: {
@@ -269,7 +292,7 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
         {
             accessorKey: "visible",
             header: "Visible",
-            cell: info => <Badge intent={info.getValue() === "Visible" ? "success" : "gray"}>{info.getValue<string>()}</Badge>,
+            cell: info => <Badge intent={info.getValue() ? "success" : "gray"}>{info.renderValue<string>()}</Badge>,
             size: 0,
             filterFn: getFilterFn("boolean"),
             meta: {
@@ -286,7 +309,7 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
         {
             accessorKey: "random_date",
             header: "Date",
-            cell: info => Intl.DateTimeFormat("us").format(info.getValue() as any),
+            cell: info => Intl.DateTimeFormat("us").format(info.getValue<Date>()),
             size: 30,
             filterFn: getFilterFn("date-range"),
             meta: {
@@ -318,31 +341,34 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
     return (
         <>
             <DataGrid<Product>
+                enableManualPagination
+                enableManualFiltering
+                enableManualSorting
+                enablePersistentRowSelection
                 enableRowSelection
-                enableServerSideFiltering // Done
-                enableServerSidePagination // Done
-                enableServerSideRowSelection // Done
                 rowSelectionPrimaryKey={"id"}
-                enableServerSideSorting
+                enableOptimisticUpdates
+                optimisticUpdatePrimaryKey={"id"}
                 columns={columns}
                 data={data}
-                serverSideModel={serverSideModel}
                 rowCount={totalCount}
                 isLoading={isLoading}
-                // hideColumns={[
-                //     { below: 850, hide: ["availability", "price"] },
-                //     { below: 600, hide: ["_actions"] },
-                //     { below: 515, hide: ["category"] },
-                //     { below: 400, hide: ["visible", "random_date"] },
-                // ]}
                 onRowSelect={data => {
                     console.log("selection", data)
                 }}
-                enableOptimisticUpdates
-                optimisticUpdatePrimaryKey={"id"}
                 onRowEdit={data => {
                     console.log("editing", data)
                 }}
+                state={{
+                    globalFilter,
+                    sorting,
+                    columnFilters,
+                    pagination,
+                }}
+                onGlobalFilterChange={setGlobalFilter}
+                onColumnFiltersChange={setColumnFilters}
+                onPaginationChange={setPagination}
+                onSortingChange={setSorting}
             />
         </>
     )

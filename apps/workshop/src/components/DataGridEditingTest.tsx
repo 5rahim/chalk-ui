@@ -159,7 +159,6 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
         {
             accessorKey: "name",
             header: "Name",
-            cell: info => info.getValue(),
             size: 40,
             meta: {
                 ...withEditing({
@@ -174,8 +173,7 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
         {
             accessorKey: "price",
             header: () => "Price",
-            cell: info => "$" + Intl.NumberFormat("en-US").format(info.getValue() as number),
-            footer: props => props.column.id,
+            cell: info => "$" + Intl.NumberFormat("en-US").format(info.getValue<number>()),
             size: 10,
             meta: {
                 ...withEditing({
@@ -191,7 +189,6 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
             accessorKey: "category",
             header: "Category",
             cell: info => info.getValue(),
-            footer: props => props.column.id,
             size: 20,
             filterFn: getFilterFn("radio"),
             meta: {
@@ -219,7 +216,7 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
         {
             accessorKey: "availability",
             header: "Availability",
-            cell: info => info.getValue(),
+            cell: info => info.renderValue(),
             size: 0,
             filterFn: getFilterFn("checkbox"),
             meta: {
@@ -266,11 +263,11 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
         {
             accessorKey: "visible",
             header: "Visible",
-            cell: info => <Badge intent={info.getValue() === "Visible" ? "success" : "gray"}>{info.getValue<string>()}</Badge>,
+            cell: info => <Badge intent={info.getValue() ? "success" : "gray"}>{info.renderValue<string>()}</Badge>,
             size: 0,
             filterFn: getFilterFn("boolean"),
             meta: {
-                ...withValueFormatter<boolean, string>(value => {
+                ...withValueFormatter<boolean>(value => {
                     return value ? "Visible" : "Hidden"
                 }),
                 ...withFiltering({
@@ -347,12 +344,6 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                 data={clientData}
                 rowCount={_data.length}
                 isLoading={!clientData}
-                hideColumns={[
-                    { below: 850, hide: ["availability", "price"] },
-                    { below: 600, hide: ["_actions"] },
-                    { below: 515, hide: ["category"] },
-                    { below: 400, hide: ["visible", "random_date"] },
-                ]}
                 enableRowSelection
                 rowSelectionPrimaryKey={"id"}
                 onRowSelect={data => {

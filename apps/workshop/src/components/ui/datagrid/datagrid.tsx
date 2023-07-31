@@ -3,7 +3,6 @@
 import React, { startTransition, useEffect, useState } from "react"
 import { cn, ComponentWithAnatomy, defineStyleAnatomy, UIIcons, useUILocaleConfig } from "../core"
 import { flexRender } from "@tanstack/react-table"
-
 import { cva } from "class-variance-authority"
 import { TextInput, TextInputProps } from "../text-input"
 import { Select } from "../select"
@@ -22,7 +21,8 @@ import { DataGridCellInputField } from "./datagrid-cell-input-field"
 import { Transition } from "@headlessui/react"
 import { getColumnHelperMeta, getValueFormatter } from "./helpers"
 import { Skeleton } from "../skeleton"
-import { DataGridApi, DataGridRefProps, useDataGrid } from "./datagrid-ref.tsx"
+import { DataGridApi, DataGridRefProps, useDataGrid } from "./datagrid-instance.tsx"
+import { LoadingOverlay } from "../loading-spinner"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -36,8 +36,8 @@ export const DataGridAnatomy = defineStyleAnatomy({
         "UI-DataGrid__header",
         "block space-y-4 w-full mb-4",
     ]),
-    filterContainer: cva([
-        "UI-DataGrid__filterContainer",
+    toolbar: cva([
+        "UI-DataGrid__toolbar",
         "flex w-full items-center gap-4 flex-wrap",
     ]),
     tableWrapper: cva([
@@ -50,7 +50,7 @@ export const DataGridAnatomy = defineStyleAnatomy({
     ]),
     table: cva([
         "UI-DataGrid__table",
-        "w-full divide-y divide-[--border] overflow-x-auto relative table-auto md:table-fixed",
+        "w-full overflow-x-auto relative table-auto md:table-fixed",
     ]),
     tableHead: cva([
         "UI-DataGrid__tableHead",
@@ -71,7 +71,7 @@ export const DataGridAnatomy = defineStyleAnatomy({
     ]),
     tableBody: cva([
         "UI-DataGrid__tableBody",
-        "bg-[--paper] divide-y divide-[--border] w-full",
+        "bg-[--paper] divide-y divide-[--border] w-full relative",
     ]),
     td: cva([
         "UI-DataGrid__td",
@@ -114,14 +114,16 @@ export interface DataGridProps<T extends Record<string, any>> extends ComponentW
     tableApi?: DataGridApi<T>
 }
 
-export function NewDataGrid<T extends Record<string, any>>(props: DataGridProps<T>) {
+// type DataGridPropsOrApi<T extends Record<string, any>, R extends DataGridProps<T>> = "tableApi" extends keyof R ? { tableApi: DataGridApi<T> } & ComponentWithAnatomy<typeof DataGridAnatomy> : T
+
+export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>) {
 
     const { locale: lng } = useUILocaleConfig()
 
     const {
         rootClassName,
         headerClassName,
-        filterContainerClassName,
+        toolbarClassName,
         tableWrapperClassName,
         tableContainerClassName,
         tableHeadClassName,
@@ -147,12 +149,8 @@ export function NewDataGrid<T extends Record<string, any>>(props: DataGridProps<
         data,
         setData,
         displayedRows,
-        sorting,
-        pagination,
-        rowSelection,
         globalFilter,
         columnFilters,
-        columnVisibility,
         handleGlobalFilterChange,
         handleColumnFiltersChange,
         isLoading,
@@ -180,11 +178,10 @@ export function NewDataGrid<T extends Record<string, any>>(props: DataGridProps<
         table: table,
         data: data,
         displayedRows: displayedRows,
-        isServerSideMode: !!enablePersistentRowSelection,
-        enableServerSideRowSelection: enablePersistentRowSelection,
+        persistent: enablePersistentRowSelection,
         onRowSelect: onRowSelect,
         rowSelectionPrimaryKey: rowSelectionPrimaryKey,
-        enableRowSelection: enableRowSelection,
+        enabled: enableRowSelection,
     })
 
     // Filtering
@@ -216,7 +213,7 @@ export function NewDataGrid<T extends Record<string, any>>(props: DataGridProps<
         isDataMutating: isDataMutating,
         enableOptimisticUpdates: enableOptimisticUpdates,
         optimisticUpdatePrimaryKey: optimisticUpdatePrimaryKey,
-        isServerSideMode: !!enableManualPagination,
+        manualPagination: enableManualPagination,
         onDataChange: setData,
     })
 
@@ -225,7 +222,7 @@ export function NewDataGrid<T extends Record<string, any>>(props: DataGridProps<
         <div className={cn(DataGridAnatomy.root(), rootClassName)}>
             <div className={cn(DataGridAnatomy.header(), headerClassName)}>
 
-                <div className={cn(DataGridAnatomy.filterContainer(), filterContainerClassName)}>
+                <div className={cn(DataGridAnatomy.toolbar(), toolbarClassName)}>
                     {/* Search Box */}
                     <DataGridSearchInput value={globalFilter ?? ""} onChange={value => handleGlobalFilterChange(String(value))}/>
                     {/* Filter dropdown */}
@@ -274,7 +271,7 @@ export function NewDataGrid<T extends Record<string, any>>(props: DataGridProps<
                 </div>
 
                 {/*Display filters*/}
-                {(filteredColumns.length > 0) && <div className={cn(DataGridAnatomy.filterContainer(), filterContainerClassName)}>
+                {(filteredColumns.length > 0) && <div className={cn(DataGridAnatomy.toolbar(), toolbarClassName)}>
                     {/*Display selected filters*/}
                     {filteredColumns.map(col => {
                         return (
@@ -397,63 +394,66 @@ export function NewDataGrid<T extends Record<string, any>>(props: DataGridProps<
 
                             {/*Body*/}
 
-                            {(!isLoading) && (
-                                <tbody className={cn(DataGridAnatomy.tableBody(), tableBodyClassName)}>
-                                {displayedRows.map((row) => {
-                                    return (
-                                        <tr key={row.id} className={cn(DataGridAnatomy.tr(), trClassName)}>
-                                            {row.getVisibleCells().map((cell, index) => {
+                            <tbody className={cn(DataGridAnatomy.tableBody(), tableBodyClassName)}>
 
-                                                // If cell is editable and cell's row is being edited
-                                                const isCurrentlyEditable = getIsCellEditable(cell.id) && !getIsCellActivelyEditing(cell.id)
-                                                    && (!getIsCurrentlyEditing() || getFirstCellBeingEdited()?.rowId === cell.row.id)
+                            {displayedRows.map((row) => {
+                                return (
+                                    <tr key={row.id} className={cn(DataGridAnatomy.tr(), trClassName)}>
+                                        {row.getVisibleCells().map((cell, index) => {
 
-                                                return (
-                                                    <td
-                                                        key={cell.id}
-                                                        className={cn(DataGridAnatomy.td(), tdClassName)}
-                                                        data-is-selection-col={`${index === 0 && enableRowSelection}`} // If cell is in the selection column
-                                                        data-action-col={`${cell.column.id === "_actions"}`} // If cell is in the action column
-                                                        data-row-selected={cell.getContext().row.getIsSelected()} // If cell's row is currently selected
-                                                        data-editing={getIsCellActivelyEditing(cell.id)} // If cell is being edited
-                                                        data-editable={isCurrentlyEditable} // If cell is editable
-                                                        data-row-editing={getFirstCellBeingEdited()?.rowId === cell.row.id} // If cell's row is being edited
-                                                        style={{ width: cell.column.getSize(), maxWidth: cell.column.columnDef.maxSize }}
-                                                        onDoubleClick={() => startTransition(() => {
-                                                            onCellDoubleClick(cell.id)
-                                                        })}
-                                                        onKeyUp={event => {
-                                                            if (event.key === "Enter") startTransition(() => onCellDoubleClick(cell.id))
-                                                        }}
-                                                        tabIndex={isCurrentlyEditable ? 0 : undefined} // Is focusable if it can be edited
-                                                    >
-                                                        {((!getIsCellEditable(cell.id) || !getIsCellActivelyEditing(cell.id))) && flexRender(
-                                                            cell.column.columnDef.cell,
-                                                            {
-                                                                ...cell.getContext(),
-                                                                renderValue: () => getValueFormatter(cell.column)(cell.getContext().getValue()),
-                                                            },
-                                                        )}
-                                                        {getIsCellActivelyEditing(cell.id) && (
-                                                            <DataGridCellInputField
-                                                                cell={cell}
-                                                                row={cell.row}
-                                                                meta={getColumnHelperMeta(cell.column, "editingMeta")!}
-                                                                onValueUpdated={handleUpdateValue}
-                                                            />
-                                                        )}
-                                                    </td>
-                                                )
-                                            })}
-                                        </tr>
-                                    )
-                                })}
-                                </tbody>
-                            )}
+                                            // If cell is editable and cell's row is being edited
+                                            const isCurrentlyEditable = getIsCellEditable(cell.id) && !getIsCellActivelyEditing(cell.id)
+                                                && (!getIsCurrentlyEditing() || getFirstCellBeingEdited()?.rowId === cell.row.id)
+
+                                            return (
+                                                <td
+                                                    key={cell.id}
+                                                    className={cn(DataGridAnatomy.td(), tdClassName)}
+                                                    data-is-selection-col={`${index === 0 && enableRowSelection}`} // If cell is in the selection column
+                                                    data-action-col={`${cell.column.id === "_actions"}`} // If cell is in the action column
+                                                    data-row-selected={cell.getContext().row.getIsSelected()} // If cell's row is currently selected
+                                                    data-editing={getIsCellActivelyEditing(cell.id)} // If cell is being edited
+                                                    data-editable={isCurrentlyEditable} // If cell is editable
+                                                    data-row-editing={getFirstCellBeingEdited()?.rowId === cell.row.id} // If cell's row is being edited
+                                                    style={{ width: cell.column.getSize(), maxWidth: cell.column.columnDef.maxSize }}
+                                                    onDoubleClick={() => startTransition(() => {
+                                                        onCellDoubleClick(cell.id)
+                                                    })}
+                                                    onKeyUp={event => {
+                                                        if (event.key === "Enter") startTransition(() => onCellDoubleClick(cell.id))
+                                                    }}
+                                                    tabIndex={isCurrentlyEditable ? 0 : undefined} // Is focusable if it can be edited
+                                                >
+                                                    {((!getIsCellEditable(cell.id) || !getIsCellActivelyEditing(cell.id))) && flexRender(
+                                                        cell.column.columnDef.cell,
+                                                        {
+                                                            ...cell.getContext(),
+                                                            renderValue: () => getValueFormatter(cell.column)(cell.getContext().getValue()),
+                                                        },
+                                                    )}
+                                                    {getIsCellActivelyEditing(cell.id) && (
+                                                        <DataGridCellInputField
+                                                            cell={cell}
+                                                            row={cell.row}
+                                                            meta={getColumnHelperMeta(cell.column, "editingMeta")!}
+                                                            onValueUpdated={handleUpdateValue}
+                                                        />
+                                                    )}
+                                                </td>
+                                            )
+                                        })}
+                                    </tr>
+                                )
+                            })}
+                            </tbody>
                         </table>
 
+                        {(isInLoadingState && displayedRows.length > 0) && (
+                            <LoadingOverlay className={"backdrop-blur-[1px] bg-opacity-40 pt-0"}/>
+                        )}
+
                         {/*Skeleton*/}
-                        {isInLoadingState && [...Array(Number(pagination.pageSize)).keys()].map((i, idx) => (
+                        {(isInLoadingState && displayedRows.length === 0) && [...Array(Number(table.getState().pagination.pageSize)).keys()].map((i, idx) => (
                             <Skeleton key={idx} className={"rounded-none h-12"}/>
                         ))}
 
@@ -535,9 +535,9 @@ export function NewDataGrid<T extends Record<string, any>>(props: DataGridProps<
                 <div className={cn(DataGridAnatomy.footerPaginationInputContainer(), footerPaginationInputContainerClassName)}>
                     {(data.length > 0) && <NumberInput
                         discrete
-                        defaultValue={table.getState().pagination.pageIndex + 1}
+                        value={table.getState().pagination.pageIndex + 1}
                         min={1}
-                        max={pagination.pageSize}
+                        max={table.getPageCount()}
                         onChange={v => {
                             const page = v ? v - 1 : 0
                             startTransition(() => {
@@ -545,7 +545,6 @@ export function NewDataGrid<T extends Record<string, any>>(props: DataGridProps<
                             })
                         }}
                         className={"inline-flex flex-none items-center w-[3rem]"}
-                        // isDisabled={isInLoadingState}
                         size={"sm"}
                     />}
                     <Select
@@ -553,7 +552,7 @@ export function NewDataGrid<T extends Record<string, any>>(props: DataGridProps<
                         onChange={e => {
                             table.setPageSize(Number(e.target.value))
                         }}
-                        options={[Number(pagination.pageSize), ...[5, 10, 20, 30, 40, 50].filter(n => n !== Number(pagination.pageSize))].map(pageSize => ({
+                        options={[Number(table.getState().pagination.pageSize), ...[5, 10, 20, 30, 40, 50].filter(n => n !== Number(table.getState().pagination.pageSize))].map(pageSize => ({
                             value: pageSize,
                             label: `${pageSize}`,
                         }))}
@@ -571,7 +570,7 @@ export function NewDataGrid<T extends Record<string, any>>(props: DataGridProps<
 
 }
 
-NewDataGrid.displayName = "DataGrid"
+DataGrid.displayName = "DataGrid"
 
 /* -------------------------------------------------------------------------------------------------
  * DataGridSearchInput

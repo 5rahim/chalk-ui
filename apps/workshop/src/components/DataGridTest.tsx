@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { faker } from "@faker-js/faker"
-import { createDataGridColumns, DataGridProps, NewDataGrid } from "./ui/datagrid"
+import { createDataGridColumns, DataGrid, DataGridProps } from "./ui/datagrid"
 import { Badge } from "./ui/badge"
 import { DropdownMenu } from "./ui/dropdown-menu"
 import { IconButton } from "./ui/button"
@@ -196,17 +196,11 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
 
     return (
         <>
-            <NewDataGrid<Product>
+            <DataGrid<Product>
                 columns={columns}
                 data={clientData}
                 rowCount={_data.length}
                 isLoading={!clientData}
-                hideColumns={[
-                    { below: 850, hide: ["availability", "price"] },
-                    { below: 600, hide: ["_actions"] },
-                    { below: 515, hide: ["category"] },
-                    { below: 400, hide: ["visible"] },
-                ]}
                 enableRowSelection
                 rowSelectionPrimaryKey={"id"}
                 onRowSelect={data => {

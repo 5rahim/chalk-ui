@@ -19,10 +19,14 @@ export const Basic: Story = {
     args: {},
 }
 
-export const NonResponsive: Story = {
+export const Responsive: Story = {
     render: () => <DataGridTest tableProps={{
-        tableClassName: "min-w-[1040px]",
-        hideColumns: undefined,
+        hideColumns: [
+            { below: 850, hide: ["availability", "price"] },
+            { below: 600, hide: ["_actions"] },
+            { below: 515, hide: ["category"] },
+            { below: 400, hide: ["visible"] },
+        ],
     }}/>,
 }
 
