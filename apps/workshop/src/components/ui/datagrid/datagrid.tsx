@@ -190,13 +190,13 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
     })
 
     const {
-        onCellDoubleClick,
+        handleStartEditing,
         getIsCellActivelyEditing,
         getIsCellEditable,
         getIsCurrentlyEditing,
         getFirstCellBeingEdited,
-        cancelEditing,
-        saveEdit,
+        handleStopEditing,
+        handleOnSave,
         handleUpdateValue,
     } = useDataGridEditing({
         table: table,
@@ -296,10 +296,12 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                     leaveFrom="opacity-100 scale-100"
                     leaveTo="opacity-0 scale-75"
                 >
-                    <div className={"flex items-center gap-2 rounded-md p-4 bg-[--paper] border border-[--brand] shadow-sm z-20"}>
+                    <div
+                        className={"flex items-center gap-2 rounded-md p-4 bg-[--paper] border border-[--brand] shadow-sm z-20"}>
                         <span className={"font-semibold"}>{locales["updating"][lng]}</span>
-                        <Button size={"sm"} onClick={saveEdit} isDisabled={isDataMutating}>{locales["save"][lng]}</Button>
-                        <Button size={"sm"} onClick={cancelEditing} intent={"gray-outline"}
+                        <Button size={"sm"} onClick={handleOnSave}
+                                isDisabled={isDataMutating}>{locales["save"][lng]}</Button>
+                        <Button size={"sm"} onClick={handleStopEditing} intent={"gray-outline"}
                                 isDisabled={isDataMutating}>{locales["cancel"][lng]}</Button>
                     </div>
                 </Transition>
@@ -417,10 +419,10 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                     data-row-editing={getFirstCellBeingEdited()?.rowId === cell.row.id} // If cell's row is being edited
                                                     style={{ width: cell.column.getSize(), maxWidth: cell.column.columnDef.maxSize }}
                                                     onDoubleClick={() => startTransition(() => {
-                                                        onCellDoubleClick(cell.id)
+                                                        handleStartEditing(cell.id)
                                                     })}
                                                     onKeyUp={event => {
-                                                        if (event.key === "Enter") startTransition(() => onCellDoubleClick(cell.id))
+                                                        if (event.key === "Enter") startTransition(() => handleStartEditing(cell.id))
                                                     }}
                                                     tabIndex={isCurrentlyEditable ? 0 : undefined} // Is focusable if it can be edited
                                                 >

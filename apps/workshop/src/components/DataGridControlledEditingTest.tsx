@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react"
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react"
 import {faker} from "@faker-js/faker"
 import {createDataGridColumns, DataGridWithApi, useDataGrid} from "./ui/datagrid"
 import {createTypesafeFormSchema} from "./ui/typesafe-form"
@@ -8,15 +8,6 @@ import {NumberInput} from "./ui/number-input"
 interface DataGridEditingTestProps {
     children?: React.ReactNode
 }
-
-const schema = createTypesafeFormSchema(({z}) => z.object({
-    name: z.string().min(3),
-    price: z.number().min(3),
-    category: z.string().nullable(),
-    availability: z.string(),
-    visible: z.boolean(),
-    random_date: z.date(),
-}))
 
 type Product = {
     id: string
@@ -119,12 +110,36 @@ export function useFakeMutation(
     }
 }
 
+export async function fakeNameVerification(value: string) {
+    await new Promise(r => setTimeout(r, 1000))
+    return {
+        success: value.length > 3,
+        error: "Name should contain at least 3 characters"
+    }
+}
+
 
 export const DataGridControlledEditingTest: React.FC<DataGridEditingTestProps> = (props) => {
 
     const {children, ...rest} = props
 
     const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
+
+    const nameVerification = useRef(
+        async (value: string) => {
+            const res = await fakeNameVerification(value)
+            return res.success
+        }
+    )
+
+    const schema = createTypesafeFormSchema(({z}) => z.object({
+        name: z.string().refine(val => nameVerification.current(val), {message: "Invalid name"}),
+        price: z.number().min(3),
+        category: z.string().nullable(),
+        availability: z.string(),
+        visible: z.boolean(),
+        random_date: z.date(),
+    }))
 
     useEffect(() => {
         async function fetch() {
@@ -147,7 +162,8 @@ export const DataGridControlledEditingTest: React.FC<DataGridEditingTestProps> =
             header: "Name",
             size: 10,
             meta: {
-                ...withEditing<string>({
+                ...withEditing({
+                    zodType: schema.shape.name,
                     field: (ctx) => (
                         <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"}/>
                     ),
@@ -172,7 +188,7 @@ export const DataGridControlledEditingTest: React.FC<DataGridEditingTestProps> =
     const {mutate, isLoading: isMutating} = useFakeMutation({
         onSuccess: data => {
             if (data) {
-                // setClientData(data)
+                setClientData(data)
                 // tableApi.setData([])
             }
         },
@@ -187,6 +203,7 @@ export const DataGridControlledEditingTest: React.FC<DataGridEditingTestProps> =
             console.log("editing", event)
             mutate(event.data)
         },
+        validationSchema: schema
     })
 
     return (

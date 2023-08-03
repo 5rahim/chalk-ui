@@ -13,7 +13,7 @@ export type DataGridEditingHelper<T extends any = unknown, ZodType extends ZodTy
     valueFormatter?: <K = z.infer<ZodType>, R = z.infer<ZodType>>(value: K) => R
 }
 
-function withEditing<T extends any = unknown, ZodType extends ZodTypeAny = any>(params: DataGridEditingHelper<T, ZodType>) {
+function withEditing<T extends any = unknown, ZodType extends ZodTypeAny = ZodAny>(params: DataGridEditingHelper<T, ZodType>) {
     return {
         editingMeta: {
             ...params,

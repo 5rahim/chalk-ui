@@ -105,7 +105,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
     }, [editableCells])
 
     /**/
-    const onCellDoubleClick = useCallback((cellId: string) => {
+    const handleStartEditing = useCallback((cellId: string) => {
         // Manage editing state of cells
         setEditableCellStates(prev => {
             const others = prev.filter(prevCell => prevCell.id !== cellId)
@@ -142,7 +142,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
         return editableCellStates.find(cell => cell.isEditing)
     }, [editableCellStates])
     /**/
-    const cancelEditing = useCallback(() => {
+    const handleStopEditing = useCallback(() => {
         setEditableCellStates(prev => {
             return prev.map(n => ({...n, isEditing: false}))
         })
@@ -156,7 +156,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
      */
     useEffect(() => {
         if (isDataMutating !== undefined && !isDataMutating && mutationRef.current) {
-            cancelEditing()
+            handleStopEditing()
             mutationRef.current = false
         }
     }, [isDataMutating])
@@ -166,76 +166,81 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
      */
     useEffect(() => {
         if (isDataMutating === undefined) {
-            cancelEditing()
+            handleStopEditing()
         }
     }, [mutationRef.current])
 
-    const saveEdit = async () => {
-        let proceed = false
+    const saveEdit = useCallback(() => {
+        if (!row || !rowData) return
+
+        startTransition(() => {
+            // Compare data
+            if (!_.isEqual(rowData, row.original)) {
+                // Return new data
+                onRowEdit && onRowEdit({
+                    originalData: row.original,
+                    data: rowData,
+                    row: row,
+                })
+
+                // Optimistic update
+                if (enableOptimisticUpdates && optimisticUpdatePrimaryKey) {
+                    let clone = structuredClone(data)
+                    const index = clone.findIndex(p => {
+                        if (!p[optimisticUpdatePrimaryKey] || !rowData[optimisticUpdatePrimaryKey]) return false
+                        return p[optimisticUpdatePrimaryKey] === rowData[optimisticUpdatePrimaryKey]
+                    })
+                    if (clone[index] && index > -1) {
+                        clone[index] = rowData
+                        onDataChange(clone) // Emit optimistic update
+                    } else {
+                        console.error("[DataGrid] Could not perform optimistic update. Make sure `optimisticUpdatePrimaryKey` is a valid property.")
+                    }
+
+                } else if (enableOptimisticUpdates) {
+                    console.error("[DataGrid] Could not perform optimistic update. Make sure `optimisticUpdatePrimaryKey` is defined.")
+                }
+
+                // Immediately stop edit if optimistic updates are enabled
+                if (enableOptimisticUpdates) {
+                    handleStopEditing()
+                } else {
+                    // Else, we wait for `isDataMutating` to be false
+                    mutationRef.current = true
+                }
+            } else {
+                handleStopEditing()
+            }
+
+        })
+    }, [row, rowData])
+
+    const handleOnSave = useCallback(async () => {
+        if (!row || !rowData) return
 
         // Safely parse the schema object when a `validationSchema` is provided
         if (schema) {
-            const parsed = await schema.safeParseAsync(rowData)
-            if (parsed.success) {
-                proceed = true
-            } else {
-                toast.error(JSON.parse((parsed.error as any).message)?.[0]?.message)
-            }
-        }
-
-        if (proceed && row && rowData) {
-            startTransition(() => {
-
-                // Compare data
-                if (!_.isEqual(rowData, row.original)) {
-                    // Return new data
-                    onRowEdit && onRowEdit({
-                        originalData: row.original,
-                        data: rowData,
-                        row: row,
-                    })
-
-                    // Optimistic update
-                    if (enableOptimisticUpdates && optimisticUpdatePrimaryKey) {
-                        let clone = structuredClone(data)
-                        const index = clone.findIndex(p => {
-                            if (!p[optimisticUpdatePrimaryKey] || !rowData[optimisticUpdatePrimaryKey]) return false
-                            return p[optimisticUpdatePrimaryKey] === rowData[optimisticUpdatePrimaryKey]
-                        })
-                        if (clone[index] && index > -1) {
-                            clone[index] = rowData
-                            onDataChange(clone) // Emit optimistic update
-                        } else {
-                            console.error("[DataGrid] Could not perform optimistic update. Make sure `optimisticUpdatePrimaryKey` is a valid property.")
-                        }
-
-                    } else if (enableOptimisticUpdates) {
-                        console.error("[DataGrid] Could not perform optimistic update. Make sure `optimisticUpdatePrimaryKey` is defined.")
-                    }
-
-                    // Immediately stop edit if optimistic updates are enabled
-                    if (enableOptimisticUpdates) {
-                        cancelEditing()
-                    } else {
-                        // Else, we wait for `isDataMutating` to be false
-                        mutationRef.current = true
-                    }
+            try {
+                const parsed = await schema.safeParseAsync(rowData)
+                if (parsed.success) {
+                    saveEdit()
                 } else {
-                    cancelEditing()
+                    toast.error(JSON.parse((parsed.error as any).message)?.[0]?.message)
                 }
-
-            })
+            } catch (e) {
+                console.error('[DataGrid] Could not perform validation')
+            }
+        } else {
+            saveEdit()
         }
 
-    }
+    }, [row, rowData])
 
     /**
      * This fires every time the user changes an input
      */
     const handleUpdateValue = useCallback<DataGridEditingValueUpdater<T>>((value, _row, cell, zodType) => {
         setActiveValue(value) // Set the updated value (could be anything)
-        // setSchema(schema) // Set the schema
-        // setKey(key) // Set the key being updated
         setRow(_row) // Set the row being updated
         setRowData({
             // If we are updating a different row, reset the rowData, else keep the past updates
@@ -247,13 +252,13 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
 
 
     return {
-        onCellDoubleClick,
+        handleStartEditing,
         getIsCellActivelyEditing,
         getIsCellEditable,
         getIsCurrentlyEditing,
         getFirstCellBeingEdited,
-        cancelEditing,
-        saveEdit,
+        handleStopEditing,
+        handleOnSave,
         handleUpdateValue,
     }
 
