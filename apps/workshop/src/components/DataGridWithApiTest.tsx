@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from "react"
 import {faker} from "@faker-js/faker"
-import {createDataGridColumns, DataGrid, DataGridProps} from "./ui/datagrid"
+import {createDataGridColumns, DataGridProps, DataGridWithApi, useDataGrid} from "./ui/datagrid"
 import {Badge} from "./ui/badge"
 import {DropdownMenu} from "./ui/dropdown-menu"
 import {IconButton} from "./ui/button"
@@ -37,13 +37,13 @@ const newProduct = (): Product => {
     return {
         id: crypto.randomUUID(),
         name: faker.commerce.productName(),
-        image: faker.image.urlLoremFlickr({ category: "food" }),
+        image: faker.image.urlLoremFlickr({category: "food"}),
         visible: faker.datatype.boolean(),
         availability: faker.helpers.shuffle<Product["availability"]>([
             "in_stock",
             "out_of_stock",
         ])[0]!,
-        price: faker.number.int({ min: 5, max: 1500 }),
+        price: faker.number.int({min: 5, max: 1500}),
         category: faker.helpers.shuffle<Product["category"]>([
             "Food",
             "Electronics",
@@ -78,9 +78,9 @@ export async function fetchData() {
 }
 
 
-export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
+export const DataGridWithApiTest: React.FC<DataGridTestProps> = (props) => {
 
-    const { tableProps } = props
+    const {tableProps} = props
 
     const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
 
@@ -93,7 +93,7 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         fetch()
     }, [])
 
-    const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilterFn, withValueFormatter }) => [
+    const columns = useMemo(() => createDataGridColumns<Product>(({withFiltering, getFilterFn, withValueFormatter}) => [
         {
             accessorKey: "name",
             header: "Name",
@@ -121,7 +121,7 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                 ...withFiltering({
                     name: "Category",
                     type: "radio",
-                    options: [{ value: "Electronics" }, { value: "Food" }],
+                    options: [{value: "Electronics"}, {value: "Food"}],
                     icon: <BiFolder/>,
                 }),
             },
@@ -145,11 +145,13 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                     options: [
                         {
                             value: "out_of_stock",
-                            label: <span className={"flex items-center gap-2"}><BiBasket className={"text-red-500"}/><span>Out of stock</span></span>,
+                            label: <span className={"flex items-center gap-2"}><BiBasket
+                                className={"text-red-500"}/><span>Out of stock</span></span>,
                         },
                         {
                             value: "in_stock",
-                            label: <span className={"flex items-center gap-2"}><BiBasket className={"text-green-500"}/><span>In stock</span></span>,
+                            label: <span className={"flex items-center gap-2"}><BiBasket
+                                className={"text-green-500"}/><span>In stock</span></span>,
                         },
                     ],
                 }),
@@ -158,7 +160,8 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         {
             accessorKey: "visible",
             header: "Visible",
-            cell: info => <Badge intent={info.getValue<boolean>() ? "success" : "gray"}>{info.renderValue<string>()}</Badge>,
+            cell: info => <Badge
+                intent={info.getValue<boolean>() ? "success" : "gray"}>{info.renderValue<string>()}</Badge>,
             size: 0,
             filterFn: getFilterFn("boolean"),
             meta: {
@@ -170,7 +173,9 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                     type: "boolean",
                     icon: <BiLowVision/>,
                     valueFormatter: (value) => {
-                        return value ? "Yes" : "No"
+                        if (value === "true") return "Yes"
+                        if (value === "false") return "No"
+                        return ""
                     },
                 }),
             },
@@ -180,10 +185,11 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
             size: 10,
             enableSorting: false,
             enableGlobalFilter: false,
-            cell: ({ row }) => {
+            cell: ({row}) => {
                 return (
                     <div className="flex justify-end w-full">
-                        <DropdownMenu trigger={<IconButton icon={<BiDotsHorizontal/>} intent={"gray-basic"} size={"sm"}/>}>
+                        <DropdownMenu
+                            trigger={<IconButton icon={<BiDotsHorizontal/>} intent={"gray-basic"} size={"sm"}/>}>
                             <DropdownMenu.Item><BiEditAlt/> Edit</DropdownMenu.Item>
                         </DropdownMenu>
                     </div>
@@ -192,19 +198,19 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         },
     ]), [])
 
+    const tableApi = useDataGrid({
+        data: clientData,
+        columns: columns,
+        rowCount: _data.length,
+        isLoading: !clientData,
+        enableRowSelection: true,
+        rowSelectionPrimaryKey: "id"
+    })
+
     return (
         <>
-            <DataGrid<Product>
-                columns={columns}
-                data={clientData}
-                rowCount={_data.length}
-                isLoading={!clientData}
-                enableRowSelection
-                rowSelectionPrimaryKey={"id"}
-                onRowSelect={data => {
-                    console.log(data)
-                }}
-                {...tableProps as any}
+            <DataGridWithApi<Product>
+                api={tableApi}
             />
         </>
     )

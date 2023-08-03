@@ -1,17 +1,18 @@
 "use client"
 
-import React, { useCallback, useMemo } from "react"
-import { cn, ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig } from "../core"
-import { cva } from "class-variance-authority"
-import { DataGridAnatomy, DataGridFilteringHelper, getColumnHelperMeta, getValueFormatter } from "."
-import { Select } from "../select"
-import { Column } from "@tanstack/react-table"
-import { CloseButton } from "../button"
-import { DropdownMenu } from "../dropdown-menu"
-import { CheckboxGroup } from "../checkbox"
-import { RadioGroup } from "../radio-group"
-import { getLocalTimeZone, parseAbsoluteToLocal } from "@internationalized/date"
-import { DateRangePicker } from "../date-time"
+import React, {useCallback, useMemo} from "react"
+import {cn, ComponentWithAnatomy, defineStyleAnatomy, useUILocaleConfig} from "../core"
+import {cva} from "class-variance-authority"
+import {DataGridAnatomy, DataGridFilteringHelper, getColumnHelperMeta, getValueFormatter} from "."
+import {Select} from "../select"
+import {Column} from "@tanstack/react-table"
+import {CloseButton} from "../button"
+import {DropdownMenu} from "../dropdown-menu"
+import {CheckboxGroup} from "../checkbox"
+import {RadioGroup} from "../radio-group"
+import {getLocalTimeZone, parseAbsoluteToLocal} from "@internationalized/date"
+import {DateRangePicker} from "../date-time"
+import locales from "./locales.json"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -107,10 +108,10 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
                     }>
                     <DropdownMenu.Group>
                         <DropdownMenu.Item onClick={() => handleUpdate(true)}>
-                            {typeof valueFormatter(true) === "boolean" ? "True" : valueFormatter(true)}
+                            {typeof valueFormatter(true) === "boolean" ? locales["true"][locale] : valueFormatter(true)}
                         </DropdownMenu.Item>
                         <DropdownMenu.Item onClick={() => handleUpdate(false)}>
-                            {typeof valueFormatter(false) === "boolean" ? "False" : valueFormatter(false)}
+                            {typeof valueFormatter(false) === "boolean" ? locales["false"][locale] : valueFormatter(false)}
                         </DropdownMenu.Item>
                     </DropdownMenu.Group>
                 </DropdownMenu>

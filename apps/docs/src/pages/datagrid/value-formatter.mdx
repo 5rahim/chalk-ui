@@ -1,7 +1,7 @@
 import Preview from "../../components/Preview";
-import { PropsTable } from "../../components/table/option-table";
-import { DataGridValueFormattingExample } from "../../components/examples/datagrid-value-formatting-example";
-import { Callout } from "nextra-theme-docs";
+import {PropsTable} from "../../components/table/option-table";
+import {DataGridValueFormattingExample} from "../../components/examples/datagrid-value-formatting-example";
+import {Callout} from "nextra-theme-docs";
 
 ## Value formatter
 
@@ -10,7 +10,8 @@ import { Callout } from "nextra-theme-docs";
 - `withValueFormatter<T, R>((value: T) => R)`
 
 <Callout>
-    The formatting only applies when you use the `getValue` function.
+    - The formatting only applies when you use the `renderValue` function.
+    - `getValue` returns the original value.
 </Callout>
 
 <PropsTable title={"withValueFormatter"} options={[
@@ -21,13 +22,13 @@ import { Callout } from "nextra-theme-docs";
 
 - `visible` is originally of type `boolean`.
 
-```tsx showLineNumbers /getValue/ /withValueFormatter/
+```tsx showLineNumbers /renderValue/ /withValueFormatter/
 const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilterFn, withValueFormatter }) => [
     ...,
     {
         accessorKey: "availability",
         header: "Availability",
-        cell: info => info.getValue(), // Formatted value
+        cell: info => info.renderValue(), // Formatted value
         size: 0,
         filterFn: getFilterFn("checkbox"),
         meta: {
@@ -56,7 +57,7 @@ const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, g
     {
         accessorKey: "visible",
         header: "Visible",
-        cell: info => <Badge intent={info.getValue() === "Visible" ? "success" : "gray"}>{info.getValue<string>()}</Badge>, // Formatted value
+        cell: info => <Badge intent={info.getValue() ? "success" : "gray"}>{info.renderValue<string>()}</Badge>, // Formatted value
         meta: {
             ...withValueFormatter<boolean, string>(value => {
                 return value ? "Visible" : "Hidden"

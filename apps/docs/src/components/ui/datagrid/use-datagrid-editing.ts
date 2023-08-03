@@ -22,7 +22,7 @@ type Props<T> = {
     enableOptimisticUpdates: boolean
     onDataChange: React.Dispatch<React.SetStateAction<T[]>>
     optimisticUpdatePrimaryKey: string | undefined
-    isServerSideMode: boolean
+    manualPagination: boolean
 }
 
 export type DataGridRowEditedEvent<T> = {
@@ -41,7 +41,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
         onDataChange,
         enableOptimisticUpdates,
         optimisticUpdatePrimaryKey,
-        isServerSideMode,
+        manualPagination,
     } = props
 
     const toast = useToast()
@@ -67,7 +67,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
     }, [leafColumns])
 
     useEffect(() => {
-        if (isServerSideMode) {
+        if (manualPagination) {
             setActiveValue(undefined)
             setRowData(undefined)
             setKey(undefined)
@@ -162,7 +162,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
                 startTransition(() => {
 
                     // Compare data
-                    if(!_.isEqual(rowData, row.original)) {
+                    if (!_.isEqual(rowData, row.original)) {
                         // Return new data
                         onRowEdit && onRowEdit({
                             data: rowData,

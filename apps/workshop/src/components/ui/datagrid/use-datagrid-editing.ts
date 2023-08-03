@@ -1,19 +1,19 @@
-import { Row, Table } from "@tanstack/react-table"
-import React, { startTransition, useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react"
+import {Row, Table} from "@tanstack/react-table"
+import React, {startTransition, useCallback, useEffect, useLayoutEffect, useMemo, useState} from "react"
 import _ from "lodash"
-import { DataGridCellInputFieldProps } from "./datagrid-cell-input-field.tsx"
-import { z } from "zod"
-import { useToast } from "../toast"
+import {DataGridEditingValueUpdater} from "./datagrid-cell-input-field.tsx"
+import {AnyZodObject} from "zod"
+import {useToast} from "../toast"
 
 /**
  * DataGrid Prop
  */
-export type DataGridOnRowEdit<T> = (event: DataGridRowEditedEvent<T>) => void
+export type DataGridOnRowEdit<T extends Record<string, any>> = (event: DataGridRowEditedEvent<T>) => void
 
 /**
  * Hook props
  */
-type Props<T> = {
+type Props<T extends Record<string, any>> = {
     data: T[]
     table: Table<T>
     rows: Row<T>[]
@@ -23,10 +23,12 @@ type Props<T> = {
     onDataChange: React.Dispatch<React.SetStateAction<T[]>>
     optimisticUpdatePrimaryKey: string | undefined
     manualPagination: boolean
+    schema: AnyZodObject | undefined
 }
 
-export type DataGridRowEditedEvent<T> = {
-    row: Row<T>,
+export type DataGridRowEditedEvent<T extends Record<string, any>> = {
+    row: Row<T>
+    originalData: T
     data: T
 }
 
@@ -42,22 +44,24 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
         enableOptimisticUpdates,
         optimisticUpdatePrimaryKey,
         manualPagination,
+        schema,
     } = props
 
     const toast = useToast()
 
     const leafColumns = table.getAllLeafColumns()
     // Keep track of the state of each editable cell
-    const [editableCellStates, setEditableCellStates] = useState<{ id: string, colId: string, rowId: string, isEditing: boolean }[]>([])
+    const [editableCellStates, setEditableCellStates] = useState<{
+        id: string,
+        colId: string,
+        rowId: string,
+        isEditing: boolean
+    }[]>([])
 
     // Track updated value
     const [activeValue, setActiveValue] = useState<unknown>(undefined)
     // Track current row data being updated
     const [rowData, setRowData] = useState<T | undefined>(undefined)
-    // Track current key being updated
-    const [key, setKey] = useState<PropertyKey | undefined>(undefined)
-    // Track schema
-    const [schema, setSchema] = useState<z.ZodObject<z.ZodRawShape> | undefined>(undefined)
     // Track current row being updated
     const [row, setRow] = useState<Row<T> | undefined>(undefined)
 
@@ -70,8 +74,8 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
         if (manualPagination) {
             setActiveValue(undefined)
             setRowData(undefined)
-            setKey(undefined)
-            setSchema(undefined)
+            // setKey(undefined)
+            // setSchema(undefined)
             setRow(undefined)
             setEditableCellStates([])
         }
@@ -90,7 +94,12 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
         // Control the states of individual cells that can be edited
         if (editableCells.length > 0) {
             editableCells.map(cell => {
-                setEditableCellStates(prev => [...prev, { id: cell.id, colId: cell.column.id, rowId: cell.row.id, isEditing: false }])
+                setEditableCellStates(prev => [...prev, {
+                    id: cell.id,
+                    colId: cell.column.id,
+                    rowId: cell.row.id,
+                    isEditing: false
+                }])
             })
         }
     }, [editableCells])
@@ -103,13 +112,13 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
             const cell = prev.find(prevCell => prevCell.id === cellId)
 
             if (cell && prev.every(prevCell => !prevCell.isEditing)) { // (Event 1) When we select a cell and nothing else is being edited
-                return [...others, { ...cell, id: cellId, isEditing: true }]
+                return [...others, {...cell, id: cellId, isEditing: true}]
 
             } else if (cell && prev.some(prevCell => prevCell.isEditing)) { // (Event 2) When another cell is being edited
                 const otherCellBeingEdited = prev.find(prevCell => prevCell.isEditing) // Find the cell being edited
 
                 if (otherCellBeingEdited?.rowId === cell?.rowId) { // Only allow cells on the same row to be edited
-                    return [...others, { ...cell, id: cellId, isEditing: true }]
+                    return [...others, {...cell, id: cellId, isEditing: true}]
                 }
             }
             return prev
@@ -135,73 +144,87 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
     /**/
     const cancelEditing = useCallback(() => {
         setEditableCellStates(prev => {
-            return prev.map(n => ({ ...n, isEditing: false }))
+            return prev.map(n => ({...n, isEditing: false}))
         })
     }, [])
 
     const mutationRef = React.useRef<boolean>(false)
 
+    /**
+     * When `isDataMutating` is provided to watch mutations,
+     * Wait for it to be `false` to cancel editing
+     */
     useEffect(() => {
-        if (!isDataMutating && mutationRef.current) {
+        if (isDataMutating !== undefined && !isDataMutating && mutationRef.current) {
             cancelEditing()
             mutationRef.current = false
         }
     }, [isDataMutating])
 
-    const saveEdit = () => {
-        if (schema && rowData && row && key && typeof key === "string") {
+    /**
+     * When `isDataMutating` is not provided, immediately cancel editing
+     */
+    useEffect(() => {
+        if (isDataMutating === undefined) {
+            cancelEditing()
+        }
+    }, [mutationRef.current])
 
-            // Safely parse the schema object
-            const parsed = schema.safeParse(rowData)
+    const saveEdit = async () => {
+        let proceed = false
 
-            if (!parsed.success) {
-                // Show the first error message
-                toast.error(JSON.parse((parsed.error as any).message)?.[0]?.message)
+        // Safely parse the schema object when a `validationSchema` is provided
+        if (schema) {
+            const parsed = await schema.safeParseAsync(rowData)
+            if (parsed.success) {
+                proceed = true
             } else {
+                toast.error(JSON.parse((parsed.error as any).message)?.[0]?.message)
+            }
+        }
 
-                startTransition(() => {
+        if (proceed && row && rowData) {
+            startTransition(() => {
 
-                    // Compare data
-                    if (!_.isEqual(rowData, row.original)) {
-                        // Return new data
-                        onRowEdit && onRowEdit({
-                            data: rowData,
-                            row: row,
+                // Compare data
+                if (!_.isEqual(rowData, row.original)) {
+                    // Return new data
+                    onRowEdit && onRowEdit({
+                        originalData: row.original,
+                        data: rowData,
+                        row: row,
+                    })
+
+                    // Optimistic update
+                    if (enableOptimisticUpdates && optimisticUpdatePrimaryKey) {
+                        let clone = structuredClone(data)
+                        const index = clone.findIndex(p => {
+                            if (!p[optimisticUpdatePrimaryKey] || !rowData[optimisticUpdatePrimaryKey]) return false
+                            return p[optimisticUpdatePrimaryKey] === rowData[optimisticUpdatePrimaryKey]
                         })
-
-                        // Optimistic update
-                        if (enableOptimisticUpdates && optimisticUpdatePrimaryKey) {
-                            let clone = structuredClone(data)
-                            const index = clone.findIndex(p => {
-                                if (!p[optimisticUpdatePrimaryKey] || !rowData[optimisticUpdatePrimaryKey]) return false
-                                return p[optimisticUpdatePrimaryKey] === rowData[optimisticUpdatePrimaryKey]
-                            })
-                            if (clone[index] && index > -1) {
-                                clone[index] = rowData
-                                onDataChange(clone) // Emit optimistic update
-                            } else {
-                                console.error("[DataGrid] Could not perform optimistic update. Make sure `optimisticUpdatePrimaryKey` is a valid property.")
-                            }
-
-                        } else if (enableOptimisticUpdates) {
-                            console.error("[DataGrid] Could not perform optimistic update. Make sure `optimisticUpdatePrimaryKey` is defined.")
-                        }
-
-                        // Immediately stop edit if optimistic updates are enabled
-                        if (enableOptimisticUpdates) {
-                            cancelEditing()
+                        if (clone[index] && index > -1) {
+                            clone[index] = rowData
+                            onDataChange(clone) // Emit optimistic update
                         } else {
-                            // Else, we wait for `isDataMutating` to be false
-                            mutationRef.current = true
+                            console.error("[DataGrid] Could not perform optimistic update. Make sure `optimisticUpdatePrimaryKey` is a valid property.")
                         }
-                    } else {
-                        cancelEditing()
+
+                    } else if (enableOptimisticUpdates) {
+                        console.error("[DataGrid] Could not perform optimistic update. Make sure `optimisticUpdatePrimaryKey` is defined.")
                     }
 
-                })
+                    // Immediately stop edit if optimistic updates are enabled
+                    if (enableOptimisticUpdates) {
+                        cancelEditing()
+                    } else {
+                        // Else, we wait for `isDataMutating` to be false
+                        mutationRef.current = true
+                    }
+                } else {
+                    cancelEditing()
+                }
 
-            }
-
+            })
         }
 
     }
@@ -209,10 +232,10 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
     /**
      * This fires every time the user changes an input
      */
-    const handleUpdateValue = useCallback<DataGridCellInputFieldProps<z.ZodObject<z.ZodRawShape>, T, any>["onValueUpdated"]>((value, _row, cell, schema, key) => {
+    const handleUpdateValue = useCallback<DataGridEditingValueUpdater<T>>((value, _row, cell, zodType) => {
         setActiveValue(value) // Set the updated value (could be anything)
-        setSchema(schema) // Set the schema
-        setKey(key) // Set the key being updated
+        // setSchema(schema) // Set the schema
+        // setKey(key) // Set the key being updated
         setRow(_row) // Set the row being updated
         setRowData({
             // If we are updating a different row, reset the rowData, else keep the past updates

@@ -1,5 +1,15 @@
-import { faker } from "@faker-js/faker"
-import { Product } from "@/components/examples/datagrid-minimal-example"
+import {faker} from "@faker-js/faker"
+
+export type Product = {
+    id: string
+    name: string
+    image: string
+    visible: boolean
+    availability: "in_stock" | "out_of_stock"
+    price: number
+    category: string | null
+    random_date: Date
+}
 
 const range = (len: number) => {
     const arr: any[] = []
@@ -19,7 +29,7 @@ const newProduct = (): Product => {
             "in_stock",
             "out_of_stock",
         ])[0]!,
-        price: faker.number.int({ min: 5, max: 1500 }),
+        price: faker.number.int({min: 5, max: 1500}),
         category: faker.helpers.shuffle<Product["category"]>([
             "Food",
             "Electronics",
@@ -27,6 +37,7 @@ const newProduct = (): Product => {
             null,
             null,
         ])[0]!,
+        random_date: faker.date.anytime(),
     }
 }
 

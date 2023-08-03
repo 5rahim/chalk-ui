@@ -11,14 +11,13 @@ export type DataGridOnRowSelect<T> = (event: DataGridRowSelectedEvent<T>) => voi
  * Hook props
  */
 type Props<T> = {
-    enableServerSideRowSelection: boolean
+    persistent: boolean
     onRowSelect?: DataGridOnRowSelect<T>
     table: Table<T>,
     data: T[] | null
     displayedRows: Row<T>[]
-    isServerSideMode: boolean
     rowSelectionPrimaryKey: string | undefined
-    enableRowSelection: boolean
+    enabled: boolean
 }
 
 /**
@@ -34,14 +33,13 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
         table,
         data,
         onRowSelect,
-        enableServerSideRowSelection,
+        persistent,
         rowSelectionPrimaryKey: key,
         displayedRows,
-        isServerSideMode,
-        enableRowSelection,
+        enabled,
     } = props
 
-    const canSelect = useRef<boolean>(enableRowSelection)
+    const canSelect = useRef<boolean>(enabled)
 
     // Server mode
     const pageIndex = useMemo(() => table.getState().pagination.pageIndex, [table.getState().pagination.pageIndex])
@@ -58,7 +56,7 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
 
     // Warnings
     useEffect(() => {
-        if (enableRowSelection && !key) {
+        if (enabled && !key) {
             console.error("[DataGrid] You've enable row selection without providing a primary key. Make sure to define the `rowSelectionPrimaryKey` prop.")
             canSelect.current = false
         }
@@ -66,7 +64,7 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
 
     const firstCheckRef = useRef<boolean>(false)
     useEffect(() => {
-        if (enableRowSelection && key && !firstCheckRef.current && displayedRows.length > 0 && !displayedRows.some(row => !!row.original[key])) {
+        if (enabled && key && !firstCheckRef.current && displayedRows.length > 0 && !displayedRows.some(row => !!row.original[key])) {
             console.error("[DataGrid] The key provided by `rowSelectionPrimaryKey` does not match any property in the data.")
             firstCheckRef.current = true
             canSelect.current = false
@@ -76,7 +74,7 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
     /** Server-side row selection **/
     useLayoutEffect(() => {
         // When the table is paginated
-        if (displayedRows.length > 0 && enableServerSideRowSelection && !!key && canSelect.current) {
+        if (displayedRows.length > 0 && persistent && !!key && canSelect.current) {
             startTransition(() => {
                 table.resetRowSelection()
                 // Actualize nonexistent rows
@@ -114,7 +112,7 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
 
     /** Client-side row selection **/
     useEffect(() => {
-        if (!isServerSideMode && data && data?.length > 0 && canSelect.current) {
+        if (!persistent && data && data?.length > 0 && canSelect.current) {
             const selectedIndices = Object.keys(rowSelection).map(v => parseInt(v))
 
             if (selectedIndices.length > 0) {
@@ -129,7 +127,7 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
 
     useEffect(() => {
         /** Server-side row selection **/
-        if (isServerSideMode && data && data?.length > 0 && canSelect.current && key) {
+        if (persistent && data && data?.length > 0 && canSelect.current && key) {
             const selectedIndices = Object.keys(rowSelection).map(v => parseInt(v))
 
             if ((+(Object.keys(rowSelection).length) + (nonexistentSelectedRows.length)) > 0) {
@@ -155,7 +153,7 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
 
     return {
         // On client-side row selection, the count is simply what is visibly selection. On server-side row selection, the count is what is visible+nonexistent rows
-        selectedRowCount: (isServerSideMode && enableServerSideRowSelection) ? +(Object.keys(rowSelection).length) + (nonexistentSelectedRows.length) : Object.keys(rowSelection).length,
+        selectedRowCount: persistent ? +(Object.keys(rowSelection).length) + (nonexistentSelectedRows.length) : Object.keys(rowSelection).length,
     }
 
 }

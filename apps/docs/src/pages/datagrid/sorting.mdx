@@ -1,10 +1,10 @@
-import { PropsTable } from "../../components/table/option-table";
-
 ## Sorting
 
 Sorting is automatically handled on a column-to-column basis.
 
 ### Disable sorting
+
+#### Column-level
 
 ```tsx showLineNumbers /enableSorting: false/
 const columns = useMemo(() => createDataGridColumns<Product>(() => [
@@ -26,38 +26,54 @@ const columns = useMemo(() => createDataGridColumns<Product>(() => [
 ]), [])
 ```
 
-### Server-side
+#### Globally
 
-```tsx showLineNumbers {9,16,17}
+```tsx showLineNumbers /enableSorting={false}/
 function Demo() {
-    const serverSideModel = useDataGridServerSideModel({
-        initialState: {
-            rowsPerPage: 5,
-        },
-    })
+    return (
+        <DataGrid<Product>
+            {...data}
+            enableSorting={false}
+        />
+    )
+}
+```
 
-    const { data, totalCount, isLoading } = useFakeQuery({
-        sorting: serverSideModel.sortingModel.columns // eg: [{ id: "price", desc: true }]
+### Server-side/Manual
+
+```tsx showLineNumbers {2,24,26-30}
+function Demo() {
+    const [sorting, setSorting] = useState<SortingState>([])
+
+    const { data, isLoading, isFetching } = useFakeQuery({
+        queryKey: [
+            "table-data",
+            sorting, // Refetch when data changes
+        ],
+        queryFn: async () => {
+            const fetchURL = new URL("/api/data", "http://localhost:3000")
+            fetchURL.searchParams.set("sorting", sorting)
+            const res = await fetch(fetchURL.href)
+            return (await res.json())
+        },
+        keepPreviousData: true,
     })
 
     const columns = useMemo(() => createDataGridColumns<Product>(() => [...]))
 
     return (
         <DataGrid<Product>
-            serverSideModel={serverSideModel}
-            enableServerSideSorting
             columns={columns}
             data={data}
-            rowCount={totalCount}
-            isLoading={isLoading}
+            rowCount={data?.meta?.totalRowCount ?? 0}
+            isLoading={isLoading || isFetching}
+            state={{
+                sorting,
+            }}
+            onSortingChange={setSorting}
+            enableManualSorting
         />
     )
 
 }
 ```
-
-#### Reference
-
-<PropsTable title="sortingModel" options={[
-    ["columns", `Array<{ id: string, desc: boolean }>`, "`id` represents the column key"],
-]}/>

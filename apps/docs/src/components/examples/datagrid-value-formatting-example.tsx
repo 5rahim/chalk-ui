@@ -1,21 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react"
-import { createDataGridColumns, DataGrid } from "@/components/ui/datagrid"
-import { fetchFakeData } from "@/components/examples/datagrid-fake-api"
-import { BiCheck } from "@react-icons/all-files/bi/BiCheck"
-import { BiBasket } from "@react-icons/all-files/bi/BiBasket"
-import { BiLowVision } from "@react-icons/all-files/bi/BiLowVision"
-import { Badge } from "@/components/ui/badge"
-
-
-export type Product = {
-    id: string
-    name: string
-    image: string
-    visible: boolean
-    availability: "in_stock" | "out_of_stock"
-    price: number
-    category: string | null
-}
+import React, {useEffect, useMemo, useState} from "react"
+import {createDataGridColumns, DataGrid} from "@/components/ui/datagrid"
+import {fetchFakeData, Product} from "@/components/examples/datagrid-fake-api"
+import {BiCheck} from "@react-icons/all-files/bi/BiCheck"
+import {BiBasket} from "@react-icons/all-files/bi/BiBasket"
+import {BiLowVision} from "@react-icons/all-files/bi/BiLowVision"
+import {Badge} from "@/components/ui/badge"
 
 export function DataGridValueFormattingExample() {
 
@@ -40,13 +29,13 @@ export function DataGridValueFormattingExample() {
         {
             accessorKey: "price",
             header: () => "Price",
-            cell: info => "$" + Intl.NumberFormat("en-US").format(info.getValue() as number),
+            cell: info => "$" + Intl.NumberFormat("en-US").format(info.getValue<number>()),
             size: 10,
         },
         {
             accessorKey: "availability",
             header: "Availability",
-            cell: info => info.getValue(),
+            cell: info => info.renderValue(),
             size: 20,
             filterFn: getFilterFn("checkbox"),
             meta: {
@@ -75,7 +64,7 @@ export function DataGridValueFormattingExample() {
         {
             accessorKey: "visible",
             header: "Visible",
-            cell: info => <Badge intent={info.getValue() === "Visible" ? "success" : "gray"}>{info.getValue<string>()}</Badge>,
+            cell: info => <Badge intent={info.getValue() ? "success" : "gray"}>{info.renderValue<string>()}</Badge>,
             size: 20,
             filterFn: getFilterFn("boolean"),
             meta: {

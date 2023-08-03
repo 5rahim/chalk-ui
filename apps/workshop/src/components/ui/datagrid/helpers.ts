@@ -1,20 +1,19 @@
-import { BuiltInFilterFn, Column, ColumnDef } from "@tanstack/react-table"
-import { AnyZodObject, z } from "zod"
-import { DataGridCellInputFieldContext } from "./datagrid-cell-input-field"
+import {BuiltInFilterFn, Column, ColumnDef} from "@tanstack/react-table"
+import {AnyZodObject, z, ZodAny, ZodTypeAny} from "zod"
+import {DataGridEditingFieldContext} from "./datagrid-cell-input-field"
 import React from "react"
 
 /* -------------------------------------------------------------------------------------------------
  * Editing
  * -----------------------------------------------------------------------------------------------*/
 
-export type DataGridEditingHelper<Schema extends AnyZodObject, Key extends keyof z.infer<Schema>> = {
-    schema: Schema,
-    key: Key
-    field: (props: DataGridCellInputFieldContext<Schema, Key>) => React.ReactElement,
-    valueFormatter?: (value: z.infer<Schema>[Key]) => z.infer<Schema>[Key]
+export type DataGridEditingHelper<T extends any = unknown, ZodType extends ZodTypeAny = ZodAny> = {
+    zodType?: ZodType
+    field: (props: DataGridEditingFieldContext<ZodType extends ZodAny ? T : z.infer<ZodType>>) => React.ReactElement
+    valueFormatter?: <K = z.infer<ZodType>, R = z.infer<ZodType>>(value: K) => R
 }
 
-function withEditing<Schema extends AnyZodObject, Key extends keyof z.infer<Schema>>(params: DataGridEditingHelper<Schema, Key>) {
+function withEditing<T extends any = unknown, ZodType extends ZodTypeAny = any>(params: DataGridEditingHelper<T, ZodType>) {
     return {
         editingMeta: {
             ...params,
@@ -113,8 +112,8 @@ export type DataGridColumnDefHelpers<T extends Record<string, any>> = {
  * ]), [])
  * @param callback
  */
-export function createDataGridColumns<T extends Record<string, any>>(
-    callback: (helpers: DataGridColumnDefHelpers<T>) => Array<ColumnDef<T>>,
+export function createDataGridColumns<T extends Record<string, any>, Schema extends AnyZodObject = any>(
+    callback: (helpers: DataGridColumnDefHelpers<T>, schema?: Schema) => Array<ColumnDef<T>>,
 ) {
     return callback({
         withFiltering,
@@ -128,7 +127,7 @@ export function createDataGridColumns<T extends Record<string, any>>(
 export function getColumnHelperMeta<T, K extends DataGridHelpers>(column: Column<T>, helper: K) {
     return (column.columnDef.meta as any)?.[helper] as (
         K extends "filteringMeta" ? _DefaultFilteringProps :
-            K extends "editingMeta" ? DataGridEditingHelper<any, any> :
+            K extends "editingMeta" ? DataGridEditingHelper :
                 K extends "valueFormatter" ? ReturnType<typeof withValueFormatter> :
                     never
         ) | undefined

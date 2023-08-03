@@ -1,28 +1,28 @@
 "use client"
 
-import React, { startTransition, useEffect, useState } from "react"
-import { cn, ComponentWithAnatomy, defineStyleAnatomy, UIIcons, useUILocaleConfig } from "../core"
-import { flexRender } from "@tanstack/react-table"
-import { cva } from "class-variance-authority"
-import { TextInput, TextInputProps } from "../text-input"
-import { Select } from "../select"
-import { NumberInput } from "../number-input"
-import { Pagination } from "../pagination"
-import { DataGridFilter } from "./datagrid-filter"
-import { DropdownMenu } from "../dropdown-menu"
-import { Button, IconButton } from "../button"
-import { Tooltip } from "../tooltip"
+import React, {startTransition, useEffect, useState} from "react"
+import {cn, ComponentWithAnatomy, defineStyleAnatomy, UIIcons, useUILocaleConfig} from "../core"
+import {flexRender} from "@tanstack/react-table"
+import {cva} from "class-variance-authority"
+import {TextInput, TextInputProps} from "../text-input"
+import {Select} from "../select"
+import {NumberInput} from "../number-input"
+import {Pagination} from "../pagination"
+import {DataGridFilter} from "./datagrid-filter"
+import {DropdownMenu} from "../dropdown-menu"
+import {Button, IconButton} from "../button"
+import {Tooltip} from "../tooltip"
 import locales from "./locales.json"
-import { useDataGridFiltering } from "./use-datagrid-filtering"
-import { useDataGridResponsiveness } from "./use-datagrid-responsiveness"
-import { useDataGridRowSelection } from "./use-datagrid-row-selection"
-import { useDataGridEditing } from "./use-datagrid-editing"
-import { DataGridCellInputField } from "./datagrid-cell-input-field"
-import { Transition } from "@headlessui/react"
-import { getColumnHelperMeta, getValueFormatter } from "./helpers"
-import { Skeleton } from "../skeleton"
-import { DataGridApi, DataGridRefProps, useDataGrid } from "./datagrid-instance.tsx"
-import { LoadingOverlay } from "../loading-spinner"
+import {useDataGridFiltering} from "./use-datagrid-filtering"
+import {useDataGridResponsiveness} from "./use-datagrid-responsiveness"
+import {useDataGridRowSelection} from "./use-datagrid-row-selection"
+import {useDataGridEditing} from "./use-datagrid-editing"
+import {DataGridCellInputField} from "./datagrid-cell-input-field"
+import {Transition} from "@headlessui/react"
+import {getColumnHelperMeta, getValueFormatter} from "./helpers"
+import {Skeleton} from "../skeleton"
+import {DataGridApi, DataGridInstanceProps, useDataGrid} from "./datagrid-instance.tsx"
+import {LoadingOverlay} from "../loading-spinner"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -110,11 +110,9 @@ export const DataGridAnatomy = defineStyleAnatomy({
  * DataGrid
  * -----------------------------------------------------------------------------------------------*/
 
-export interface DataGridProps<T extends Record<string, any>> extends ComponentWithAnatomy<typeof DataGridAnatomy>, DataGridRefProps<T> {
+export interface DataGridProps<T extends Record<string, any>> extends ComponentWithAnatomy<typeof DataGridAnatomy>, DataGridInstanceProps<T> {
     tableApi?: DataGridApi<T>
 }
-
-// type DataGridPropsOrApi<T extends Record<string, any>, R extends DataGridProps<T>> = "tableApi" extends keyof R ? { tableApi: DataGridApi<T> } & ComponentWithAnatomy<typeof DataGridAnatomy> : T
 
 export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>) {
 
@@ -138,11 +136,9 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         footerPageDisplayContainerClassName,
         footerPaginationInputContainerClassName,
         filterDropdownButtonClassName,
-
         tableApi,
         ...rest
     } = props
-
 
     const {
         table,
@@ -164,14 +160,13 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         enableOptimisticUpdates,
         optimisticUpdatePrimaryKey,
         enableManualPagination,
+        enableGlobalFilter,
+        validationSchema,
     } = (tableApi ?? useDataGrid<T>({ ...rest })) as DataGridApi<T>
 
     const isInLoadingState = isLoading || isDataMutating
-    const canPaginate = true
-    // Responsively hide columns
-    const { tableRef, tableWidth } = useDataGridResponsiveness({ table, hideColumns })
+    const {tableRef} = useDataGridResponsiveness({table, hideColumns})
 
-    // Row selection
     const {
         selectedRowCount,
     } = useDataGridRowSelection({
@@ -184,7 +179,6 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         enabled: enableRowSelection,
     })
 
-    // Filtering
     const {
         getFilterDefaultValue,
         unselectedFilterableColumns,
@@ -195,7 +189,6 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         columnFilters: columnFilters,
     })
 
-    // Editing
     const {
         onCellDoubleClick,
         getIsCellActivelyEditing,
@@ -215,6 +208,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         optimisticUpdatePrimaryKey: optimisticUpdatePrimaryKey,
         manualPagination: enableManualPagination,
         onDataChange: setData,
+        schema: validationSchema,
     })
 
 
@@ -224,15 +218,21 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
 
                 <div className={cn(DataGridAnatomy.toolbar(), toolbarClassName)}>
                     {/* Search Box */}
-                    <DataGridSearchInput value={globalFilter ?? ""} onChange={value => handleGlobalFilterChange(String(value))}/>
+                    {enableGlobalFilter && (
+                        <DataGridSearchInput value={globalFilter ?? ""}
+                                             onChange={value => handleGlobalFilterChange(String(value))}/>
+                    )}
                     {/* Filter dropdown */}
                     {(unselectedFilterableColumns.length > 0) && (
                         <DropdownMenu
                             trigger={
-                                <button className={cn(DataGridAnatomy.filterDropdownButton(), filterDropdownButtonClassName)}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                <button
+                                    className={cn(DataGridAnatomy.filterDropdownButton(), filterDropdownButtonClassName)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none"
                                          stroke="currentColor"
-                                         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                                         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                         className="w-4 h-4">
                                         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
                                     </svg>
                                     <span>{locales["filters"][lng]} ({unselectedFilterableColumns.length})</span>
@@ -501,23 +501,23 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                         direction={"left"}
                         isChevrons
                         onClick={() => table.setPageIndex(0)}
-                        isDisabled={!table.getCanPreviousPage() || isInLoadingState || !canPaginate}
+                        isDisabled={!table.getCanPreviousPage() || isInLoadingState}
                     />
                     <Pagination.Trigger
                         direction={"left"}
                         onClick={() => table.previousPage()}
-                        isDisabled={!table.getCanPreviousPage() || isInLoadingState || !canPaginate}
+                        isDisabled={!table.getCanPreviousPage() || isInLoadingState}
                     />
                     <Pagination.Trigger
                         direction={"right"}
                         onClick={() => table.nextPage()}
-                        isDisabled={!table.getCanNextPage() || isInLoadingState || !canPaginate}
+                        isDisabled={!table.getCanNextPage() || isInLoadingState}
                     />
                     <Pagination.Trigger
                         direction={"right"}
                         isChevrons
                         onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                        isDisabled={!table.getCanNextPage() || isInLoadingState || !canPaginate}
+                        isDisabled={!table.getCanNextPage() || isInLoadingState}
                     />
                 </Pagination>
 
@@ -537,11 +537,12 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                         discrete
                         value={table.getState().pagination.pageIndex + 1}
                         min={1}
-                        max={table.getPageCount()}
                         onChange={v => {
                             const page = v ? v - 1 : 0
                             startTransition(() => {
-                                table.setPageIndex(page)
+                                if (v <= table.getPageCount()) {
+                                    table.setPageIndex(page)
+                                }
                             })
                         }}
                         className={"inline-flex flex-none items-center w-[3rem]"}
@@ -606,7 +607,8 @@ function DataGridSearchInput(props: DataGridSearchInputProps & TextInputProps) {
             value={value}
             onChange={e => setValue(e.target.value)}
             leftIcon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-[--muted]">
+                           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                           className="w-5 h-5 text-[--muted]">
                 <circle cx="11" cy="11" r="8"/>
                 <path d="m21 21-4.3-4.3"/>
             </svg>}
@@ -614,4 +616,30 @@ function DataGridSearchInput(props: DataGridSearchInputProps & TextInputProps) {
             fieldClassName={"md:max-w-[15rem]"}
         />
     )
+}
+
+/* -------------------------------------------------------------------------------------------------
+ * DataGridWithApi
+ * -----------------------------------------------------------------------------------------------*/
+
+export interface DataGridWithApiProps<T extends Record<string, any>> extends ComponentWithAnatomy<typeof DataGridAnatomy> {
+    api: DataGridApi<T>
+}
+
+export function DataGridWithApi<T extends Record<string, any>>(props: DataGridWithApiProps<T>) {
+
+    const {
+        api,
+        ...rest
+    } = props
+
+    const {
+        data,
+        rowCount,
+        columns,
+        ...apiRest
+    } = api
+
+    return <DataGrid data={data} rowCount={rowCount} columns={columns} tableApi={api} {...rest} />
+
 }

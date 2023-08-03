@@ -1,7 +1,7 @@
 import Preview from "../../components/Preview";
-import { PropsTable } from "../../components/table/option-table";
-import { DataGridClientFilteringExample } from "../../components/examples/datagrid-client-filtering-example";
-import { Tab, Tabs } from "nextra/components";
+import {PropsTable} from "../../components/table/option-table";
+import {DataGridClientFilteringExample} from "../../components/examples/datagrid-client-filtering-example";
+import {Tab, Tabs} from "nextra/components";
 
 ## Filtering
 
@@ -24,7 +24,20 @@ Enable filtering on specific columns using the `withFiltering` and `getFilterFn`
     </Tab>
 </Tabs>
 
+### Filter types
+
+These are the pre-built filters
+
+- select
+- radio
+- checkbox
+- boolean
+- date-range
+- number 🏗️
+
 ### Client-side
+
+#### Example
 
 <Preview contentClassName={"max-w-full"}>
     <DataGridClientFilteringExample/>
@@ -110,43 +123,66 @@ export function Demo() {
 }
 ```
 
-### Server-side
+### Disable filtering
+
+```tsx showLineNumbers /enableColumnFilters={false}/ /enableGlobalFilter={false}/
+function Demo() {
+    return (
+        <DataGrid<Product>
+            {...data}
+            enableColumnFilters={false}
+            enableGlobalFilter={false}
+        />
+    )
+}
+```
+
+### Server-side/Manual
 
 When you have a lot of data that needs to be filtered on the server, instead of client-side,
 you will want to set the `enableServerSideFiltering` to `true` and manage the server-side model.
 
-```tsx showLineNumbers {9,10,17,18,21}
-function Demo() {
-    const serverSideModel = useDataGridServerSideModel({
-        initialState: {
-            rowsPerPage: 5,
-        },
-    })
+```tsx showLineNumbers {5-6,30,32-38}
+import { createDataGridColumns, DataGrid } from "@/components/ui/datagrid"
+import { ColumnFiltersState } from "@tanstack/react-table"
 
-    const { data, totalCount, isLoading } = useFakeQuery({
-        globalFilter: serverSideModel.filteringModel.globalFilterValue, // eg: "blue"
-        filters: serverSideModel.filteringModel.filters // eg: [{ id: "availability", value: "out_of_stock" }]
+function Demo() {
+    const [globalFilter, setGlobalFilter] = useState<string>("")
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+
+    const { data, isLoading, isFetching } = useFakeQuery({
+        queryKey: [
+            "table-data",
+            globalFilter, // Refetch when data changes
+            columnFilters, // Refetch when data changes
+        ],
+        queryFn: async () => {
+            const fetchURL = new URL("/api/data", "http://localhost:3000")
+            fetchURL.searchParams.set("search", globalFilter)
+            fetchURL.searchParams.set("filters", JSON.stringify(columnFilters))
+            const res = await fetch(fetchURL.href)
+            return (await res.json())
+        },
+        keepPreviousData: true,
     })
 
     const columns = useMemo(() => createDataGridColumns<Product>(() => [...]))
 
     return (
         <DataGrid<Product>
-            serverSideModel={serverSideModel}
-            enableServerSideFiltering
-            columns={columns}
             data={data}
-            rowCount={serverSideModel.isFiltering ? (data?.length ?? 0) : totalCount}
-            isLoading={isLoading}
+            columns={columns}
+            rowCount={data?.meta?.totalRowCount ?? 0}
+            isLoading={isLoading || isFetching}
+            state={{
+                globalFilter,
+                columnFilters,
+            }}
+            onGlobalFilterChange={setGlobalFilter}
+            onColumnFiltersChange={setColumnFilters}
+            enableManualFiltering
         />
     )
 
 }
 ```
-
-#### Reference
-
-<PropsTable title="filteringModel" options={[
-    ["globalFilterValue", `string`],
-    ["filters", `Array<{ id: string, value: unknown }>`, "`id` represents the column key"],
-]}/>

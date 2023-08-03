@@ -1,16 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react"
-import { createDataGridColumns, DataGrid } from "@/components/ui/datagrid"
-import { fetchFakeData } from "@/components/examples/datagrid-fake-api"
-
-export type Product = {
-    id: string
-    name: string
-    image: string
-    visible: boolean
-    availability: "in_stock" | "out_of_stock"
-    price: number
-    category: string | null
-}
+import React, {useEffect, useMemo, useState} from "react"
+import {createDataGridColumns, DataGrid} from "@/components/ui/datagrid"
+import {fetchFakeData, Product} from "@/components/examples/datagrid-fake-api"
 
 export function DataGridMinimalExample() {
 

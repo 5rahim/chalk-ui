@@ -1,19 +1,19 @@
-import React, { startTransition, useCallback, useEffect, useMemo, useState } from "react"
-import { faker } from "@faker-js/faker"
-import { createDataGridColumns, DataGrid } from "./ui/datagrid"
-import { Badge } from "./ui/badge"
-import { DropdownMenu } from "./ui/dropdown-menu"
-import { IconButton } from "./ui/button"
-import { BiDotsHorizontal } from "@react-icons/all-files/bi/BiDotsHorizontal"
-import { BiFolder } from "@react-icons/all-files/bi/BiFolder"
-import { BiLowVision } from "@react-icons/all-files/bi/BiLowVision"
-import { BiBasket } from "@react-icons/all-files/bi/BiBasket"
-import { BiCheck } from "@react-icons/all-files/bi/BiCheck"
-import { BiEditAlt } from "@react-icons/all-files/bi/BiEditAlt"
-import { createTypesafeFormSchema } from "./ui/typesafe-form"
-import { BiCalendar } from "@react-icons/all-files/bi/BiCalendar"
-import { TextInput } from "./ui/text-input"
-import { ColumnFiltersState, ColumnSort, PaginationState, SortingState } from "@tanstack/react-table"
+import React, {startTransition, useCallback, useEffect, useMemo, useState} from "react"
+import {faker} from "@faker-js/faker"
+import {createDataGridColumns, DataGrid} from "./ui/datagrid"
+import {Badge} from "./ui/badge"
+import {DropdownMenu} from "./ui/dropdown-menu"
+import {IconButton} from "./ui/button"
+import {BiDotsHorizontal} from "@react-icons/all-files/bi/BiDotsHorizontal"
+import {BiFolder} from "@react-icons/all-files/bi/BiFolder"
+import {BiLowVision} from "@react-icons/all-files/bi/BiLowVision"
+import {BiBasket} from "@react-icons/all-files/bi/BiBasket"
+import {BiCheck} from "@react-icons/all-files/bi/BiCheck"
+import {BiEditAlt} from "@react-icons/all-files/bi/BiEditAlt"
+import {createTypesafeFormSchema} from "./ui/typesafe-form"
+import {BiCalendar} from "@react-icons/all-files/bi/BiCalendar"
+import {TextInput} from "./ui/text-input"
+import {ColumnFiltersState, ColumnSort, PaginationState, SortingState} from "@tanstack/react-table"
 import _ from "lodash"
 
 interface DataGridServerSideTestProps {
@@ -203,7 +203,7 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
     const [globalFilter, setGlobalFilter] = useState<string>("")
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-    const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 5, pageSize: 5 })
+    const [pagination, setPagination] = useState<PaginationState>({pageIndex: 0, pageSize: 5})
 
     const { data, totalCount, isLoading } = useFakeQuery({
         sorting: sorting,
@@ -328,7 +328,8 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
             cell: ({ row }) => {
                 return (
                     <div className="flex justify-end w-full">
-                        <DropdownMenu trigger={<IconButton icon={<BiDotsHorizontal/>} intent={"gray-basic"} size={"sm"}/>}>
+                        <DropdownMenu
+                            trigger={<IconButton icon={<BiDotsHorizontal/>} intent={"gray-basic"} size={"sm"}/>}>
                             <DropdownMenu.Item><BiEditAlt/> Edit</DropdownMenu.Item>
                         </DropdownMenu>
                     </div>
@@ -337,6 +338,9 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
         },
     ]), [])
 
+    const rowCount = useMemo(() => {
+        return (globalFilter.length > 0 || columnFilters.length > 0) ? (totalCount) : _data.length
+    }, [globalFilter, columnFilters, data])
 
     return (
         <>

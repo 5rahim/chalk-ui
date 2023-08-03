@@ -1,0 +1,88 @@
+import Preview from "../../components/Preview";
+import {DataGridEditingExample} from "../../components/examples/datagrid-editing-example";
+
+## Editing
+
+### Requirements
+
+- You need to have a `ToastProvider` at the root of your project. [Learn more](https://chalk-storybook.rahim.app/?path=/docs/components-overlays-toast--readme).
+
+### Making a column editable
+
+- `withEditing` is a helper that makes a column's cells editable.
+- Only one row can be editable at a time.
+- The helper takes **zod** schema and a key as parameter in order to validate the entire row data when saving.
+- You must provide an `onRowEdit` callback function prop where you will get access to the updated row data so that changes can be processed and saved. It is up to you how you handle the data.
+
+<Preview contentClassName={"max-w-full"}>
+    <DataGridEditingExample/>
+</Preview>
+
+```tsx showLineNumbers {}
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { createDataGridColumns, DataGrid } from "@/components/ui/datagrid"
+import { createTypesafeFormSchema } from "@/components/ui/typesafe-form"
+import { fetchFakeData, Product } from "@/components/examples/datagrid-fake-api"
+import { TextInput } from "@/components/ui/text-input"
+
+const schema = createTypesafeFormSchema(({ z }) => z.object({
+    name: z.string().min(3),
+    price: z.number().min(3),
+    category: z.string().nullable(),
+    availability: z.string(),
+    visible: z.boolean(),
+    random_date: z.date(),
+}))
+
+export function DataGridEditingExample() {
+
+    const { data, isLoading, refetch } = useFakeQuery({
+        ...queryOptions,
+        keepPreviousData: true,
+    })
+
+    const { mutate, isLoading: isMutating } = useFakeMutation({
+        ...mutationOptions,
+        onSuccess: data => {
+            if (data) {
+                refetch() // Refetch table data
+            }
+        },
+    })
+
+    const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilterFn, withValueFormatter, withEditing }) => [
+        {
+            accessorKey: "name",
+            header: "Name",
+            cell: info => info.getValue(),
+            size: 40,
+            meta: {
+                ...withEditing({
+                    schema: schema,
+                    key: "name",
+                    field: (ctx) => (
+                        <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"}/>
+                    ),
+                }),
+            }
+        },
+        ...
+    ]), [])
+
+    return (
+        <DataGrid<Product>
+            columns={columns}
+            data={data}
+            rowCount={data?.meta?.totalRowCount ?? 0}
+            isLoading={isLoading}
+            isDataMutating={isMutating}
+            onRowEdit={event => {
+                mutate(event.data)
+            }}
+        />
+    )
+
+}
+```
+
+### Editing event

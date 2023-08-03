@@ -1,28 +1,28 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { faker } from "@faker-js/faker"
-import { createDataGridColumns, DataGrid } from "./ui/datagrid"
-import { Badge } from "./ui/badge"
-import { DropdownMenu } from "./ui/dropdown-menu"
-import { IconButton } from "./ui/button"
-import { BiDotsHorizontal } from "@react-icons/all-files/bi/BiDotsHorizontal"
-import { BiFolder } from "@react-icons/all-files/bi/BiFolder"
-import { BiLowVision } from "@react-icons/all-files/bi/BiLowVision"
-import { BiBasket } from "@react-icons/all-files/bi/BiBasket"
-import { BiCheck } from "@react-icons/all-files/bi/BiCheck"
-import { BiEditAlt } from "@react-icons/all-files/bi/BiEditAlt"
-import { createTypesafeFormSchema } from "./ui/typesafe-form"
-import { TextInput } from "./ui/text-input"
-import { NumberInput } from "./ui/number-input"
-import { Select } from "./ui/select"
-import { DatePicker } from "./ui/date-time"
-import { getLocalTimeZone, parseAbsoluteToLocal } from "@internationalized/date"
-import { BiCalendar } from "@react-icons/all-files/bi/BiCalendar"
+import React, {useCallback, useEffect, useMemo, useState} from "react"
+import {faker} from "@faker-js/faker"
+import {createDataGridColumns, DataGrid} from "./ui/datagrid"
+import {Badge} from "./ui/badge"
+import {DropdownMenu} from "./ui/dropdown-menu"
+import {IconButton} from "./ui/button"
+import {BiDotsHorizontal} from "@react-icons/all-files/bi/BiDotsHorizontal"
+import {BiFolder} from "@react-icons/all-files/bi/BiFolder"
+import {BiLowVision} from "@react-icons/all-files/bi/BiLowVision"
+import {BiBasket} from "@react-icons/all-files/bi/BiBasket"
+import {BiCheck} from "@react-icons/all-files/bi/BiCheck"
+import {BiEditAlt} from "@react-icons/all-files/bi/BiEditAlt"
+import {createTypesafeFormSchema} from "./ui/typesafe-form"
+import {TextInput} from "./ui/text-input"
+import {NumberInput} from "./ui/number-input"
+import {Select} from "./ui/select"
+import {DatePicker} from "./ui/date-time"
+import {getLocalTimeZone, parseAbsoluteToLocal} from "@internationalized/date"
+import {BiCalendar} from "@react-icons/all-files/bi/BiCalendar"
 
 interface DataGridEditingTestProps {
     children?: React.ReactNode
 }
 
-const schema = createTypesafeFormSchema(({ z }) => z.object({
+const schema = createTypesafeFormSchema(({z}) => z.object({
     name: z.string().min(3),
     price: z.number().min(3),
     category: z.string().nullable(),
@@ -54,13 +54,13 @@ const newProduct = (): Product => {
     return {
         id: crypto.randomUUID(),
         name: faker.commerce.productName(),
-        image: faker.image.urlLoremFlickr({ category: "food" }),
+        image: faker.image.urlLoremFlickr({category: "food"}),
         visible: faker.datatype.boolean(),
         availability: faker.helpers.shuffle<Product["availability"]>([
             "in_stock",
             "out_of_stock",
         ])[0]!,
-        price: faker.number.int({ min: 5, max: 1500 }),
+        price: faker.number.int({min: 5, max: 1500}),
         category: faker.helpers.shuffle<Product["category"]>([
             "Food",
             "Electronics",
@@ -109,7 +109,7 @@ export async function fakeMutation(object: Product) {
 }
 
 export function useFakeMutation(
-    { onSuccess }: { onSuccess: (data: Product[] | undefined) => void },
+    {onSuccess}: { onSuccess: (data: Product[] | undefined) => void },
 ) {
     const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState<Product[] | undefined>(undefined)
@@ -135,10 +135,10 @@ export function useFakeMutation(
 
 export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) => {
 
-    const { children, ...rest } = props
+    const {children, ...rest} = props
 
     const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
-    const { mutate, isLoading: isMutating } = useFakeMutation({
+    const {mutate, isLoading: isMutating} = useFakeMutation({
         onSuccess: data => {
             if (data) {
                 setClientData(data)
@@ -155,15 +155,24 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
         fetch()
     }, [])
 
-    const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilterFn, withEditing, withValueFormatter }) => [
+    useEffect(() => {
+        console.log(isMutating)
+    }, [isMutating])
+
+    const columns = useMemo(() => createDataGridColumns<Product>((
+        {
+            withFiltering,
+            getFilterFn,
+            withEditing,
+            withValueFormatter
+        }) => [
         {
             accessorKey: "name",
             header: "Name",
             size: 40,
             meta: {
                 ...withEditing({
-                    schema: schema,
-                    key: "name",
+                    zodType: schema.shape.name,
                     field: (ctx) => (
                         <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"}/>
                     ),
@@ -177,8 +186,7 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
             size: 10,
             meta: {
                 ...withEditing({
-                    schema: schema,
-                    key: "price",
+                    zodType: schema.shape.price,
                     field: (ctx) => (
                         <NumberInput {...ctx} step={1} discrete maxFractionDigits={0} intent={"unstyled"}/>
                     ),
@@ -195,18 +203,20 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                 ...withFiltering({
                     name: "Category",
                     type: "radio",
-                    options: [{ value: "Electronics" }, { value: "Food" }, { value: "Drink" }],
+                    options: [{value: "Electronics"}, {value: "Food"}, {value: "Drink"}],
                     icon: <BiFolder/>,
                 }),
                 ...withEditing({
-                    schema: schema,
-                    key: "category",
+                    zodType: schema.shape.category,
                     field: (ctx) => (
                         <Select
                             {...ctx}
                             value={ctx.value ?? ""}
                             onChange={e => ctx.onChange(e.target.value.length > 0 ? e.target.value : null)}
-                            options={[{ value: "", label: "No category" }, { value: "Electronics" }, { value: "Food" }, { value: "Drink" }]}
+                            options={[{
+                                value: "",
+                                label: "No category"
+                            }, {value: "Electronics"}, {value: "Food"}, {value: "Drink"}]}
                             intent={"unstyled"}
                         />
                     ),
@@ -232,11 +242,13 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                     options: [
                         {
                             value: "out_of_stock",
-                            label: <span className={"flex items-center gap-2"}><BiBasket className={"text-red-500"}/><span>Out of stock</span></span>,
+                            label: <span className={"flex items-center gap-2"}><BiBasket
+                                className={"text-red-500"}/><span>Out of stock</span></span>,
                         },
                         {
                             value: "in_stock",
-                            label: <span className={"flex items-center gap-2"}><BiBasket className={"text-green-500"}/><span>In stock</span></span>,
+                            label: <span className={"flex items-center gap-2"}><BiBasket
+                                className={"text-green-500"}/><span>In stock</span></span>,
                         },
                     ],
                     valueFormatter: (value) => {
@@ -246,14 +258,16 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                     },
                 }),
                 ...withEditing({
-                    schema: schema,
-                    key: "availability",
+                    zodType: schema.shape.availability,
                     field: (ctx) => (
                         <Select
                             {...ctx}
                             value={ctx.value ?? ""}
                             onChange={e => ctx.onChange(e.target.value)}
-                            options={[{ value: "in_stock", label: "In stock" }, { value: "out_of_stock", label: "Out of stock" }]}
+                            options={[{value: "in_stock", label: "In stock"}, {
+                                value: "out_of_stock",
+                                label: "Out of stock"
+                            }]}
                             intent={"unstyled"}
                         />
                     ),
@@ -276,14 +290,13 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                     icon: <BiLowVision/>,
                 }),
                 ...withEditing({
-                    schema: schema,
-                    key: "visible",
+                    zodType: schema.shape.visible,
                     field: (ctx) => (
                         <Select
                             {...ctx}
                             value={ctx.value ? "visible" : "hidden"}
                             onChange={e => ctx.onChange(e.target.value === "visible")}
-                            options={[{ value: "visible", label: "Visible" }, { value: "hidden", label: "Hidden" }]}
+                            options={[{value: "visible", label: "Visible"}, {value: "hidden", label: "Hidden"}]}
                             intent={"unstyled"}
                         />
                     ),
@@ -303,8 +316,7 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                     name: "Date",
                 }),
                 ...withEditing({
-                    schema: schema,
-                    key: "random_date",
+                    zodType: schema.shape.random_date,
                     field: (ctx) => {
                         return (
                             <DatePicker
@@ -314,6 +326,7 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                                 locale={"us"}
                                 hideTimeZone
                                 granularity={"day"}
+                                ref={ctx.ref}
                             />
                         )
                     },
@@ -325,10 +338,11 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
             size: 10,
             enableSorting: false,
             enableGlobalFilter: false,
-            cell: ({ row }) => {
+            cell: ({row}) => {
                 return (
                     <div className="flex justify-end w-full">
-                        <DropdownMenu trigger={<IconButton icon={<BiDotsHorizontal/>} intent={"gray-basic"} size={"sm"}/>}>
+                        <DropdownMenu
+                            trigger={<IconButton icon={<BiDotsHorizontal/>} intent={"gray-basic"} size={"sm"}/>}>
                             <DropdownMenu.Item><BiEditAlt/> Edit</DropdownMenu.Item>
                         </DropdownMenu>
                     </div>
@@ -338,25 +352,25 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
     ]), [])
 
     return (
-        <>
-            <DataGrid<Product>
-                columns={columns}
-                data={clientData}
-                rowCount={_data.length}
-                isLoading={!clientData}
-                enableRowSelection
-                rowSelectionPrimaryKey={"id"}
-                onRowSelect={data => {
-                    console.log("selection", data)
-                }}
-                isDataMutating={isMutating}
-                enableOptimisticUpdates
-                optimisticUpdatePrimaryKey={"id"}
-                onRowEdit={data => {
-                    console.log("editing", data)
-                }}
-            />
-        </>
+        <DataGrid<Product>
+            columns={columns}
+            data={clientData}
+            rowCount={_data.length}
+            isLoading={!clientData}
+            enableRowSelection
+            rowSelectionPrimaryKey={"id"}
+            onRowSelect={event => {
+                console.log("selection", event)
+            }}
+            // isDataMutating={isMutating}
+            // enableOptimisticUpdates
+            // optimisticUpdatePrimaryKey={"id"}
+            onRowEdit={event => {
+                console.log("editing", event)
+                mutate(event.data)
+            }}
+            validationSchema={schema}
+        />
     )
 
 }
