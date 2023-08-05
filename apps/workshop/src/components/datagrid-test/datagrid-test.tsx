@@ -1,60 +1,21 @@
 import React, {useEffect, useMemo, useState} from "react"
-import {faker} from "@faker-js/faker"
-import {createDataGridColumns, DataGrid, DataGridProps} from "./ui/datagrid"
-import {Badge} from "./ui/badge"
-import {DropdownMenu} from "./ui/dropdown-menu"
-import {IconButton} from "./ui/button"
+import {createDataGridColumns, DataGrid, DataGridProps} from "../ui/datagrid"
+import {Badge} from "../ui/badge"
+import {DropdownMenu} from "../ui/dropdown-menu"
+import {IconButton} from "../ui/button"
 import {BiDotsHorizontal} from "@react-icons/all-files/bi/BiDotsHorizontal"
 import {BiFolder} from "@react-icons/all-files/bi/BiFolder"
 import {BiLowVision} from "@react-icons/all-files/bi/BiLowVision"
 import {BiBasket} from "@react-icons/all-files/bi/BiBasket"
 import {BiCheck} from "@react-icons/all-files/bi/BiCheck"
 import {BiEditAlt} from "@react-icons/all-files/bi/BiEditAlt"
+import {newProduct, Product, range} from "./datagrid-fake-api.ts";
 
 interface DataGridTestProps {
     tableProps?: Partial<DataGridProps<any>>
 }
 
-type Product = {
-    id: string
-    name: string
-    image: string
-    visible: boolean
-    availability: "in_stock" | "out_of_stock"
-    price: number
-    category: string | null
-}
-
-const range = (len: number) => {
-    const arr: any[] = []
-    for (let i = 0; i < len; i++) {
-        arr.push(i)
-    }
-    return arr
-}
-
-const newProduct = (): Product => {
-    return {
-        id: crypto.randomUUID(),
-        name: faker.commerce.productName(),
-        image: faker.image.urlLoremFlickr({ category: "food" }),
-        visible: faker.datatype.boolean(),
-        availability: faker.helpers.shuffle<Product["availability"]>([
-            "in_stock",
-            "out_of_stock",
-        ])[0]!,
-        price: faker.number.int({ min: 5, max: 1500 }),
-        category: faker.helpers.shuffle<Product["category"]>([
-            "Food",
-            "Electronics",
-            "Drink",
-            null,
-            null,
-        ])[0]!,
-    }
-}
-
-export function makeData(...lens: number[]) {
+function makeData(...lens: number[]) {
     const makeDataLevel = (depth = 0): Product[] => {
         const len = lens[depth]!
         return range(len).map((d): Product => {
@@ -78,9 +39,9 @@ export async function fetchData() {
 }
 
 
-export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
+export const DatagridTest: React.FC<DataGridTestProps> = (props) => {
 
-    const { tableProps } = props
+    const {tableProps} = props
 
     const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
 
@@ -93,7 +54,7 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         fetch()
     }, [])
 
-    const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilterFn, withValueFormatter }) => [
+    const columns = useMemo(() => createDataGridColumns<Product>(({withFiltering, getFilterFn, withValueFormatter}) => [
         {
             accessorKey: "name",
             header: "Name",
@@ -121,7 +82,7 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                 ...withFiltering({
                     name: "Category",
                     type: "radio",
-                    options: [{ value: "Electronics" }, { value: "Food" }],
+                    options: [{value: "Electronics"}, {value: "Food"}],
                     icon: <BiFolder/>,
                 }),
             },
@@ -145,11 +106,13 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
                     options: [
                         {
                             value: "out_of_stock",
-                            label: <span className={"flex items-center gap-2"}><BiBasket className={"text-red-500"}/><span>Out of stock</span></span>,
+                            label: <span className={"flex items-center gap-2"}><BiBasket
+                                className={"text-red-500"}/><span>Out of stock</span></span>,
                         },
                         {
                             value: "in_stock",
-                            label: <span className={"flex items-center gap-2"}><BiBasket className={"text-green-500"}/><span>In stock</span></span>,
+                            label: <span className={"flex items-center gap-2"}><BiBasket
+                                className={"text-green-500"}/><span>In stock</span></span>,
                         },
                     ],
                 }),
@@ -158,7 +121,8 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
         {
             accessorKey: "visible",
             header: "Visible",
-            cell: info => <Badge intent={info.getValue<boolean>() ? "success" : "gray"}>{info.renderValue<string>()}</Badge>,
+            cell: info => <Badge
+                intent={info.getValue<boolean>() ? "success" : "gray"}>{info.renderValue<string>()}</Badge>,
             size: 0,
             filterFn: getFilterFn("boolean"),
             meta: {
@@ -180,10 +144,11 @@ export const DataGridTest: React.FC<DataGridTestProps> = (props) => {
             size: 10,
             enableSorting: false,
             enableGlobalFilter: false,
-            cell: ({ row }) => {
+            cell: ({row}) => {
                 return (
                     <div className="flex justify-end w-full">
-                        <DropdownMenu trigger={<IconButton icon={<BiDotsHorizontal/>} intent={"gray-basic"} size={"sm"}/>}>
+                        <DropdownMenu
+                            trigger={<IconButton icon={<BiDotsHorizontal/>} intent={"gray-basic"} size={"sm"}/>}>
                             <DropdownMenu.Item><BiEditAlt/> Edit</DropdownMenu.Item>
                         </DropdownMenu>
                     </div>

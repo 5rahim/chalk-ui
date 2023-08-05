@@ -1,14 +1,35 @@
 import {Row, Table} from "@tanstack/react-table"
 import React, {startTransition, useCallback, useEffect, useLayoutEffect, useMemo, useState} from "react"
 import _ from "lodash"
-import {DataGridEditingValueUpdater} from "./datagrid-cell-input-field.tsx"
-import {AnyZodObject} from "zod"
+import {DataGridEditingValueUpdater} from "./datagrid-cell-input-field"
+import {AnyZodObject, ZodIssue} from "zod"
 import {useToast} from "../toast"
 
 /**
- * DataGrid Prop
+ * DataGrid Props
  */
+export type DataGridRowEditedEvent<T extends Record<string, any>> = {
+    row: Row<T>
+    originalData: T
+    data: T
+}
+
 export type DataGridOnRowEdit<T extends Record<string, any>> = (event: DataGridRowEditedEvent<T>) => void
+
+//----
+
+export type DataGridRowValidationError<T extends Record<string, any>> = {
+    row: Row<T>
+    originalData: T
+    data: T
+    errors: ZodIssue[]
+}
+
+export type DataGridOnRowValidationError<T extends Record<string, any>> = (event: DataGridRowValidationError<T>) => void
+
+//----
+
+export type DataGridValidationRowErrors = Array<{ rowId: string, key: string, message: string }>
 
 /**
  * Hook props
@@ -24,12 +45,7 @@ type Props<T extends Record<string, any>> = {
     optimisticUpdatePrimaryKey: string | undefined
     manualPagination: boolean
     schema: AnyZodObject | undefined
-}
-
-export type DataGridRowEditedEvent<T extends Record<string, any>> = {
-    row: Row<T>
-    originalData: T
-    data: T
+    onRowValidationError: DataGridOnRowValidationError<T> | undefined
 }
 
 export function useDataGridEditing<T extends Record<string, any>>(props: Props<T>) {
@@ -45,6 +61,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
         optimisticUpdatePrimaryKey,
         manualPagination,
         schema,
+        onRowValidationError,
     } = props
 
     const toast = useToast()
@@ -65,6 +82,8 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
     // Track current row being updated
     const [row, setRow] = useState<Row<T> | undefined>(undefined)
 
+    const [rowErrors, setRowErrors] = useState<DataGridValidationRowErrors>([])
+
     // Keep track of editable columns (columns defined with the `withEditing` helper)
     const editableColumns = useMemo(() => {
         return leafColumns.filter(n => n.getIsVisible() && !!(n.columnDef.meta as any)?.editingMeta)
@@ -74,8 +93,6 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
         if (manualPagination) {
             setActiveValue(undefined)
             setRowData(undefined)
-            // setKey(undefined)
-            // setSchema(undefined)
             setRow(undefined)
             setEditableCellStates([])
         }
@@ -170,7 +187,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
         }
     }, [mutationRef.current])
 
-    const saveEdit = useCallback(() => {
+    const saveEdit = useCallback((transformedData?: T) => {
         if (!row || !rowData) return
 
         startTransition(() => {
@@ -179,7 +196,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
                 // Return new data
                 onRowEdit && onRowEdit({
                     originalData: row.original,
-                    data: rowData,
+                    data: transformedData || rowData,
                     row: row,
                 })
 
@@ -217,15 +234,37 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
 
     const handleOnSave = useCallback(async () => {
         if (!row || !rowData) return
+        setRowErrors([])
 
         // Safely parse the schema object when a `validationSchema` is provided
         if (schema) {
             try {
                 const parsed = await schema.safeParseAsync(rowData)
                 if (parsed.success) {
-                    saveEdit()
+                    let finalData = structuredClone(rowData)
+                    Object.keys(parsed.data).map(key => {
+                        // @ts-ignore
+                        finalData[key] = parsed.data[key]
+                    })
+                    saveEdit(finalData)
                 } else {
-                    toast.error(JSON.parse((parsed.error as any).message)?.[0]?.message)
+
+                    parsed.error.errors.map(error => {
+                        toast.error(error.message ?? "Error")
+                        setRowErrors(prev => [
+                            ...prev,
+                            {rowId: row.id, key: String(error.path[0]), message: error.message}
+                        ])
+                    })
+
+                    if (onRowValidationError) {
+                        onRowValidationError({
+                            data: rowData,
+                            originalData: row.original,
+                            row: row,
+                            errors: parsed.error.errors
+                        })
+                    }
                 }
             } catch (e) {
                 console.error('[DataGrid] Could not perform validation')
@@ -242,11 +281,11 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
     const handleUpdateValue = useCallback<DataGridEditingValueUpdater<T>>((value, _row, cell, zodType) => {
         setActiveValue(value) // Set the updated value (could be anything)
         setRow(_row) // Set the row being updated
-        setRowData({
+        setRowData(prev => ({
             // If we are updating a different row, reset the rowData, else keep the past updates
             ...((row?.id !== _row.id || !rowData) ? _row.original : rowData),
             [cell.column.id]: value,
-        })
+        }))
     }, [row, rowData])
     /**/
 
@@ -260,6 +299,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
         handleStopEditing,
         handleOnSave,
         handleUpdateValue,
+        rowErrors,
     }
 
 }

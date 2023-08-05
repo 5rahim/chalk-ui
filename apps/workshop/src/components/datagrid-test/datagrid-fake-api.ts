@@ -11,7 +11,7 @@ export type Product = {
     random_date: Date
 }
 
-const range = (len: number) => {
+export const range = (len: number) => {
     const arr: any[] = []
     for (let i = 0; i < len; i++) {
         arr.push(i)
@@ -19,7 +19,7 @@ const range = (len: number) => {
     return arr
 }
 
-const newProduct = (): Product => {
+export const newProduct = (): Product => {
     return {
         id: crypto.randomUUID(),
         name: faker.commerce.productName(),
@@ -38,28 +38,5 @@ const newProduct = (): Product => {
             null,
         ])[0]!,
         random_date: faker.date.anytime(),
-    }
-}
-
-export function makeData(...lens: number[]) {
-    const makeDataLevel = (depth = 0): Product[] => {
-        const len = lens[depth]!
-        return range(len).map((d): Product => {
-            return {
-                ...newProduct(),
-            }
-        })
-    }
-
-    return makeDataLevel()
-}
-
-const _data = makeData(30)
-
-export async function fetchFakeData() {
-    // Simulate some network latency
-    await new Promise(r => setTimeout(r, 1000))
-    return {
-        rows: _data,
     }
 }

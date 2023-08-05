@@ -1,7 +1,8 @@
-import {BuiltInFilterFn, Column, ColumnDef} from "@tanstack/react-table"
+import {BuiltInFilterFn, Cell, Column, ColumnDef, Row, Table} from "@tanstack/react-table"
 import {AnyZodObject, z, ZodAny, ZodTypeAny} from "zod"
 import {DataGridEditingFieldContext} from "./datagrid-cell-input-field"
 import React from "react"
+import {DataGridValidationRowErrors} from "./use-datagrid-editing.ts";
 
 /* -------------------------------------------------------------------------------------------------
  * Editing
@@ -9,7 +10,15 @@ import React from "react"
 
 export type DataGridEditingHelper<T extends any = unknown, ZodType extends ZodTypeAny = ZodAny> = {
     zodType?: ZodType
-    field: (props: DataGridEditingFieldContext<ZodType extends ZodAny ? T : z.infer<ZodType>>) => React.ReactElement
+    field: (
+        context: DataGridEditingFieldContext<ZodType extends ZodAny ? T : z.infer<ZodType>>,
+        options: {
+            rowErrors: DataGridValidationRowErrors
+            table: Table<any>
+            row: Row<any>
+            cell: Cell<any, unknown>
+        }
+    ) => React.ReactElement
     valueFormatter?: <K = z.infer<ZodType>, R = z.infer<ZodType>>(value: K) => R
 }
 
@@ -56,7 +65,9 @@ export type DataGridFilteringHelper<T extends DataGridFilteringType = "select"> 
 /**
  * Built-in filter functions supported DataGrid
  */
-export type DataGridSupportedFilterFn = Extract<BuiltInFilterFn, "equals" | "equalsString" | "arrIncludesSome" | "inNumberRange"> | "dateRangeFilter"
+export type DataGridSupportedFilterFn =
+    Extract<BuiltInFilterFn, "equals" | "equalsString" | "arrIncludesSome" | "inNumberRange">
+    | "dateRangeFilter"
 
 function withFiltering<T extends DataGridFilteringType>(params: DataGridFilteringHelper<T>) {
     return {

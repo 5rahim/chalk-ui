@@ -85,12 +85,13 @@ export function DataGridEditingExample() {
         },
     })
 
-    const columns = useMemo(() => createDataGridColumns<Product>(({
-                                                                      withFiltering,
-                                                                      getFilterFn,
-                                                                      withValueFormatter,
-                                                                      withEditing
-                                                                  }) => [
+    const columns = useMemo(() => createDataGridColumns<Product>((
+        {
+            withFiltering,
+            getFilterFn,
+            withValueFormatter,
+            withEditing
+        }) => [
         {
             accessorKey: "name",
             header: "Name",
@@ -100,9 +101,12 @@ export function DataGridEditingExample() {
                 ...withEditing({
                     schema: schema,
                     key: "name",
-                    field: (ctx) => (
-                        <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"}/>
-                    ),
+                    field: (ctx) => {
+                        return (
+                            <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")}
+                                       intent={"unstyled"}/>
+                        )
+                    },
                 }),
             }
         },

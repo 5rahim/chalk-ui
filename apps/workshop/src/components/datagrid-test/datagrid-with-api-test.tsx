@@ -1,60 +1,21 @@
 import React, {useEffect, useMemo, useState} from "react"
-import {faker} from "@faker-js/faker"
-import {createDataGridColumns, DataGridProps, DataGridWithApi, useDataGrid} from "./ui/datagrid"
-import {Badge} from "./ui/badge"
-import {DropdownMenu} from "./ui/dropdown-menu"
-import {IconButton} from "./ui/button"
+import {createDataGridColumns, DataGridProps, DataGridWithApi, useDataGrid} from "../ui/datagrid"
+import {Badge} from "../ui/badge"
+import {DropdownMenu} from "../ui/dropdown-menu"
+import {IconButton} from "../ui/button"
 import {BiDotsHorizontal} from "@react-icons/all-files/bi/BiDotsHorizontal"
 import {BiFolder} from "@react-icons/all-files/bi/BiFolder"
 import {BiLowVision} from "@react-icons/all-files/bi/BiLowVision"
 import {BiBasket} from "@react-icons/all-files/bi/BiBasket"
 import {BiCheck} from "@react-icons/all-files/bi/BiCheck"
 import {BiEditAlt} from "@react-icons/all-files/bi/BiEditAlt"
+import {newProduct, Product, range} from "./datagrid-fake-api.ts";
 
 interface DataGridTestProps {
     tableProps?: Partial<DataGridProps<any>>
 }
 
-type Product = {
-    id: string
-    name: string
-    image: string
-    visible: boolean
-    availability: "in_stock" | "out_of_stock"
-    price: number
-    category: string | null
-}
-
-const range = (len: number) => {
-    const arr: any[] = []
-    for (let i = 0; i < len; i++) {
-        arr.push(i)
-    }
-    return arr
-}
-
-const newProduct = (): Product => {
-    return {
-        id: crypto.randomUUID(),
-        name: faker.commerce.productName(),
-        image: faker.image.urlLoremFlickr({category: "food"}),
-        visible: faker.datatype.boolean(),
-        availability: faker.helpers.shuffle<Product["availability"]>([
-            "in_stock",
-            "out_of_stock",
-        ])[0]!,
-        price: faker.number.int({min: 5, max: 1500}),
-        category: faker.helpers.shuffle<Product["category"]>([
-            "Food",
-            "Electronics",
-            "Drink",
-            null,
-            null,
-        ])[0]!,
-    }
-}
-
-export function makeData(...lens: number[]) {
+function makeData(...lens: number[]) {
     const makeDataLevel = (depth = 0): Product[] => {
         const len = lens[depth]!
         return range(len).map((d): Product => {
@@ -78,7 +39,7 @@ export async function fetchData() {
 }
 
 
-export const DataGridWithApiTest: React.FC<DataGridTestProps> = (props) => {
+export const DatagridWithApiTest: React.FC<DataGridTestProps> = (props) => {
 
     const {tableProps} = props
 

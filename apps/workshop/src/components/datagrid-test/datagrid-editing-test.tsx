@@ -1,25 +1,26 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react"
-import {faker} from "@faker-js/faker"
-import {createDataGridColumns, DataGrid} from "./ui/datagrid"
-import {Badge} from "./ui/badge"
-import {DropdownMenu} from "./ui/dropdown-menu"
-import {IconButton} from "./ui/button"
+import {createDataGridColumns, DataGrid} from "../ui/datagrid"
+import {Badge} from "../ui/badge"
+import {DropdownMenu} from "../ui/dropdown-menu"
+import {IconButton} from "../ui/button"
 import {BiDotsHorizontal} from "@react-icons/all-files/bi/BiDotsHorizontal"
 import {BiFolder} from "@react-icons/all-files/bi/BiFolder"
 import {BiLowVision} from "@react-icons/all-files/bi/BiLowVision"
 import {BiBasket} from "@react-icons/all-files/bi/BiBasket"
 import {BiCheck} from "@react-icons/all-files/bi/BiCheck"
 import {BiEditAlt} from "@react-icons/all-files/bi/BiEditAlt"
-import {createTypesafeFormSchema} from "./ui/typesafe-form"
-import {TextInput} from "./ui/text-input"
-import {NumberInput} from "./ui/number-input"
-import {Select} from "./ui/select"
-import {DatePicker} from "./ui/date-time"
+import {createTypesafeFormSchema} from "../ui/typesafe-form"
+import {TextInput} from "../ui/text-input"
+import {NumberInput} from "../ui/number-input"
+import {Select} from "../ui/select"
+import {DatePicker} from "../ui/date-time"
 import {getLocalTimeZone, parseAbsoluteToLocal} from "@internationalized/date"
 import {BiCalendar} from "@react-icons/all-files/bi/BiCalendar"
+import {newProduct, Product, range} from "./datagrid-fake-api.ts";
 
 interface DataGridEditingTestProps {
     children?: React.ReactNode
+    tableProps?: any
 }
 
 const schema = createTypesafeFormSchema(({z}) => z.object({
@@ -31,48 +32,7 @@ const schema = createTypesafeFormSchema(({z}) => z.object({
     random_date: z.date(),
 }))
 
-type Product = {
-    id: string
-    name: string
-    image: string
-    visible: boolean
-    availability: "in_stock" | "out_of_stock"
-    price: number
-    category: string | null
-    random_date: Date
-}
-
-const range = (len: number) => {
-    const arr: any[] = []
-    for (let i = 0; i < len; i++) {
-        arr.push(i)
-    }
-    return arr
-}
-
-const newProduct = (): Product => {
-    return {
-        id: crypto.randomUUID(),
-        name: faker.commerce.productName(),
-        image: faker.image.urlLoremFlickr({category: "food"}),
-        visible: faker.datatype.boolean(),
-        availability: faker.helpers.shuffle<Product["availability"]>([
-            "in_stock",
-            "out_of_stock",
-        ])[0]!,
-        price: faker.number.int({min: 5, max: 1500}),
-        category: faker.helpers.shuffle<Product["category"]>([
-            "Food",
-            "Electronics",
-            "Drink",
-            null,
-            null,
-        ])[0]!,
-        random_date: faker.date.anytime(),
-    }
-}
-
-export function makeData(...lens: number[]) {
+function makeData(...lens: number[]) {
     const makeDataLevel = (depth = 0): Product[] => {
         const len = lens[depth]!
         return range(len).map((d): Product => {
@@ -98,18 +58,27 @@ export async function fetchData() {
 export async function fakeMutation(object: Product) {
     // Simulate some network latency
     await new Promise(r => setTimeout(r, 1000))
+    let error: string | undefined = undefined
     let clone = structuredClone(_data)
     let index = clone.findIndex(p => p.id === object.id)
+
     if (clone[index]) {
+        if (object.name.length === 0) {
+            error = "Invalid name"
+        }
         clone[index] = object
     }
     return {
         rows: clone,
+        error: error,
     }
 }
 
 export function useFakeMutation(
-    {onSuccess}: { onSuccess: (data: Product[] | undefined) => void },
+    {onSuccess, onError}: {
+        onSuccess: (data: Product[] | undefined) => void,
+        onError: (message: string | undefined) => void
+    },
 ) {
     const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState<Product[] | undefined>(undefined)
@@ -121,7 +90,11 @@ export function useFakeMutation(
             const res = await fakeMutation(object)
             setIsLoading(false)
             setData(res.rows)
-            onSuccess(res.rows)
+            if (!res.error) {
+                onSuccess(res.rows)
+            } else {
+                onError(res.error)
+            }
         }
 
         execute()
@@ -133,9 +106,9 @@ export function useFakeMutation(
 }
 
 
-export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) => {
+export const DatagridEditingTest: React.FC<DataGridEditingTestProps> = (props) => {
 
-    const {children, ...rest} = props
+    const {children, tableProps, ...rest} = props
 
     const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
     const {mutate, isLoading: isMutating} = useFakeMutation({
@@ -144,6 +117,9 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
                 setClientData(data)
             }
         },
+        onError: message => {
+
+        }
     })
 
     useEffect(() => {
@@ -173,9 +149,12 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
             meta: {
                 ...withEditing({
                     zodType: schema.shape.name,
-                    field: (ctx) => (
-                        <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"}/>
-                    ),
+                    field: (ctx, {rowErrors, row}) => {
+                        const error = rowErrors.find(n => n.key === "name" && n.rowId === row.id)
+                        return (
+                            <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"}/>
+                        )
+                    },
                 }),
             },
         },
@@ -362,14 +341,18 @@ export const DataGridEditingTest: React.FC<DataGridEditingTestProps> = (props) =
             onRowSelect={event => {
                 console.log("selection", event)
             }}
-            // isDataMutating={isMutating}
+            isDataMutating={isMutating}
             // enableOptimisticUpdates
             // optimisticUpdatePrimaryKey={"id"}
             onRowEdit={event => {
                 console.log("editing", event)
                 mutate(event.data)
             }}
+            onRowValidationError={event => {
+                console.log("validation error", event.errors)
+            }}
             validationSchema={schema}
+            {...tableProps}
         />
     )
 

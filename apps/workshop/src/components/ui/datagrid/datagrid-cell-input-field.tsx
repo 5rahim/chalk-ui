@@ -5,7 +5,8 @@ import {cn, ComponentWithAnatomy, defineStyleAnatomy} from "../core"
 import {cva} from "class-variance-authority"
 import {DataGridEditingHelper} from "./helpers.ts"
 import {z, ZodTypeAny} from "zod"
-import {Cell, Row} from "@tanstack/react-table"
+import {Cell, Row, Table} from "@tanstack/react-table"
+import {DataGridValidationRowErrors} from "./use-datagrid-editing.ts";
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -45,7 +46,9 @@ export interface DataGridCellInputFieldProps<
     extends ComponentWithAnatomy<typeof DataGridCellInputFieldAnatomy> {
     meta: DataGridEditingHelper
     cell: Cell<T, unknown>
+    table: Table<T>
     row: Row<T>
+    rowErrors: DataGridValidationRowErrors
     onValueUpdated: DataGridEditingValueUpdater<T>
 }
 
@@ -58,7 +61,9 @@ export function DataGridCellInputField<
     const {
         rootClassName,
         cell,
+        table,
         row,
+        rowErrors,
         onValueUpdated, // Emits updates to the hook
         meta: {
             field,
@@ -90,6 +95,11 @@ export function DataGridCellInputField<
                     onValueUpdated(valueFormatter(value), row, cell, zodType)
                 }),
                 ref: inputRef,
+            }, {
+                rowErrors: rowErrors,
+                table: table,
+                row: row,
+                cell: cell,
             })}
         </div>
     )

@@ -14,11 +14,10 @@ import {
     VisibilityState,
 } from "@tanstack/react-table"
 import {dataRangeFilter} from "./use-datagrid-filtering.ts"
-import React, {useCallback, useEffect, useMemo, useState} from "react"
+import React, {useCallback, useEffect, useLayoutEffect, useMemo, useState} from "react"
 import {Checkbox} from "../checkbox"
-import {DataGridOnRowEdit} from "./use-datagrid-editing.ts"
+import {DataGridOnRowEdit, DataGridOnRowValidationError} from "./use-datagrid-editing.ts"
 import {DataGridOnRowSelect} from "./use-datagrid-row-selection.ts"
-import {useDataGridEffects} from "./datagrid-effects.ts"
 import {AnyZodObject} from "zod";
 
 export type DataGridInstanceProps<T extends Record<string, any>> = {
@@ -67,11 +66,10 @@ export type DataGridInstanceProps<T extends Record<string, any>> = {
 
     enableOptimisticUpdates?: boolean
     optimisticUpdatePrimaryKey?: string
-    onRowEdit?: DataGridOnRowEdit<T>
     isDataMutating?: boolean
-
     validationSchema?: AnyZodObject
-    validationMode?: 'table' | 'cell'
+    onRowEdit?: DataGridOnRowEdit<T>
+    onRowValidationError?: DataGridOnRowValidationError<T>
 
     initialState?: {
         sorting?: SortingState
@@ -119,6 +117,7 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridInstan
         initialState,
         state,
 
+        onRowValidationError,
         validationSchema,
 
         columnOrder,
@@ -183,7 +182,7 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridInstan
                 />
             )
         },
-        cell: ({ row }) => {
+        cell: ({row}) => {
             return (
                 <div className="px-1">
                     <Checkbox
@@ -260,7 +259,9 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridInstan
         return table.getRowModel().rows.slice(pn.pageIndex * pn.pageSize, (pn.pageIndex + 1) * pn.pageSize)
     }, [table.getRowModel().rows, table.getState().pagination])
 
-    useDataGridEffects(table)
+    useLayoutEffect(() => {
+        table.setPageIndex(0)
+    }, [table.getState().globalFilter])
 
     useEffect(() => {
         if (!enableManualPagination) {
@@ -295,9 +296,10 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridInstan
         enableGlobalFilter,
 
         validationSchema,
+        onRowValidationError,
 
-        handleGlobalFilterChange: props.onGlobalFilterChange ?? setGlobalFilter,
-        handleColumnFiltersChange: props.onColumnFiltersChange ?? setColumnFilters,
+        handleGlobalFilterChange: onGlobalFilterChange ?? setGlobalFilter,
+        handleColumnFiltersChange: onColumnFiltersChange ?? setColumnFilters,
 
     }
 

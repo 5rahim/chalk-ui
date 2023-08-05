@@ -1,56 +1,15 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react"
-import {faker} from "@faker-js/faker"
-import {createDataGridColumns, DataGridWithApi, useDataGrid} from "./ui/datagrid"
-import {createTypesafeFormSchema} from "./ui/typesafe-form"
-import {TextInput} from "./ui/text-input"
-import {NumberInput} from "./ui/number-input"
+import {createDataGridColumns, DataGridWithApi, useDataGrid} from "../ui/datagrid"
+import {createTypesafeFormSchema} from "../ui/typesafe-form"
+import {TextInput} from "../ui/text-input"
+import {NumberInput} from "../ui/number-input"
+import {newProduct, Product, range} from "./datagrid-fake-api.ts";
 
 interface DataGridEditingTestProps {
     children?: React.ReactNode
 }
 
-type Product = {
-    id: string
-    name: string
-    image: string
-    visible: boolean
-    availability: "in_stock" | "out_of_stock"
-    price: number
-    category: string | null
-    random_date: Date
-}
-
-const range = (len: number) => {
-    const arr: any[] = []
-    for (let i = 0; i < len; i++) {
-        arr.push(i)
-    }
-    return arr
-}
-
-const newProduct = (): Product => {
-    return {
-        id: crypto.randomUUID(),
-        name: faker.commerce.productName(),
-        image: faker.image.urlLoremFlickr({category: "food"}),
-        visible: faker.datatype.boolean(),
-        availability: faker.helpers.shuffle<Product["availability"]>([
-            "in_stock",
-            "out_of_stock",
-        ])[0]!,
-        price: faker.number.int({min: 5, max: 1500}),
-        category: faker.helpers.shuffle<Product["category"]>([
-            "Food",
-            "Electronics",
-            "Drink",
-            null,
-            null,
-        ])[0]!,
-        random_date: faker.date.anytime(),
-    }
-}
-
-export function makeData(...lens: number[]) {
+function makeData(...lens: number[]) {
     const makeDataLevel = (depth = 0): Product[] => {
         const len = lens[depth]!
         return range(len).map((d): Product => {
@@ -119,21 +78,25 @@ export async function fakeNameVerification(value: string) {
 }
 
 
-export const DataGridControlledEditingTest: React.FC<DataGridEditingTestProps> = (props) => {
+export const DatagridEditingServerSideValidationTest: React.FC<DataGridEditingTestProps> = (props) => {
 
     const {children, ...rest} = props
 
     const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
 
+    const [isValidating, setIsValidation] = useState(false)
+
     const nameVerification = useRef(
         async (value: string) => {
+            setIsValidation(true)
             const res = await fakeNameVerification(value)
+            setIsValidation(false)
             return res.success
         }
     )
 
     const schema = createTypesafeFormSchema(({z}) => z.object({
-        name: z.string().refine(val => nameVerification.current(val), {message: "Invalid name"}),
+        name: z.string().refine(value => nameVerification.current(value), {message: "Invalid name"}),
         price: z.number().min(3),
         category: z.string().nullable(),
         availability: z.string(),
@@ -199,6 +162,7 @@ export const DataGridControlledEditingTest: React.FC<DataGridEditingTestProps> =
         data: clientData,
         rowCount: _data.length,
         isLoading: !clientData,
+        isDataMutating: isMutating || isValidating,
         onRowEdit: (event) => {
             console.log("editing", event)
             mutate(event.data)

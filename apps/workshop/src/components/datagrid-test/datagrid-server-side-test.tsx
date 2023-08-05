@@ -1,20 +1,20 @@
 import React, {startTransition, useCallback, useEffect, useMemo, useState} from "react"
-import {faker} from "@faker-js/faker"
-import {createDataGridColumns, DataGrid} from "./ui/datagrid"
-import {Badge} from "./ui/badge"
-import {DropdownMenu} from "./ui/dropdown-menu"
-import {IconButton} from "./ui/button"
+import {createDataGridColumns, DataGrid} from "../ui/datagrid"
+import {Badge} from "../ui/badge"
+import {DropdownMenu} from "../ui/dropdown-menu"
+import {IconButton} from "../ui/button"
 import {BiDotsHorizontal} from "@react-icons/all-files/bi/BiDotsHorizontal"
 import {BiFolder} from "@react-icons/all-files/bi/BiFolder"
 import {BiLowVision} from "@react-icons/all-files/bi/BiLowVision"
 import {BiBasket} from "@react-icons/all-files/bi/BiBasket"
 import {BiCheck} from "@react-icons/all-files/bi/BiCheck"
 import {BiEditAlt} from "@react-icons/all-files/bi/BiEditAlt"
-import {createTypesafeFormSchema} from "./ui/typesafe-form"
+import {createTypesafeFormSchema} from "../ui/typesafe-form"
 import {BiCalendar} from "@react-icons/all-files/bi/BiCalendar"
-import {TextInput} from "./ui/text-input"
+import {TextInput} from "../ui/text-input"
 import {ColumnFiltersState, ColumnSort, PaginationState, SortingState} from "@tanstack/react-table"
 import _ from "lodash"
+import {newProduct, Product, range} from "./datagrid-fake-api.ts";
 
 interface DataGridServerSideTestProps {
     children?: React.ReactNode
@@ -39,48 +39,7 @@ const schema = createTypesafeFormSchema(({ z }) => z.object({
     random_date: z.date(),
 }))
 
-type Product = {
-    id: string
-    name: string
-    image: string
-    visible: boolean
-    availability: "in_stock" | "out_of_stock"
-    price: number
-    category: string | null
-    random_date: Date
-}
-
-const range = (len: number) => {
-    const arr: any[] = []
-    for (let i = 0; i < len; i++) {
-        arr.push(i)
-    }
-    return arr
-}
-
-const newProduct = (): Product => {
-    return {
-        id: crypto.randomUUID(),
-        name: faker.commerce.productName(),
-        image: faker.image.urlLoremFlickr({ category: "food" }),
-        visible: faker.datatype.boolean(),
-        availability: faker.helpers.shuffle<Product["availability"]>([
-            "in_stock",
-            "out_of_stock",
-        ])[0]!,
-        price: faker.number.int({ min: 5, max: 1500 }),
-        category: faker.helpers.shuffle<Product["category"]>([
-            "Food",
-            "Electronics",
-            "Drink",
-            null,
-            null,
-        ])[0]!,
-        random_date: faker.date.anytime(),
-    }
-}
-
-export function makeData(...lens: number[]) {
+function makeData(...lens: number[]) {
     const makeDataLevel = (depth = 0): Product[] => {
         const len = lens[depth]!
         return range(len).map((d): Product => {
@@ -196,16 +155,16 @@ function useFakeQuery(options: DataGridServerSideModels, { enabled }: { enabled?
 }
 
 
-export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (props) => {
+export const DatagridServerSideTest: React.FC<DataGridServerSideTestProps> = (props) => {
 
-    const { children, ...rest } = props
+    const {children, ...rest} = props
 
     const [globalFilter, setGlobalFilter] = useState<string>("")
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [pagination, setPagination] = useState<PaginationState>({pageIndex: 0, pageSize: 5})
 
-    const { data, totalCount, isLoading } = useFakeQuery({
+    const {data, totalCount, isLoading} = useFakeQuery({
         sorting: sorting,
         filtering: {
             globalFilterValue: globalFilter,
@@ -224,9 +183,7 @@ export const DataGridServerSideTest: React.FC<DataGridServerSideTestProps> = (pr
             cell: info => info.getValue(),
             size: 40,
             meta: {
-                ...withEditing({
-                    schema: schema,
-                    key: "name",
+                ...withEditing<string>({
                     field: (ctx) => (
                         <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"}/>
                     ),

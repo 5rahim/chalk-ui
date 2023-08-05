@@ -42,7 +42,7 @@ export const DataGridAnatomy = defineStyleAnatomy({
     ]),
     tableWrapper: cva([
         "UI-DataGrid__tableWrapper",
-        "flex flex-col overflow-x-auto",
+        "flex flex-col",
     ]),
     tableContainer: cva([
         "UI-DataGrid__tableContainer",
@@ -162,9 +162,10 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         enableManualPagination,
         enableGlobalFilter,
         validationSchema,
+        onRowValidationError,
     } = (tableApi ?? useDataGrid<T>({ ...rest })) as DataGridApi<T>
 
-    const isInLoadingState = isLoading || isDataMutating
+    const isInLoadingState = isLoading || (!enableOptimisticUpdates && isDataMutating)
     const {tableRef} = useDataGridResponsiveness({table, hideColumns})
 
     const {
@@ -198,6 +199,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         handleStopEditing,
         handleOnSave,
         handleUpdateValue,
+        rowErrors,
     } = useDataGridEditing({
         table: table,
         data: data,
@@ -209,6 +211,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         manualPagination: enableManualPagination,
         onDataChange: setData,
         schema: validationSchema,
+        onRowValidationError: onRowValidationError,
     })
 
 
@@ -219,8 +222,10 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                 <div className={cn(DataGridAnatomy.toolbar(), toolbarClassName)}>
                     {/* Search Box */}
                     {enableGlobalFilter && (
-                        <DataGridSearchInput value={globalFilter ?? ""}
-                                             onChange={value => handleGlobalFilterChange(String(value))}/>
+                        <DataGridSearchInput
+                            value={globalFilter ?? ""}
+                            onChange={value => handleGlobalFilterChange(String(value))}
+                        />
                     )}
                     {/* Filter dropdown */}
                     {(unselectedFilterableColumns.length > 0) && (
@@ -300,9 +305,13 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                         className={"flex items-center gap-2 rounded-md p-4 bg-[--paper] border border-[--brand] shadow-sm z-20"}>
                         <span className={"font-semibold"}>{locales["updating"][lng]}</span>
                         <Button size={"sm"} onClick={handleOnSave}
-                                isDisabled={isDataMutating}>{locales["save"][lng]}</Button>
+                                isDisabled={isDataMutating}>
+                            {locales["save"][lng]}
+                        </Button>
                         <Button size={"sm"} onClick={handleStopEditing} intent={"gray-outline"}
-                                isDisabled={isDataMutating}>{locales["cancel"][lng]}</Button>
+                                isDisabled={isDataMutating}>
+                            {locales["cancel"][lng]}
+                        </Button>
                     </div>
                 </Transition>
 
@@ -437,6 +446,8 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                         <DataGridCellInputField
                                                             cell={cell}
                                                             row={cell.row}
+                                                            table={table}
+                                                            rowErrors={rowErrors}
                                                             meta={getColumnHelperMeta(cell.column, "editingMeta")!}
                                                             onValueUpdated={handleUpdateValue}
                                                         />

@@ -1,6 +1,3 @@
-import Preview from "../../components/Preview";
-import {DataGridEditingExample} from "../../components/examples/datagrid-editing-example";
-
 ## Editing
 
 ### Requirements
@@ -10,15 +7,12 @@ import {DataGridEditingExample} from "../../components/examples/datagrid-editing
 ### Making a column editable
 
 - `withEditing` is a helper that makes a column's cells editable.
-- Only one row can be editable at a time.
+- By default, only one row can be editable at a time. Users can edit all cells in a row simultaneously.
 - The helper takes **zod** schema and a key as parameter in order to validate the entire row data when saving.
 - You must provide an `onRowEdit` callback function prop where you will get access to the updated row data so that changes can be processed and saved. It is up to you how you handle the data.
 
-<Preview contentClassName={"max-w-full"}>
-    <DataGridEditingExample/>
-</Preview>
 
-```tsx showLineNumbers {}
+```tsx showLineNumbers {32-37,50-52}
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { createDataGridColumns, DataGrid } from "@/components/ui/datagrid"
 import { createTypesafeFormSchema } from "@/components/ui/typesafe-form"
@@ -27,11 +21,6 @@ import { TextInput } from "@/components/ui/text-input"
 
 const schema = createTypesafeFormSchema(({ z }) => z.object({
     name: z.string().min(3),
-    price: z.number().min(3),
-    category: z.string().nullable(),
-    availability: z.string(),
-    visible: z.boolean(),
-    random_date: z.date(),
 }))
 
 export function DataGridEditingExample() {
@@ -41,7 +30,7 @@ export function DataGridEditingExample() {
         keepPreviousData: true,
     })
 
-    const { mutate, isLoading: isMutating } = useFakeMutation({
+    const { mutate, isMutating } = useFakeMutation({
         ...mutationOptions,
         onSuccess: data => {
             if (data) {
@@ -50,23 +39,20 @@ export function DataGridEditingExample() {
         },
     })
 
-    const columns = useMemo(() => createDataGridColumns<Product>(({ withFiltering, getFilterFn, withValueFormatter, withEditing }) => [
+    const columns = useMemo(() => createDataGridColumns<Product>(({ withEditing }) => [
         {
             accessorKey: "name",
             header: "Name",
-            cell: info => info.getValue(),
-            size: 40,
             meta: {
                 ...withEditing({
-                    schema: schema,
-                    key: "name",
+                    zodType: schema.shape.name,
                     field: (ctx) => (
                         <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"}/>
                     ),
                 }),
             }
         },
-        ...
+        ...rest
     ]), [])
 
     return (
@@ -85,4 +71,146 @@ export function DataGridEditingExample() {
 }
 ```
 
-### Editing event
+### withEditing
+
+#### Type
+
+```tsx /schema.shape.name/ /string/
+meta: {
+    ...withEditing({
+        zodType: schema.shape.name, // Define type from zod
+        // field: ...,
+    }),
+}
+
+meta: {
+    ...withEditing<string>({ // Or define it from generics
+        // field: ...,
+    }),
+}
+```
+
+#### Edit field
+
+```tsx
+{
+    accessorKey: "name",
+    header: "Name",
+    meta: {
+        ...withEditing({
+            zodType: schema.shape.name,
+            field: (ctx, { rowErrors, row }) => {
+
+                // Get field's error
+                const error = rowErrors.find(n => n.key === "name" && n.rowId === row.id)
+
+                return (
+                    <TextInput
+                        value={ctx.value} // Value is typed
+                        onChange={e => ctx.onChange(e.target.value ?? "")}
+                        ref={ctx.ref} // focus() is called when the user double-clicks a cell
+                        intent={"unstyled"}
+                    />
+                )
+            }
+        }),
+    },
+}
+```
+
+- **context**
+  - `value`: Controlled value
+  - `onChange`: Value updater
+  - `ref`
+- **options**
+  - `rowErrors`: Validation errors. Type: `Array<{ rowId: string, key: string, message: string }>`
+  - `rowId`: The row ID
+  - `key`: The column key
+  - `message`: The error message
+  - `table`
+  - `row`
+  - `cell`
+
+### Events
+
+#### onRowEdit
+
+- `data`: The updated row data
+- `originalData`: The original row data
+- `row`: Row API. [See reference](https://tanstack.com/table/v8/docs/api/core/row#row-api).
+
+```tsx
+<DataGrid<T>
+    {...props}
+    onRowEdit={({ data, originalData, row }) => {
+        // Handle update
+    }}
+/>
+```
+
+
+#### onRowValidationError
+
+- `errors`: Zod errors from validation. Type: `ZodIssue[]`.
+- `data`: The updated row data
+- `originalData`: The original row data
+- `row`: Row API. [See reference](https://tanstack.com/table/v8/docs/api/core/row#row-api).
+
+```tsx
+<DataGrid<T>
+    {...props}
+    onRowValidationError={({ errors, data, originalData, row }) => {
+        // Handle errors
+    }}
+/>
+```
+
+### Optimistic updates
+
+1. Set `enableOptimisticUpdates` to `true`
+2. Provide a `optimisticUpdatePrimaryKey` that will be used by DataGrid to locate the row and perform the optimistic updates
+3. Handle potential errors by refetching/refreshing the data in case of an internal server error
+4. When optimistic updates are enabled, DataGrid will not display a loading state when `isDataMutating` is true
+
+```tsx
+<DataGrid<T>
+    {...props}
+    enableOptimisticUpdates
+    optimisticUpdatePrimaryKey={"id"}
+/>
+```
+
+### Server-side validation
+
+Server-side validation can be done using `zod` schemas.
+
+```tsx showLineNumbers /nameValidation/
+
+const { data, isLoading, refetch } = useFakeQuery({ ...queryOptions })
+
+const { mutate, isMutating } = useFakeMutation({ ...mutationOptions })
+
+const nameValidation = useRef(
+    async (value: string) => {
+        const res = await getNameValidation(value) // Server-side validation
+        return res.isUnique
+    }
+)
+
+const schema = createTypesafeFormSchema(({z}) => z.object({
+    name: z.string().refine(value => nameValidation.current(value), { message: "Name already exists" }),
+    price: z.number().min(3),
+    category: z.string().nullable(),
+    availability: z.string(),
+    visible: z.boolean(),
+}))
+
+return (
+    <DataGrid<Product>
+        {...props}
+        isLoading={isLoading}
+        isDataMutation={isMutating || isValidating}
+        validationSchema={schema}
+    />
+)
+```

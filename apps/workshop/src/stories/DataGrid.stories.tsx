@@ -1,17 +1,19 @@
 import type {Meta, StoryObj} from "@storybook/react"
 import React from "react"
-import {DataGridTest} from "../components/DataGridTest"
-import {DataGridEditingTest} from "../components/DataGridEditingTest"
-import {DataGridServerSideTest} from "../components/DataGridServerSideTest"
-import {DataGridWithApiTest} from "../components/DataGridWithApiTest"
-import {DataGridControlledEditingTest} from "../components/DataGridControlledEditingTest";
+import {DatagridTest} from "../components/datagrid-test/datagrid-test"
+import {DatagridEditingTest} from "../components/datagrid-test/datagrid-editing-test"
+import {DatagridServerSideTest} from "../components/datagrid-test/datagrid-server-side-test.tsx"
+import {DatagridWithApiTest} from "../components/datagrid-test/datagrid-with-api-test"
+import {
+    DatagridEditingServerSideValidationTest
+} from "../components/datagrid-test/datagrid-editing-server-side-validation-test.tsx";
 
 const meta = {
     title: "Advanced/DataGrid",
-    component: DataGridTest,
+    component: DatagridTest,
     tags: ["autodocs"],
     args: {},
-} satisfies Meta<typeof DataGridTest>
+} satisfies Meta<typeof DatagridTest>
 
 
 export default meta
@@ -22,7 +24,7 @@ export const Basic: Story = {
 }
 
 export const Responsive: Story = {
-    render: () => <DataGridTest tableProps={{
+    render: () => <DatagridTest tableProps={{
         hideColumns: [
             {below: 850, hide: ["availability", "price"]},
             {below: 600, hide: ["_actions"]},
@@ -33,19 +35,37 @@ export const Responsive: Story = {
 }
 
 export const Editing: Story = {
-    render: () => <DataGridEditingTest/>,
+    render: () => <DatagridEditingTest/>,
 }
 
-export const ControlledEditing: Story = {
-    render: () => <DataGridControlledEditingTest/>,
+export const EditingWithOptimisticUpdates: Story = {
+    render: () => <DatagridEditingTest
+        tableProps={{
+            optimisticUpdatePrimaryKey: "id",
+            enableOptimisticUpdates: true
+        }}
+    />,
+}
+export const EditingWithOptimisticUpdatesError: Story = {
+    render: () => <DatagridEditingTest
+        tableProps={{
+            optimisticUpdatePrimaryKey: "id",
+            enableOptimisticUpdates: true,
+            validationSchema: undefined,
+        }}
+    />,
+}
+
+export const EditingWithServerSideValidation: Story = {
+    render: () => <DatagridEditingServerSideValidationTest/>,
 }
 
 
 export const ServerSide: Story = {
-    render: () => <DataGridServerSideTest/>,
+    render: () => <DatagridServerSideTest/>,
 }
 
 
 export const WithApi: Story = {
-    render: () => <DataGridWithApiTest/>,
+    render: () => <DatagridWithApiTest/>,
 }
