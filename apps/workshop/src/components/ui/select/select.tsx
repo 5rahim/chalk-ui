@@ -66,7 +66,8 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>((props, r
                         ))}
                     </select>
 
-                    <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"}/>
+                    <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size}
+                                side={"right"}/>
                     <InputIcon icon={rightIcon} size={size} side={"right"}/>
 
                 </div>

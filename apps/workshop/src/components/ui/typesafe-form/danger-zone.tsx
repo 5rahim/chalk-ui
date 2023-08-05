@@ -92,7 +92,9 @@ export const DangerZone = React.forwardRef<HTMLDivElement, DangerZoneProps>((pro
                 </span>
                 <div>
                     <h2 className={cn(DangerZoneAnatomy.title(), titleClassName)}>{locales["dangerZone"]["name"][_lng]}</h2>
-                    <p className=""><span className="font-semibold">{actionText}</span>. {locales["dangerZone"]["irreversible_action"][_lng]}</p>
+                    <p className=""><span
+                        className="font-semibold">{actionText}</span>. {locales["dangerZone"]["irreversible_action"][_lng]}
+                    </p>
                     <Button
                         size="sm"
                         intent="alert-subtle"

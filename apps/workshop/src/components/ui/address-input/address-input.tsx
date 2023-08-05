@@ -57,7 +57,10 @@ export const AddressInput = React.forwardRef<HTMLInputElement, AddressInputProps
                 returnValueOrLabel="label" // We only return the address' text format
                 allowCustomValue={false}
                 withFiltering={false} // We deactivate filtering because the options are automatically filtered by the API
-                options={_isEmpty(suggestions) && defaultValue ? [{ value: defaultValue, label: defaultValue }] : suggestions}
+                options={_isEmpty(suggestions) && defaultValue ? [{
+                    value: defaultValue,
+                    label: defaultValue
+                }] : suggestions}
                 onInputChange={fetchSuggestions}
                 defaultValue={defaultValue}
                 onChange={onChange}

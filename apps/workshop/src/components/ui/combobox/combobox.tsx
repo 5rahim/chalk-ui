@@ -192,7 +192,8 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>((props
                 <div {...api.rootProps}>
                     <div {...api.controlProps} className={cn(inputContainerStyle())}>
 
-                        <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size} side={"left"}/>
+                        <InputAddon addon={leftAddon} rightIcon={rightIcon} leftIcon={leftIcon} size={size}
+                                    side={"left"}/>
                         <InputIcon icon={leftIcon} size={size} side={"left"} props={api.triggerProps}/>
 
                         <input
@@ -232,7 +233,8 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>((props
                             {...api.inputProps}
                         />
 
-                        <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"}/>
+                        <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size}
+                                    side={"right"}/>
                         <InputIcon icon={rightIcon} size={size} side={"right"} props={api.triggerProps}/>
 
                     </div>
@@ -246,7 +248,8 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>((props
                             {...api.contentProps}
                         >
                             {(list.length === 0 && !!noOptionsMessage) &&
-                                <div className={cn(ComboboxAnatomy.menuNoOptionText(), menuNoOptionTextClassName)}>{noOptionsMessage}</div>}
+                                <div
+                                    className={cn(ComboboxAnatomy.menuNoOptionText(), menuNoOptionTextClassName)}>{noOptionsMessage}</div>}
                             {list.map((item, index) => (
                                 <li
                                     className={cn(

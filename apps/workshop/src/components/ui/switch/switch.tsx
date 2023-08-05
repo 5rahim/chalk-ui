@@ -6,7 +6,6 @@ import React, { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import type { SwitchProps as SwitchPrimitiveProps } from "@radix-ui/react-switch"
 import * as SwitchPrimitive from "@radix-ui/react-switch"
-import { ShowOnly } from "../show-only"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -91,7 +90,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(({ classN
                         )}
                     />
                 </SwitchPrimitive.Root>
-                <ShowOnly when={!!label || !!value}>
+                {(!!label || !!value) &&
                     <label
                         className={cn(
                             SwitchAnatomy.label(),
@@ -101,7 +100,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(({ classN
                     >
                         {label ?? value}
                     </label>
-                </ShowOnly>
+                }
             </div>
         </BasicField>
     )

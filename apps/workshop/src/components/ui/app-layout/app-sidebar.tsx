@@ -3,13 +3,16 @@
 import React, { useEffect, useState } from "react"
 import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { Drawer } from "../modal"
+import { Drawer, DrawerProps } from "../modal"
 
 /* -------------------------------------------------------------------------------------------------
  * Context
  * -----------------------------------------------------------------------------------------------*/
 
-const __AppSidebarContext = React.createContext<{ open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }>({
+const __AppSidebarContext = React.createContext<{
+    open: boolean,
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}>({
     open: false,
     setOpen: () => {
     }
@@ -44,6 +47,7 @@ export const AppSidebarTriggerAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface AppSidebarProps extends React.ComponentPropsWithRef<"div">, ComponentWithAnatomy<typeof AppSidebarAnatomy> {
+    mobileDrawerProps?: Partial<DrawerProps>
 }
 
 export const AppSidebar: React.FC<AppSidebarProps> = React.forwardRef<HTMLDivElement, AppSidebarProps>((props, ref) => {
@@ -115,13 +119,15 @@ export const AppSidebarTrigger: React.FC<AppSidebarTriggerProps> = React.forward
         >
             <span className="sr-only">Open main menu</span>
             {ctx.open ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor"
                      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="block h-6 w-6">
                     <line x1="18" x2="6" y1="6" y2="18"></line>
                     <line x1="6" x2="18" y1="6" y2="18"></line>
                 </svg>
             ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor"
                      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="block h-6 w-6">
                     <line x1="4" x2="20" y1="12" y2="12"></line>
                     <line x1="4" x2="20" y1="6" y2="6"></line>
@@ -140,7 +146,10 @@ AppSidebarTrigger.displayName = "AppSidebarTrigger"
  * Provider
  * -----------------------------------------------------------------------------------------------*/
 
-export const AppSidebarProvider: React.FC<{ children?: React.ReactNode, open?: boolean }> = ({ children, open: _open }) => {
+export const AppSidebarProvider: React.FC<{ children?: React.ReactNode, open?: boolean }> = ({
+                                                                                                 children,
+                                                                                                 open: _open
+                                                                                             }) => {
 
     const [open, setOpen] = useState(_open ?? false)
 

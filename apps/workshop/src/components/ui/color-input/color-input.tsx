@@ -61,7 +61,8 @@ export const ColorInput: React.FC<ColorInputProps> = React.forwardRef((props, re
                     value={color}
                     onChange={e => setColor(e.target.value)}
                     leftIcon={
-                        <div className={cn(ColorInputAnatomy.colorInput(), colorInputClassName)} style={{ backgroundColor: color }}/>
+                        <div className={cn(ColorInputAnatomy.colorInput(), colorInputClassName)}
+                             style={{ backgroundColor: color }}/>
                     }
                     ref={ref}
                     {...rest}

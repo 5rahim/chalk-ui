@@ -45,7 +45,8 @@ export const AvatarShowcase = React.forwardRef<HTMLDivElement, AvatarShowcasePro
                 {avatar}
                 <div className={cn(AvatarShowcaseAnatomy.detailsContainer(), detailsContainerClassName)}>
                     <p className={cn(AvatarShowcaseAnatomy.name(), nameClassName)}>{name}</p>
-                    {!!description && <span className={cn(AvatarShowcaseAnatomy.description(), descriptionClassName)}>{description}</span>}
+                    {!!description && <span
+                        className={cn(AvatarShowcaseAnatomy.description(), descriptionClassName)}>{description}</span>}
                     {children}
                 </div>
             </div>

@@ -1,7 +1,14 @@
 "use client"
 
 import React, { Fragment } from "react"
-import { cn, ComponentWithAnatomy, createPolymorphicComponent, defineStyleAnatomy, getChildDisplayName, useMediaQuery } from "../core"
+import {
+    cn,
+    ComponentWithAnatomy,
+    createPolymorphicComponent,
+    defineStyleAnatomy,
+    getChildDisplayName,
+    useMediaQuery
+} from "../core"
 import { cva, VariantProps } from "class-variance-authority"
 import { Menu, Transition } from "@headlessui/react"
 import { Divider, DividerProps } from "../divider"
@@ -188,7 +195,7 @@ _DropdownMenu.displayName = "DropdownMenu"
 interface DropdownMenuItemProps extends React.ComponentPropsWithRef<"button">, ComponentWithAnatomy<typeof DropdownMenuItemAnatomy> {
 }
 
-const DropdownMenuItem: React.FC<DropdownMenuItemProps> = React.forwardRef<HTMLButtonElement, DropdownMenuItemProps>((props, ref) => {
+export const DropdownMenuItem: React.FC<DropdownMenuItemProps> = React.forwardRef<HTMLButtonElement, DropdownMenuItemProps>((props, ref) => {
 
     const { children, itemClassName, className, ...rest } = props
 
@@ -217,7 +224,7 @@ interface DropdownMenuLinkProps extends React.ComponentPropsWithRef<"a">, Compon
     href: string
 }
 
-const DropdownMenuLink: React.FC<DropdownMenuLinkProps> = React.forwardRef<HTMLAnchorElement, DropdownMenuLinkProps>((props, ref) => {
+export const DropdownMenuLink: React.FC<DropdownMenuLinkProps> = React.forwardRef<HTMLAnchorElement, DropdownMenuLinkProps>((props, ref) => {
 
     const { children, className, itemClassName, href, ...rest } = props
 
@@ -248,7 +255,7 @@ interface DropdownMenuGroupProps extends React.ComponentPropsWithRef<"div">,
     title?: string
 }
 
-const DropdownMenuGroup: React.FC<DropdownMenuGroupProps> = React.forwardRef<HTMLDivElement, DropdownMenuGroupProps>((props, ref) => {
+export const DropdownMenuGroup: React.FC<DropdownMenuGroupProps> = React.forwardRef<HTMLDivElement, DropdownMenuGroupProps>((props, ref) => {
 
     const {
         children,
@@ -298,7 +305,7 @@ DropdownMenuGroup.displayName = "DropdownMenuGroup"
 interface DropdownMenuDivider extends DividerProps {
 }
 
-const DropdownMenuDivider: React.FC<DropdownMenuDivider> = React.forwardRef<HTMLHRElement, DropdownMenuDivider>(
+export const DropdownMenuDivider: React.FC<DropdownMenuDivider> = React.forwardRef<HTMLHRElement, DropdownMenuDivider>(
     (props, ref) => {
 
         return <Divider {...props} ref={ref}/>

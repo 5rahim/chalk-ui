@@ -96,7 +96,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>((props, ref) =
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
-                <Dialog as="div" className={cn("relative z-50", className)} onClose={onClose}>
+                <Dialog as="div" className={cn("relative z-50")} onClose={onClose}>
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-300"
@@ -110,7 +110,8 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>((props, ref) =
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-y-auto">
-                        <div className={cn(ModalAnatomy.outsideContainer({ mobilePlacement }), outsideContainerClassName)}>
+                        <div
+                            className={cn(ModalAnatomy.outsideContainer({ mobilePlacement }), outsideContainerClassName)}>
                             <Transition.Child
                                 as={Fragment}
                                 enter="ease-out duration-300"
@@ -124,6 +125,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>((props, ref) =
                                     className={cn(
                                         ModalAnatomy.panel({ size }),
                                         panelClassName,
+                                        className,
                                     )}
                                     {...rest}
                                 >

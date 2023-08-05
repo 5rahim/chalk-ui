@@ -74,7 +74,10 @@ export const useGoogleMapsAutocomplete = ({
                 value,
                 withSessionToken && sessionToken,
             ), (suggestions) => {
-                setSuggestions((suggestions || []).map(suggestion => ({ label: suggestion.description, value: suggestion.place_id })))
+                setSuggestions((suggestions || []).map(suggestion => ({
+                    label: suggestion.description,
+                    value: suggestion.place_id
+                })))
             },
         )
     }, debounce)

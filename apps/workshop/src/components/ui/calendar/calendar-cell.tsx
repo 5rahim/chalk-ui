@@ -104,7 +104,13 @@ export function CalendarCell({ state, date, currentMonth, locale }: CalendarCell
                 {...mergeProps(buttonProps, focusProps)}
                 ref={ref}
                 hidden={isOutsideMonth}
-                className={cn(CalendarCellAnatomy.button({ isDisabled, isSelected, isUnavailable, isRoundedLeft, isRoundedRight }))}
+                className={cn(CalendarCellAnatomy.button({
+                    isDisabled,
+                    isSelected,
+                    isUnavailable,
+                    isRoundedLeft,
+                    isRoundedRight
+                }))}
             >
                 <div
                     className={cn(CalendarCellAnatomy.date({

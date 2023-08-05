@@ -3,7 +3,16 @@
 import React, { useState } from "react"
 import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { Bar, BarChart as ReChartsBarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, } from "recharts"
+import {
+    Bar,
+    BarChart as ReChartsBarChart,
+    CartesianGrid,
+    Legend,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from "recharts"
 import { BaseChartProps } from "./types"
 import { constructCategoryColors, defaultValueFormatter, getYAxisDomain } from "./utils"
 import type { AxisDomain } from "recharts/types/util/types"

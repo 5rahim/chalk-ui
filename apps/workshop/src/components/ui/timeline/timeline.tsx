@@ -104,7 +104,8 @@ export const Timeline = React.forwardRef<HTMLDivElement, TimelineProps>((props, 
                                 {item.icon}
                             </div>
                         </div>
-                        {(idx < items.length - 1) && <div className={cn(TimelineAnatomy.line(), lineClassName, item.lineClassName)}/>}
+                        {(idx < items.length - 1) &&
+                            <div className={cn(TimelineAnatomy.line(), lineClassName, item.lineClassName)}/>}
                     </div>
 
                     {/*Details section*/}

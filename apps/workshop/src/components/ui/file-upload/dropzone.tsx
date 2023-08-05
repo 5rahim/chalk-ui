@@ -214,7 +214,8 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                     name={basicFieldProps.name ?? "files"}
                     {...getInputProps()}
                 />
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor"
                      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                     <polyline points="7 10 12 15 17 10"/>
@@ -233,7 +234,8 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                     let Icon: React.ReactElement
 
                     if (["image/jpeg", "image/png", "image/jpg", "image/webm"].includes(file.type)) {
-                        Icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        Icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor"
                                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                                     className={cn(DropzoneAnatomy.fileIcon(), fileIconClassName)}>
                             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
@@ -242,7 +244,8 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                             <path d="m20 17-1.09-1.09a2 2 0 0 0-2.82 0L10 22"/>
                         </svg>
                     } else if (file.type.includes("video")) {
-                        Icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        Icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor"
                                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                                     className={cn(DropzoneAnatomy.fileIcon(), fileIconClassName)}>
                             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
@@ -250,17 +253,20 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                             <path d="m10 11 5 3-5 3v-6Z"/>
                         </svg>
                     } else if (file.type.includes("audio")) {
-                        Icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        Icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor"
                                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                                     className={cn(DropzoneAnatomy.fileIcon(), fileIconClassName)}>
-                            <path d="M17.5 22h.5c.5 0 1-.2 1.4-.6.4-.4.6-.9.6-1.4V7.5L14.5 2H6c-.5 0-1 .2-1.4.6C4.2 3 4 3.5 4 4v3"/>
+                            <path
+                                d="M17.5 22h.5c.5 0 1-.2 1.4-.6.4-.4.6-.9.6-1.4V7.5L14.5 2H6c-.5 0-1 .2-1.4.6C4.2 3 4 3.5 4 4v3"/>
                             <polyline points="14 2 14 8 20 8"/>
                             <path d="M10 20v-1a2 2 0 1 1 4 0v1a2 2 0 1 1-4 0Z"/>
                             <path d="M6 20v-1a2 2 0 1 0-4 0v1a2 2 0 1 0 4 0Z"/>
                             <path d="M2 19v-3a6 6 0 0 1 12 0v3"/>
                         </svg>
                     } else if (file.type.includes("pdf") || file.type.includes("document") || file.type.includes("txt") || file.type.includes("text")) {
-                        Icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        Icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor"
                                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                                     className={cn(DropzoneAnatomy.fileIcon(), fileIconClassName)}>
                             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
@@ -270,7 +276,8 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                             <line x1="10" x2="8" y1="9" y2="9"/>
                         </svg>
                     } else if (file.type.includes("compressed") || file.type.includes("zip") || file.type.includes("archive")) {
-                        Icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        Icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor"
                                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                                     className={cn(DropzoneAnatomy.fileIcon(), fileIconClassName)}>
                             <path
@@ -280,7 +287,8 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                             <path d="M16 17v-2"/>
                         </svg>
                     } else {
-                        Icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        Icon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor"
                                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                                     className={cn(DropzoneAnatomy.fileIcon(), fileIconClassName)}>
                             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
@@ -294,7 +302,8 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                             key={file.name}
                             className={cn(DropzoneAnatomy.listItem(), listItemClassName)}
                         >
-                            <div className={cn(DropzoneAnatomy.listItemDetailsContainer(), listItemDetailsContainerClassName)}>
+                            <div
+                                className={cn(DropzoneAnatomy.listItemDetailsContainer(), listItemDetailsContainerClassName)}>
                                 {Icon}
                                 <p className={cn(DropzoneAnatomy.listItemTitle(), listItemTitleClassName)}>{file.name}</p>
                                 <p className={cn(DropzoneAnatomy.listItemSize(), listItemSizeClassName)}>{humanFileSize(file.size)}</p>
@@ -303,8 +312,10 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                                 size="xs"
                                 intent="gray-basic"
                                 icon={
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                                         strokeLinejoin="round"
                                          className="w-4 h-4">
                                         <path d="M3 6h18"/>
                                         <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
@@ -324,7 +335,8 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
             {withImagePreview && <div className={cn(DropzoneAnatomy.imagePreviewGrid(), imagePreviewGridClassName)}>
                 {files?.map((file: any, index) => {
                     return (
-                        <div key={file.name} className={cn(DropzoneAnatomy.imagePreviewContainer(), imagePreviewContainerClassName)}>
+                        <div key={file.name}
+                             className={cn(DropzoneAnatomy.imagePreviewContainer(), imagePreviewContainerClassName)}>
                             <div
                                 className={cn(DropzoneAnatomy.imagePreview(), imagePreviewClassName)}
                                 style={{
@@ -333,9 +345,11 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                             >
                                 <IconButton
                                     icon={
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             viewBox="0 0 24 24" fill="none"
                                              stroke="currentColor"
-                                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                             className="w-4 h-4">
                                             <line x1="18" x2="6" y1="6" y2="18"/>
                                             <line x1="6" x2="18" y1="6" y2="18"/>
                                         </svg>
@@ -346,7 +360,8 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLDivElement
                                     onClick={() => handleRemove(index)}
                                 />
                             </div>
-                            <div className={cn(DropzoneAnatomy.listItemDetailsContainer(), listItemDetailsContainerClassName)}>
+                            <div
+                                className={cn(DropzoneAnatomy.listItemDetailsContainer(), listItemDetailsContainerClassName)}>
                                 <p className={cn(DropzoneAnatomy.listItemTitle(), listItemTitleClassName)}>{file.name}</p>
                                 <p className={cn(DropzoneAnatomy.listItemSize(), listItemSizeClassName)}>{humanFileSize(file.size)}</p>
                             </div>

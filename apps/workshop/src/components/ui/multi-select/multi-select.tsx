@@ -352,7 +352,8 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                                     {selectOptions.map((o, index) => {
 
                                         const imageComponent = o.image ?
-                                            <div className={cn(MultiSelectAnatomy.menuItemImage(), menuItemImageClassName)}>
+                                            <div
+                                                className={cn(MultiSelectAnatomy.menuItemImage(), menuItemImageClassName)}>
                                                 {o.image}
                                             </div> : <></>
 
@@ -386,7 +387,8 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                                                         >
                                                             {o.label ?? o.value}
                                                         </div>
-                                                        {o.description && <div className={cn("text-sm opacity-70")}>{o.description}</div>}
+                                                        {o.description && <div
+                                                            className={cn("text-sm opacity-70")}>{o.description}</div>}
                                                     </div>
                                                 </div>
                                             </li>
@@ -398,7 +400,8 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                         </>}
                     </div>
 
-                    <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"}/>
+                    <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size}
+                                side={"right"}/>
                     <InputIcon icon={rightIcon} size={size} side={"right"}/>
 
                 </div>

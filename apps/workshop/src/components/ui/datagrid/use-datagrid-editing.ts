@@ -1,9 +1,9 @@
-import {Row, Table} from "@tanstack/react-table"
-import React, {startTransition, useCallback, useEffect, useLayoutEffect, useMemo, useState} from "react"
+import { Row, Table } from "@tanstack/react-table"
+import React, { startTransition, useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react"
 import _ from "lodash"
-import {DataGridEditingValueUpdater} from "./datagrid-cell-input-field"
-import {AnyZodObject, ZodIssue} from "zod"
-import {useToast} from "../toast"
+import { DataGridEditingValueUpdater } from "./datagrid-cell-input-field"
+import { AnyZodObject, ZodIssue } from "zod"
+import { useToast } from "../toast"
 
 /**
  * DataGrid Props
@@ -129,13 +129,13 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
             const cell = prev.find(prevCell => prevCell.id === cellId)
 
             if (cell && prev.every(prevCell => !prevCell.isEditing)) { // (Event 1) When we select a cell and nothing else is being edited
-                return [...others, {...cell, id: cellId, isEditing: true}]
+                return [...others, { ...cell, id: cellId, isEditing: true }]
 
             } else if (cell && prev.some(prevCell => prevCell.isEditing)) { // (Event 2) When another cell is being edited
                 const otherCellBeingEdited = prev.find(prevCell => prevCell.isEditing) // Find the cell being edited
 
                 if (otherCellBeingEdited?.rowId === cell?.rowId) { // Only allow cells on the same row to be edited
-                    return [...others, {...cell, id: cellId, isEditing: true}]
+                    return [...others, { ...cell, id: cellId, isEditing: true }]
                 }
             }
             return prev
@@ -161,7 +161,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
     /**/
     const handleStopEditing = useCallback(() => {
         setEditableCellStates(prev => {
-            return prev.map(n => ({...n, isEditing: false}))
+            return prev.map(n => ({ ...n, isEditing: false }))
         })
     }, [])
 
@@ -253,7 +253,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
                         toast.error(error.message ?? "Error")
                         setRowErrors(prev => [
                             ...prev,
-                            {rowId: row.id, key: String(error.path[0]), message: error.message}
+                            { rowId: row.id, key: String(error.path[0]), message: error.message }
                         ])
                     })
 
@@ -287,7 +287,6 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
             [cell.column.id]: value,
         }))
     }, [row, rowData])
-    /**/
 
 
     return {

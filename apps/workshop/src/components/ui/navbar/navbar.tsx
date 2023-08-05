@@ -101,7 +101,7 @@ export interface NavbarLayoutProps extends React.ComponentPropsWithRef<"div">,
     VariantProps<typeof NavbarLayoutAnatomy.layout> {
 }
 
-const NavbarLayout: React.FC<NavbarLayoutProps> = React.forwardRef<HTMLDivElement, NavbarLayoutProps>((props, ref) => {
+export const NavbarLayout: React.FC<NavbarLayoutProps> = React.forwardRef<HTMLDivElement, NavbarLayoutProps>((props, ref) => {
 
     const {
         children,
@@ -134,7 +134,7 @@ export interface NavbarNavigationProps extends React.ComponentPropsWithRef<"div"
     VariantProps<typeof NavbarNavigationAnatomy.root> {
 }
 
-const NavbarNavigation: React.FC<NavbarNavigationProps> = React.forwardRef<HTMLDivElement, NavbarNavigationProps>((props, ref) => {
+export const NavbarNavigation: React.FC<NavbarNavigationProps> = React.forwardRef<HTMLDivElement, NavbarNavigationProps>((props, ref) => {
 
     const {
         children,

@@ -1,5 +1,5 @@
-import {Table} from "@tanstack/react-table"
-import {startTransition, useEffect} from "react"
+import { Table } from "@tanstack/react-table"
+import { startTransition, useEffect } from "react"
 
 export const useDataGridEffects = <T extends Record<string, any>>(
     table: Table<T>,

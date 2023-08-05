@@ -13,12 +13,12 @@ import {
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table"
-import {dataRangeFilter} from "./use-datagrid-filtering.ts"
-import React, {useCallback, useEffect, useLayoutEffect, useMemo, useState} from "react"
-import {Checkbox} from "../checkbox"
-import {DataGridOnRowEdit, DataGridOnRowValidationError} from "./use-datagrid-editing.ts"
-import {DataGridOnRowSelect} from "./use-datagrid-row-selection.ts"
-import {AnyZodObject} from "zod";
+import { dataRangeFilter } from "./use-datagrid-filtering.ts"
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react"
+import { Checkbox } from "../checkbox"
+import { DataGridOnRowEdit, DataGridOnRowValidationError } from "./use-datagrid-editing.ts"
+import { DataGridOnRowSelect } from "./use-datagrid-row-selection.ts"
+import { AnyZodObject } from "zod";
 
 export type DataGridInstanceProps<T extends Record<string, any>> = {
     data: T[] | null | undefined
@@ -104,7 +104,7 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridInstan
     const defaultValues: Required<DataGridInstanceProps<T>["state"]> = {
         globalFilter: "",
         sorting: [],
-        pagination: {pageIndex: 0, pageSize: 5},
+        pagination: { pageIndex: 0, pageSize: 5 },
         rowSelection: {},
         columnFilters: [],
         columnVisibility: {},
@@ -174,7 +174,7 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridInstan
         enableSorting: false,
         disableSortBy: true,
         disableGlobalFilter: true,
-        header: ({table}) => {
+        header: ({ table }) => {
             return (
                 <Checkbox
                     checked={table.getIsSomeRowsSelected() ? "indeterminate" : table.getIsAllRowsSelected()}
@@ -182,7 +182,7 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridInstan
                 />
             )
         },
-        cell: ({row}) => {
+        cell: ({ row }) => {
             return (
                 <div className="px-1">
                     <Checkbox

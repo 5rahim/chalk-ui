@@ -77,7 +77,16 @@ export interface ChartTooltipRowProps extends ComponentWithAnatomy<typeof ChartT
 }
 
 export const ChartTooltipRow = (
-    { value, name, color, dotClassName, rowClassName, valueClassName, labelClassName, labelContainerClassName }: ChartTooltipRowProps) => (
+    {
+        value,
+        name,
+        color,
+        dotClassName,
+        rowClassName,
+        valueClassName,
+        labelClassName,
+        labelContainerClassName
+    }: ChartTooltipRowProps) => (
     <div className={cn(ChartTooltipRowAnatomy.row(), rowClassName)}>
         <div className={cn(ChartTooltipRowAnatomy.labelContainer(), labelContainerClassName)}>
             <span

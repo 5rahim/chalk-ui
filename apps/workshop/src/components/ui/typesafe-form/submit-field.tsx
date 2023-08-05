@@ -2,7 +2,6 @@ import React, { useMemo } from "react"
 import { useFormContext } from "react-hook-form"
 import locales from "./locales.json"
 import { useUILocaleConfig } from "../core"
-import { ShowOnly } from "../show-only"
 import { LoadingOverlay } from "../loading-spinner"
 import { Button, ButtonProps } from "../button"
 
@@ -42,9 +41,9 @@ export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>
 
     return (
         <>
-            <ShowOnly when={role === "create" || showLoadingOverlayOnSuccess}>
-                {loadingOverlay ?? <LoadingOverlay show={formState.isSubmitSuccessful}/>}
-            </ShowOnly>
+            {((role === "create" || showLoadingOverlayOnSuccess) && !!loadingOverlay) ?? (
+                <LoadingOverlay show={formState.isSubmitSuccessful}/>
+            )}
 
             <Button
                 type="submit"

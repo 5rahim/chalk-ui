@@ -35,7 +35,9 @@ export const DateSegmentAnatomy = defineStyleAnatomy({
  * DateField
  * -----------------------------------------------------------------------------------------------*/
 
-export function DateField({ locale, ...props }: Omit<DateFieldStateOptions, "locale" | "createCalendar"> & { locale?: string }) {
+export function DateField({ locale, ...props }: Omit<DateFieldStateOptions, "locale" | "createCalendar"> & {
+    locale?: string
+}) {
     const { countryLocale } = useUILocaleConfig()
 
     const state = useDateFieldState({

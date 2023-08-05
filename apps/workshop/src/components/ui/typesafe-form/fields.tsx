@@ -10,7 +10,14 @@ import { useFormSchema } from "./typesafe-form"
 import { BasicFieldOptions } from "../basic-field"
 import { TextInput, TextInputProps } from "../text-input"
 import { Textarea, TextareaProps } from "../textarea"
-import { DatePicker, DatePickerProps, DateRangePicker, DateRangePickerProps, TimeInput, TimeInputProps } from "../date-time"
+import {
+    DatePicker,
+    DatePickerProps,
+    DateRangePicker,
+    DateRangePickerProps,
+    TimeInput,
+    TimeInputProps
+} from "../date-time"
 import { Select, SelectProps } from "../select"
 import { NumberInput, NumberInputProps } from "../number-input"
 import { MultiSelect, MultiSelectProps } from "../multi-select"
@@ -229,7 +236,10 @@ const DateRangePickerField = React.memo(withControlledInput(forwardRef<HTMLDivEl
             end: toCalendarDate(value.end),
         } : undefined}
         onChange={value => {
-            controller.field.onChange({ start: value?.start.toDate(getLocalTimeZone()), end: value?.end.toDate(getLocalTimeZone()) })
+            controller.field.onChange({
+                start: value?.start.toDate(getLocalTimeZone()),
+                end: value?.end.toDate(getLocalTimeZone())
+            })
         }}
         defaultValue={defaultValue ? {
             start: defaultValue.start ? toCalendarDate(defaultValue.start) : toCalendarDate(new Date()),

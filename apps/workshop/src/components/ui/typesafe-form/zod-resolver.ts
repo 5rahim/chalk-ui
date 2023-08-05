@@ -133,7 +133,9 @@ export function getZodDescriptions<Schema extends z.AnyZodObject>(schema: Schema
  * @param schema
  * @param key
  */
-export function getZodParsedDescription<T extends { [p: string]: any }>(schema: z.AnyZodObject, key: string): T | undefined {
+export function getZodParsedDescription<T extends {
+    [p: string]: any
+}>(schema: z.AnyZodObject, key: string): T | undefined {
     const obj = getZodDescriptions(schema)
     const parsedDescription = _isString(obj[key]) ? JSON.parse(obj[key]) : undefined
     if (_isObject(parsedDescription)) {

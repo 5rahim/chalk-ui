@@ -162,7 +162,7 @@ _AppLayout.displayName = "AppLayout"
 export interface AppLayoutHeaderProps extends React.ComponentPropsWithRef<"header">, ComponentWithAnatomy<typeof AppLayoutHeaderAnatomy> {
 }
 
-const AppLayoutHeader: React.FC<AppLayoutHeaderProps> = React.forwardRef<HTMLElement, AppLayoutHeaderProps>((props, ref) => {
+export const AppLayoutHeader: React.FC<AppLayoutHeaderProps> = React.forwardRef<HTMLElement, AppLayoutHeaderProps>((props, ref) => {
 
     const {
         children,
@@ -192,7 +192,7 @@ AppLayoutHeader.displayName = "AppLayoutHeader"
 export interface AppLayoutSidebarProps extends React.ComponentPropsWithRef<"aside">, ComponentWithAnatomy<typeof AppLayoutSidebarAnatomy> {
 }
 
-const AppLayoutSidebar: React.FC<AppLayoutSidebarProps> = React.forwardRef<HTMLElement, AppLayoutSidebarProps>((props, ref) => {
+export const AppLayoutSidebar: React.FC<AppLayoutSidebarProps> = React.forwardRef<HTMLElement, AppLayoutSidebarProps>((props, ref) => {
 
     const {
         children,
@@ -222,7 +222,7 @@ AppLayoutSidebar.displayName = "AppLayoutSidebar"
 export interface AppLayoutContentProps extends React.ComponentPropsWithRef<"main">, ComponentWithAnatomy<typeof AppLayoutContentAnatomy> {
 }
 
-const AppLayoutContent: React.FC<AppLayoutContentProps> = React.forwardRef<HTMLElement, AppLayoutContentProps>((props, ref) => {
+export const AppLayoutContent: React.FC<AppLayoutContentProps> = React.forwardRef<HTMLElement, AppLayoutContentProps>((props, ref) => {
 
     const {
         children,
@@ -254,7 +254,7 @@ export interface AppLayoutGridProps extends React.ComponentPropsWithRef<"section
     VariantProps<typeof AppLayoutGridAnatomy.root> {
 }
 
-const AppLayoutGrid: React.FC<AppLayoutGridProps> = React.forwardRef<HTMLElement, AppLayoutGridProps>((props, ref) => {
+export const AppLayoutGrid: React.FC<AppLayoutGridProps> = React.forwardRef<HTMLElement, AppLayoutGridProps>((props, ref) => {
 
     const {
         children,
@@ -287,7 +287,7 @@ AppLayoutGrid.displayName = "AppLayoutGrid"
 export interface AppLayoutFooterProps extends React.ComponentPropsWithRef<"footer">, ComponentWithAnatomy<typeof AppLayoutFooterAnatomy> {
 }
 
-const AppLayoutFooter: React.FC<AppLayoutFooterProps> = React.forwardRef<HTMLElement, AppLayoutFooterProps>((props, ref) => {
+export const AppLayoutFooter: React.FC<AppLayoutFooterProps> = React.forwardRef<HTMLElement, AppLayoutFooterProps>((props, ref) => {
 
     const {
         children,
@@ -319,7 +319,7 @@ export interface AppLayoutStackProps extends React.ComponentPropsWithRef<"div">,
     VariantProps<typeof AppLayoutStackAnatomy.root> {
 }
 
-const AppLayoutStack: React.FC<AppLayoutStackProps> = React.forwardRef<HTMLDivElement, AppLayoutStackProps>((props, ref) => {
+export const AppLayoutStack: React.FC<AppLayoutStackProps> = React.forwardRef<HTMLDivElement, AppLayoutStackProps>((props, ref) => {
 
     const {
         children,

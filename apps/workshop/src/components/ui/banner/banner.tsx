@@ -3,7 +3,6 @@
 import React from "react"
 import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { ShowOnly } from "../show-only"
 import { CloseButton, CloseButtonProps } from "../button"
 
 /* -------------------------------------------------------------------------------------------------
@@ -56,13 +55,13 @@ export const Banner = React.forwardRef<HTMLDivElement, BannerProps>((props, ref)
         >
             <div className={cn(BannerAnatomy.container(), containerClassName)}>
                 {children}
-                <ShowOnly when={isClosable}>
+                {isClosable &&
                     <CloseButton
                         intent="white-outline"
                         onClick={onClose}
                         {...closeButtonProps}
                     />
-                </ShowOnly>
+                }
             </div>
         </div>
     )

@@ -11,7 +11,10 @@ import { CloseButton, CloseButtonProps } from "../button"
  * -----------------------------------------------------------------------------------------------*/
 
 export const DrawerAnatomy = defineStyleAnatomy({
-    panel: cva("UI-Drawer__panel", {
+    panel: cva([
+        "UI-Drawer__panel",
+        "pointer-events-auto relative"
+    ], {
         variants: {
             size: { md: "", lg: "", xl: "", full: "" },
             placement: { top: "", right: "", left: "", bottom: "" },
@@ -120,7 +123,6 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                     as="div"
                     className={cn(
                         "relative z-50",
-                        className,
                     )}
                     onClose={onClose}
                     {...rest}
@@ -164,7 +166,6 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                                 >
                                     <Dialog.Panel
                                         className={cn(
-                                            "pointer-events-auto relative",
                                             {
                                                 "w-screen": (placement == "right" || placement == "left" || placement == "top" || placement == "bottom"),
                                                 // Right or Left
@@ -178,6 +179,8 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                                                 "h-[100vh] max-h-[80vh]": size == "xl" && (placement == "bottom" || placement == "top"),
                                                 "h-[100vh] min-h-screen": size == "full" && (placement == "bottom" || placement == "top"),
                                             },
+                                            panelClassName,
+                                            className,
                                         )}
                                     >
 
@@ -186,7 +189,8 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                                             <div
                                                 className={cn(DrawerAnatomy.header(), headerClassName)}
                                             >
-                                                <Dialog.Title className={cn(DrawerAnatomy.title(), titleClassName)}>{title}</Dialog.Title>
+                                                <Dialog.Title
+                                                    className={cn(DrawerAnatomy.title(), titleClassName)}>{title}</Dialog.Title>
 
                                                 {isClosable && (
                                                     <CloseButton

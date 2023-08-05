@@ -41,12 +41,24 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>((props, 
         return (
             <>
                 <div className="flex flex-col gap-3">
-                    <div className={cn("w-full", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
-                    <div className={cn("w-full", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
-                    <div className={cn("w-full", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
-                    <div className={cn("w-[98%]", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
-                    <div className={cn("w-[95%]", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
-                    <div className={cn("w-[90%]", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest} ref={ref}></div>
+                    <div
+                        className={cn("w-full", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest}
+                        ref={ref}></div>
+                    <div
+                        className={cn("w-full", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest}
+                        ref={ref}></div>
+                    <div
+                        className={cn("w-full", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest}
+                        ref={ref}></div>
+                    <div
+                        className={cn("w-[98%]", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest}
+                        ref={ref}></div>
+                    <div
+                        className={cn("w-[95%]", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest}
+                        ref={ref}></div>
+                    <div
+                        className={cn("w-[90%]", SkeletonAnatomy.skeleton({ type }), skeletonClassName, className)} {...rest}
+                        ref={ref}></div>
                 </div>
             </>
         )

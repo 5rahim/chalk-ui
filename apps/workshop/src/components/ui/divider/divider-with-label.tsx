@@ -58,7 +58,8 @@ export const DividerWithLabel: React.FC<DividerWithLabelProps> = React.forwardRe
             {...rest}
             ref={ref}
         >
-            <div className={cn(DividerWithLabelAnatomy.dividerContainer(), dividerContainerClassName)} aria-hidden="true">
+            <div className={cn(DividerWithLabelAnatomy.dividerContainer(), dividerContainerClassName)}
+                 aria-hidden="true">
                 <div className={cn(DividerWithLabelAnatomy.divider(), dividerClassName)}/>
             </div>
             <div className={cn(DividerWithLabelAnatomy.labelContainer(), labelContainerClassName)}>

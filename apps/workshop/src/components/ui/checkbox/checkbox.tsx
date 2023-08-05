@@ -7,7 +7,6 @@ import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-
 import type { CheckboxProps as CheckboxPrimitiveProps } from "@radix-ui/react-checkbox"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { useCheckboxGroupContext } from "../checkbox"
-import { ShowOnly } from "../show-only"
 
 
 /* -------------------------------------------------------------------------------------------------
@@ -132,7 +131,8 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                     }}
                     {...rest}
                 >
-                    <CheckboxPrimitive.CheckboxIndicator className={cn(CheckboxAnatomy.indicator(), indicatorClassName)}>
+                    <CheckboxPrimitive.CheckboxIndicator
+                        className={cn(CheckboxAnatomy.indicator(), indicatorClassName)}>
                         {(rest.checked !== "indeterminate") && <svg
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" stroke="currentColor"
                             fill="currentColor"
@@ -145,13 +145,14 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                         </svg>}
 
                         {rest.checked === "indeterminate" &&
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor"
                                  strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
                                 <line x1="5" x2="19" y1="12" y2="12"/>
                             </svg>}
                     </CheckboxPrimitive.CheckboxIndicator>
                 </CheckboxPrimitive.Root>
-                <ShowOnly when={!!label || !!value}>
+                {(!!label || !!value) &&
                     <label
                         className={cn(
                             CheckboxAnatomy.label({ size: _size }),
@@ -162,7 +163,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                     >
                         {label ?? value}
                     </label>
-                </ShowOnly>
+                }
             </label>
         </BasicField>
     )

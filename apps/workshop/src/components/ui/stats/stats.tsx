@@ -3,7 +3,6 @@
 import React from "react"
 import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { ShowOnly } from "../show-only"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -94,7 +93,7 @@ export const Stats = React.forwardRef<HTMLDListElement, StatsProps>((props, ref)
                             <span className={cn(StatsAnatomy.unit(), unitClassName)}>{item.unit}</span>
                         </dd>
 
-                        <ShowOnly when={!!item.change || !!item.trend}>
+                        {(!!item.change || !!item.trend) &&
                             <div
                                 className={cn(StatsAnatomy.trend(), trendClassName)}
                                 data-trend={item.trend}
@@ -102,7 +101,7 @@ export const Stats = React.forwardRef<HTMLDListElement, StatsProps>((props, ref)
                                 {item.trend && <span> {item.trend === "up" ? "+" : "-"}</span>}
                                 {item.change}
                             </div>
-                        </ShowOnly>
+                        }
 
                         <div className={cn(StatsAnatomy.icon(), iconClassName)}>
                             {item.icon}

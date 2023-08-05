@@ -1,7 +1,6 @@
 import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
 import React from "react"
-import { ShowOnly } from "../show-only"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -136,27 +135,29 @@ export const BasicField: React.FC<BasicFieldProps> = React.memo(React.forwardRef
                 {...rest}
                 ref={ref}
             >
-                <ShowOnly when={!!label}>
+                {!!label &&
                     <label
                         htmlFor={isDisabled ? undefined : id}
                         className={cn(BasicFieldAnatomy.fieldLabel({ hasError: !!error }), fieldLabelClassName)}
                         {...labelProps}
                     >
                         {label}
-                        <ShowOnly when={isRequired}>
+                        {isRequired &&
                             <span className={cn(BasicFieldAnatomy.fieldAsterisk(), fieldAsteriskClassName)}>*</span>
-                        </ShowOnly>
+                        }
                     </label>
-                </ShowOnly>
+                }
 
                 {children}
 
-                <ShowOnly when={!!help || !!error}>
+                {(!!help || !!error) &&
                     <div className={cn(BasicFieldAnatomy.fieldDetails(), fieldDetailsClassName)}>
-                        {!!help && <p className={cn(BasicFieldAnatomy.fieldHelpText(), fieldHelpTextClassName)}>{help}</p>}
-                        {!!error && <p className={cn(BasicFieldAnatomy.fieldErrorText(), fieldErrorTextClassName)}>{error}</p>}
+                        {!!help &&
+                            <p className={cn(BasicFieldAnatomy.fieldHelpText(), fieldHelpTextClassName)}>{help}</p>}
+                        {!!error &&
+                            <p className={cn(BasicFieldAnatomy.fieldErrorText(), fieldErrorTextClassName)}>{error}</p>}
                     </div>
-                </ShowOnly>
+                }
             </div>
         </>
     )

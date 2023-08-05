@@ -4,7 +4,15 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { cn } from "../core"
 import _isEmpty from "lodash/isEmpty"
 import React, { createContext, useContext, useEffect, useMemo } from "react"
-import { FormProvider, SubmitErrorHandler, SubmitHandler, useForm, UseFormProps, UseFormReturn, WatchObserver } from "react-hook-form"
+import {
+    FormProvider,
+    SubmitErrorHandler,
+    SubmitHandler,
+    useForm,
+    UseFormProps,
+    UseFormReturn,
+    WatchObserver
+} from "react-hook-form"
 import { z, ZodObject } from "zod"
 import { getZodDefaults } from "./zod-resolver"
 
@@ -15,7 +23,10 @@ import { getZodDefaults } from "./zod-resolver"
 /**
  * @internal
  */
-const __FormSchemaContext = createContext<{ shape: z.ZodRawShape, schema: z.ZodObject<z.ZodRawShape> } | undefined>(undefined)
+const __FormSchemaContext = createContext<{
+    shape: z.ZodRawShape,
+    schema: z.ZodObject<z.ZodRawShape>
+} | undefined>(undefined)
 
 export const useFormSchema = (): { shape: z.ZodRawShape, schema: z.ZodObject<z.ZodRawShape> } => {
     return useContext(__FormSchemaContext)!

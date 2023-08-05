@@ -12,7 +12,9 @@ import { CalendarHeader } from "./calendar-header"
  * RangeCalendar
  * -----------------------------------------------------------------------------------------------*/
 
-export function RangeCalendar({ locale, ...props }: Omit<RangeCalendarStateOptions, "createCalendar" | "locale"> & { locale?: string }) {
+export function RangeCalendar({ locale, ...props }: Omit<RangeCalendarStateOptions, "createCalendar" | "locale"> & {
+    locale?: string
+}) {
     const { countryLocale } = useUILocaleConfig()
     const _locale = locale ?? countryLocale
 

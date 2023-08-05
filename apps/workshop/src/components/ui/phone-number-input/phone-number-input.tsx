@@ -103,7 +103,8 @@ export const PhoneNumberInput = React.forwardRef<HTMLInputElement, PhoneNumberIn
                         }}
                     />
 
-                    <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size} side={"right"}/>
+                    <InputAddon addon={rightAddon} rightIcon={rightIcon} leftIcon={leftAddon} size={size}
+                                side={"right"}/>
                     <InputIcon icon={rightIcon} size={size} side={"right"}/>
 
                 </div>
