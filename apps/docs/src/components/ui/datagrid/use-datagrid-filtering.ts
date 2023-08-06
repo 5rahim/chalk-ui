@@ -1,6 +1,6 @@
 import { Column, ColumnFiltersState, Table } from "@tanstack/react-table"
 import React, { useMemo } from "react"
-import { getColumnHelperMeta } from "./helpers.ts"
+import { getColumnHelperMeta } from "./helpers"
 import addDays from "date-fns/addDays"
 import isSameDay from "date-fns/isSameDay"
 
@@ -54,7 +54,7 @@ export function useDataGridFiltering<T>(props: DataGridFilteringHookProps<T>) {
 
 }
 
-export const dataRangeFilter = (row, columnId, filterValue) => {
+export const dateRangeFilter = (row: any, columnId: string, filterValue: any) => {
     const value: Date = row.getValue(columnId)
     return (value >= filterValue.start && value <= filterValue.end) || isSameDay(value, filterValue.start) || isSameDay(value, filterValue.end)
 }

@@ -34,5 +34,13 @@
   "updating": {
     "fr": "Modification",
     "en": "Updating"
+  },
+  "true": {
+    "fr": "Vrai",
+    "en": "True"
+  },
+  "false": {
+    "fr": "Faux",
+    "en": "False"
   }
 }

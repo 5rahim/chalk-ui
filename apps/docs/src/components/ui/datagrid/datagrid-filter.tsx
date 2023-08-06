@@ -12,6 +12,7 @@ import { CheckboxGroup } from "../checkbox"
 import { RadioGroup } from "../radio-group"
 import { getLocalTimeZone, parseAbsoluteToLocal } from "@internationalized/date"
 import { DateRangePicker } from "../date-time"
+import locales from "./locales.json"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -82,7 +83,8 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
             {(filterParams.type === "select" && !!options && options.length > 0) && (
                 <Select
                     leftIcon={icon ? icon :
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor"
                              strokeWidth="2"
                              strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
                             <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
@@ -107,10 +109,10 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
                     }>
                     <DropdownMenu.Group>
                         <DropdownMenu.Item onClick={() => handleUpdate(true)}>
-                            {typeof valueFormatter(true) === "boolean" ? "True" : valueFormatter(true)}
+                            {typeof valueFormatter(true) === "boolean" ? locales["true"][locale] : valueFormatter(true)}
                         </DropdownMenu.Item>
                         <DropdownMenu.Item onClick={() => handleUpdate(false)}>
-                            {typeof valueFormatter(false) === "boolean" ? "False" : valueFormatter(false)}
+                            {typeof valueFormatter(false) === "boolean" ? locales["false"][locale] : valueFormatter(false)}
                         </DropdownMenu.Item>
                     </DropdownMenu.Group>
                 </DropdownMenu>
@@ -207,7 +209,8 @@ export const DataGridActiveFilter: React.FC<DataGridActiveFilterProps> = React.f
     const displayedValue = Array.isArray(value) ? (value.length > 2 ? [...value.slice(0, 2), "..."].join(", ") : value.join(", ")) : String(value)
 
     return (
-        <button className={cn(DataGridAnatomy.filterDropdownButton(), "truncate overflow-ellipsis")} {...rest} ref={ref}>
+        <button className={cn(DataGridAnatomy.filterDropdownButton(), "truncate overflow-ellipsis")} {...rest}
+                ref={ref}>
             {options.icon && <span>{options.icon}</span>}
             <span>{options.name}:</span>
             <span className={"font-semibold flex flex-none overflow-hidden whitespace-normal"}>{displayedValue}</span>

@@ -21,7 +21,7 @@ import { DataGridCellInputField } from "./datagrid-cell-input-field"
 import { Transition } from "@headlessui/react"
 import { getColumnHelperMeta, getValueFormatter } from "./helpers"
 import { Skeleton } from "../skeleton"
-import { DataGridApi, DataGridInstanceProps, useDataGrid } from "./datagrid-instance.tsx"
+import { DataGridApi, DataGridInstanceProps, useDataGrid } from "./datagrid-instance"
 import { LoadingOverlay } from "../loading-spinner"
 
 /* -------------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ export const DataGridAnatomy = defineStyleAnatomy({
     ]),
     tableWrapper: cva([
         "UI-DataGrid__tableWrapper",
-        "flex flex-col overflow-x-auto",
+        "flex flex-col",
     ]),
     tableContainer: cva([
         "UI-DataGrid__tableContainer",
@@ -140,7 +140,6 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         ...rest
     } = props
 
-
     const {
         table,
         data,
@@ -161,14 +160,14 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         enableOptimisticUpdates,
         optimisticUpdatePrimaryKey,
         enableManualPagination,
+        enableGlobalFilter,
+        validationSchema,
+        onRowValidationError,
     } = (tableApi ?? useDataGrid<T>({ ...rest })) as DataGridApi<T>
 
-    const isInLoadingState = isLoading || isDataMutating
-    const canPaginate = true
-    // Responsively hide columns
-    const { tableRef, tableWidth } = useDataGridResponsiveness({ table, hideColumns })
+    const isInLoadingState = isLoading || (!enableOptimisticUpdates && isDataMutating)
+    const { tableRef } = useDataGridResponsiveness({ table, hideColumns })
 
-    // Row selection
     const {
         selectedRowCount,
     } = useDataGridRowSelection({
@@ -181,7 +180,6 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         enabled: enableRowSelection,
     })
 
-    // Filtering
     const {
         getFilterDefaultValue,
         unselectedFilterableColumns,
@@ -192,16 +190,16 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         columnFilters: columnFilters,
     })
 
-    // Editing
     const {
-        onCellDoubleClick,
+        handleStartEditing,
         getIsCellActivelyEditing,
         getIsCellEditable,
         getIsCurrentlyEditing,
         getFirstCellBeingEdited,
-        cancelEditing,
-        saveEdit,
+        handleStopEditing,
+        handleOnSave,
         handleUpdateValue,
+        rowErrors,
     } = useDataGridEditing({
         table: table,
         data: data,
@@ -212,6 +210,8 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         optimisticUpdatePrimaryKey: optimisticUpdatePrimaryKey,
         manualPagination: enableManualPagination,
         onDataChange: setData,
+        schema: validationSchema,
+        onRowValidationError: onRowValidationError,
     })
 
 
@@ -221,15 +221,23 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
 
                 <div className={cn(DataGridAnatomy.toolbar(), toolbarClassName)}>
                     {/* Search Box */}
-                    <DataGridSearchInput value={globalFilter ?? ""} onChange={value => handleGlobalFilterChange(String(value))}/>
+                    {enableGlobalFilter && (
+                        <DataGridSearchInput
+                            value={globalFilter ?? ""}
+                            onChange={value => handleGlobalFilterChange(String(value))}
+                        />
+                    )}
                     {/* Filter dropdown */}
                     {(unselectedFilterableColumns.length > 0) && (
                         <DropdownMenu
                             trigger={
-                                <button className={cn(DataGridAnatomy.filterDropdownButton(), filterDropdownButtonClassName)}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                <button
+                                    className={cn(DataGridAnatomy.filterDropdownButton(), filterDropdownButtonClassName)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none"
                                          stroke="currentColor"
-                                         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                                         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                         className="w-4 h-4">
                                         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
                                     </svg>
                                     <span>{locales["filters"][lng]} ({unselectedFilterableColumns.length})</span>
@@ -244,7 +252,10 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                 return (
                                     <DropdownMenu.Item
                                         key={col.id}
-                                        onClick={() => handleColumnFiltersChange(p => [...p, { id: col.id, value: defaultValue }])}
+                                        onClick={() => handleColumnFiltersChange(p => [...p, {
+                                            id: col.id,
+                                            value: defaultValue
+                                        }])}
                                     >
                                         {icon && <span className={"text-lg"}>{icon}</span>}
                                         <span>{name}</span>
@@ -293,11 +304,17 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                     leaveFrom="opacity-100 scale-100"
                     leaveTo="opacity-0 scale-75"
                 >
-                    <div className={"flex items-center gap-2 rounded-md p-4 bg-[--paper] border border-[--brand] shadow-sm z-20"}>
+                    <div
+                        className={"flex items-center gap-2 rounded-md p-4 bg-[--paper] border border-[--brand] shadow-sm z-20"}>
                         <span className={"font-semibold"}>{locales["updating"][lng]}</span>
-                        <Button size={"sm"} onClick={saveEdit} isDisabled={isDataMutating}>{locales["save"][lng]}</Button>
-                        <Button size={"sm"} onClick={cancelEditing} intent={"gray-outline"}
-                                isDisabled={isDataMutating}>{locales["cancel"][lng]}</Button>
+                        <Button size={"sm"} onClick={handleOnSave}
+                                isDisabled={isDataMutating}>
+                            {locales["save"][lng]}
+                        </Button>
+                        <Button size={"sm"} onClick={handleStopEditing} intent={"gray-outline"}
+                                isDisabled={isDataMutating}>
+                            {locales["cancel"][lng]}
+                        </Button>
                     </div>
                 </Transition>
 
@@ -346,26 +363,33 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                             header.column.columnDef.header,
                                                             header.getContext(),
                                                         )}
-                                                        <span className={cn(DataGridAnatomy.titleChevronContainer(), titleChevronContainerClassName)}>
+                                                        <span
+                                                            className={cn(DataGridAnatomy.titleChevronContainer(), titleChevronContainerClassName)}>
                                                             {header.column.getIsSorted() === "asc" &&
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                                                     fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                     height="24" viewBox="0 0 24 24"
+                                                                     fill="none" stroke="currentColor" strokeWidth="2"
+                                                                     strokeLinecap="round"
                                                                      strokeLinejoin="round"
                                                                      className={cn(DataGridAnatomy.titleChevron(), titleChevronClassName)}>
                                                                     <polyline points="18 15 12 9 6 15"/>
                                                                 </svg>
                                                             }
                                                             {header.column.getIsSorted() === "desc" &&
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                                                     fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                     height="24" viewBox="0 0 24 24"
+                                                                     fill="none" stroke="currentColor" strokeWidth="2"
+                                                                     strokeLinecap="round"
                                                                      strokeLinejoin="round"
                                                                      className={cn(DataGridAnatomy.titleChevron(), titleChevronClassName)}>
                                                                     <polyline points="6 9 12 15 18 9"/>
                                                                 </svg>
                                                             }
                                                             {(header.column.getIsSorted() === false && header.column.getCanSort()) &&
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                                                     fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                     height="24" viewBox="0 0 24 24"
+                                                                     fill="none" stroke="currentColor" strokeWidth="2"
+                                                                     strokeLinecap="round"
                                                                      strokeLinejoin="round"
                                                                      className={cn(
                                                                          DataGridAnatomy.titleChevron(),
@@ -412,12 +436,15 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                     data-editing={getIsCellActivelyEditing(cell.id)} // If cell is being edited
                                                     data-editable={isCurrentlyEditable} // If cell is editable
                                                     data-row-editing={getFirstCellBeingEdited()?.rowId === cell.row.id} // If cell's row is being edited
-                                                    style={{ width: cell.column.getSize(), maxWidth: cell.column.columnDef.maxSize }}
+                                                    style={{
+                                                        width: cell.column.getSize(),
+                                                        maxWidth: cell.column.columnDef.maxSize
+                                                    }}
                                                     onDoubleClick={() => startTransition(() => {
-                                                        onCellDoubleClick(cell.id)
+                                                        handleStartEditing(cell.id)
                                                     })}
                                                     onKeyUp={event => {
-                                                        if (event.key === "Enter") startTransition(() => onCellDoubleClick(cell.id))
+                                                        if (event.key === "Enter") startTransition(() => handleStartEditing(cell.id))
                                                     }}
                                                     tabIndex={isCurrentlyEditable ? 0 : undefined} // Is focusable if it can be edited
                                                 >
@@ -432,6 +459,8 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                                         <DataGridCellInputField
                                                             cell={cell}
                                                             row={cell.row}
+                                                            table={table}
+                                                            rowErrors={rowErrors}
                                                             meta={getColumnHelperMeta(cell.column, "editingMeta")!}
                                                             onValueUpdated={handleUpdateValue}
                                                         />
@@ -450,7 +479,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                         )}
 
                         {/*Skeleton*/}
-                        {(isInLoadingState && displayedRows.length === 0) && [...Array(Number(table.getState().pagination.pageSize)).keys()].map((i, idx) => (
+                        {(isInLoadingState && displayedRows.length === 0) && [...Array(5).keys()].map((i, idx) => (
                             <Skeleton key={idx} className={"rounded-none h-12"}/>
                         ))}
 
@@ -498,23 +527,23 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                         direction={"left"}
                         isChevrons
                         onClick={() => table.setPageIndex(0)}
-                        isDisabled={!table.getCanPreviousPage() || isInLoadingState || !canPaginate}
+                        isDisabled={!table.getCanPreviousPage() || isInLoadingState}
                     />
                     <Pagination.Trigger
                         direction={"left"}
                         onClick={() => table.previousPage()}
-                        isDisabled={!table.getCanPreviousPage() || isInLoadingState || !canPaginate}
+                        isDisabled={!table.getCanPreviousPage() || isInLoadingState}
                     />
                     <Pagination.Trigger
                         direction={"right"}
                         onClick={() => table.nextPage()}
-                        isDisabled={!table.getCanNextPage() || isInLoadingState || !canPaginate}
+                        isDisabled={!table.getCanNextPage() || isInLoadingState}
                     />
                     <Pagination.Trigger
                         direction={"right"}
                         isChevrons
                         onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                        isDisabled={!table.getCanNextPage() || isInLoadingState || !canPaginate}
+                        isDisabled={!table.getCanNextPage() || isInLoadingState}
                     />
                 </Pagination>
 
@@ -529,16 +558,18 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                     )}
                 </div>
 
-                <div className={cn(DataGridAnatomy.footerPaginationInputContainer(), footerPaginationInputContainerClassName)}>
+                <div
+                    className={cn(DataGridAnatomy.footerPaginationInputContainer(), footerPaginationInputContainerClassName)}>
                     {(data.length > 0) && <NumberInput
                         discrete
                         value={table.getState().pagination.pageIndex + 1}
                         min={1}
-                        max={table.getPageCount()}
                         onChange={v => {
                             const page = v ? v - 1 : 0
                             startTransition(() => {
-                                table.setPageIndex(page)
+                                if (v <= table.getPageCount()) {
+                                    table.setPageIndex(page)
+                                }
                             })
                         }}
                         className={"inline-flex flex-none items-center w-[3rem]"}
@@ -602,8 +633,10 @@ function DataGridSearchInput(props: DataGridSearchInputProps & TextInputProps) {
             {...rest}
             value={value}
             onChange={e => setValue(e.target.value)}
-            leftIcon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-[--muted]">
+            leftIcon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                           stroke="currentColor"
+                           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                           className="w-5 h-5 text-[--muted]">
                 <circle cx="11" cy="11" r="8"/>
                 <path d="m21 21-4.3-4.3"/>
             </svg>}

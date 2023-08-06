@@ -1,4 +1,4 @@
-import { useDataGridSize } from "./use-datagrid-size.ts"
+import { useDataGridSize } from "./use-datagrid-size"
 import React from "react"
 import { Table } from "@tanstack/react-table"
 
