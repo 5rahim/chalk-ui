@@ -479,7 +479,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                         )}
 
                         {/*Skeleton*/}
-                        {(isInLoadingState && displayedRows.length === 0) && [...Array(Number(table.getState().pagination.pageSize)).keys()].map((i, idx) => (
+                        {(isInLoadingState && displayedRows.length === 0) && [...Array(5).keys()].map((i, idx) => (
                             <Skeleton key={idx} className={"rounded-none h-12"}/>
                         ))}
 

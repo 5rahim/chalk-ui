@@ -1,12 +1,12 @@
-import type {Meta, StoryObj} from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react"
 import React from "react"
-import {DatagridTest} from "../components/datagrid-test/datagrid-test"
-import {DatagridEditingTest} from "../components/datagrid-test/datagrid-editing-test"
-import {DatagridServerSideTest} from "../components/datagrid-test/datagrid-server-side-test.tsx"
-import {DatagridWithApiTest} from "../components/datagrid-test/datagrid-with-api-test"
+import { DatagridTest } from "../components/datagrid-test/datagrid-test"
+import { DatagridEditingTest } from "../components/datagrid-test/datagrid-editing-test"
+import { DatagridServerSideTest } from "../components/datagrid-test/datagrid-server-side-test"
+import { DatagridWithApiTest } from "../components/datagrid-test/datagrid-with-api-test"
 import {
     DatagridEditingServerSideValidationTest
-} from "../components/datagrid-test/datagrid-editing-server-side-validation-test.tsx";
+} from "../components/datagrid-test/datagrid-editing-server-side-validation-test";
 
 const meta = {
     title: "Advanced/DataGrid",
@@ -46,15 +46,15 @@ export const EditingWithOptimisticUpdates: Story = {
         }}
     />,
 }
-export const EditingWithOptimisticUpdatesError: Story = {
-    render: () => <DatagridEditingTest
-        tableProps={{
-            optimisticUpdatePrimaryKey: "id",
-            enableOptimisticUpdates: true,
-            validationSchema: undefined,
-        }}
-    />,
-}
+// export const EditingWithOptimisticUpdatesError: Story = {
+//     render: () => <DatagridEditingTest
+//         tableProps={{
+//             optimisticUpdatePrimaryKey: "id",
+//             enableOptimisticUpdates: true,
+//             validationSchema: undefined,
+//         }}
+//     />,
+// }
 
 export const EditingWithServerSideValidation: Story = {
     render: () => <DatagridEditingServerSideValidationTest/>,

@@ -37,16 +37,16 @@ import { TimeValue } from "react-aria"
 /**
  * Add the BasicField types to any Field
  */
-interface FieldBaseProps extends Omit<BasicFieldOptions, "name"> {
+export interface FieldBaseProps extends Omit<BasicFieldOptions, "name"> {
     name: string
     onChange?: any
     onBlur?: any
     isRequired?: boolean
 }
 
-type FieldComponent<T> = T & FieldBaseProps
+export type FieldComponent<T> = T & FieldBaseProps
 
-interface FieldProps extends React.ComponentPropsWithRef<"div"> {
+export interface FieldProps extends React.ComponentPropsWithRef<"div"> {
 }
 
 const _Field = () => <></>
@@ -66,7 +66,7 @@ const _Field = () => <></>
  * </Controller>
  * @param InputComponent
  */
-function withControlledInput<T extends FieldBaseProps>(InputComponent: React.FC<T>) {
+export function withControlledInput<T extends FieldBaseProps>(InputComponent: React.FC<T>) {
     return forwardRef<FieldProps, T>(
         (inputProps, ref) => {
             const { control, formState, ...context } = useFormContext()

@@ -1,15 +1,15 @@
-import React, {useEffect, useMemo, useState} from "react"
-import {createDataGridColumns, DataGridProps, DataGridWithApi, useDataGrid} from "../ui/datagrid"
-import {Badge} from "../ui/badge"
-import {DropdownMenu} from "../ui/dropdown-menu"
-import {IconButton} from "../ui/button"
-import {BiDotsHorizontal} from "@react-icons/all-files/bi/BiDotsHorizontal"
-import {BiFolder} from "@react-icons/all-files/bi/BiFolder"
-import {BiLowVision} from "@react-icons/all-files/bi/BiLowVision"
-import {BiBasket} from "@react-icons/all-files/bi/BiBasket"
-import {BiCheck} from "@react-icons/all-files/bi/BiCheck"
-import {BiEditAlt} from "@react-icons/all-files/bi/BiEditAlt"
-import {newProduct, Product, range} from "./datagrid-fake-api.ts";
+import React, { useEffect, useMemo, useState } from "react"
+import { createDataGridColumns, DataGridProps, DataGridWithApi, useDataGrid } from "../ui/datagrid"
+import { Badge } from "../ui/badge"
+import { DropdownMenu } from "../ui/dropdown-menu"
+import { IconButton } from "../ui/button"
+import { BiDotsHorizontal } from "@react-icons/all-files/bi/BiDotsHorizontal"
+import { BiFolder } from "@react-icons/all-files/bi/BiFolder"
+import { BiLowVision } from "@react-icons/all-files/bi/BiLowVision"
+import { BiBasket } from "@react-icons/all-files/bi/BiBasket"
+import { BiCheck } from "@react-icons/all-files/bi/BiCheck"
+import { BiEditAlt } from "@react-icons/all-files/bi/BiEditAlt"
+import { newProduct, Product, range } from "./datagrid-fake-api";
 
 interface DataGridTestProps {
     tableProps?: Partial<DataGridProps<any>>

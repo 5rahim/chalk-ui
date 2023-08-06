@@ -13,11 +13,11 @@ import {
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table"
-import { dataRangeFilter } from "./use-datagrid-filtering.ts"
+import { dateRangeFilter } from "./use-datagrid-filtering"
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react"
 import { Checkbox } from "../checkbox"
-import { DataGridOnRowEdit, DataGridOnRowValidationError } from "./use-datagrid-editing.ts"
-import { DataGridOnRowSelect } from "./use-datagrid-row-selection.ts"
+import { DataGridOnRowEdit, DataGridOnRowValidationError } from "./use-datagrid-editing"
+import { DataGridOnRowSelect } from "./use-datagrid-row-selection"
 import { AnyZodObject } from "zod";
 
 export type DataGridInstanceProps<T extends Record<string, any>> = {
@@ -240,7 +240,7 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridInstan
         getSortedRowModel: enableManualSorting ? undefined : getSortedRowModel(),
         getFilteredRowModel: enableManualFiltering ? undefined : getFilteredRowModel(),
         filterFns: {
-            dateRangeFilter: dataRangeFilter,
+            dateRangeFilter: dateRangeFilter,
             ...filterFns,
         },
         manualPagination: enableManualPagination,

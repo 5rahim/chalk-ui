@@ -3,10 +3,10 @@
 import React from "react"
 import { cn, ComponentWithAnatomy, defineStyleAnatomy } from "../core"
 import { cva } from "class-variance-authority"
-import { DataGridEditingHelper } from "./helpers.ts"
+import { DataGridEditingHelper } from "./helpers"
 import { z, ZodTypeAny } from "zod"
 import { Cell, Row, Table } from "@tanstack/react-table"
-import { DataGridValidationRowErrors } from "./use-datagrid-editing.ts";
+import { DataGridValidationRowErrors } from "./use-datagrid-editing";
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

@@ -13,7 +13,6 @@ import { CloseButton, CloseButtonProps } from "../button"
 export const DrawerAnatomy = defineStyleAnatomy({
     panel: cva([
         "UI-Drawer__panel",
-        "pointer-events-auto relative"
     ], {
         variants: {
             size: { md: "", lg: "", xl: "", full: "" },
@@ -166,6 +165,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>((props, ref)
                                 >
                                     <Dialog.Panel
                                         className={cn(
+                                            "pointer-events-auto relative",
                                             {
                                                 "w-screen": (placement == "right" || placement == "left" || placement == "top" || placement == "bottom"),
                                                 // Right or Left

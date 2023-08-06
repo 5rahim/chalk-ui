@@ -4,7 +4,7 @@ import { HorizontalNav } from "../components/ui/horizontal-nav"
 import { DropdownMenu } from "../components/ui/dropdown-menu"
 import { Avatar, AvatarShowcase } from "../components/ui/avatar"
 import React from "react"
-import { DemoNavigationItems } from "../components/demo.tsx"
+import { DemoNavigationItems } from "../components/demo"
 
 const meta = {
     title: "Components/Navigation/Navbar",

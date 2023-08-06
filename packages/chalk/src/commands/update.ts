@@ -30,19 +30,19 @@ export const update = new Command()
 
         if (!proceed) process.exit(0)
 
-        const { dir, willInstall, maintainStyling } = await prompts([
+        const { dir, willInstall } = await prompts([
             {
                 type: "text",
                 name: "dir",
                 message: "Where are your components located?",
                 initial: projectInfo?.srcDir ? "./src/components/ui" : "./components/ui",
             },
-            {
-                type: "confirm",
-                name: "maintainStyling",
-                message: "Do you want to maintain your current component styles (anatomy classes)?",
-                initial: true,
-            },
+            // {
+            //     type: "confirm",
+            //     name: "maintainStyling",
+            //     message: "Do you want to maintain your current component styles (anatomy classes)?",
+            //     initial: true,
+            // },
             {
                 type: "confirm",
                 name: "willInstall",
@@ -50,6 +50,8 @@ export const update = new Command()
                 initial: true,
             }
         ])
+
+        const maintainStyling = false
 
         // Get available components
         const availableComponents = getAvailableComponents()

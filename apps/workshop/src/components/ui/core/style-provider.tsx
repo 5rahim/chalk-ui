@@ -9,7 +9,7 @@ import React from "react"
  * @internal UI Folder scope
  */
 type Lng = "fr" | "en" // DEVNOTE Add new lang keywords to maintain type safety
-type UILocaleConfig = {
+export type UILocaleConfig = {
     locale: Lng,
     countryLocale: string,
     country: string

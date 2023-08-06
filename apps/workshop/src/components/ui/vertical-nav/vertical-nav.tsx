@@ -49,10 +49,11 @@ export const VerticalNavAnatomy = defineStyleAnatomy({
 export interface VerticalNavProps extends React.ComponentPropsWithRef<"div">, ComponentWithAnatomy<typeof VerticalNavAnatomy> {
     children?: React.ReactNode
     items: {
-        name: string,
-        href?: string | null | undefined,
-        icon?: ((props: any) => JSX.Element) | null | undefined,
-        isCurrent?: boolean,
+        name: string
+        href?: string | null | undefined
+        icon?: ((props: any) => JSX.Element) | null | undefined
+        isCurrent?: boolean
+        onClick?: React.MouseEventHandler<HTMLElement>
         addon?: React.ReactNode
         content?: React.ReactNode
     }[]
@@ -89,6 +90,7 @@ export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((p
                     )}
                     aria-current={item.isCurrent ? "page" : undefined}
                     data-selected={item.isCurrent}
+                    onClick={item.onClick}
                 >
                     {item.icon && <item.icon
                         className={cn(
@@ -117,6 +119,7 @@ export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((p
                                 )}
                                 aria-current={item.isCurrent ? "page" : undefined}
                                 data-selected={item.isCurrent}
+                                onClick={item.onClick}
                             >
                                 <div className="w-full flex items-center">
                                     {item.icon && <item.icon

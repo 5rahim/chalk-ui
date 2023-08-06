@@ -159,6 +159,6 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
 }
 
 
-const isArrayEqual = function (x, y) {
+const isArrayEqual = function (x: Array<Record<string, any>>, y: Array<Record<string, any>>) {
     return _(x).differenceWith(y, _.isEqual).isEmpty()
 }

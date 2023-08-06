@@ -1,9 +1,9 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react"
-import {createDataGridColumns, DataGridWithApi, useDataGrid} from "../ui/datagrid"
-import {createTypesafeFormSchema} from "../ui/typesafe-form"
-import {TextInput} from "../ui/text-input"
-import {NumberInput} from "../ui/number-input"
-import {newProduct, Product, range} from "./datagrid-fake-api.ts";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { createDataGridColumns, DataGridWithApi, useDataGrid } from "../ui/datagrid"
+import { createTypesafeFormSchema } from "../ui/typesafe-form"
+import { TextInput } from "../ui/text-input"
+import { NumberInput } from "../ui/number-input"
+import { newProduct, Product, range } from "./datagrid-fake-api";
 
 interface DataGridEditingTestProps {
     children?: React.ReactNode
