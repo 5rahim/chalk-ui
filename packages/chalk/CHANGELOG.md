@@ -1,5 +1,15 @@
 # @rahimstack/chalk-ui
 
+## 0.6.0
+
+### Minor Changes
+
+- [`8d1489c`](https://github.com/5rahim/chalk-ui/commit/8d1489cc6217278186a70b4118037f196e67d286) Thanks [@5rahim](https://github.com/5rahim)! - Changes
+
+  - [BREAKING] **DataGrid**: Refactored component, added more features.
+  - [BREAKING] **TypesafeForm**: Refactored form component, fixed bugs.
+  - Improved other components
+
 ## 0.5.8
 
 ### Patch Changes
