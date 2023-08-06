@@ -1,18 +1,18 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react"
-import {createDataGridColumns, DataGrid} from "@/components/ui/datagrid"
-import {createTypesafeFormSchema} from "@/components/ui/typesafe-form"
-import {fetchFakeData, makeData, Product} from "@/components/examples/datagrid-fake-api"
-import {BiFolder} from "@react-icons/all-files/bi/BiFolder"
-import {BiCheck} from "@react-icons/all-files/bi/BiCheck"
-import {BiBasket} from "@react-icons/all-files/bi/BiBasket"
-import {BiLowVision} from "@react-icons/all-files/bi/BiLowVision"
-import {BiDotsHorizontal} from "@react-icons/all-files/bi/BiDotsHorizontal"
-import {BiEditAlt} from "@react-icons/all-files/bi/BiEditAlt"
-import {Badge} from "@/components/ui/badge"
-import {DropdownMenu} from "@/components/ui/dropdown-menu"
-import {IconButton} from "@/components/ui/button"
-import {TextInput} from "@/components/ui/text-input"
-import {BiCalendar} from "@react-icons/all-files/bi/BiCalendar"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { createDataGridColumns, DataGrid } from "@/components/ui/datagrid"
+import { createTypesafeFormSchema } from "@/components/ui/typesafe-form"
+import { fetchFakeData, makeData, Product } from "@/components/examples/datagrid-fake-api"
+import { BiFolder } from "@react-icons/all-files/bi/BiFolder"
+import { BiCheck } from "@react-icons/all-files/bi/BiCheck"
+import { BiBasket } from "@react-icons/all-files/bi/BiBasket"
+import { BiLowVision } from "@react-icons/all-files/bi/BiLowVision"
+import { BiDotsHorizontal } from "@react-icons/all-files/bi/BiDotsHorizontal"
+import { BiEditAlt } from "@react-icons/all-files/bi/BiEditAlt"
+import { Badge } from "@/components/ui/badge"
+import { DropdownMenu } from "@/components/ui/dropdown-menu"
+import { IconButton } from "@/components/ui/button"
+import { TextInput } from "@/components/ui/text-input"
+import { BiCalendar } from "@react-icons/all-files/bi/BiCalendar"
 
 const schema = createTypesafeFormSchema(({z}) => z.object({
     name: z.string().min(3),
@@ -99,8 +99,7 @@ export function DataGridEditingExample() {
             size: 40,
             meta: {
                 ...withEditing({
-                    schema: schema,
-                    key: "name",
+                    zodType: schema.shape.name,
                     field: (ctx) => {
                         return (
                             <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")}
