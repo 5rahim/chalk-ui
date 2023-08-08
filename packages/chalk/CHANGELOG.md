@@ -1,5 +1,13 @@
 # @rahimstack/chalk-ui
 
+## 0.6.1
+
+### Patch Changes
+
+- [`0aa790f`](https://github.com/5rahim/chalk-ui/commit/0aa790f49bfa24dc7be61c8140c18e43cad610ff) Thanks [@5rahim](https://github.com/5rahim)! - Changes
+
+  - **DataGrid**: Fixed row selection with active filters
+
 ## 0.6.0
 
 ### Minor Changes
