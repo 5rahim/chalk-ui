@@ -1,4 +1,4 @@
-import { PropsTable } from "../../components/table/option-table";
+import {PropsTable} from "../../components/table/option-table";
 
 ## Responsive Table
 
@@ -49,7 +49,7 @@ export function Demo() {
     return (
         <DataGrid<Product>
             columns={columns}
-            {...data}
+            {...props}
             hideColumns={[
                 { below: 850, hide: ["availability", "price"] },
                 { below: 600, hide: ["_actions"] },

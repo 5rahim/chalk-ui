@@ -62,7 +62,7 @@ export function useFakeMutation(
     }
 }
 
-export function DataGridEditingExample() {
+export function DataGridEditingOptimisticExample() {
 
     const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
 
@@ -80,6 +80,7 @@ export function DataGridEditingExample() {
     const { mutate, isLoading: isMutating } = useFakeMutation({
         onSuccess: data => {
             if (data) {
+                setEditedData((prev: any) => ({ mutating: false, data: prev["data"] }))
                 setClientData(data)
             }
         },
@@ -164,10 +165,12 @@ export function DataGridEditingExample() {
                 isLoading={!clientData}
                 isDataMutating={isMutating}
                 onRowEdit={event => {
-                    setEditedData({ data: event.data })
+                    setEditedData({ mutating: true, data: event.data })
                     mutate(event.data)
                 }}
                 enableGlobalFilter={false}
+                enableOptimisticUpdates
+                optimisticUpdatePrimaryKey={"id"}
             />
         </>
     )

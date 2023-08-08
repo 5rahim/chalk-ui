@@ -244,6 +244,8 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridInstan
             ...filterFns,
         },
         manualPagination: enableManualPagination,
+        manualSorting: enableManualSorting,
+        manualFiltering: enableManualFiltering,
         enableRowSelection: enableRowSelection,
         enableSorting: enableSorting,
         enableColumnFilters: enableColumnFilters,

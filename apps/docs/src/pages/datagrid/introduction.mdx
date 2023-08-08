@@ -123,13 +123,6 @@ export function DataGridMinimalExample() {
 }
 ```
 
-#### Row count
-
-- `rowCount` is used to calculate page count. This value should be the **total** number of rows.
-- On **client pagination**, since the entirety of the data is present you can use the `length()` method.
-- On **server-side pagination**, your query API should return the total row count from the database. This is important as it allows pagination.
-- On client pagination, `rowCount` is updated based on the filters. This is not the case for server-side pagination, so your query API should return the count from filtered data.
-
 #### Loading state
 
 - `isLoading`: When data is coming in for the first time

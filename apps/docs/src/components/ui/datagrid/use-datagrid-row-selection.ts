@@ -44,6 +44,9 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
     // Server mode
     const pageIndex = useMemo(() => table.getState().pagination.pageIndex, [table.getState().pagination.pageIndex])
     const pageSize = useMemo(() => table.getState().pagination.pageSize, [table.getState().pagination.pageSize])
+    const globalFilter = useMemo(() => table.getState().globalFilter, [table.getState().globalFilter])
+    const columnFilters = useMemo(() => table.getState().globalFilter, [table.getState().columnFilters])
+    const sorting = useMemo(() => table.getState().sorting, [table.getState().sorting])
     // Server mode
     const displayedRowsRef = useRef<Row<T>[]>(displayedRows)
     // Server mode
@@ -108,7 +111,7 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
             })
         }
 
-    }, [pageIndex, pageSize, displayedRows])
+    }, [pageIndex, pageSize, displayedRows, globalFilter, columnFilters, sorting])
 
     /** Client-side row selection **/
     useEffect(() => {

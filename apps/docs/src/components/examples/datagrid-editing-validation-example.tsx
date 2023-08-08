@@ -7,11 +7,6 @@ import { TextInput } from "@/components/ui/text-input"
 
 const schema = createTypesafeFormSchema(({ z }) => z.object({
     name: z.string().min(3),
-    price: z.number().min(3),
-    category: z.string().nullable(),
-    availability: z.string(),
-    visible: z.boolean(),
-    random_date: z.date(),
 }))
 
 async function fetchFakeData() {
@@ -62,7 +57,7 @@ export function useFakeMutation(
     }
 }
 
-export function DataGridEditingExample() {
+export function DataGridEditingValidationExample() {
 
     const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
 
@@ -168,6 +163,7 @@ export function DataGridEditingExample() {
                     mutate(event.data)
                 }}
                 enableGlobalFilter={false}
+                validationSchema={schema}
             />
         </>
     )

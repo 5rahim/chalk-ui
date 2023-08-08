@@ -1,0 +1,86 @@
+import {DatagridServerPaginationExample} from "../../components/examples/datagrid-server-pagination-example";
+import Preview from "../../components/Preview";
+
+## Pagination
+
+Pagination is handled on the client by default.
+
+### Initial state
+
+```tsx showLineNumbers
+<DataGrid<T>
+    {...props}
+    initialState={{
+        pagination: {
+            pageIndex: 0,
+            pageSize: 5,
+        }
+    }}
+/>
+```
+
+### Row count
+
+- `rowCount` is used to calculate the page count. This value should be the **total** number of rows.
+
+#### Client-side
+
+- Use the `length()` method.
+- `rowCount` is automatically updated based on the filters.
+
+#### Server-side
+
+- Your query API should return the total row count from the database.
+- If you're filtering from the server, you should update `rowCount` based on the filtered data.
+
+### Server-side/Manual
+
+When your dataset is too large, you can use server-side pagination and only fetch the current page.
+
+- Set `enableManualPagination` to `true` and track the current state manually.
+
+<Preview contentClassName={"max-w-full"}>
+    <DatagridServerPaginationExample/>
+</Preview>
+
+```tsx showLineNumbers {5,31-35}
+import { createDataGridColumns, DataGrid } from "@/components/ui/datagrid"
+import { PaginationState } from "@tanstack/react-table"
+
+function Demo() {
+    const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 5 })
+
+    const { data, isLoading, isFetching } = useFakeQuery({
+        queryKey: [
+            "table-data",
+            pagination, // Refetch when pagination model changes
+        ],
+        queryFn: async () => {
+            const fetchURL = new URL("/api/data", "http://localhost:3000")
+            fetchURL.searchParams.set("limit", String(pagination.pageSize))
+            fetchURL.searchParams.set("offset", String(pagination.pageSize * (pagination.pageIndex)))
+            const res = await fetch(fetchURL.href)
+            return (await res.json())
+        },
+        keepPreviousData: true,
+    })
+
+    const columns = useMemo(() => createDataGridColumns<Product>(() => [...]))
+
+    return (
+        <DataGrid<Product>
+            data={data}
+            columns={columns}
+            rowCount={data?.meta?.totalRowCount ?? 0}
+            isLoading={isLoading}
+            isDataMutating={isFetching}
+            state={{
+                pagination,
+            }}
+            onPaginationChange={setPagination}
+            enableManualPagination={true}
+        />
+    )
+
+}
+```

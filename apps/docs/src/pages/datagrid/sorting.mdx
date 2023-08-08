@@ -32,7 +32,7 @@ const columns = useMemo(() => createDataGridColumns<Product>(() => [
 function Demo() {
     return (
         <DataGrid<Product>
-            {...data}
+            {...props}
             enableSorting={false}
         />
     )
@@ -66,12 +66,13 @@ function Demo() {
             columns={columns}
             data={data}
             rowCount={data?.meta?.totalRowCount ?? 0}
-            isLoading={isLoading || isFetching}
+            isLoading={isLoading}
             state={{
                 sorting,
             }}
             onSortingChange={setSorting}
-            enableManualSorting
+            enableManualSorting={true}
+            isDataMutating={isFetching}
         />
     )
 

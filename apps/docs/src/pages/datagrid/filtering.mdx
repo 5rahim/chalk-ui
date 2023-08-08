@@ -129,7 +129,7 @@ export function Demo() {
 function Demo() {
     return (
         <DataGrid<Product>
-            {...data}
+            {...props}
             enableColumnFilters={false}
             enableGlobalFilter={false}
         />
@@ -139,8 +139,9 @@ function Demo() {
 
 ### Server-side/Manual
 
-When you have a lot of data that needs to be filtered on the server, instead of client-side,
-you will want to set the `enableServerSideFiltering` to `true` and manage the server-side model.
+Filtering can be done server-side by setting `enableManualFiltering` to `true`.
+
+- `enableManualFiltering` will disable client-side filtering and let you control it manually
 
 ```tsx showLineNumbers {5-6,30,32-38}
 import { createDataGridColumns, DataGrid } from "@/components/ui/datagrid"
@@ -173,14 +174,15 @@ function Demo() {
             data={data}
             columns={columns}
             rowCount={data?.meta?.totalRowCount ?? 0}
-            isLoading={isLoading || isFetching}
+            isLoading={isLoading}
             state={{
                 globalFilter,
                 columnFilters,
             }}
             onGlobalFilterChange={setGlobalFilter}
             onColumnFiltersChange={setColumnFilters}
-            enableManualFiltering
+            enableManualFiltering={true}
+            isDataMutating={isFetching}
         />
     )
 

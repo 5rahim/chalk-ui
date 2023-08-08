@@ -1,0 +1,40 @@
+import {DatagridRowSelectionExample} from "../../components/examples/datagrid-row-selection-example";
+import Preview from "../../components/Preview";
+import {DatagridServerRowSelectionExample} from "../../components/examples/datagrid-server-row-selection-example";
+
+## Row selection
+
+```tsx
+<DataGrid<T>
+    {...props}
+    enableRowSelection={true}
+/>
+```
+
+<Preview contentClassName={"max-w-full"}>
+    <DatagridRowSelectionExample/>
+</Preview>
+
+
+### Server-side
+
+By default, row selection only works on available rows, meaning the rows that are fetched.
+When using server-side pagination, if you want the data grid to keep track of rows selected on previous pages, set
+`enablePersistentRowSelection` to `true`.
+
+You will have to provide a `rowSelectionPrimaryKey` to let the data grid identify rows from a column with unique values.
+
+
+```tsx {5-6}
+<DataGrid<T>
+    {...props}
+    enableManualPagination={true}
+    enableRowSelection={true}
+    enablePersistentRowSelection={true}
+    rowSelectionPrimaryKey={"id"}
+/>
+```
+
+<Preview contentClassName={"max-w-full"}>
+    <DatagridServerRowSelectionExample/>
+</Preview>

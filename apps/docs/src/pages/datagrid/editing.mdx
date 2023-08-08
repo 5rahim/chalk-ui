@@ -1,3 +1,8 @@
+import {DataGridEditingExample} from "../../components/examples/datagrid-editing-example";
+import Preview from "../../components/Preview";
+import {DataGridEditingOptimisticExample} from "../../components/examples/datagrid-editing-optimistic-example";
+import {DataGridEditingValidationExample} from "../../components/examples/datagrid-editing-validation-example";
+
 ## Editing
 
 ### Requirements
@@ -71,26 +76,43 @@ export function DataGridEditingExample() {
 }
 ```
 
-### withEditing
+<Preview contentClassName={"max-w-full"}>
+    <DataGridEditingExample/>
+</Preview>
 
-#### Type
+#### withEditing
 
-```tsx /schema.shape.name/ /string/
+##### Type
+
+The type will be passed down to the context.
+
+```tsx /schema.shape.name/ /<string>/
+const schema = createTypesafeFormSchema(({z}) => z.object({
+    name: z.string(),
+    ...
+}))
+
+// Column def
+
 meta: {
     ...withEditing({
         zodType: schema.shape.name, // Define type from zod
-        // field: ...,
+        field: (ctx) => {
+            console.log(ctx.value) // string
+        },
     }),
 }
 
 meta: {
     ...withEditing<string>({ // Or define it from generics
-        // field: ...,
+        field: (ctx) => {
+            console.log(ctx.value) // string
+        },
     }),
 }
 ```
 
-#### Edit field
+##### Edit field component
 
 ```tsx
 {
@@ -106,7 +128,7 @@ meta: {
 
                 return (
                     <TextInput
-                        value={ctx.value} // Value is typed
+                        value={ctx.value}
                         onChange={e => ctx.onChange(e.target.value ?? "")}
                         ref={ctx.ref} // focus() is called when the user double-clicks a cell
                         intent={"unstyled"}
@@ -119,17 +141,50 @@ meta: {
 ```
 
 - **context**
-  - `value`: Controlled value
-  - `onChange`: Value updater
-  - `ref`
+- `value`: Controlled value
+- `onChange`: Value updater
+- `ref`
 - **options**
-  - `rowErrors`: Validation errors. Type: `Array<{ rowId: string, key: string, message: string }>`
-  - `rowId`: The row ID
-  - `key`: The column key
-  - `message`: The error message
-  - `table`
-  - `row`
-  - `cell`
+- `rowErrors`: Validation errors. Type: `Array<{ rowId: string, key: string, message: string }>`
+- `rowId`: The row ID
+- `key`: The column key
+- `message`: The error message
+- `table`
+- `row`
+- `cell`
+
+### Validation
+
+Validation is done using `zod` and is automatically handled by DataGrid when you provide `validationSchema`.
+
+```tsx showLineNumbers {1-3,11,21}
+const schema = createTypesafeFormSchema(({ z }) => z.object({
+    name: z.string().min(3),
+}))
+
+const columns = useMemo(() => createDataGridColumns<Product>(({ withEditing }) => [
+    {
+        accessorKey: "name",
+        header: "Name",
+        meta: {
+            ...withEditing({
+                zodType: schema.shape.name,
+                field: (ctx) => {},
+            }),
+        }
+    },
+    ...rest
+]), [])
+
+<DataGrid<T>
+    {...props}
+    validationSchema={schema}
+/>
+```
+
+<Preview contentClassName={"max-w-full"}>
+    <DataGridEditingValidationExample/>
+</Preview>
 
 ### Events
 
@@ -180,19 +235,26 @@ meta: {
 />
 ```
 
+<Preview contentClassName={"max-w-full"}>
+    <DataGridEditingOptimisticExample/>
+</Preview>
+
 ### Server-side validation
 
-Server-side validation can be done using `zod` schemas.
+Server-side validation can be handled using `zod` schemas.
 
-```tsx showLineNumbers /nameValidation/
-
+```tsx showLineNumbers {7-14,17,28,29}
 const { data, isLoading, refetch } = useFakeQuery({ ...queryOptions })
 
 const { mutate, isMutating } = useFakeMutation({ ...mutationOptions })
 
+const [isValidating, setIsValidating] = useState(false) // Block events by tracking the validation status
+
 const nameValidation = useRef(
     async (value: string) => {
+        setIsValidating(true)
         const res = await getNameValidation(value) // Server-side validation
+        setIsValidating(false)
         return res.isUnique
     }
 )
@@ -209,7 +271,7 @@ return (
     <DataGrid<Product>
         {...props}
         isLoading={isLoading}
-        isDataMutation={isMutating || isValidating}
+        isDataMutating={isMutating || isValidating}
         validationSchema={schema}
     />
 )
