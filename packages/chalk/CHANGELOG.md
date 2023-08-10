@@ -1,5 +1,11 @@
 # @rahimstack/chalk-ui
 
+## 0.6.2
+
+### Patch Changes
+
+- [`ee10cbb`](https://github.com/5rahim/chalk-ui/commit/ee10cbb5e5c5918595051291b23840aa6aad752b) Thanks [@5rahim](https://github.com/5rahim)! - Update dependencies
+
 ## 0.6.1
 
 ### Patch Changes
