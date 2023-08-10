@@ -1,5 +1,11 @@
 # @rahimstack/chalk-ui
 
+## 0.6.3
+
+### Patch Changes
+
+- [`2c687ec`](https://github.com/5rahim/chalk-ui/commit/2c687ece7330c8ebfe9a89fc597fcfabe5a39541) Thanks [@5rahim](https://github.com/5rahim)! - Fixed incorrect dependency version
+
 ## 0.6.2
 
 ### Patch Changes
