@@ -31,9 +31,10 @@ export const mainDependencies: DependencyDef[] = [
     ["tailwind-merge", "^1.14.0", ""],
     ["@tailwindcss/typography", "^0.5.9", ""],
     ["@tailwindcss/forms", "^0.5.4", ""],
-    ["@headlessui/tailwindcss", "@0.2.0", ""],
+    ["@headlessui/tailwindcss", "^0.2.0", ""],
 ]
-export type MainDependencies = keyof typeof mainDependencies;
+
+export type MainDependencies = keyof typeof mainDependencies
 
 export const init = new Command()
     .name("init")
