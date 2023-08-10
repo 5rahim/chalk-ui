@@ -249,12 +249,12 @@
     "dependencies": [
       [
         "@internationalized/date",
-        "^3.3.0",
+        "^3.4.0",
         ""
       ],
       [
         "react-stately",
-        "^3.24.0",
+        "^3.25.0",
         ""
       ],
       [
@@ -330,7 +330,7 @@
     "dependencies": [
       [
         "recharts",
-        "^2.7.2",
+        "^2.7.3",
         ""
       ]
     ],
@@ -452,12 +452,12 @@
     "dependencies": [
       [
         "@zag-js/combobox",
-        "^0.13.0",
+        "^0.15.0",
         ""
       ],
       [
         "@zag-js/react",
-        "^0.13.0",
+        "^0.15.0",
         ""
       ]
     ],
@@ -537,7 +537,7 @@
       ],
       [
         "@internationalized/date",
-        "^3.3.0",
+        "^3.4.0",
         ""
       ],
       [
@@ -640,12 +640,12 @@
     "dependencies": [
       [
         "@internationalized/date",
-        "^3.3.0",
+        "^3.4.0",
         ""
       ],
       [
         "react-stately",
-        "^3.24.0",
+        "^3.25.0",
         ""
       ]
     ],
@@ -933,12 +933,12 @@
     "dependencies": [
       [
         "@zag-js/number-input",
-        "^0.13.0",
+        "^0.15.0",
         ""
       ],
       [
         "@zag-js/react",
-        "^0.13.0",
+        "^0.15.0",
         ""
       ]
     ],
@@ -1025,7 +1025,7 @@
       ],
       [
         "react-phone-number-input",
-        "^3.3.1",
+        "^3.3.2",
         ""
       ]
     ],
@@ -1124,12 +1124,12 @@
     "dependencies": [
       [
         "@zag-js/radio-group",
-        "^0.13.0",
+        "^0.15.0",
         ""
       ],
       [
         "@zag-js/react",
-        "^0.13.0",
+        "^0.15.0",
         ""
       ]
     ],
@@ -1411,7 +1411,7 @@
       ],
       [
         "@internationalized/date",
-        "^3.3.0",
+        "^3.4.0",
         ""
       ],
       [
@@ -1426,7 +1426,7 @@
       ],
       [
         "@hookform/resolvers",
-        "^3.1.1",
+        "^3.2.0",
         ""
       ]
     ],

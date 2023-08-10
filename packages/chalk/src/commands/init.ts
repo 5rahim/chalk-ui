@@ -22,13 +22,16 @@ const ChalkASCII = `       _           _ _
                           `
 
 export const mainDependencies: DependencyDef[] = [
-    ["class-variance-authority", "^0.6.1", ""],
-    ["react-aria", "^3.26.0", ""],
+    ["class-variance-authority", "^0.7.0", ""],
+    ["react-aria", "^3.27.0", ""],
     ["lodash", "^4.17.21", ""],
-    ["@types/lodash", "^4.14.195", "-D"],
+    ["@types/lodash", "^4.14.197", "-D"],
     ["tailwindcss-animate", "latest", ""],
-    ["clsx", "^1.2.1", ""],
-    ["tailwind-merge", "^1.13.2", ""]
+    ["clsx", "^2.0.0", ""],
+    ["tailwind-merge", "^1.14.0", ""],
+    ["@tailwindcss/typography", "^0.5.9", ""],
+    ["@tailwindcss/forms", "^0.5.4", ""],
+    ["@headlessui/tailwindcss", "@0.2.0", ""],
 ]
 export type MainDependencies = keyof typeof mainDependencies;
 
