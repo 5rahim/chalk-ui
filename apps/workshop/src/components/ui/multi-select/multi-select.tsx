@@ -37,18 +37,18 @@ export const MultiSelectAnatomy = defineStyleAnatomy({
     ]),
     menuItem: cva([
         "UI-MultiSelect__menuItem",
-        "relative cursor-pointer py-2 pl-3 pr-9 rounded-[--radius]"
+        "relative cursor-pointer py-2 pl-3 pr-9 rounded-[--radius]",
     ], {
         variants: {
             highlighted: {
-                true: "hover:bg-[--highlight]",
+                true: "bg-[--highlight]",
                 false: null,
             },
         },
     }),
     menuItemImage: cva([
         "UI-MultiSelect__menuItemImage",
-        "flex-none justify-center w-8 h-8 mr-3 rounded-full overflow-hidden relative bg-slate-200"
+        "flex-none justify-center w-8 h-8 mr-3 rounded-full overflow-hidden relative bg-slate-200",
     ]),
 })
 
@@ -119,66 +119,53 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
 
     // Control value
     useEffect(() => {
-        if (value) setValues(value)
+        startTransition(() => {
+            if (value) setValues(value)
+        })
     }, [value])
 
-    // Emit changes
-    function handleChange(v: MultiSelectOption["value"][]) {
-        onChange && onChange(v)
-    }
+    useEffect(() => {
+        onChange && onChange(values)
+    }, [values])
 
-    function handleAddValue(value: string) {
-        if (!!max) {
-            // Simply add new value
-            if (max !== 1 && values.length < max) {
-                setValues(v => {
-                    const newValue = [...v, value]
-                    handleChange(newValue)
-                    return newValue
-                })
-            }
-            // Truncate and add new value
-            if (max !== 1 && values.length >= max) {
-                setValues(v => {
-                    const newValue = [...v.slice(0, v.length - 1), value]
-                    handleChange(newValue)
-                    return newValue
-                })
-            }
-            // Replace current value
-            if (max === 1) {
-                setValues(v => {
-                    const newValue = [value]
-                    handleChange(newValue)
-                    return newValue
-                })
-            }
-        } else {
+
+    const handleAddValue = useCallback((value: string) => {
+        startTransition(() => {
             setValues(v => {
-                const newValue = [...v, value]
-                handleChange(newValue)
-                return newValue
+                if (!!max) {
+                    // Simply add new value
+                    if (max !== 1 && v.length < max) {
+                        return [...v, value]
+                    }
+                    // Truncate and add new value
+                    if (max !== 1 && v.length >= max) {
+                        return [...v.slice(0, v.length - 1), value]
+                    }
+                    // Replace current value
+                    if (max === 1) {
+                        return [value]
+                    }
+                } else {
+                    return [...v, value]
+                }
+                return v
             })
-        }
-    }
-
-    function handlePopValue() {
-        setValues(v => {
-            const newValue = v.slice(0, v.length - 1)
-            handleChange(newValue)
-            return newValue
         })
-    }
+    }, [max])
 
-    function handleRemoveValue(value: string) {
+    const handlePopValue = useCallback(() => {
         setValues(v => {
-            const newValue = v.filter(a => a !== value)
-            handleChange(newValue)
-            return newValue
+            return v.slice(0, v.length - 1)
         })
-    }
+    }, [])
 
-    const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    const handleRemoveValue = useCallback((value: string) => {
+        setValues(v => {
+            return v.filter(a => a !== value)
+        })
+    }, [])
+
+    function handleKeyDown(event: KeyboardEvent) {
         if (event.key === "Enter" && inputRef.current) {
             // Add the only option
             if (selectOptions.length === 1 && !!selectOptions[0] && tagInputValue.length > 0) {
@@ -195,7 +182,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
         if ((event.key === "Backspace" || event.key === "Delete") && tagInputValue.length === 0) {
             handlePopValue()
         }
-    }, [selectOptions, highlightedOptionIndex, tagInputValue])
+    }
 
     // Handle key navigation
     const handleKeyUp = useCallback((e: KeyboardEvent) => {
@@ -333,7 +320,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                                     e.key === "Enter" && e.preventDefault()
                                 }}
                                 disabled={basicFieldProps.isDisabled || isLoading}
-                                className={cn("outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 !bg-transparent", { "w-1": !inputFocus.isOpen })}
+                                className={cn("p-0 border-none outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 !bg-transparent", { "w-1": !inputFocus.isOpen })}
                                 ref={inputRef}
                             />
 
@@ -364,11 +351,16 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                                                 onClick={() => {
                                                     handleAddValue(o.value)
                                                     setTagInputValue("")
-                                                }}
-                                                onMouseMove={() => {
                                                     startTransition(() => {
-                                                        setHighlightedOptionIndex(index)
+                                                        listDisclosure.close()
+                                                        inputRef.current?.focus()
+                                                        setTimeout(() => {
+                                                            inputFocus.open()
+                                                        }, 200)
                                                     })
+                                                }}
+                                                onMouseEnter={() => {
+                                                    setHighlightedOptionIndex(index)
                                                 }}
                                                 ref={(node) => {
                                                     const map = getMap()

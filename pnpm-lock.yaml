@@ -158,7 +158,7 @@ importers:
         version: 1.14.0
       tailwindcss-animate:
         specifier: latest
-        version: 1.0.6(tailwindcss@3.3.3)
+        version: 1.0.7(tailwindcss@3.3.3)
       use-debounce:
         specifier: ^9.0.4
         version: 9.0.4(react@18.2.0)
@@ -466,7 +466,7 @@ importers:
         version: 1.14.0
       tailwindcss-animate:
         specifier: latest
-        version: 1.0.6(tailwindcss@3.3.3)
+        version: 1.0.7(tailwindcss@3.3.3)
       use-debounce:
         specifier: ^9.0.4
         version: 9.0.4(react@18.2.0)
@@ -17140,8 +17140,8 @@ packages:
       tailwindcss: 3.3.2
     dev: false
 
-  /tailwindcss-animate@1.0.6(tailwindcss@3.3.3):
-    resolution: { integrity: sha512-4WigSGMvbl3gCCact62ZvOngA+PRqhAn7si3TQ3/ZuPuQZcIEtVap+ENSXbzWhpojKB8CpvnIsrwBu8/RnHtuw== }
+  /tailwindcss-animate@1.0.7(tailwindcss@3.3.3):
+    resolution: { integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA== }
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
     dependencies:

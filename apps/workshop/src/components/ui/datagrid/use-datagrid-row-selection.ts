@@ -1,6 +1,6 @@
 import { startTransition, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { Row, Table } from "@tanstack/react-table"
-import _ from "lodash"
+import deepEquals from "fast-deep-equal"
 
 /**
  * DataGrid Prop
@@ -97,17 +97,19 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
                 displayedRowsRef.current = displayedRows // Actualize displayed row
             })
 
-            displayedRows.map(displayedRow => {
-                if (nonexistentSelectedRows.some(row => row.id === displayedRow.original[key])) {
-                    // If the currently displayed row is in the nonexistent array but isn't selected, select it
-                    if (displayedRow.getCanSelect() && !displayedRow.getIsSelected()) {
-                        displayedRow.toggleSelected(true)
-                        // Then remove it from nonexistent array
-                        setNonexistentSelectedRows(prev => {
-                            return [...prev.filter(row => row.id !== displayedRow.original[key])]
-                        })
+            startTransition(() => {
+                displayedRows.map(displayedRow => {
+                    if (nonexistentSelectedRows.some(row => row.id === displayedRow.original[key])) {
+                        // If the currently displayed row is in the nonexistent array but isn't selected, select it
+                        if (displayedRow.getCanSelect() && !displayedRow.getIsSelected()) {
+                            displayedRow.toggleSelected(true)
+                            // Then remove it from nonexistent array
+                            setNonexistentSelectedRows(prev => {
+                                return [...prev.filter(row => row.id !== displayedRow.original[key])]
+                            })
+                        }
                     }
-                }
+                })
             })
         }
 
@@ -121,7 +123,7 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
             if (selectedIndices.length > 0) {
 
                 onRowSelect && onRowSelect({
-                    data: data.filter((v, i) => selectedIndices.includes(i)) ?? [],
+                    data: data.filter((v: any, i: number) => selectedIndices.includes(i)) ?? [],
                 })
 
             }
@@ -131,31 +133,26 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
     useEffect(() => {
         /** Server-side row selection **/
         if (persistent && data && data?.length > 0 && canSelect.current && key) {
-            const selectedIndices = Object.keys(rowSelection).map(v => parseInt(v))
-
-            if ((+(Object.keys(rowSelection).length) + (nonexistentSelectedRows.length)) > 0) {
-
-                startTransition(() => {
-                    const result = {
-                        data: [
-                            ...data.filter((v, i) => selectedIndices.includes(i)),
-                            ...nonexistentSelectedRows.map(nr => nr.row.original),
-                        ],
-                    }
-                    // Compare current selection with previous
-                    if (!isArrayEqual(result.data, previousSelectionEvent.current.data)) {
-                        onRowSelect && onRowSelect(result)
-                        previousSelectionEvent.current = result
-                    }
-                })
-
-            }
+            const selectedIndices = new Set<number>(Object.keys(rowSelection).map(v => parseInt(v)))
+            startTransition(() => {
+                const result = {
+                    data: [
+                        ...data.filter((v: any, i: number) => selectedIndices.has(i)),
+                        ...nonexistentSelectedRows.map(nr => nr.row.original),
+                    ],
+                }
+                // Compare current selection with previous
+                if (!isArrayEqual(result.data, previousSelectionEvent.current.data)) {
+                    onRowSelect && onRowSelect(result)
+                    previousSelectionEvent.current = result
+                }
+            })
         }
-    }, [rowSelection])
+    }, [rowSelection, previousSelectionEvent.current])
 
 
     return {
-        // On client-side row selection, the count is simply what is visibly selection. On server-side row selection, the count is what is visible+nonexistent rows
+        // On client-side row selection, the count is simply what is visibly selected. On server-side row selection, the count is what is visible+nonexistent rows
         selectedRowCount: persistent ? +(Object.keys(rowSelection).length) + (nonexistentSelectedRows.length) : Object.keys(rowSelection).length,
     }
 
@@ -163,5 +160,5 @@ export function useDataGridRowSelection<T extends Record<string, any>>(props: Pr
 
 
 const isArrayEqual = function (x: Array<Record<string, any>>, y: Array<Record<string, any>>) {
-    return _(x).differenceWith(y, _.isEqual).isEmpty()
+    return deepEquals(x, y)
 }
