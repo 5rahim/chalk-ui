@@ -1,5 +1,14 @@
 # @rahimstack/chalk-ui
 
+## 0.6.4
+
+### Patch Changes
+
+- [`aed7e17`](https://github.com/5rahim/chalk-ui/commit/aed7e17aec4a065caf41db6f13dead499e47bf97) Thanks [@5rahim](https://github.com/5rahim)! - Changes
+
+  - **DataGrid**: Trigger selection event when unselecting. Fixed server-side row selection with filters.
+  - **MultiSelect**: Fixed bad setState call warning.
+
 ## 0.6.3
 
 ### Patch Changes
