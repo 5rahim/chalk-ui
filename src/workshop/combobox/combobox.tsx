@@ -1,16 +1,14 @@
 "use client"
 
 import { cva } from "class-variance-authority"
-import { ChevronsUpDown } from "lucide-react"
 import * as React from "react"
 import { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandProps } from "../command"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandProps } from "../command"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 import { Popover } from "../popover"
-import { ScrollArea } from "../scroll-area"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -128,8 +126,8 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                         )}
                         {...rest}
                     >
-                        {value
-                            ? options.filter((opt) => value.includes(opt.value)).map(opt => opt.label).join(", ")
+                        {!!value
+                            ? options.find((option) => option.value === value)?.label
                             : placeholder}
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -151,8 +149,8 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                         {...commandProps}
                     >
                         <CommandInput placeholder={placeholder} />
-                        <CommandEmpty>{emptyMessage}</CommandEmpty>
-                        <ScrollArea className="max-h-72">
+                        <CommandList>
+                            <CommandEmpty>{emptyMessage}</CommandEmpty>
                             <CommandGroup>
                                 {options.map((option) => (
                                     <CommandItem
@@ -175,7 +173,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                                                     ComboboxAnatomy.checkIcon(),
                                                     checkIconClass,
                                                 )}
-                                                data-selected={value.includes(option.value)}
+                                                data-selected={option.value === value}
                                             >
                                                 <path d="M20 6 9 17l-5-5" />
                                             </svg>
@@ -185,7 +183,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                                     </CommandItem>
                                 ))}
                             </CommandGroup>
-                        </ScrollArea>
+                        </CommandList>
                     </Command>
                 </Popover>
 

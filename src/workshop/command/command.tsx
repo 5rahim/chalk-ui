@@ -19,7 +19,7 @@ export const CommandAnatomy = defineStyleAnatomy({
     ]),
     inputContainer: cva([
         "UI-Command__input",
-        "flex items-center border-b px-3 py-2",
+        "flex items-center px-3 py-2",
         "cmdk-input-wrapper",
     ]),
     inputIcon: cva([
@@ -28,11 +28,11 @@ export const CommandAnatomy = defineStyleAnatomy({
     ]),
     list: cva([
         "UI-Command__list",
-        "max-h-[300px] overflow-y-auto overflow-x-hidden",
+        "max-h-64 overflow-y-auto overflow-x-hidden",
     ]),
     empty: cva([
         "UI-Command__empty",
-        "py-6 text-center text-sm",
+        "py-6 text-center text-base text-[--muted]",
     ]),
     group: cva([
         "UI-Command__group",

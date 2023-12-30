@@ -1,11 +1,10 @@
 "use client"
 
-import { ChevronsUpDown } from "lucide-react"
 import * as React from "react"
 import { useId } from "react"
 import { BasicField, extractBasicFieldProps } from "../basic-field"
 import { ComboboxAnatomy, ComboboxProps } from "../combobox/combobox"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "../command"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../command"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy } from "../core/styling"
 import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon } from "../input"
@@ -98,7 +97,7 @@ export const Multiselect = React.forwardRef<HTMLButtonElement, MultiselectProps>
                         )}
                         {...rest}
                     >
-                        {value
+                        {!!value.length
                             ? options.filter((opt) => value.includes(opt.value)).map(opt => opt.label).join(", ")
                             : placeholder}
                         <svg
@@ -124,43 +123,45 @@ export const Multiselect = React.forwardRef<HTMLButtonElement, MultiselectProps>
                         {...commandProps}
                     >
                         <CommandInput placeholder={placeholder} />
-                        <CommandEmpty>{emptyMessage}</CommandEmpty>
-                        <CommandGroup>
-                            {options.map((option) => (
-                                <CommandItem
-                                    key={option.value}
-                                    value={option.value}
-                                    onSelect={(currentValue) => {
-                                        onChange(
-                                            currentValue
-                                                ? [...value, currentValue]
-                                                : value.filter((v) => v !== currentValue),
-                                        )
-                                        setOpen(false)
-                                    }}
-                                    leftIcon={
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className={cn(
-                                                ComboboxAnatomy.checkIcon(),
-                                                checkIconClass,
-                                            )}
-                                            data-selected={value.includes(option.value)}
-                                        >
-                                            <path d="M20 6 9 17l-5-5" />
-                                        </svg>
-                                    }
-                                >
-                                    {option.label}
-                                </CommandItem>
-                            ))}
-                        </CommandGroup>
+                        <CommandList>
+                            <CommandEmpty>{emptyMessage}</CommandEmpty>
+                            <CommandGroup>
+                                {options.map((option) => (
+                                    <CommandItem
+                                        key={option.value}
+                                        value={option.value}
+                                        onSelect={(currentValue) => {
+                                            onChange(
+                                                !value.includes(currentValue)
+                                                    ? [...value, currentValue]
+                                                    : value.filter((v) => v !== currentValue),
+                                            )
+                                            setOpen(false)
+                                        }}
+                                        leftIcon={
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className={cn(
+                                                    ComboboxAnatomy.checkIcon(),
+                                                    checkIconClass,
+                                                )}
+                                                data-selected={value.includes(option.value)}
+                                            >
+                                                <path d="M20 6 9 17l-5-5" />
+                                            </svg>
+                                        }
+                                    >
+                                        {option.label}
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        </CommandList>
                     </Command>
                 </Popover>
 

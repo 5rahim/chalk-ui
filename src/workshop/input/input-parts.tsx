@@ -84,10 +84,12 @@ export const InputContainerAnatomy = defineStyleAnatomy({
     ]),
 })
 
-export const InputContainer = ({ className, children }: {
+export type InputContainerProps = {
     className: React.HTMLAttributes<HTMLDivElement>["className"],
     children?: React.ReactNode
-}) => {
+}
+
+export const InputContainer = ({ className, children }: InputContainerProps) => {
 
     return (
         <div className={cn("UI-Input__inputContainer flex relative", className)}>
@@ -160,7 +162,7 @@ export const InputAddonsAnatomy = defineStyleAnatomy({
  * InputIcon
  * -----------------------------------------------------------------------------------------------*/
 
-type InputIconProps = {
+export type InputIconProps = {
     icon: InputStyling["leftIcon"] | undefined,
     size: InputStyling["size"],
     side: "right" | "left",
@@ -184,7 +186,7 @@ export const InputIcon = ({ icon, size = "md", side, props, className }: InputIc
  * InputAddon
  * -----------------------------------------------------------------------------------------------*/
 
-type InputAddonProps = {
+export type InputAddonProps = {
     addon: InputStyling["rightAddon"] | InputStyling["leftAddon"] | undefined,
     rightIcon: InputStyling["leftIcon"] | undefined,
     leftIcon: InputStyling["rightIcon"] | undefined,
@@ -274,7 +276,7 @@ export function extractInputPartProps<T extends InputStyling>(props: T) {
     }] as [
         Omit<T, "iconClass" | "addonClass" | "inputContainerClass">,
         {
-            inputContainerProps: { className: React.HTMLAttributes<HTMLDivElement>["className"] },
+            inputContainerProps: InputContainerProps,
             leftAddonProps: InputAddonProps,
             rightAddonProps: InputAddonProps,
             leftIconProps: InputIconProps,
