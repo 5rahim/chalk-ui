@@ -49,7 +49,7 @@ const meta = {
             },
         ],
         label: "Label",
-        placeholder: "Select a framework...",
+        placeholder: "Select frameworks...",
         emptyMessage: "No framework found",
         value: ["next.js"],
         // allowCustomValue: false,
