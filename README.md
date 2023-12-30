@@ -1,118 +1,36 @@
-# 👨🏿‍🏫 Chalk UI
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Reusable, customizable, Tailwind components + CLI.
+## Getting Started
 
-## 📋 Documentation
+First, run the development server:
 
-https://chalk.rahim.app
-
-## 📦 Components
-
-- [x] Alert
-- [x] Avatar
-- [x] Badge
-- [x] Page Header
-- [x] Button
-  - [x] Close Button
-  - [x] Icon Button
-- [x] Skeleton
-- [x] Calendar
-- [x] Modal
-- [x] Drawer
-- [x] Loading Spinner
-- [x] Loading Overlay
-- [x] Accordion
-- [x] DropdownMenu
-- [x] Popover
-- [x] NavigationTabs
-- [x] TabPanels
-- [x] Tooltip
-- [x] Breadcrumbs
-- [x] Typography
-- [x] Banner
-- [x] Charts
-- [x] Stats
-- [x] Pagination
-- [x] Toast
-- [x] Timeline
-- [x] Paper
-- [x] Card
-- [x] Navbar
-- [x] VerticalNav
-- [x] HorizontalNav
-- [x] AppLayout
-  - [x] Header
-  - [x] Sidebar
-  - [x] Content
-  - [x] Section
-- [x] DataGrid
-- [x] Form
-  - [x] Text Input
-  - [x] Textarea
-  - [x] Number Input
-  - [x] Address Input
-  - [x] Price Input
-  - [x] Phone number Input
-  - [x] Multi Select Input
-  - [x] Combobox
-  - [x] Switch
-  - [x] Checkbox
-  - [x] Checkbox Group
-  - [x] Select
-  - [x] Radio Group
-  - [x] Date Picker
-  - [x] Date Range Picker
-  - [x] Time Input
-  - [x] Color Picker
-  - [x] File Input/Dropzone
-  - [x] Typesafe Form
-  - [ ] Image Grid Input
-  - [ ] Transfer List
-  - [ ] JSON Input
-- [ ] i18n (For certain components)
-  - [x] English
-  - [x] French
-- [ ] Tests
-
-TODO: Sidebar scrollable content, sidebar footer, datagrid null value in filters
-
-## ⌨️ CLI
-
-- [x] Init
-- [x] Add
-- [x] Update
-- [x] Remove
-- [x] Clean
-
-## 🧠 Dev
-
-```shell
-pnpm dev:workshop
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-```shell
-pnpm dev:chalk
-```
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```shell
-cd packages/chalk && pnpm start:dev [command]
-```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-## 🤝🏾 Contributing
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request.
+## Learn More
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/myfeature`)
-3. Commit your Changes (`git commit -m 'Add a feature'`)
-4. Push to the Branch (`git push origin feature/myfeature`)
-5. Open a Pull Request
+To learn more about Next.js, take a look at the following resources:
 
-## Acknowledgements
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-Project inspired by [shadcn](https://ui.shadcn.com/)
-Design inspired by Tailwind UI
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## License
+## Deploy on Vercel
 
-This project is licensed under the MIT License - see the [LICENSE.MD](https://github.com/5rahim/chalk-ui/blob/main/LICENSE.md) file for details.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

@@ -1,3 +1,0 @@
-# Web
-
-Next.js website
