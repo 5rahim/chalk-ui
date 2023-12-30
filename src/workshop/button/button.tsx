@@ -1,7 +1,7 @@
 import { cva, VariantProps } from "class-variance-authority"
 import React from "react"
 import { cn } from "../core/classnames"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core/styling"
+import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -86,7 +86,7 @@ export const ButtonAnatomy = defineStyleAnatomy({
 
 type ButtonAnatomyProps =
     Omit<VariantProps<typeof ButtonAnatomy.root>, "isDisabled"> &
-    Omit<ComponentWithAnatomy<typeof ButtonAnatomy>, "rootClass">
+    Omit<ComponentAnatomy<typeof ButtonAnatomy>, "rootClass">
 
 export interface ButtonProps extends React.ComponentPropsWithoutRef<"button">, ButtonAnatomyProps {
     loading?: boolean,

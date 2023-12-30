@@ -1,7 +1,7 @@
 import { cva, VariantProps } from "class-variance-authority"
 import React from "react"
 import { cn } from "../core/classnames"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core/styling"
+import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -10,8 +10,9 @@ import { ComponentWithAnatomy, defineStyleAnatomy } from "../core/styling"
 export const InputAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-Input__root",
+        "flex items-center",
         "w-full rounded-[--radius]",
-        "bg-[--paper] border-[--border] placeholder-gray-400 dark:placeholder-gray-600",
+        "bg-[--paper] border border-[--border] placeholder-gray-400 dark:placeholder-gray-600",
         "disabled:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed",
         "focus:border-brand-500 focus:ring-1 focus:ring-[--ring]",
         "outline-none focus:outline-none",
@@ -20,9 +21,9 @@ export const InputAnatomy = defineStyleAnatomy({
     ], {
         variants: {
             size: {
-                sm: "px-2 py-1.5 text-sm",
-                md: "",
-                lg: "px-4 py-3 text-md",
+                sm: "h-8 px-2 py-1 text-sm",
+                md: "h-10 px-3",
+                lg: "h-12 px-4 py-3 text-md",
             },
             intent: {
                 basic: "hover:border-gray-300 dark:hover:border-gray-600",
@@ -101,8 +102,8 @@ export const InputContainer = ({ className, children }: {
 
 export interface InputStyling
     extends Omit<VariantProps<typeof InputAnatomy.root>, "isDisabled" | "hasError" | "hasLeftAddon" | "hasRightAddon" | "hasLeftIcon" | "hasRightIcon">,
-        ComponentWithAnatomy<typeof InputAddonsAnatomy>,
-        ComponentWithAnatomy<typeof InputContainerAnatomy> {
+        ComponentAnatomy<typeof InputAddonsAnatomy>,
+        ComponentAnatomy<typeof InputContainerAnatomy> {
     leftAddon?: string
     leftIcon?: React.ReactNode
     rightAddon?: string

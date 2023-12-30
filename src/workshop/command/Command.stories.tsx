@@ -3,7 +3,7 @@ import { BiCalculator, BiCalendarAlt, BiCog, BiReceipt, BiSmile, BiUser } from "
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from "../command/command"
 
 const meta = {
-    title: "Components/DataDisplay/Command",
+    title: "Components/Overlays/Command",
     component: Command,
     tags: ["autodocs"],
     parameters: {
@@ -11,7 +11,7 @@ const meta = {
     },
     render: (props) => {
         return (
-            <div className="w-[800px]">
+            <div className="max-w-[800px]">
                 <Command
                     {...props}
                     className="rounded-lg border shadow-md"

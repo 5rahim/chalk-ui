@@ -2,7 +2,7 @@ import { cva } from "class-variance-authority"
 
 export type Anatomy = { [key: string]: ReturnType<typeof cva> }
 
-export type ComponentWithAnatomy<T extends Anatomy> = {
+export type ComponentAnatomy<T extends Anatomy> = {
     [K in keyof T as `${string & K}Class`]?: string
 }
 

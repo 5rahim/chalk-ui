@@ -1,7 +1,7 @@
 import { cn } from "../core/classnames"
 import { cva } from "class-variance-authority"
 import React from "react"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core/styling"
+import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -25,7 +25,7 @@ export const BasicFieldAnatomy = defineStyleAnatomy({
  * - Field components inherit these props
  * -----------------------------------------------------------------------------------------------*/
 
-export interface BasicFieldOptions extends ComponentWithAnatomy<typeof BasicFieldAnatomy> {
+export interface BasicFieldOptions extends ComponentAnatomy<typeof BasicFieldAnatomy> {
     id?: string | undefined
     name?: string
     label?: React.ReactNode
