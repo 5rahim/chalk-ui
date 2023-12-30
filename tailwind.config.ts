@@ -96,6 +96,6 @@ const config: Config = {
             },
         },
     },
-    plugins: [require("@tailwindcss/typography"), require("@tailwindcss/forms"), require("tailwind-scrollbar-hide")],
+    plugins: [require("@tailwindcss/typography"), require("@tailwindcss/forms"), require("tailwind-scrollbar-hide"), require("tailwindcss-animate")],
 }
 export default config
