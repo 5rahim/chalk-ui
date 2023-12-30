@@ -5,7 +5,7 @@ import { Command as CommandPrimitive } from "cmdk"
 import * as React from "react"
 import { createContext, useContext } from "react"
 import { cn } from "../core/classnames"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core/styling"
+import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { InputAnatomy } from "../input"
 
 /* -------------------------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ import { InputAnatomy } from "../input"
 export const CommandAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-Command__root",
-        "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-[--foreground]",
+        "flex h-full w-full flex-col overflow-hidden rounded-md bg-[--paper] text-[--foreground]",
     ]),
     inputContainer: cva([
         "UI-Command__input",
@@ -64,7 +64,7 @@ const __CommandAnatomyContext = createContext<CommandAnatomyProps>({})
  * Command
  * -----------------------------------------------------------------------------------------------*/
 
-type CommandAnatomyProps = Omit<ComponentWithAnatomy<typeof CommandAnatomy>, "rootClass">
+type CommandAnatomyProps = Omit<ComponentAnatomy<typeof CommandAnatomy>, "rootClass">
 
 export type CommandProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive> & CommandAnatomyProps
 
@@ -113,7 +113,7 @@ Command.displayName = CommandPrimitive.displayName
 
 export type CommandInputProps =
     React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
-    & Pick<ComponentWithAnatomy<typeof CommandAnatomy>, "inputContainerClass" | "inputIconClass">
+    & Pick<ComponentAnatomy<typeof CommandAnatomy>, "inputContainerClass" | "inputIconClass">
 
 export const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps>((props, ref) => {
     const {
@@ -149,6 +149,7 @@ export const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps
                 ref={ref}
                 className={cn(InputAnatomy.root({
                     intent: "unstyled",
+                    size: "sm",
                     isDisabled: rest.disabled,
                 }), className)}
                 {...rest}
@@ -252,7 +253,7 @@ CommandSeparator.displayName = "CommandSeparator"
 
 export type CommandItemProps =
     React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item>
-    & Pick<ComponentWithAnatomy<typeof CommandAnatomy>, "itemIconContainerClass">
+    & Pick<ComponentAnatomy<typeof CommandAnatomy>, "itemIconContainerClass">
     & { leftIcon?: React.ReactNode }
 
 export const CommandItem = React.forwardRef<HTMLDivElement, CommandItemProps>((props, ref) => {

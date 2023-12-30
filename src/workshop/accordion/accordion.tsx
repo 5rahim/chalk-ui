@@ -5,7 +5,7 @@ import { cva } from "class-variance-authority"
 import * as React from "react"
 import { createContext, useContext } from "react"
 import { cn } from "../core/classnames"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core/styling"
+import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -38,13 +38,13 @@ export const AccordionAnatomy = defineStyleAnatomy({
     ]),
 })
 
-const __AccordionAnatomyContext = createContext<ComponentWithAnatomy<typeof AccordionAnatomy>>({})
+const __AccordionAnatomyContext = createContext<ComponentAnatomy<typeof AccordionAnatomy>>({})
 
 /* -------------------------------------------------------------------------------------------------
  * Accordion
  * -----------------------------------------------------------------------------------------------*/
 
-export type AccordionProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> & ComponentWithAnatomy<typeof AccordionAnatomy>
+export type AccordionProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> & ComponentAnatomy<typeof AccordionAnatomy>
 
 export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>((props, ref) => {
 
@@ -82,7 +82,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>((props
  * AccordionItem
  * -----------------------------------------------------------------------------------------------*/
 
-export type AccordionItemProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item> & ComponentWithAnatomy<typeof AccordionAnatomy>
+export type AccordionItemProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item> & ComponentAnatomy<typeof AccordionAnatomy>
 
 export const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>((props, ref) => {
 
@@ -104,7 +104,7 @@ export const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps
  * AccordionTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-type AccordionTriggerAnatomyProps = Omit<ComponentWithAnatomy<typeof AccordionAnatomy>, "itemClass" | "triggerClass">
+type AccordionTriggerAnatomyProps = Omit<ComponentAnatomy<typeof AccordionAnatomy>, "itemClass" | "triggerClass">
 type AccordionTriggerProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> & AccordionTriggerAnatomyProps
 
 export const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerProps>((props, ref) => {
@@ -159,7 +159,7 @@ export const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTri
  * AccordionContent
  * -----------------------------------------------------------------------------------------------*/
 
-type AccordionContentAnatomyProps = Omit<ComponentWithAnatomy<typeof AccordionAnatomy>, "contentClass">
+type AccordionContentAnatomyProps = Omit<ComponentAnatomy<typeof AccordionAnatomy>, "contentClass">
 type AccordionContentProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content> & AccordionContentAnatomyProps
 
 export const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>((props, ref) => {

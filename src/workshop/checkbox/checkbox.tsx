@@ -7,7 +7,7 @@ import React, { useId } from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { useCheckboxGroupContext } from "../checkbox"
 import { cn } from "../core/classnames"
-import { ComponentWithAnatomy, defineStyleAnatomy } from "../core/styling"
+import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 
 /* -------------------------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ export const CheckboxAnatomy = defineStyleAnatomy({
  * Checkbox
  * -----------------------------------------------------------------------------------------------*/
 
-type CheckboxAnatomyProps = ComponentWithAnatomy<typeof CheckboxAnatomy> &
+type CheckboxAnatomyProps = ComponentAnatomy<typeof CheckboxAnatomy> &
     VariantProps<typeof CheckboxAnatomy.label>
 
 type CheckboxRadixProps = Omit<CheckboxPrimitiveProps, "disabled" | "required" | "onCheckedChange" | "onChange">
