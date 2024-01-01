@@ -1,6 +1,7 @@
 import { useArgs } from "@storybook/preview-api"
 import { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
+import { BiMapPin } from "react-icons/bi"
 import { Combobox } from "../combobox/combobox"
 
 const meta = {
@@ -18,7 +19,6 @@ const meta = {
             <div className="min-[900px]:w-[800px] min-w-full">
                 <Combobox
                     {...args}
-                    multiple={false}
                     value={value}
                     onChange={(value) => updateArgs({ value })}
                 />
@@ -28,84 +28,26 @@ const meta = {
     args: {
         options: [
             {
-                value: "next.js",
-                label: "Next.js",
+                value: "us",
+                comparisonValue: "United States",
+                label: <div className="flex gap-2 items-center font-semibold"><BiMapPin /> United States</div>,
             },
-            {
-                value: "sveltekit",
-                label: "SvelteKit",
-            },
-            {
-                value: "nuxt.js",
-                label: "Nuxt.js",
-            },
-            {
-                value: "remix",
-                label: "Remix",
-            },
-            {
-                value: "astro",
-                label: "Astro",
-            },
-            {
-                value: "astro01",
-                label: "Astro",
-            },
-            {
-                value: "astro02",
-                label: "Astro",
-            },
-            {
-                value: "astro03",
-                label: "Astro",
-            },
-            {
-                value: "astro04",
-                label: "Astro",
-            },
-            {
-                value: "astro05",
-                label: "Astro",
-            },
-            {
-                value: "astro06",
-                label: "Astro",
-            },
-            {
-                value: "astro07",
-                label: "Astro",
-            },
-            {
-                value: "astro08",
-                label: "Astro",
-            },
-            {
-                value: "astro09",
-                label: "Astro",
-            },
-            {
-                value: "astro10",
-                label: "Astro",
-            },
-            {
-                value: "astro11",
-                label: "Astro",
-            },
+            { value: "ci", comparisonValue: "Côte d'Ivoire", label: "Côte d'Ivoire" },
+            { value: "jp", comparisonValue: "Japan", label: "Japan" },
+            { value: "br", comparisonValue: "Brazil", label: "Brazil" },
+            { value: "uk", comparisonValue: "United Kingdom", label: "United Kingdom" },
+            { value: "sn", comparisonValue: "Senegal", label: "Senegal" },
+            { value: "fr", comparisonValue: "France", label: "France" },
+            { value: "de", comparisonValue: "Germany", label: "Germany" },
+            { value: "ng", comparisonValue: "Nigeria", label: "Nigeria" },
+            { value: "ca", comparisonValue: "Canada", label: "Canada" },
+            { value: "gh", comparisonValue: "Ghana", label: "Ghana" },
+            { value: "za", comparisonValue: "South Africa", label: "South Africa" },
         ],
         label: "Label",
-        placeholder: "Select a framework...",
-        emptyMessage: "No framework found",
-        value: "next.js",
-        multiple: true,
-        // allowCustomValue: false,
-        // withFiltering: true,
-        // returnValueOrLabel: "label",
-        // options: [
-        //     { value: "1", label: "Option 1" },
-        //     { value: "2", label: "Option 2" },
-        //     { value: "3", label: "Option 3" },
-        //     { value: "4", label: "Option 4" },
-        // ],
+        placeholder: "Select a country...",
+        emptyMessage: "No country found",
+        value: ["ci"],
     },
 } satisfies Meta<typeof Combobox>
 
@@ -117,19 +59,51 @@ export const Basic: Story = {
     args: {},
 }
 
-// export const Suggestions: Story = {
-//     args: {
-//         label: "Country",
-//         placeholder: "Enter your country",
-//         options: [
-//             { value: "us", label: "United States" },
-//             { value: "ci", label: "Côte d'Ivoire" },
-//             { value: "jp", label: "Japan" },
-//             { value: "br", label: "Brazil" },
-//         ],
-//         withFiltering: true,
-//         allowCustomValue: true,
-//         returnValueOrLabel: "label",
-//         noOptionsMessage: undefined,
-//     },
-// }
+export const Multiple: Story = {
+    args: {
+        multiple: true,
+    },
+}
+
+export const WithoutComparisonValue: Story = {
+    args: {
+        options: [
+            { value: "us", label: <div className="flex gap-2 items-center font-semibold"><BiMapPin /> United States</div> },
+            { value: "ci", label: "Côte d'Ivoire" },
+            { value: "jp", label: "Japan" },
+            { value: "br", label: "Brazil" },
+            { value: "uk", label: "United Kingdom" },
+            { value: "sn", label: "Senegal" },
+            { value: "fr", label: "France" },
+            { value: "de", label: "Germany" },
+            { value: "ng", label: "Nigeria" },
+            { value: "ca", label: "Canada" },
+            { value: "gh", label: "Ghana" },
+            { value: "za", label: "South Africa" },
+        ],
+    },
+}
+
+
+export const MultipleWithoutComparisonValue: Story = {
+    args: {
+        multiple: true,
+        options: [
+            {
+                value: "ussssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+                label: <div className="flex gap-2 items-center font-semibold"><BiMapPin /> United States</div>,
+            },
+            { value: "ci", label: "Côte d'Ivoire" },
+            { value: "jp", label: "Japan" },
+            { value: "br", label: "Brazil" },
+            { value: "uk", label: "United Kingdom" },
+            { value: "sn", label: "Senegal" },
+            { value: "fr", label: "France" },
+            { value: "de", label: "Germany" },
+            { value: "ng", label: "Nigeria" },
+            { value: "ca", label: "Canada" },
+            { value: "gh", label: "Ghana" },
+            { value: "za", label: "South Africa" },
+        ],
+    },
+}
