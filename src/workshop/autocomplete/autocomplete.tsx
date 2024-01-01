@@ -5,6 +5,7 @@ import React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { Command, CommandGroup, CommandInput, CommandItem, CommandList, CommandProps } from "../command"
 import { cn } from "../core/classnames"
+import { mergeRefs } from "../core/refs"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 import { Popover } from "../popover"
@@ -29,6 +30,10 @@ export const AutocompleteAnatomy = defineStyleAnatomy({
     container: cva([
         "UI-Autocomplete__container",
         "relative w-full",
+    ]),
+    command: cva([
+        "UI-Autocomplete__command",
+        "focus-within:ring-2 ring-[--ring] transition",
     ]),
 })
 
@@ -69,6 +74,7 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
         popoverClass,
         checkIconClass,
         containerClass,
+        commandClass,
         /**/
         commandProps,
         options,
@@ -105,7 +111,6 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
 
     const by = React.useCallback((a: string, b: string) => a.toLowerCase() === b.toLowerCase(), [])
 
-    // TODO merge ref and inputRef
     const inputRef = React.useRef<HTMLInputElement>(null)
     const commandInputRef = React.useRef<HTMLInputElement>(null)
 
@@ -173,7 +178,7 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
                     trigger={
                         <div className={cn(AutocompleteAnatomy.container(), containerClass)}>
                             <input
-                                ref={inputRef}
+                                ref={mergeRefs([ref, inputRef])}
                                 id={basicFieldProps.id}
                                 value={inputValue}
                                 onChange={handleValueChange}
@@ -199,8 +204,7 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
                     }
                 >
                     <Command
-                        // TODO make fade-out animation instant
-                        className="focus-within:ring-2 ring-[--ring] transition"
+                        className={cn(AutocompleteAnatomy.command(), commandClass)}
                         inputContainerClass="py-1"
                         {...commandProps}
                     >
@@ -231,6 +235,9 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
                                                 }
                                             }
                                             setOpen(false)
+                                            React.startTransition(() => {
+                                                inputRef.current?.focus()
+                                            })
                                         }}
                                         leftIcon={
                                             <svg

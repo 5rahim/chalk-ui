@@ -3,7 +3,7 @@
 import { cva } from "class-variance-authority"
 import React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { CloseButton } from "../button"
+import { CloseButton, CloseButtonProps } from "../button"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandProps } from "../command"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
@@ -36,6 +36,18 @@ export const ComboboxAnatomy = defineStyleAnatomy({
         "h-4 w-4",
         "data-[selected=true]:opacity-100 data-[selected=false]:opacity-0",
     ]),
+    optionItem: cva([
+        "UI-Combobox__optionItem",
+        "flex gap-1 items-center bg-gray-100 dark:bg-gray-800 px-2 pr-0 rounded-[--radius] line-clamp-1 max-w-96",
+    ]),
+    placeholder: cva([
+        "UI-Combobox__placeholder",
+        "text-[--muted]",
+    ]),
+    inputValuesContainer: cva([
+        "UI-Combobox__inputValuesContainer",
+        "grow flex flex-wrap gap-2",
+    ]),
 })
 
 
@@ -57,6 +69,7 @@ export interface ComboboxProps extends ComboboxButtonProps,
     emptyMessage: React.ReactNode
     placeholder: string
     multiple?: boolean
+    optionItemCloseButtonProps?: CloseButtonProps
 }
 
 export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((props, ref) => {
@@ -73,6 +86,10 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
         className,
         popoverClass,
         checkIconClass,
+        optionItemClass,
+        placeholderClass,
+        inputValuesContainerClass,
+        optionItemCloseButtonProps,
         /**/
         commandProps,
         options,
@@ -109,13 +126,14 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                     {selectedOptions.map((option) => (
                         <div
                             key={option.value}
-                            className="flex gap-1 items-center bg-gray-100 dark:bg-gray-800 px-2 pr-0 rounded-[--radius] line-clamp-1 max-w-96"
+                            className={cn(ComboboxAnatomy.optionItem(), optionItemClass)}
                         >
                             <span className="truncate">{option.comparisonValue || option.value}</span>
                             <CloseButton
                                 intent="gray-basic"
                                 size="xs"
                                 className="rounded-[--radius]"
+                                {...optionItemCloseButtonProps}
                                 onClick={(e) => {
                                     e.preventDefault()
                                     onChange(value.filter((v) => v !== option.value))
@@ -126,7 +144,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                     ))}
                 </> :
                 selectedOptions[0].label
-            : placeholder
+            : <span className={cn(ComboboxAnatomy.placeholder(), placeholderClass)}>{placeholder}</span>
     )
 
     return (
@@ -168,19 +186,22 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                         )}
                         {...rest}
                     >
-                        <div className="grow flex flex-wrap gap-2">
+                        <div className={cn(ComboboxAnatomy.inputValuesContainer())}>
                             {displayedValues}
                         </div>
                         <div className="flex items-center">
-                            {(!!value.length && !!selectedOptions.length && !multiple) && <CloseButton
-                                intent="gray-basic"
-                                size="xs"
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    onChange([])
-                                    setOpen(false)
-                                }}
-                            />}
+                            {(!!value.length && !!selectedOptions.length && !multiple) && (
+                                <CloseButton
+                                    intent="gray-subtle"
+                                    size="xs"
+                                    {...optionItemCloseButtonProps}
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        onChange([])
+                                        setOpen(false)
+                                    }}
+                                />
+                            )}
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
