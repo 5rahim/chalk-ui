@@ -1,11 +1,20 @@
 import { useArgs } from "@storybook/preview-api"
 import { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
-import { Multiselect } from "../multiselect/multiselect"
+import { Autocomplete } from "../autocomplete/autocomplete"
+
+const options = [
+    { value: "us", label: "United States" },
+    { value: "ci", label: "Côte d'Ivoire" },
+    { value: "ca", label: "Canada" },
+    { value: "jp", label: "Japan" },
+    { value: "japanese", label: "Japanese" },
+    { value: "br", label: "Brazil" },
+]
 
 const meta = {
-    title: "Components/Forms/Multiselect",
-    component: Multiselect,
+    title: "Components/Forms/Autocomplete",
+    component: Autocomplete,
     tags: ["autodocs"],
     parameters: {
         layout: "centered",
@@ -16,9 +25,8 @@ const meta = {
 
         return (
             <div className="min-[900px]:w-[800px] min-w-full">
-                <Multiselect
+                <Autocomplete
                     {...args}
-                    multiple={false}
                     value={value}
                     onChange={(value) => updateArgs({ value })}
                 />
@@ -26,43 +34,13 @@ const meta = {
         )
     },
     args: {
-        options: [
-            {
-                value: "next.js",
-                label: "Next.js",
-            },
-            {
-                value: "sveltekit",
-                label: "SvelteKit",
-            },
-            {
-                value: "nuxt.js",
-                label: "Nuxt.js",
-            },
-            {
-                value: "remix",
-                label: "Remix",
-            },
-            {
-                value: "astro",
-                label: "Astro",
-            },
-        ],
+        options: options,
         label: "Label",
-        placeholder: "Select frameworks...",
+        placeholder: "Enter a framework...",
         emptyMessage: "No framework found",
-        value: ["next.js"],
-        // allowCustomValue: false,
-        // withFiltering: true,
-        // returnValueOrLabel: "label",
-        // options: [
-        //     { value: "1", label: "Option 1" },
-        //     { value: "2", label: "Option 2" },
-        //     { value: "3", label: "Option 3" },
-        //     { value: "4", label: "Option 4" },
-        // ],
+        value: undefined,
     },
-} satisfies Meta<typeof Multiselect>
+} satisfies Meta<typeof Autocomplete>
 
 
 export default meta
@@ -70,6 +48,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
     args: {},
+}
+
+export const EmptyList: Story = {
+    args: {
+        options: [],
+    },
 }
 
 // export const Suggestions: Story = {

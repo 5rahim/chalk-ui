@@ -80,6 +80,7 @@ export const Command = React.forwardRef<HTMLDivElement, CommandProps>((props, re
         itemClass,
         itemIconContainerClass,
         shortcutClass,
+        loop = true,
         ...rest
     } = props
 
@@ -100,6 +101,7 @@ export const Command = React.forwardRef<HTMLDivElement, CommandProps>((props, re
             <CommandPrimitive
                 ref={ref}
                 className={cn(CommandAnatomy.root(), className)}
+                loop={loop}
                 {...rest}
             />
         </__CommandAnatomyContext.Provider>
