@@ -81,6 +81,7 @@ export const WithoutComparisonValue: Story = {
             { value: "gh", label: "Ghana" },
             { value: "za", label: "South Africa" },
         ],
+        help: "The search function will rely on the 'value' property if 'comparisonValue' is not provided.",
     },
 }
 
@@ -105,5 +106,6 @@ export const MultipleWithoutComparisonValue: Story = {
             { value: "gh", label: "Ghana" },
             { value: "za", label: "South Africa" },
         ],
+        help: "The 'value' property will be displayed if 'comparisonValue' is not provided.",
     },
 }

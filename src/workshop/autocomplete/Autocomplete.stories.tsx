@@ -8,7 +8,6 @@ const options = [
     { value: "ci", label: "Côte d'Ivoire" },
     { value: "ca", label: "Canada" },
     { value: "jp", label: "Japan" },
-    { value: "japanese", label: "Japanese" },
     { value: "br", label: "Brazil" },
 ]
 
@@ -28,7 +27,10 @@ const meta = {
                 <Autocomplete
                     {...args}
                     value={value}
-                    onChange={(value) => updateArgs({ value })}
+                    onChange={(value) => {
+                        console.log("value", value)
+                        updateArgs({ value })
+                    }}
                 />
             </div>
         )
@@ -55,20 +57,3 @@ export const EmptyList: Story = {
         options: [],
     },
 }
-
-// export const Suggestions: Story = {
-//     args: {
-//         label: "Country",
-//         placeholder: "Enter your country",
-//         options: [
-//             { value: "us", label: "United States" },
-//             { value: "ci", label: "Côte d'Ivoire" },
-//             { value: "jp", label: "Japan" },
-//             { value: "br", label: "Brazil" },
-//         ],
-//         withFiltering: true,
-//         allowCustomValue: true,
-//         returnValueOrLabel: "label",
-//         noOptionsMessage: undefined,
-//     },
-// }

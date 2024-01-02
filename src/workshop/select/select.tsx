@@ -4,15 +4,17 @@ import { cn } from "../core/classnames"
 import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 
 /* -------------------------------------------------------------------------------------------------
- * TextInput
+ * Select
  * -----------------------------------------------------------------------------------------------*/
 
-export interface TextInputProps extends Omit<React.ComponentPropsWithRef<"input">, "size">, InputStyling, BasicFieldOptions {
+export interface SelectProps extends Omit<React.ComponentPropsWithRef<"select">, "size">, InputStyling, BasicFieldOptions {
+    options: { value: string | number, label?: string }[] | undefined
+    placeholder?: string
 }
 
-export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
+export const Select = React.forwardRef<HTMLSelectElement, SelectProps>((props, ref) => {
 
-    const [props1, basicFieldProps] = extractBasicFieldProps<TextInputProps>(props, React.useId())
+    const [props1, basicFieldProps] = extractBasicFieldProps<SelectProps>(props, React.useId())
 
     const [{
         size,
@@ -22,6 +24,8 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
         rightAddon,
         rightIcon,
         className,
+        placeholder,
+        options,
         ...rest
     }, {
         inputContainerProps,
@@ -29,7 +33,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
         leftIconProps,
         rightAddonProps,
         rightIconProps,
-    }] = extractInputPartProps<TextInputProps>({
+    }] = extractInputPartProps<SelectProps>({
         ...props1,
         size: props1.size ?? "md",
         intent: props1.intent ?? "basic",
@@ -48,11 +52,11 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
                 <InputAddon {...leftAddonProps} />
                 <InputIcon {...leftIconProps} />
 
-                <input
+                <select
                     id={basicFieldProps.id}
                     name={basicFieldProps.name}
                     className={cn(
-                        "form-input",
+                        "form-select",
                         InputAnatomy.root({
                             size,
                             intent,
@@ -69,10 +73,21 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     {...rest}
                     ref={ref}
-                />
+                >
+                    {placeholder && <option value="">{placeholder}</option>}
+                    {options?.map(opt => (
+                        <option key={opt.value} value={opt.value}>{opt.label ?? opt.value}</option>
+                    ))}
+                </select>
 
                 <InputAddon {...rightAddonProps} />
-                <InputIcon {...rightIconProps} />
+                <InputIcon
+                    {...rightIconProps}
+                    className={cn(
+                        rightIconProps.className,
+                        !rightAddon ? "mr-8" : null,
+                    )}
+                />
 
             </InputContainer>
         </BasicField>
@@ -80,4 +95,4 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
 
 })
 
-TextInput.displayName = "TextInput"
+Select.displayName = "Select"
