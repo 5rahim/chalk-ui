@@ -16,7 +16,7 @@ const meta = {
         const [{ value }, updateArgs] = useArgs()
 
         return (
-            <div className="min-[900px]:w-[800px] min-w-full">
+            <div className="min-[900px]:w-[800px] w-full">
                 <Combobox
                     {...args}
                     value={value}
@@ -29,20 +29,20 @@ const meta = {
         options: [
             {
                 value: "us",
-                comparisonValue: "United States",
+                textValue: "United States",
                 label: <div className="flex gap-2 items-center font-semibold"><BiMapPin /> United States</div>,
             },
-            { value: "ci", comparisonValue: "Côte d'Ivoire", label: "Côte d'Ivoire" },
-            { value: "jp", comparisonValue: "Japan", label: "Japan" },
-            { value: "br", comparisonValue: "Brazil", label: "Brazil" },
-            { value: "uk", comparisonValue: "United Kingdom", label: "United Kingdom" },
-            { value: "sn", comparisonValue: "Senegal", label: "Senegal" },
-            { value: "fr", comparisonValue: "France", label: "France" },
-            { value: "de", comparisonValue: "Germany", label: "Germany" },
-            { value: "ng", comparisonValue: "Nigeria", label: "Nigeria" },
-            { value: "ca", comparisonValue: "Canada", label: "Canada" },
-            { value: "gh", comparisonValue: "Ghana", label: "Ghana" },
-            { value: "za", comparisonValue: "South Africa", label: "South Africa" },
+            { value: "ci", textValue: "Côte d'Ivoire", label: "Côte d'Ivoire" },
+            { value: "jp", textValue: "Japan", label: "Japan" },
+            { value: "br", textValue: "Brazil", label: "Brazil" },
+            { value: "uk", textValue: "United Kingdom", label: "United Kingdom" },
+            { value: "sn", textValue: "Senegal", label: "Senegal" },
+            { value: "fr", textValue: "France", label: "France" },
+            { value: "de", textValue: "Germany", label: "Germany" },
+            { value: "ng", textValue: "Nigeria", label: "Nigeria" },
+            { value: "ca", textValue: "Canada", label: "Canada" },
+            { value: "gh", textValue: "Ghana", label: "Ghana" },
+            { value: "za", textValue: "South Africa", label: "South Africa" },
         ],
         label: "Label",
         placeholder: "Select a country...",
@@ -65,7 +65,7 @@ export const Multiple: Story = {
     },
 }
 
-export const WithoutComparisonValue: Story = {
+export const WithoutTextValue: Story = {
     args: {
         options: [
             { value: "us", label: <div className="flex gap-2 items-center font-semibold"><BiMapPin /> United States</div> },
@@ -81,12 +81,12 @@ export const WithoutComparisonValue: Story = {
             { value: "gh", label: "Ghana" },
             { value: "za", label: "South Africa" },
         ],
-        help: "The search function will rely on the 'value' property if 'comparisonValue' is not provided.",
+        help: "The search function will rely on the 'value' property if 'textValue' is not provided.",
     },
 }
 
 
-export const MultipleWithoutComparisonValue: Story = {
+export const MultipleWithouttextValue: Story = {
     args: {
         multiple: true,
         options: [
@@ -106,6 +106,6 @@ export const MultipleWithoutComparisonValue: Story = {
             { value: "gh", label: "Ghana" },
             { value: "za", label: "South Africa" },
         ],
-        help: "The 'value' property will be displayed if 'comparisonValue' is not provided.",
+        help: "The 'value' property will be displayed if 'textValue' is not provided.",
     },
 }

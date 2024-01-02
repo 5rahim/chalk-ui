@@ -10,7 +10,7 @@ import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 export const BasicFieldAnatomy = defineStyleAnatomy({
     fieldLabel: cva([
         "UI-BasicField__fieldLabel",
-        "block text-md sm:text-lg font-semibold self-start",
+        "text-base w-fit font-semibold self-start",
         "data-[error=true]:text-red-500",
     ]),
     fieldAsterisk: cva("UI-BasicField__fieldAsterisk ml-1 text-red-500 text-sm"),

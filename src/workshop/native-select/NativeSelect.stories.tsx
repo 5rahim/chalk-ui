@@ -1,28 +1,10 @@
-import { useArgs } from "@storybook/preview-api"
-import * as React from "react"
-import { Select } from "../select"
+import { NativeSelect } from "../native-select/native-select"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {
-    title: "Components/Forms/Select",
-    component: Select,
+    title: "Components/Forms/NativeSelect",
+    component: NativeSelect,
     tags: ["autodocs"],
-    parameters: {
-        layout: "centered",
-    },
-    render: function Render(args) {
-        const [{ value }, updateArgs] = useArgs()
-
-        return (
-            <div className="min-[900px]:w-[800px] w-full">
-                <Select
-                    {...args}
-                    value={value}
-                    onChange={(value) => updateArgs({ value })}
-                />
-            </div>
-        )
-    },
     args: {
         label: "Label",
         size: "md",
@@ -30,7 +12,6 @@ const meta = {
         help: "",
         leftAddon: "",
         rightAddon: "",
-        placeholder: "Select a country...",
         disabled: false,
         readonly: false,
         required: false,
@@ -43,9 +24,8 @@ const meta = {
             { value: "jp", label: "Japan" },
             { value: "br", label: "Brazil" },
         ],
-        value: undefined,
     },
-} satisfies Meta<typeof Select>
+} satisfies Meta<typeof NativeSelect>
 
 
 export default meta
