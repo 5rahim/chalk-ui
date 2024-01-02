@@ -36,17 +36,21 @@ export const ComboboxAnatomy = defineStyleAnatomy({
         "h-4 w-4",
         "data-[selected=true]:opacity-100 data-[selected=false]:opacity-0",
     ]),
-    optionItem: cva([
-        "UI-Combobox__optionItem",
+    item: cva([
+        "UI-Combobox__item",
         "flex gap-1 items-center bg-gray-100 dark:bg-gray-800 px-2 pr-0 rounded-[--radius] line-clamp-1 max-w-96",
     ]),
     placeholder: cva([
         "UI-Combobox__placeholder",
-        "text-[--muted]",
+        "text-[--muted] truncate",
     ]),
     inputValuesContainer: cva([
         "UI-Combobox__inputValuesContainer",
         "grow flex flex-wrap gap-2",
+    ]),
+    chevronIcon: cva([
+        "UI-Combobox__chevronIcon",
+        "ml-2 h-4 w-4 shrink-0 opacity-50",
     ]),
 })
 
@@ -65,11 +69,11 @@ export interface ComboboxProps extends ComboboxButtonProps,
     onChange: (value: string[]) => void
     onInputChange?: (value: string) => void
     commandProps?: CommandProps
-    options: { value: string, comparisonValue?: string, label: React.ReactNode }[]
+    options: { value: string, textValue?: string, label: React.ReactNode }[]
     emptyMessage: React.ReactNode
     placeholder: string
     multiple?: boolean
-    optionItemCloseButtonProps?: CloseButtonProps
+    itemCloseButtonProps?: CloseButtonProps
 }
 
 export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((props, ref) => {
@@ -86,10 +90,11 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
         className,
         popoverClass,
         checkIconClass,
-        optionItemClass,
+        itemClass,
         placeholderClass,
         inputValuesContainerClass,
-        optionItemCloseButtonProps,
+        itemCloseButtonProps,
+        chevronIconClass,
         /**/
         commandProps,
         options,
@@ -120,30 +125,22 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
 
     const selectedOptions = options.filter((option) => value.includes(option.value))
 
-    const displayedValues = (
+    const selectedValues = (
         (!!value.length && !!selectedOptions.length) ?
-            multiple ? <>
-                    {selectedOptions.map((option) => (
-                        <div
-                            key={option.value}
-                            className={cn(ComboboxAnatomy.optionItem(), optionItemClass)}
-                        >
-                            <span className="truncate">{option.comparisonValue || option.value}</span>
-                            <CloseButton
-                                intent="gray-basic"
-                                size="xs"
-                                className="rounded-[--radius]"
-                                {...optionItemCloseButtonProps}
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    onChange(value.filter((v) => v !== option.value))
-                                    setOpen(false)
-                                }}
-                            />
-                        </div>
-                    ))}
-                </> :
-                selectedOptions[0].label
+            multiple ? selectedOptions.map((option) => <div key={option.value} className={cn(ComboboxAnatomy.item(), itemClass)}>
+                <span className="truncate">{option.textValue || option.value}</span>
+                <CloseButton
+                    intent="gray-basic"
+                    size="xs"
+                    {...itemCloseButtonProps}
+                    className={cn("rounded-[--radius]", itemCloseButtonProps?.className)}
+                    onClick={(e) => {
+                        e.preventDefault()
+                        onChange(value.filter((v) => v !== option.value))
+                        setOpen(false)
+                    }}
+                />
+            </div>) : <span className="truncate">{selectedOptions[0].label}</span>
             : <span className={cn(ComboboxAnatomy.placeholder(), placeholderClass)}>{placeholder}</span>
     )
 
@@ -187,14 +184,14 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                         {...rest}
                     >
                         <div className={cn(ComboboxAnatomy.inputValuesContainer())}>
-                            {displayedValues}
+                            {selectedValues}
                         </div>
                         <div className="flex items-center">
                             {(!!value.length && !!selectedOptions.length && !multiple) && (
                                 <CloseButton
                                     intent="gray-subtle"
                                     size="xs"
-                                    {...optionItemCloseButtonProps}
+                                    {...itemCloseButtonProps}
                                     onClick={(e) => {
                                         e.preventDefault()
                                         onChange([])
@@ -210,7 +207,10 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                className="ml-2 h-4 w-4 shrink-0 opacity-50"
+                                className={cn(
+                                    ComboboxAnatomy.chevronIcon(),
+                                    chevronIconClass,
+                                )}
                             >
                                 <path d="m7 15 5 5 5-5" />
                                 <path d="m7 9 5-5 5 5" />
@@ -232,9 +232,9 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                                 {options.map((option) => (
                                     <CommandItem
                                         key={option.value}
-                                        value={option.comparisonValue || option.value}
+                                        value={option.textValue || option.value}
                                         onSelect={(currentValue) => {
-                                            const _option = options.find(n => (n.comparisonValue || n.value).toLowerCase() === currentValue.toLowerCase())
+                                            const _option = options.find(n => (n.textValue || n.value).toLowerCase() === currentValue.toLowerCase())
                                             if (_option) {
                                                 if (!multiple) {
                                                     onChange(value.includes(_option.value) ? [] : [_option.value])

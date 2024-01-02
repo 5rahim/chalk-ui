@@ -118,7 +118,7 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
         setInputValue(value?.label ?? "")
     }, [value])
 
-    const handleOnOpenChange = (_open: boolean) => {
+    const handleOnOpenChange = React.useCallback((_open: boolean) => {
         if (options.length === 0 && _open) return
         setOpen(_open)
         if (!_open) {
@@ -126,7 +126,7 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
                 inputRef.current?.focus()
             })
         }
-    }
+    }, [])
 
     // Filter options based on inputValue
     React.useEffect(() => {
@@ -141,7 +141,6 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
 
     }, [inputValue, options])
 
-    // Update inputValue when value changes
     const handleValueChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value)
         onInputChange?.(e.target.value)
@@ -221,13 +220,11 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
                         />
                         <CommandList>
                             <CommandGroup>
-                                {options.map((option, index) => (
+                                {options.map(option => (
                                     <CommandItem
-                                        autoFocus={index === 0}
                                         key={option.value}
                                         value={option.label}
                                         onSelect={(currentValue) => {
-                                            // Get the selected option
                                             const _option = options.find(n => by(n.label, currentValue))
                                             if (_option) {
                                                 if (value?.value === _option.value) {
