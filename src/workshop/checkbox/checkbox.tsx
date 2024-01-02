@@ -131,8 +131,8 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                     )}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     required={basicFieldProps.required}
-                    aria-readonly={basicFieldProps.readonly}
                     data-error={!!basicFieldProps.error}
+                    aria-readonly={basicFieldProps.readonly}
                     data-readonly={basicFieldProps.readonly}
                     onCheckedChange={onChange}
                     {...rest}
@@ -170,7 +170,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                         htmlFor={basicFieldProps.id}
                         data-disabled={basicFieldProps.disabled}
                     >
-                        {label ?? value}
+                        {label || value}
                     </label>
                 }
             </label>

@@ -51,7 +51,7 @@ export interface AutocompleteProps<T extends Array<AutocompleteOption>> extends 
     InputStyling,
     Omit<ComponentAnatomy<typeof AutocompleteAnatomy>, "rootClass"> {
     value: AutocompleteOption | undefined
-    onChange: (value: T[number] | undefined) => void
+    onChange: (value: { value: string | null, label: string } | undefined) => void
     onInputChange?: (value: string) => void
     options: T
     emptyMessage: React.ReactNode
@@ -132,8 +132,12 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
     React.useEffect(() => {
         setFilteredOptions(options.filter(option => option.label.toLowerCase().includes(inputValue.toLowerCase())) as T)
 
-        const _option = options.find(n => by(n.label, inputValue))
-        _option && onChange(_option)
+        const _option = options.find(n => by(n.label, inputValue.trim()))
+        if (_option) {
+            onChange(_option)
+        } else if (inputValue.length > 0) {
+            onChange({ value: null, label: inputValue.trim() })
+        }
 
     }, [inputValue, options])
 
