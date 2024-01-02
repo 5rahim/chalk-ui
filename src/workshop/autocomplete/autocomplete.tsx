@@ -1,7 +1,7 @@
 "use client"
 
 import { cva } from "class-variance-authority"
-import React from "react"
+import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { Command, CommandGroup, CommandInput, CommandItem, CommandList, CommandProps } from "../command"
 import { cn } from "../core/classnames"

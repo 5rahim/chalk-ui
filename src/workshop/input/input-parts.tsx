@@ -1,5 +1,5 @@
 import { cva, VariantProps } from "class-variance-authority"
-import React from "react"
+import * as React from "react"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
@@ -119,7 +119,8 @@ export interface InputStyling
 
 export const InputAddonsAnatomy = defineStyleAnatomy({
     icon: cva([
-        "UI-Input__addons--icon pointer-events-none absolute inset-y-0 grid place-content-center text-gray-500 z-[1]",
+        "UI-Input__addons--icon",
+        "pointer-events-none absolute inset-y-0 grid place-content-center text-gray-500 z-[1]",
         "dark:text-gray-300",
     ], {
         variants: {
@@ -133,7 +134,8 @@ export const InputAddonsAnatomy = defineStyleAnatomy({
         },
     }),
     addon: cva([
-        "UI-Input__addons--addon bg-gray-50 inline-flex items-center flex-none px-3 border border-gray-300 text-gray-800 shadow-sm text-sm sm:text-md",
+        "UI-Input__addons--addon",
+        "bg-gray-50 inline-flex items-center flex-none px-3 border border-gray-300 text-gray-800 shadow-sm text-sm sm:text-md",
         "dark:bg-gray-700 dark:border-gray-700 dark:text-gray-300",
     ], {
         variants: {
