@@ -1,5 +1,5 @@
 import { cva, VariantProps } from "class-variance-authority"
-import React from "react"
+import * as React from "react"
 import { Button, ButtonProps } from "."
 import { cn } from "../core/classnames"
 import { defineStyleAnatomy } from "../core/styling"
