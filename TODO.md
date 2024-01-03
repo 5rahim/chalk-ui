@@ -11,8 +11,8 @@
     - [x] Combobox
     - ToggleButton
     - [x] Switch
-    - Textarea
-    - PriceInput
+    - [x] Textarea
+    - [ ] CurrencyInput
     - PhoneInput
     - NumberInput
     - DateInput
