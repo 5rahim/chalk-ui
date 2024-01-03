@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useId, useLayoutEffect, useState } from "react"
+import * as React from "react"
 import { Checkbox, CheckboxProps } from "."
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { cn } from "../core/classnames"
@@ -10,13 +10,11 @@ import { cn } from "../core/classnames"
  * Provider
  * -----------------------------------------------------------------------------------------------*/
 
-interface CheckboxGroupContextValue {
+type CheckboxGroupContextValue = {
     group_size: CheckboxProps["size"]
 }
 
-const _CheckboxGroupContext = createContext<CheckboxGroupContextValue | null>(null)
-export const CheckboxGroupProvider = _CheckboxGroupContext.Provider
-export const useCheckboxGroupContext = () => useContext(_CheckboxGroupContext)
+export const _CheckboxGroupContext = React.createContext<CheckboxGroupContextValue | null>(null)
 
 /* -------------------------------------------------------------------------------------------------
  * CheckboxGroup
@@ -28,10 +26,10 @@ export interface CheckboxGroupProps extends BasicFieldOptions {
     onChange: (value: string[]) => void
     size?: CheckboxProps["size"]
     stackClass?: string
-    checkboxContainerClass?: string
-    checkboxLabelClass?: string
-    checkboxControlClass?: string
-    checkboxIconClass?: string
+    itemContainerClass?: string
+    itemLabelClass?: string
+    itemControlClass?: string
+    itemCheckIconClass?: string
     options: { value: string, label?: React.ReactNode, disabled?: boolean, readonly?: boolean }[]
 }
 
@@ -42,19 +40,19 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
         defaultValue = [],
         onChange,
         stackClass,
-        checkboxLabelClass,
-        checkboxControlClass,
-        checkboxContainerClass,
-        checkboxIconClass,
+        itemLabelClass,
+        itemControlClass,
+        itemContainerClass,
+        itemCheckIconClass,
         options,
         size = undefined,
-    }, basicFieldProps] = extractBasicFieldProps<CheckboxGroupProps>(props, useId())
+    }, basicFieldProps] = extractBasicFieldProps<CheckboxGroupProps>(props, React.useId())
 
     // Keep track of selected values
-    const [selectedValues, setSelectedValues] = useState<string[]>(value ?? defaultValue)
+    const [selectedValues, setSelectedValues] = React.useState<string[]>(value ?? defaultValue)
 
     // Control the state
-    useLayoutEffect(() => {
+    React.useLayoutEffect(() => {
         if (value) {
             setSelectedValues(value)
         }
@@ -62,49 +60,47 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
 
 
     return (
-        <>
-            <CheckboxGroupProvider
-                value={{
-                    group_size: size,
-                }}
+        <_CheckboxGroupContext.Provider
+            value={{
+                group_size: size,
+            }}
+        >
+            <BasicField
+                {...basicFieldProps}
+                ref={ref}
             >
-                <BasicField
-                    {...basicFieldProps}
-                    ref={ref}
-                >
-                    <div className={cn("space-y-1", stackClass)}>
-                        {options.map((opt) => (
-                            <Checkbox
-                                key={opt.value}
-                                label={opt.label}
-                                value={opt.value}
-                                checked={selectedValues.includes(opt.value)}
-                                onChange={checked => {
-                                    setSelectedValues(p => {
-                                        const newArr = checked === true
-                                            ? [...p, ...(p.includes(opt.value) ? [] : [opt.value])]
-                                            : checked === false
-                                                ? p.filter(v => v !== opt.value)
-                                                : [...p]
-                                        onChange(newArr)
-                                        return newArr
-                                    })
-                                }}
-                                hideError
-                                error={basicFieldProps.error}
-                                labelClass={checkboxLabelClass}
-                                controlClass={checkboxControlClass}
-                                containerClass={checkboxContainerClass}
-                                iconClass={checkboxIconClass}
-                                disabled={basicFieldProps.disabled || opt.disabled}
-                                readonly={basicFieldProps.readonly || opt.readonly}
-                                tabIndex={0}
-                            />
-                        ))}
-                    </div>
-                </BasicField>
-            </CheckboxGroupProvider>
-        </>
+                <div className={cn("space-y-1", stackClass)}>
+                    {options.map((opt) => (
+                        <Checkbox
+                            key={opt.value}
+                            label={opt.label}
+                            value={opt.value}
+                            checked={selectedValues.includes(opt.value)}
+                            onChange={checked => {
+                                setSelectedValues(p => {
+                                    const newArr = checked === true
+                                        ? [...p, ...(p.includes(opt.value) ? [] : [opt.value])]
+                                        : checked === false
+                                            ? p.filter(v => v !== opt.value)
+                                            : [...p]
+                                    onChange(newArr)
+                                    return newArr
+                                })
+                            }}
+                            hideError
+                            error={basicFieldProps.error}
+                            labelClass={itemLabelClass}
+                            controlClass={itemControlClass}
+                            containerClass={itemContainerClass}
+                            checkIconClass={itemCheckIconClass}
+                            disabled={basicFieldProps.disabled || opt.disabled}
+                            readonly={basicFieldProps.readonly || opt.readonly}
+                            tabIndex={0}
+                        />
+                    ))}
+                </div>
+            </BasicField>
+        </_CheckboxGroupContext.Provider>
     )
 
 })

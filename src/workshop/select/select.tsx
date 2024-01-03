@@ -34,7 +34,7 @@ export const SelectAnatomy = defineStyleAnatomy({
     item: cva([
         "UI-Select__item",
         "text-base leading-none rounded-[--radius] flex items-center h-8 pr-2 pl-8 relative",
-        "select-none data-disabled:text-mauve8 data-disabled:pointer-events-none",
+        "select-none disabled:opacity-50 disabled:pointer-events-none",
         "data-highlighted:outline-none data-highlighted:bg-[--subtle]",
     ]),
     checkIcon: cva([
@@ -52,7 +52,7 @@ export interface SelectProps extends InputStyling,
     BasicFieldOptions,
     Omit<React.ComponentPropsWithoutRef<"button">, "onChange" | "value">,
     Omit<ComponentAnatomy<typeof SelectAnatomy>, "rootClass"> {
-    options: { value: string, label?: string }[] | undefined
+    options: { value: string, label?: string, disabled?: boolean }[] | undefined
     placeholder: string
     dir?: "ltr" | "rtl"
     value: string | undefined
@@ -182,13 +182,35 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
                             <SelectPrimitive.Viewport className={cn(SelectAnatomy.viewport(), viewportClass)}>
 
 
-                                {options?.map((option, i) => (
-                                    <SelectItem
-                                        key={i}
+                                {options?.map(option => (
+                                    <SelectPrimitive.Item
+                                        key={option.value}
+                                        className={cn(
+                                            SelectAnatomy.item(),
+                                            itemClass,
+                                        )}
                                         value={option.value}
+                                        disabled={option.disabled}
                                     >
-                                        {option.label}
-                                    </SelectItem>
+                                        <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
+                                        <SelectPrimitive.ItemIndicator asChild>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className={cn(
+                                                    SelectAnatomy.checkIcon(),
+                                                    checkIconClass,
+                                                )}
+                                            >
+                                                <path d="M20 6 9 17l-5-5" />
+                                            </svg>
+                                        </SelectPrimitive.ItemIndicator>
+                                    </SelectPrimitive.Item>
                                 ))}
 
                             </SelectPrimitive.Viewport>
@@ -229,41 +251,3 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
 })
 
 Select.displayName = "Select"
-
-type SelectItemProps =
-    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> &
-    Pick<ComponentAnatomy<typeof SelectAnatomy>, "checkIconClass">
-
-const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(({ children, className, checkIconClass, ...props }, forwardedRef) => {
-    return (
-        <SelectPrimitive.Item
-            className={cn(
-                SelectAnatomy.item(),
-                className,
-            )}
-            {...props}
-            ref={forwardedRef}
-        >
-            <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-            <SelectPrimitive.ItemIndicator asChild>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className={cn(
-                        SelectAnatomy.checkIcon(),
-                        checkIconClass,
-                    )}
-                >
-                    <path d="M20 6 9 17l-5-5" />
-                </svg>
-            </SelectPrimitive.ItemIndicator>
-        </SelectPrimitive.Item>
-    )
-})
-
-SelectItem.displayName = "SelectItem"
