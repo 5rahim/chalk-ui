@@ -3,12 +3,11 @@
 import type { CheckboxProps as CheckboxPrimitiveProps } from "@radix-ui/react-checkbox"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { cva, VariantProps } from "class-variance-authority"
-import React, { useId } from "react"
+import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { useCheckboxGroupContext } from "../checkbox"
+import { _CheckboxGroupContext } from "../checkbox"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
-
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -20,7 +19,7 @@ export const CheckboxAnatomy = defineStyleAnatomy({
         "UI-Checkbox__control",
         "appearance-none peer block relative overflow-hidden transition h-5 w-5 shrink-0 text-white rounded-md ring-offset-1 border ring-offset-background",
         "border-gray-300 dark:border-gray-700",
-        "outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--ring] disabled:cursor-not-allowed disabled:opacity-50",
+        "outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--ring] disabled:cursor-not-allowed data-[disabled=true]:opacity-50",
         "data-[state=unchecked]:bg-white dark:data-[state=unchecked]:bg-gray-700", // Unchecked
         "data-[state=unchecked]:hover:bg-gray-100 dark:data-[state=unchecked]:hover:bg-gray-600", // Unchecked hover
         "data-[state=checked]:bg-brand dark:data-[state=checked]:bg-brand data-[state=checked]:border-brand", // Checked
@@ -56,7 +55,7 @@ export const CheckboxAnatomy = defineStyleAnatomy({
         "UI-Checkbox__indicator",
         "flex h-full w-full items-center justify-center relative",
     ]),
-    icon: cva("UI-Checkbox__icon absolute", {
+    checkIcon: cva("UI-Checkbox__checkIcon absolute", {
         variants: {
             size: {
                 md: "h-4 w-4",
@@ -93,16 +92,16 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
         hideError,
         containerClass,
         controlClass,
-        iconClass,
+        checkIconClass,
         labelClass,
         indicatorClass,
         onChange,
         value,
         size = "md",
         ...rest
-    }, { label, ...basicFieldProps }] = extractBasicFieldProps<CheckboxProps>(props, useId())
+    }, { label, ...basicFieldProps }] = extractBasicFieldProps<CheckboxProps>(props, React.useId())
 
-    const groupContext = useCheckboxGroupContext()
+    const groupContext = React.useContext(_CheckboxGroupContext)
 
     const _size = groupContext?.group_size ?? size
 
@@ -143,7 +142,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                         {(rest.checked !== "indeterminate") && <svg
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" stroke="currentColor"
                             fill="currentColor"
-                            className={cn(CheckboxAnatomy.icon({ size: _size }), iconClass)}
+                            className={cn(CheckboxAnatomy.checkIcon({ size: _size }), checkIconClass)}
                         >
                             <path
                                 fill="#fff"

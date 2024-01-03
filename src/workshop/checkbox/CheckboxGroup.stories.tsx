@@ -1,11 +1,22 @@
-import { CheckboxGroup } from "../checkbox/checkbox-group"
+import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
+import { CheckboxGroup } from "../checkbox/checkbox-group"
 
 const meta = {
     title: "Components/Forms/CheckboxGroup",
     component: CheckboxGroup,
     parameters: {
         layout: "centered",
+    },
+    render: function Render(args) {
+        const [{ value }, updateArgs] = useArgs()
+        return (
+            <CheckboxGroup
+                {...args}
+                value={value}
+                onChange={(value) => updateArgs({ value })}
+            />
+        )
     },
     tags: ["autodocs"],
     args: {
@@ -16,7 +27,6 @@ const meta = {
             { value: "3", label: "Option 3" },
             { value: "4", label: "Option 4" },
         ],
-        onChange: value => console.log(value),
     },
 } satisfies Meta<typeof CheckboxGroup>
 

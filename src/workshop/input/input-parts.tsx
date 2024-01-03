@@ -14,7 +14,7 @@ export const InputAnatomy = defineStyleAnatomy({
         "w-full rounded-[--radius]",
         "bg-[--paper] border border-[--border] placeholder-gray-400 dark:placeholder-gray-600",
         "disabled:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed",
-        "focus:border-brand-500 focus:ring-1 focus:ring-[--ring]",
+        "focus:border-brand focus:ring-1 focus:ring-[--ring]",
         "outline-none focus:outline-none",
         "transition duration-150",
         "shadow-sm",
