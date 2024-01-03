@@ -12,7 +12,7 @@ import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputI
 export const TextareaAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-Textarea__root",
-        "w-full",
+        "w-full p-2",
     ], {
         variants: {
             size: {
@@ -92,6 +92,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((pr
                         className,
                     )}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
+                    data-disabled={basicFieldProps.disabled}
                     {...rest}
                     ref={ref}
                 />

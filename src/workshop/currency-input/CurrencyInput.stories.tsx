@@ -1,24 +1,28 @@
-import { TextInput } from "../text-input"
+import { useArgs } from "@storybook/preview-api"
+import { CurrencyInput } from "../currency-input"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {
-    title: "Components/Forms/TextInput",
-    component: TextInput,
+    title: "Components/Forms/CurrencyInput",
+    component: CurrencyInput,
     tags: ["autodocs"],
+    render: function Render(args) {
+        const [{ value }, updateArgs] = useArgs()
+        return (
+            <CurrencyInput
+                {...args}
+                value={value}
+                onChange={(value) => updateArgs({ value })}
+            />
+        )
+    },
     args: {
         label: "Label",
-        size: "md",
-        error: "",
-        help: "",
-        leftAddon: "",
-        rightAddon: "",
-        disabled: false,
-        readonly: false,
-        required: false,
-        leftIcon: undefined,
-        rightIcon: undefined,
+        prefix: "$",
+        value: 1234.56,
+        intlConfig: { locale: "en-US", currency: "USD" },
     },
-} satisfies Meta<typeof TextInput>
+} satisfies Meta<typeof CurrencyInput>
 
 
 export default meta
