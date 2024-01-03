@@ -1,6 +1,5 @@
 "use client"
 
-import type { CheckboxProps as CheckboxPrimitiveProps } from "@radix-ui/react-checkbox"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
@@ -75,7 +74,7 @@ export const CheckboxAnatomy = defineStyleAnatomy({
 export interface CheckboxProps extends BasicFieldOptions,
     VariantProps<typeof CheckboxAnatomy.label>,
     Omit<ComponentAnatomy<typeof CheckboxAnatomy>, "rootClass">,
-    Omit<CheckboxPrimitiveProps, "value" | "checked" | "disabled" | "required" | "onCheckedChange" | "onChange"> {
+    Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, "value" | "checked" | "disabled" | "required" | "onCheckedChange" | "onChange"> {
     hideError?: boolean
     formValue?: string
     value: boolean | "indeterminate"
