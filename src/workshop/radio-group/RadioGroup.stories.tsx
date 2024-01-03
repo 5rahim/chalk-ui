@@ -74,17 +74,17 @@ export const Cards: Story = {
     args: {
         stackClass: "flex flex-col gap-2",
         itemContainerClass: cn(
-            "cursor-pointer border transition border-transparent rounded-[--radius] p-4 w-full",
+            "cursor-pointer border-2 transition border-transparent rounded-[--radius] p-4 w-full",
             "bg-gray-50 dark:bg-gray-900",
             "data-[state=checked]:bg-white data-[state=checked]:border-[--border]",
             "dark:data-[state=checked]:bg-gray-800",
-            "focus:ring-2 ring-[--brand] ring-offset-1 ring-offset-[--background] focus-within:ring-2 transition",
-            "data-[state=checked]:ring-2 data-[state=checked]:ring-offset-0",
+            "focus:ring-2 ring-brand-300 dark:ring-brand-800 ring-offset-1 ring-offset-[--background] focus-within:ring-2 transition",
+            "data-[state=checked]:border-2 data-[state=checked]:border-brand data-[state=checked]:ring-offset-0",
         ),
         itemClass: cn(
             "border-transparent absolute top-2 right-2 bg-transparent dark:bg-transparent dark:data-[state=unchecked]:bg-transparent",
             "data-[state=unchecked]:bg-transparent data-[state=unchecked]:hover:bg-transparent dark:data-[state=unchecked]:hover:bg-transparent",
-            "focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent",
+            "focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent transition delay-500",
         ),
         itemIndicatorClass: "",
         itemLabelClass: "font-semibold",
