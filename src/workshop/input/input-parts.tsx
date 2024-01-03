@@ -120,7 +120,7 @@ export interface InputStyling
 export const InputAddonsAnatomy = defineStyleAnatomy({
     icon: cva([
         "UI-Input__addons--icon",
-        "pointer-events-none absolute inset-y-0 grid place-content-center text-gray-500 z-[1]",
+        "pointer-events-none absolute inset-y-0 grid place-content-center text-gray-500",
         "dark:text-gray-300",
     ], {
         variants: {

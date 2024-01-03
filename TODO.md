@@ -10,7 +10,7 @@
     - [x] CheckboxGroup
     - [x] Combobox
     - ToggleButton
-    - Switch
+    - [ ] Switch
     - Textarea
     - PriceInput
     - PhoneInput

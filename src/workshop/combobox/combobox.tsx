@@ -73,7 +73,7 @@ export interface ComboboxProps extends ComboboxButtonProps,
     emptyMessage: React.ReactNode
     placeholder: string
     multiple?: boolean
-    itemCloseButtonProps?: CloseButtonProps
+    removeItemButtonProps?: CloseButtonProps
 }
 
 export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((props, ref) => {
@@ -93,7 +93,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
         itemClass,
         placeholderClass,
         inputValuesContainerClass,
-        itemCloseButtonProps,
+        removeItemButtonProps,
         chevronIconClass,
         /**/
         commandProps,
@@ -132,8 +132,8 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                 <CloseButton
                     intent="gray-basic"
                     size="xs"
-                    {...itemCloseButtonProps}
-                    className={cn("rounded-[--radius]", itemCloseButtonProps?.className)}
+                    {...removeItemButtonProps}
+                    className={cn("rounded-[--radius]", removeItemButtonProps?.className)}
                     onClick={(e) => {
                         e.preventDefault()
                         onChange(value.filter((v) => v !== option.value))
@@ -191,7 +191,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                                 <CloseButton
                                     intent="gray-subtle"
                                     size="xs"
-                                    {...itemCloseButtonProps}
+                                    {...removeItemButtonProps}
                                     onClick={(e) => {
                                         e.preventDefault()
                                         onChange([])

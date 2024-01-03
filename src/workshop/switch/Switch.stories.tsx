@@ -1,29 +1,29 @@
 import { useArgs } from "@storybook/preview-api"
-import { Meta, StoryObj } from "@storybook/react"
-import { Checkbox, CheckboxProps } from "../checkbox/checkbox"
+import { Switch } from "../switch/switch"
+import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {
-    title: "Components/Forms/Checkbox",
-    component: Checkbox,
+    title: "Components/Forms/Switch",
+    component: Switch,
     parameters: {
         layout: "centered",
     },
+    tags: ["autodocs"],
     render: function Render(args) {
         const [{ value }, updateArgs] = useArgs()
         return (
-            <Checkbox
+            <Switch
                 {...args}
                 value={value}
                 onChange={(value) => updateArgs({ value })}
             />
         )
     },
-    tags: ["autodocs"],
     args: {
         label: "Label",
         value: true,
     },
-} satisfies Meta<CheckboxProps>
+} satisfies Meta<typeof Switch>
 
 
 export default meta
@@ -41,15 +41,8 @@ export const Disabled: Story = {
 
 export const Readonly: Story = {
     args: {
-        readonly: true,
         value: true,
-    },
-}
-
-
-export const Large: Story = {
-    args: {
-        size: "lg",
+        readonly: true,
     },
 }
 
@@ -58,6 +51,7 @@ export const Help: Story = {
         help: "Help text",
     },
 }
+
 
 export const Error: Story = {
     args: {
