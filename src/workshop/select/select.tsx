@@ -1,3 +1,5 @@
+"use client"
+
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { cva } from "class-variance-authority"
 import * as React from "react"
@@ -13,7 +15,7 @@ import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputI
 export const SelectAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-Select__root",
-        "inline-flex items-center justify-between",
+        "inline-flex items-center justify-between relative",
     ]),
     chevronIcon: cva([
         "UI-Combobox__chevronIcon",
@@ -29,7 +31,7 @@ export const SelectAnatomy = defineStyleAnatomy({
     ]),
     viewport: cva([
         "UI-Select__viewport",
-        "p-1",
+        "p-1 z-10",
     ]),
     item: cva([
         "UI-Select__item",
@@ -140,11 +142,9 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
                         aria-label={basicFieldProps.name || "Select"}
                         {...rest}
                     >
-                        <SelectPrimitive.Value
-                            placeholder={placeholder}
-                        />
+                        <SelectPrimitive.Value placeholder={placeholder} />
 
-                        <SelectPrimitive.Icon className="">
+                        <SelectPrimitive.Icon className={cn(!!rightIcon && "hidden")}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -236,13 +236,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
                 </SelectPrimitive.Root>
 
                 <InputAddon {...rightAddonProps} />
-                <InputIcon
-                    {...rightIconProps}
-                    className={cn(
-                        rightIconProps.className,
-                        !rightAddon ? "mr-8" : null,
-                    )}
-                />
+                <InputIcon {...rightIconProps} />
 
             </InputContainer>
         </BasicField>

@@ -77,7 +77,6 @@ export const RadioGroupAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface RadioGroupProps extends
-    // React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> &
     BasicFieldOptions,
     Omit<ComponentAnatomy<typeof RadioGroupAnatomy>, "rootClass">,
     VariantProps<typeof RadioGroupAnatomy.item> {
@@ -89,7 +88,7 @@ export interface RadioGroupProps extends
     itemCheckIcon?: React.ReactNode
 }
 
-export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>((props, ref) => {
+export const RadioGroup = React.forwardRef<HTMLButtonElement, RadioGroupProps>((props, ref) => {
 
     const [{
         size,
@@ -107,12 +106,8 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>((pro
     }, basicFieldProps] = extractBasicFieldProps<RadioGroupProps>(props, React.useId())
 
     return (
-        <BasicField
-            {...basicFieldProps}
-            ref={ref}
-        >
+        <BasicField{...basicFieldProps}>
             <RadioGroupPrimitive.Root
-                ref={ref}
                 value={value}
                 onValueChange={onChange}
                 className={cn(RadioGroupAnatomy.root(), className)}
@@ -137,6 +132,7 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>((pro
                                 data-state={value === option.value ? "checked" : "unchecked"}
                             >
                                 <RadioGroupPrimitive.Item
+                                    ref={ref}
                                     id={option.value}
                                     key={option.value}
                                     value={option.value}
