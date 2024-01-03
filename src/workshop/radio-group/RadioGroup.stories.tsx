@@ -88,7 +88,6 @@ export const Cards: Story = {
         ),
         itemIndicatorClass: "",
         itemLabelClass: "font-semibold",
-        size: "lg",
-        itemCheckIcon: <BiCheck className="text-white text-xl" />,
+        itemCheckIcon: <BiCheck className="text-white text-lg" />,
     },
 }
