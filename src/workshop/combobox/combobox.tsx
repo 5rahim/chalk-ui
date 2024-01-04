@@ -59,15 +59,15 @@ export const ComboboxAnatomy = defineStyleAnatomy({
  * Combobox
  * -----------------------------------------------------------------------------------------------*/
 
-type ComboboxButtonProps = Omit<React.ComponentPropsWithRef<"button">, "size" | "value" | "onChange">
+type ComboboxButtonProps = Omit<React.ComponentPropsWithRef<"button">, "size" | "value">
 
 export interface ComboboxProps extends ComboboxButtonProps,
     BasicFieldOptions,
     InputStyling,
     Omit<ComponentAnatomy<typeof ComboboxAnatomy>, "rootClass"> {
     value: string[]
-    onChange: (value: string[]) => void
-    onInputChange?: (value: string) => void
+    onValueChange: (value: string[]) => void
+    onTextChange?: (value: string) => void
     commandProps?: CommandProps
     options: { value: string, textValue?: string, label: React.ReactNode }[]
     emptyMessage: React.ReactNode
@@ -101,8 +101,8 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
         emptyMessage,
         placeholder,
         value,
-        onChange,
-        onInputChange,
+        onValueChange,
+        onTextChange,
         multiple = false,
         ...rest
     }, {
@@ -136,7 +136,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                     className={cn("rounded-[--radius]", removeItemButtonProps?.className)}
                     onClick={(e) => {
                         e.preventDefault()
-                        onChange(value.filter((v) => v !== option.value))
+                        onValueChange(value.filter((v) => v !== option.value))
                         setOpen(false)
                     }}
                 />
@@ -191,7 +191,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                                     {...removeItemButtonProps}
                                     onClick={(e) => {
                                         e.preventDefault()
-                                        onChange([])
+                                        onValueChange([])
                                         setOpen(false)
                                     }}
                                 />
@@ -221,7 +221,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                     >
                         <CommandInput
                             placeholder={placeholder}
-                            onValueChange={onInputChange}
+                            onValueChange={onTextChange}
                         />
                         <CommandList>
                             <CommandEmpty>{emptyMessage}</CommandEmpty>
@@ -234,9 +234,9 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                                             const _option = options.find(n => (n.textValue || n.value).toLowerCase() === currentValue.toLowerCase())
                                             if (_option) {
                                                 if (!multiple) {
-                                                    onChange(value.includes(_option.value) ? [] : [_option.value])
+                                                    onValueChange(value.includes(_option.value) ? [] : [_option.value])
                                                 } else {
-                                                    onChange(
+                                                    onValueChange(
                                                         !value.includes(_option.value)
                                                             ? [...value, _option.value]
                                                             : value.filter((v) => v !== _option.value),

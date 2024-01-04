@@ -23,12 +23,12 @@ export const _CheckboxGroupContext = React.createContext<CheckboxGroupContextVal
 export interface CheckboxGroupProps extends BasicFieldOptions {
     value?: string[]
     defaultValue?: string[]
-    onChange: (value: string[]) => void
+    onValueChange: (value: string[]) => void
     size?: CheckboxProps["size"]
     stackClass?: string
     itemContainerClass?: string
     itemLabelClass?: string
-    itemControlClass?: string
+    itemClass?: string
     itemCheckIconClass?: string
     options: { value: string, label?: React.ReactNode, disabled?: boolean, readonly?: boolean }[]
 }
@@ -38,10 +38,10 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
     const [{
         value,
         defaultValue = [],
-        onChange,
+        onValueChange,
         stackClass,
         itemLabelClass,
-        itemControlClass,
+        itemClass,
         itemContainerClass,
         itemCheckIconClass,
         options,
@@ -74,23 +74,22 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
                         <Checkbox
                             key={opt.value}
                             label={opt.label}
-                            value={opt.value}
-                            checked={selectedValues.includes(opt.value)}
-                            onChange={checked => {
+                            value={selectedValues.includes(opt.value)}
+                            onValueChange={checked => {
                                 setSelectedValues(p => {
                                     const newArr = checked === true
                                         ? [...p, ...(p.includes(opt.value) ? [] : [opt.value])]
                                         : checked === false
                                             ? p.filter(v => v !== opt.value)
                                             : [...p]
-                                    onChange(newArr)
+                                    onValueChange(newArr)
                                     return newArr
                                 })
                             }}
                             hideError
                             error={basicFieldProps.error}
+                            className={itemClass}
                             labelClass={itemLabelClass}
-                            controlClass={itemControlClass}
                             containerClass={itemContainerClass}
                             checkIconClass={itemCheckIconClass}
                             disabled={basicFieldProps.disabled || opt.disabled}

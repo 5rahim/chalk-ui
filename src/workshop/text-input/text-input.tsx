@@ -8,6 +8,7 @@ import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputI
  * -----------------------------------------------------------------------------------------------*/
 
 export interface TextInputProps extends Omit<React.ComponentPropsWithRef<"input">, "size">, InputStyling, BasicFieldOptions {
+    onValueChange?: (value: string) => void
 }
 
 export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
@@ -22,6 +23,8 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
         rightAddon,
         rightIcon,
         className,
+        onValueChange,
+        onChange,
         ...rest
     }, {
         inputContainerProps,
@@ -38,6 +41,11 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
         rightAddon: props1.rightAddon,
         rightIcon: props1.rightIcon,
     })
+
+    const handleOnChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        onValueChange?.(e.target.value)
+        onChange?.(e)
+    }, [])
 
     return (
         <BasicField{...basicFieldProps}>
@@ -65,6 +73,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
                     )}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     data-disabled={basicFieldProps.disabled}
+                    onChange={handleOnChange}
                     {...rest}
                     ref={ref}
                 />

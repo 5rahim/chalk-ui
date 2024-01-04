@@ -42,7 +42,7 @@ export const AutocompleteAnatomy = defineStyleAnatomy({
  * Autocomplete
  * -----------------------------------------------------------------------------------------------*/
 
-type AutocompleteInputProps = Omit<React.ComponentPropsWithRef<"input">, "size" | "value" | "onChange">
+type AutocompleteInputProps = Omit<React.ComponentPropsWithRef<"input">, "size" | "value">
 
 type AutocompleteOption = { value: string, label: string }
 
@@ -51,8 +51,8 @@ export interface AutocompleteProps<T extends Array<AutocompleteOption>> extends 
     InputStyling,
     Omit<ComponentAnatomy<typeof AutocompleteAnatomy>, "rootClass"> {
     value: AutocompleteOption | undefined
-    onChange: (value: { value: string | null, label: string } | undefined) => void
-    onInputChange?: (value: string) => void
+    onValueChange: (value: { value: string | null, label: string } | undefined) => void
+    onTextChange?: (value: string) => void
     options: T
     emptyMessage: React.ReactNode
     placeholder: string
@@ -81,8 +81,9 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
         emptyMessage,
         placeholder,
         value,
+        onValueChange,
+        onTextChange,
         onChange,
-        onInputChange,
         ...rest
     }, {
         inputContainerProps,
@@ -128,29 +129,31 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
         }
     }, [])
 
-    // Filter options based on inputValue
-    React.useEffect(() => {
-        setFilteredOptions(options.filter(option => option.label.toLowerCase().includes(inputValue.toLowerCase())) as T)
-
-        const _option = options.find(n => by(n.label, inputValue.trim()))
-        if (_option) {
-            onChange(_option)
-        } else if (inputValue.length > 0) {
-            onChange({ value: null, label: inputValue.trim() })
-        } else if (inputValue.length === 0) {
-            onChange(undefined)
-        }
-
-    }, [inputValue, options])
-
-    const handleValueChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    // Handle changes in the input value
+    const handleOnChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange?.(e)
         setInputValue(e.target.value)
-        onInputChange?.(e.target.value)
+        onTextChange?.(e.target.value)
         // Open the popover if there are filtered options
         if (filteredOptions.length > 0) {
             setOpen(true)
         }
     }, [filteredOptions])
+
+    // Listen to changes in the input value and filter the options
+    React.useEffect(() => {
+        setFilteredOptions(options.filter(option => option.label.toLowerCase().includes(inputValue.toLowerCase())) as T)
+
+        const _option = options.find(n => by(n.label, inputValue.trim()))
+        if (_option) {
+            onValueChange(_option)
+        } else if (inputValue.length > 0) {
+            onValueChange({ value: null, label: inputValue.trim() })
+        } else if (inputValue.length === 0) {
+            onValueChange(undefined)
+        }
+
+    }, [inputValue, options])
 
     // Focus the command input when arrow down is pressed
     const handleKeyDown = React.useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -183,7 +186,7 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
                                 ref={mergeRefs([ref, inputRef])}
                                 id={basicFieldProps.id}
                                 value={inputValue}
-                                onChange={handleValueChange}
+                                onChange={handleOnChange}
                                 placeholder={placeholder}
                                 className={cn(
                                     InputAnatomy.root({
@@ -227,10 +230,10 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
                                             const _option = options.find(n => by(n.label, currentValue))
                                             if (_option) {
                                                 if (value?.value === _option.value) {
-                                                    onChange(undefined)
+                                                    onValueChange(undefined)
                                                     setInputValue("")
                                                 } else {
-                                                    onChange(_option)
+                                                    onValueChange(_option)
                                                     setInputValue(_option.label)
                                                 }
                                             }

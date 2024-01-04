@@ -42,12 +42,12 @@ const PhoneInputAnatomy = defineStyleAnatomy({
  * PhoneInput
  * -----------------------------------------------------------------------------------------------*/
 
-export interface PhoneInputProps extends Omit<React.ComponentPropsWithoutRef<"input">, "value" | "onChange" | "size">,
+export interface PhoneInputProps extends Omit<React.ComponentPropsWithoutRef<"input">, "value" | "size">,
     Omit<ComponentAnatomy<typeof PhoneInputAnatomy>, "rootClass">,
     Omit<InputStyling, "leftIcon" | "leftAddon">,
     BasicFieldOptions {
     value: string | null | undefined
-    onChange: (value: E164Number | undefined) => void
+    onValueChange: (value: E164Number | undefined) => void
     defaultCountry?: CountryCode
     countrySelectRef?: React.Ref<HTMLSelectElement>
 }
@@ -65,7 +65,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
         rightIcon,
         className,
         value,
-        onChange,
+        onValueChange,
         defaultCountry,
         countrySelectRef,
         /**/
@@ -161,7 +161,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                         </button>
                     )}
                     value={value as E164Number}
-                    onChange={onChange}
+                    onChange={onValueChange}
                 />
 
                 <InputAddon {...rightAddonProps} />

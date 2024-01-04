@@ -66,9 +66,9 @@ export const SwitchAnatomy = defineStyleAnatomy({
 export interface SwitchProps extends BasicFieldOptions,
     Omit<ComponentAnatomy<typeof SwitchAnatomy>, "rootClass">,
     VariantProps<typeof SwitchAnatomy.root>,
-    Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>, "value" | "checked" | "disabled" | "required" | "onCheckedChange" | "onChange"> {
+    Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>, "value" | "checked" | "disabled" | "required" | "onCheckedChange"> {
     value: boolean
-    onChange: (value: boolean) => void
+    onValueChange: (value: boolean) => void
     formValue?: string
     className?: string
 }
@@ -80,7 +80,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>((props, r
         value,
         formValue,
         className,
-        onChange,
+        onValueChange,
         labelClass,
         containerClass,
         thumbClass,
@@ -101,7 +101,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>((props, r
                     data-error={!!basicFieldProps.error}
                     checked={value}
                     value={formValue || (value ? "on" : "off")}
-                    onCheckedChange={onChange}
+                    onCheckedChange={onValueChange}
                     {...rest}
                 >
                     <SwitchPrimitive.Thumb className={cn(SwitchAnatomy.thumb({ size }), thumbClass)} />

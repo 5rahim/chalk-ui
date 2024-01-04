@@ -52,13 +52,13 @@ export const SelectAnatomy = defineStyleAnatomy({
 
 export interface SelectProps extends InputStyling,
     BasicFieldOptions,
-    Omit<React.ComponentPropsWithoutRef<"button">, "onChange" | "value">,
+    Omit<React.ComponentPropsWithoutRef<"button">, "value">,
     Omit<ComponentAnatomy<typeof SelectAnatomy>, "rootClass"> {
     options: { value: string, label?: string, disabled?: boolean }[] | undefined
     placeholder: string
     dir?: "ltr" | "rtl"
     value: string | undefined
-    onChange: (value: string) => void
+    onValueChange: (value: string) => void
     onOpenChange?: (open: boolean) => void
 }
 
@@ -86,7 +86,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
         /**/
         dir,
         value,
-        onChange,
+        onValueChange,
         onOpenChange,
         ...rest
     }, {
@@ -114,7 +114,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
                 <SelectPrimitive.Root
                     dir={dir}
                     value={value}
-                    onValueChange={onChange}
+                    onValueChange={onValueChange}
                     onOpenChange={onOpenChange}
                 >
 

@@ -74,11 +74,11 @@ export const CheckboxAnatomy = defineStyleAnatomy({
 export interface CheckboxProps extends BasicFieldOptions,
     VariantProps<typeof CheckboxAnatomy.label>,
     Omit<ComponentAnatomy<typeof CheckboxAnatomy>, "rootClass">,
-    Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, "value" | "checked" | "disabled" | "required" | "onCheckedChange" | "onChange"> {
+    Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, "value" | "checked" | "disabled" | "required" | "onCheckedChange"> {
     hideError?: boolean
     formValue?: string
     value: boolean | "indeterminate"
-    onChange: (value: boolean | "indeterminate") => void
+    onValueChange: (value: boolean | "indeterminate") => void
 }
 
 export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((props, ref) => {
@@ -91,7 +91,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
         checkIconClass,
         labelClass,
         indicatorClass,
-        onChange,
+        onValueChange,
         value,
         size = "md",
         ...rest
@@ -125,7 +125,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                     data-readonly={basicFieldProps.readonly}
                     checked={value}
                     value={formValue || (value ? "on" : "off")}
-                    onCheckedChange={onChange}
+                    onCheckedChange={onValueChange}
                     {...rest}
                 >
                     <CheckboxPrimitive.CheckboxIndicator className={cn(CheckboxAnatomy.indicator(), indicatorClass)}>

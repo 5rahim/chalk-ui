@@ -83,7 +83,7 @@ export interface RadioGroupProps extends
     stackClass?: string
     className?: string
     value: string | undefined
-    onChange: (value: string) => void
+    onValueChange: (value: string) => void
     options: { value: string, label?: React.ReactNode, disabled?: boolean, readonly?: boolean }[]
     itemCheckIcon?: React.ReactNode
 }
@@ -95,7 +95,7 @@ export const RadioGroup = React.forwardRef<HTMLButtonElement, RadioGroupProps>((
         className,
         stackClass,
         value,
-        onChange,
+        onValueChange,
         options,
         itemClass,
         itemIndicatorClass,
@@ -109,7 +109,7 @@ export const RadioGroup = React.forwardRef<HTMLButtonElement, RadioGroupProps>((
         <BasicField{...basicFieldProps}>
             <RadioGroupPrimitive.Root
                 value={value}
-                onValueChange={onChange}
+                onValueChange={onValueChange}
                 className={cn(RadioGroupAnatomy.root(), className)}
                 required={basicFieldProps.required}
                 disabled={basicFieldProps.disabled || basicFieldProps.readonly}

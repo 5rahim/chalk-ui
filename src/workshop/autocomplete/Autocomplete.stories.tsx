@@ -27,7 +27,7 @@ const meta = {
                 <Autocomplete
                     {...args}
                     value={value}
-                    onChange={(value) => {
+                    onValueChange={(value) => {
                         console.log("value", value)
                         updateArgs({ value })
                     }}

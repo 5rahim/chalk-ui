@@ -12,9 +12,9 @@
     - ToggleButton
     - [x] Switch
     - [x] Textarea
-    - [ ] CurrencyInput
-    - PhoneInput
-    - NumberInput
+    - [x] CurrencyInput
+    - [x] PhoneInput
+    - [ ] NumberInput
     - DateInput
     - DateRangeInput
     - FileInput

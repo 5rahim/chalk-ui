@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import CurrencyInputPrimitive, { CurrencyInputOnChangeValues } from "react-currency-input-field"
 import { IntlConfig } from "react-currency-input-field/src/components/CurrencyInputProps"
@@ -10,7 +12,7 @@ import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputI
  * -----------------------------------------------------------------------------------------------*/
 
 export interface CurrencyInputProps
-    extends Omit<React.ComponentPropsWithoutRef<"input">, "size" | "onChange" | "disabled">,
+    extends Omit<React.ComponentPropsWithoutRef<"input">, "size" | "disabled">,
         InputStyling,
         BasicFieldOptions {
     /**
@@ -113,7 +115,7 @@ export interface CurrencyInputProps
      * Transform the raw value form the input before parsing
      */
     transformRawValue?: (rawValue: string) => string
-    onChange?: (value: (string | undefined), name?: string, values?: CurrencyInputOnChangeValues) => void
+    onValueChange?: (value: (string | undefined), name?: string, values?: CurrencyInputOnChangeValues) => void
 }
 
 export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>((props, ref) => {
@@ -130,7 +132,7 @@ export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputPro
         className,
         /**/
         value,
-        onChange,
+        onValueChange,
         transformRawValue,
         intlConfig,
         allowDecimals,
@@ -192,7 +194,7 @@ export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputPro
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     data-disabled={basicFieldProps.disabled}
                     value={value}
-                    onValueChange={onChange}
+                    onValueChange={onValueChange}
                     transformRawValue={transformRawValue}
                     intlConfig={intlConfig}
                     allowDecimals={allowDecimals}

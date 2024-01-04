@@ -32,6 +32,7 @@ export const TextareaAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface TextareaProps extends Omit<React.ComponentPropsWithRef<"textarea">, "size">, InputStyling, BasicFieldOptions {
+    onValueChange?: (value: string) => void
 }
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((props, ref) => {
@@ -46,6 +47,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((pr
         rightAddon,
         rightIcon,
         className,
+        onValueChange,
+        onChange,
         ...rest
     }, {
         inputContainerProps,
@@ -62,6 +65,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((pr
         rightAddon: props1.rightAddon,
         rightIcon: props1.rightIcon,
     })
+
+    const handleOnChange = React.useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        onValueChange?.(e.target.value)
+        onChange?.(e)
+    }, [])
 
     return (
         <BasicField {...basicFieldProps}>
@@ -90,6 +98,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((pr
                     )}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     data-disabled={basicFieldProps.disabled}
+                    onChange={handleOnChange}
                     {...rest}
                     ref={ref}
                 />
