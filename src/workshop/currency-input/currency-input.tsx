@@ -165,11 +165,8 @@ export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputPro
     })
 
     return (
-        <BasicField
-            {...basicFieldProps}
-        >
+        <BasicField{...basicFieldProps}>
             <InputContainer {...inputContainerProps}>
-
                 <InputAddon {...leftAddonProps} />
                 <InputIcon {...leftIconProps} />
 
@@ -216,7 +213,6 @@ export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputPro
 
                 <InputAddon {...rightAddonProps} />
                 <InputIcon {...rightIconProps} />
-
             </InputContainer>
         </BasicField>
     )

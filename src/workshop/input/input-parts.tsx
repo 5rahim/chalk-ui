@@ -13,7 +13,7 @@ export const InputAnatomy = defineStyleAnatomy({
         "flex items-center",
         "w-full rounded-[--radius]",
         "bg-[--paper] border border-[--border] placeholder-gray-400 dark:placeholder-gray-600",
-        "disabled:pointer-events-none disabled:cursor-not-allowed",
+        "disabled:cursor-not-allowed",
         "data-[disable=true]:shadow-none data-[disable=true]:opacity-50",
         "focus:border-brand focus:ring-1 focus:ring-[--ring]",
         "outline-none focus:outline-none",
