@@ -64,11 +64,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((pr
     })
 
     return (
-        <BasicField
-            {...basicFieldProps}
-        >
+        <BasicField {...basicFieldProps}>
             <InputContainer {...inputContainerProps}>
-
                 <InputAddon {...leftAddonProps} />
                 <InputIcon {...leftIconProps} />
 
@@ -99,7 +96,6 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((pr
 
                 <InputAddon {...rightAddonProps} />
                 <InputIcon {...rightIconProps} />
-
             </InputContainer>
         </BasicField>
     )

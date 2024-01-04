@@ -40,11 +40,8 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
     })
 
     return (
-        <BasicField
-            {...basicFieldProps}
-        >
+        <BasicField{...basicFieldProps}>
             <InputContainer {...inputContainerProps}>
-
                 <InputAddon {...leftAddonProps} />
                 <InputIcon {...leftIconProps} />
 
@@ -74,7 +71,6 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
 
                 <InputAddon {...rightAddonProps} />
                 <InputIcon {...rightIconProps} />
-
             </InputContainer>
         </BasicField>
     )

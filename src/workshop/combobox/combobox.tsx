@@ -145,11 +145,8 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
     )
 
     return (
-        <BasicField
-            {...basicFieldProps}
-        >
+        <BasicField{...basicFieldProps}>
             <InputContainer {...inputContainerProps}>
-
                 <InputAddon {...leftAddonProps} />
                 <InputIcon {...leftIconProps} />
 
@@ -277,7 +274,6 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
 
                 <InputAddon {...rightAddonProps} />
                 <InputIcon {...rightIconProps} />
-
             </InputContainer>
         </BasicField>
     )

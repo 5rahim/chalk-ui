@@ -106,11 +106,8 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
     })
 
     return (
-        <BasicField
-            {...basicFieldProps}
-        >
+        <BasicField{...basicFieldProps}>
             <InputContainer {...inputContainerProps}>
-
                 <InputAddon {...leftAddonProps} />
                 <InputIcon {...leftIconProps} />
 
@@ -237,7 +234,6 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
 
                 <InputAddon {...rightAddonProps} />
                 <InputIcon {...rightIconProps} />
-
             </InputContainer>
         </BasicField>
     )

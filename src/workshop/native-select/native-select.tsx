@@ -44,11 +44,8 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProp
     })
 
     return (
-        <BasicField
-            {...basicFieldProps}
-        >
+        <BasicField{...basicFieldProps}>
             <InputContainer {...inputContainerProps}>
-
                 <InputAddon {...leftAddonProps} />
                 <InputIcon {...leftIconProps} />
 
@@ -88,7 +85,6 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProp
                         !rightAddon ? "mr-8" : null,
                     )}
                 />
-
             </InputContainer>
         </BasicField>
     )

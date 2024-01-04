@@ -137,6 +137,8 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
             onChange(_option)
         } else if (inputValue.length > 0) {
             onChange({ value: null, label: inputValue.trim() })
+        } else if (inputValue.length === 0) {
+            onChange(undefined)
         }
 
     }, [inputValue, options])
@@ -162,11 +164,8 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
     }, [open])
 
     return (
-        <BasicField
-            {...basicFieldProps}
-        >
+        <BasicField{...basicFieldProps}>
             <InputContainer {...inputContainerProps}>
-
                 <InputAddon {...leftAddonProps} />
                 <InputIcon {...leftIconProps} />
 
@@ -269,7 +268,6 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
 
                 <InputAddon {...rightAddonProps} />
                 <InputIcon {...rightIconProps} />
-
             </InputContainer>
         </BasicField>
     )
