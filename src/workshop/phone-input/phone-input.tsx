@@ -3,10 +3,9 @@
 import { cva } from "class-variance-authority"
 import { CountryCode, E164Number } from "libphonenumber-js"
 import * as React from "react"
-import PhoneInputPrimitive from "react-phone-number-input"
+import PhoneInputPrimitive, { Country } from "react-phone-number-input"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { cn } from "../core/classnames"
-import { mergeRefs } from "../core/refs"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 
@@ -44,15 +43,29 @@ const PhoneInputAnatomy = defineStyleAnatomy({
 
 export interface PhoneInputProps extends Omit<React.ComponentPropsWithoutRef<"input">, "value" | "size">,
     Omit<ComponentAnatomy<typeof PhoneInputAnatomy>, "rootClass">,
-    Omit<InputStyling, "leftIcon" | "leftAddon">,
+    InputStyling,
     BasicFieldOptions {
     value: string | null | undefined
-    onValueChange: (value: E164Number | undefined) => void
-    defaultCountry?: CountryCode
     countrySelectRef?: React.Ref<HTMLSelectElement>
+    /**
+     * The default country to select if the value is empty.
+     */
+    defaultCountry?: CountryCode
+    /**
+     * Callback when the phone number value changes.
+     */
+    onValueChange: (value: E164Number | undefined) => void
+    /**
+     * Callback when the country changes.
+     */
+    onCountryChange?: (country: Country) => void
+    /**
+     * The countries to display in the dropdown.
+     */
+    countries?: CountryCode[]
 }
 
-export type { CountryCode, E164Number }
+export type { CountryCode, E164Number, Country }
 
 export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((props, ref) => {
 
@@ -63,12 +76,16 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
         intent,
         rightAddon,
         rightIcon,
+        leftAddon,
+        leftIcon,
         className,
         value,
         onValueChange,
         defaultCountry,
-        countrySelectRef,
+        onCountryChange,
+        countries,
         /**/
+        countrySelectRef,
         countrySelectClass,
         flagSelectClass,
         flagImageClass,
@@ -86,23 +103,32 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
         rightIcon: props1.rightIcon,
     })
 
-    const _countrySelectRef = React.useRef<HTMLSelectElement>(null)
+    const [country, setCountry] = React.useState<Country | undefined>(undefined)
+
+    const handleOnCountryChange = React.useCallback((country: Country) => {
+        setCountry(country)
+        onCountryChange?.(country)
+    }, [])
+
 
     return (
         <BasicField {...basicFieldProps}>
             <InputContainer {...inputContainerProps}>
 
                 <PhoneInputPrimitive
+                    ref={ref as any}
                     id={basicFieldProps.id}
                     className={cn(
                         PhoneInputAnatomy.container(),
                         containerClass,
                     )}
-                    defaultCountry={defaultCountry as CountryCode}
+                    countries={countries}
+                    defaultCountry={defaultCountry}
+                    onCountryChange={handleOnCountryChange}
                     addInternationalOption={false}
-                    style={{ display: "flex", position: "relative" }}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     countrySelectProps={{
+                        value: country,
                         className: cn(
                             "form-select",
                             InputAnatomy.root({
@@ -115,7 +141,6 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                         ),
                         disabled: basicFieldProps.disabled || basicFieldProps.readonly,
                         "data-disabled": basicFieldProps.disabled,
-                        ref: mergeRefs([countrySelectRef, _countrySelectRef]),
                     }}
                     numberInputProps={{
                         className: cn(
@@ -133,7 +158,6 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                         ),
                         disabled: basicFieldProps.disabled || basicFieldProps.readonly,
                         "data-disabled": basicFieldProps.disabled,
-                        ref: ref,
                         ...rest,
                     }}
                     flagComponent={flag => (
