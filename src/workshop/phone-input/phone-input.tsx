@@ -26,11 +26,25 @@ const PhoneInputAnatomy = defineStyleAnatomy({
         "UI-PhoneInput__countrySelect",
         "w-[3rem] z-[3] relative flex-none cursor-pointer truncate rounded-r-none border-r-transparent opacity-0",
         "focus-visible:opacity-100 transition duration-200 ease-in-out",
-    ]),
+    ], {
+        variants: {
+            hasLeftAddon: {
+                true: "rounded-l-none",
+                false: null,
+            },
+        },
+    }),
     flagSelect: cva([
         "UI-PhoneInput__flagSelect",
         "absolute top-0 left-0 w-[3rem] z-[0] flex-none cursor-pointer truncate rounded-r-none border-r-0",
-    ]),
+    ], {
+        variants: {
+            hasLeftAddon: {
+                true: "rounded-l-none border-l-0",
+                false: null,
+            },
+        },
+    }),
     flagImage: cva([
         "UI-PhoneInput__flagImage",
         "w-6 absolute h-full inset-y-0 z-[0]",
@@ -95,6 +109,8 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
         inputContainerProps,
         rightAddonProps,
         rightIconProps,
+        leftIconProps,
+        leftAddonProps,
     }] = extractInputPartProps<PhoneInputProps>({
         ...props1,
         size: props1.size ?? "md",
@@ -103,10 +119,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
         rightIcon: props1.rightIcon,
     })
 
-    const [country, setCountry] = React.useState<Country | undefined>(undefined)
-
     const handleOnCountryChange = React.useCallback((country: Country) => {
-        setCountry(country)
         onCountryChange?.(country)
     }, [])
 
@@ -114,6 +127,8 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
     return (
         <BasicField {...basicFieldProps}>
             <InputContainer {...inputContainerProps}>
+                <InputAddon {...leftAddonProps} />
+                {leftAddon && <InputIcon {...leftIconProps} />}
 
                 <PhoneInputPrimitive
                     ref={ref as any}
@@ -126,9 +141,9 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                     defaultCountry={defaultCountry}
                     onCountryChange={handleOnCountryChange}
                     addInternationalOption={false}
+                    international={false}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     countrySelectProps={{
-                        value: country,
                         className: cn(
                             "form-select",
                             InputAnatomy.root({
@@ -136,8 +151,12 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                                 intent,
                                 hasError: !!basicFieldProps.error,
                                 isDisabled: !!basicFieldProps.disabled,
+                                hasLeftAddon: !!leftAddon,
+                                hasLeftIcon: !!leftIcon,
                             }),
-                            PhoneInputAnatomy.countrySelect(),
+                            PhoneInputAnatomy.countrySelect({
+                                hasLeftAddon: !!leftAddon,
+                            }),
                         ),
                         disabled: basicFieldProps.disabled || basicFieldProps.readonly,
                         "data-disabled": basicFieldProps.disabled,
@@ -169,7 +188,9 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                                     hasError: !!basicFieldProps.error,
                                     isDisabled: !!basicFieldProps.disabled,
                                 }),
-                                PhoneInputAnatomy.flagSelect(),
+                                PhoneInputAnatomy.flagSelect({
+                                    hasLeftAddon: !!leftAddon,
+                                }),
                                 flagSelectClass,
                             )}
                             disabled={basicFieldProps.disabled || basicFieldProps.readonly}

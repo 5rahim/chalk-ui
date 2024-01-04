@@ -16,7 +16,10 @@ const meta = {
                 <PhoneInput
                     {...args}
                     value={value}
-                    onValueChange={(value) => updateArgs({ value })}
+                    onValueChange={(value) => {
+                        console.log("value", value)
+                        updateArgs({ value })
+                    }}
                 />
             </div>
         )
@@ -24,6 +27,7 @@ const meta = {
     args: {
         label: "Label",
         value: "+1 234 567 8900",
+        // defaultCountry: "US",
     },
 } satisfies Meta<typeof PhoneInput>
 
@@ -50,5 +54,12 @@ export const Readonly: Story = {
 export const Error: Story = {
     args: {
         error: "Oops!",
+    },
+}
+
+
+export const LeftAddon: Story = {
+    args: {
+        leftAddon: "Addon",
     },
 }
