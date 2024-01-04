@@ -14,7 +14,7 @@ const meta = {
             <CheckboxGroup
                 {...args}
                 value={value}
-                onChange={(value) => updateArgs({ value })}
+                onValueChange={(value) => updateArgs({ value })}
             />
         )
     },
