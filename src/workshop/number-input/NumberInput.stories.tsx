@@ -27,8 +27,13 @@ const meta = {
         min: 0,
         max: 50,
         step: 2,
+        formatOptions: {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        },
         allowMouseWheel: true,
         hideControls: false,
+        locale: "fr-FR",
     },
 } satisfies Meta<typeof NumberInput>
 

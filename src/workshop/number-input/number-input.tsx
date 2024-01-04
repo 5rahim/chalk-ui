@@ -1,9 +1,10 @@
 "use client"
 
+import type { IntlTranslations } from "@zag-js/number-input"
 import * as numberInput from "@zag-js/number-input"
 import { normalizeProps, useMachine } from "@zag-js/react"
 import { cva, VariantProps } from "class-variance-authority"
-import React, { useId } from "react"
+import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { IconButton } from "../button"
 import { cn } from "../core/classnames"
@@ -81,19 +82,65 @@ export interface NumberInputProps extends Omit<React.ComponentPropsWithoutRef<"i
     Omit<VariantProps<typeof NumberInputAnatomy.root>, "size" | "intent">,
     BasicFieldOptions,
     InputStyling {
+    /**
+     * The value of the input
+     */
     value: number | string
+    /**
+     * The callback to handle value changes
+     */
     onValueChange: (value: number, valueAsString: string) => void
+    /**
+     * The minimum value of the input
+     */
     min?: number
+    /**
+     * The maximum value of the input
+     */
     max?: number
+    /**
+     * The amount to increment or decrement the value by
+     */
     step?: number
+    /**
+     * Whether to allow mouse wheel to change the value
+     */
     allowMouseWheel?: boolean
-    fullWidth?: boolean
+    /**
+     * Whether to allow the value overflow the min/max range
+     */
+    allowOverflow?: boolean
+    /**
+     * Whether to hide the controls
+     */
+    hideControls?: boolean
+    /**
+     * The format options for the value
+     */
     formatOptions?: Intl.NumberFormatOptions
+    /**
+     * Whether to clamp the value when the input loses focus (blur)
+     */
+    clampValueOnBlur?: boolean
+    /**
+     * Accessibility
+     *
+     * Specifies the localized strings that identifies the accessibility elements and their states
+     */
+    translations?: IntlTranslations,
+    /**
+     * The current locale. Based on the BCP 47 definition.
+     */
+    locale?: string
+    /**
+     * The document's text/writing direction.
+     */
+    dir?: "ltr" | "rtl"
 }
 
 export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>((props, ref) => {
 
-    const [props1, basicFieldProps] = extractBasicFieldProps<NumberInputProps>(props, useId())
+    const [props1, basicFieldProps] = extractBasicFieldProps<NumberInputProps>(props, React.useId())
 
     const [{
         controlClass,
@@ -110,7 +157,6 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         rightIcon,
         placeholder,
         onValueChange,
-        fullWidth,
         hideControls,
         value,
         min = 0,
@@ -118,6 +164,10 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         step,
         allowMouseWheel = true,
         formatOptions = { maximumFractionDigits: 2 },
+        clampValueOnBlur = true,
+        translations,
+        locale,
+        dir,
         ...rest
     }, {
         inputContainerProps,
@@ -146,7 +196,10 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         step,
         allowMouseWheel,
         formatOptions,
-        clampValueOnBlur: false,
+        clampValueOnBlur,
+        translations,
+        locale,
+        dir,
         onValueChange: (details) => {
             onValueChange(details.valueAsNumber, details.value)
         },
