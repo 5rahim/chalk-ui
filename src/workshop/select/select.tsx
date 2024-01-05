@@ -27,7 +27,7 @@ export const SelectAnatomy = defineStyleAnatomy({
     ]),
     content: cva([
         "UI-Select__content",
-        "w-full overflow-hidden rounded-[--radius] shadow-md bg-[--paper] border leading-none",
+        "w-full overflow-hidden rounded-[--radius] shadow-md bg-[--paper] border leading-none z-50",
     ]),
     viewport: cva([
         "UI-Select__viewport",
@@ -54,11 +54,29 @@ export interface SelectProps extends InputStyling,
     BasicFieldOptions,
     Omit<React.ComponentPropsWithoutRef<"button">, "value">,
     Omit<ComponentAnatomy<typeof SelectAnatomy>, "rootClass"> {
+    /**
+     * The options to display in the dropdown
+     */
     options: { value: string, label?: string, disabled?: boolean }[] | undefined
-    placeholder: string
+    /**
+     * The placeholder text
+     */
+    placeholder?: string
+    /**
+     * Direction of the text
+     */
     dir?: "ltr" | "rtl"
+    /**
+     * The selected value
+     */
     value: string | undefined
+    /**
+     * Callback when the selected value changes
+     */
     onValueChange: (value: string) => void
+    /**
+     * Callback when the dropdown opens or closes
+     */
     onOpenChange?: (open: boolean) => void
 }
 

@@ -16,7 +16,7 @@ export const InputAnatomy = defineStyleAnatomy({
         "disabled:cursor-not-allowed",
         "data-[disable=true]:shadow-none data-[disable=true]:opacity-50",
         "focus:border-brand focus:ring-1 focus:ring-[--ring]",
-        "outline-none focus:outline-none",
+        "outline-0",
         "transition duration-150",
         "shadow-sm",
     ], {
@@ -28,8 +28,8 @@ export const InputAnatomy = defineStyleAnatomy({
             },
             intent: {
                 basic: "hover:border-gray-300 dark:hover:border-gray-600",
-                filled: "bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 border-transparent focus:bg-white dark:focus:bg-gray-900",
-                unstyled: "bg-transparent hover:bg-transparent border-0 shadow-none focus:ring-0 focus-within:ring-0 rounded-none p-0 text-base",
+                filled: "bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 border-transparent focus:bg-white dark:focus:bg-gray-900 shadow-none",
+                unstyled: "bg-transparent hover:bg-transparent border-0 shadow-none focus:ring-0 focus-visible:ring-2 ring-offset-1 ring-offset-[--background] rounded-none p-0 text-base",
             },
             hasError: {
                 false: null,

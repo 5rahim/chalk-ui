@@ -3,6 +3,7 @@
 import { cva } from "class-variance-authority"
 import * as React from "react"
 import { DayPicker } from "react-day-picker"
+import { ButtonAnatomy } from "../button"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
@@ -37,7 +38,7 @@ export const CalendarAnatomy = defineStyleAnatomy({
     ]),
     navButton: cva([
         "UI-Calendar__navButton",
-        "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+        // "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
     ]),
     navButtonPrevious: cva([
         "UI-Calendar__navButtonPrevious",
@@ -160,7 +161,7 @@ export function Calendar(props: CalendarProps) {
                 caption: cn(CalendarAnatomy.caption(), captionClass),
                 caption_label: cn(CalendarAnatomy.captionLabel(), captionLabelClass),
                 nav: cn(CalendarAnatomy.nav(), navClass),
-                nav_button: cn(CalendarAnatomy.navButton(), navButtonClass),
+                nav_button: cn(CalendarAnatomy.navButton(), ButtonAnatomy.root({ size: "sm", intent: "gray-basic" }), navButtonClass),
                 nav_button_previous: cn(CalendarAnatomy.navButtonPrevious(), navButtonPreviousClass),
                 nav_button_next: cn(CalendarAnatomy.navButtonNext(), navButtonNextClass),
                 table: cn(CalendarAnatomy.table(), tableClass),

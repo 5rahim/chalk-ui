@@ -42,6 +42,12 @@ export const Controlled: Story = {
     args: {},
 }
 
+export const AllowOutsideInteraction: Story = {
+    args: {
+        allowOutsideInteraction: true,
+    },
+}
+
 export const WithTrigger: Story = {
     render: function Render({ open, ...args }) {
         return (<div className="">
@@ -52,6 +58,7 @@ export const WithTrigger: Story = {
         </div>)
     },
 }
+
 
 export const Unclosable: Story = {
     args: {
