@@ -1,5 +1,6 @@
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
+import { fr } from "date-fns/locale"
 import { Calendar } from "../calendar"
 
 
@@ -37,4 +38,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
     args: {},
+}
+
+
+export const Locale: Story = {
+    args: {
+        locale: fr,
+    },
 }

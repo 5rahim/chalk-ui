@@ -4,7 +4,7 @@ import { cva } from "class-variance-authority"
 import * as React from "react"
 import { DayPicker } from "react-day-picker"
 import { cn } from "../core/classnames"
-import { defineStyleAnatomy } from "../core/styling"
+import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -116,7 +116,9 @@ export const CalendarAnatomy = defineStyleAnatomy({
  * Calendar
  * -----------------------------------------------------------------------------------------------*/
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>
+export type CalendarProps =
+    React.ComponentProps<typeof DayPicker> &
+    Omit<ComponentAnatomy<typeof CalendarAnatomy>, "rootClass">
 
 export function Calendar(props: CalendarProps) {
 
@@ -124,6 +126,27 @@ export function Calendar(props: CalendarProps) {
         className,
         classNames,
         showOutsideDays = true,
+        monthsClass,
+        monthClass,
+        captionClass,
+        captionLabelClass,
+        navClass,
+        navButtonClass,
+        navButtonPreviousClass,
+        navButtonNextClass,
+        tableClass,
+        headRowClass,
+        headCellClass,
+        rowClass,
+        cellClass,
+        dayClass,
+        dayRangeEndClass,
+        daySelectedClass,
+        dayTodayClass,
+        dayOutsideClass,
+        dayDisabledClass,
+        dayRangeMiddleClass,
+        dayHiddenClass,
         ...rest
     } = props
 
@@ -132,27 +155,27 @@ export function Calendar(props: CalendarProps) {
             showOutsideDays={showOutsideDays}
             className={cn(CalendarAnatomy.root(), className)}
             classNames={{
-                months: CalendarAnatomy.months(),
-                month: CalendarAnatomy.month(),
-                caption: CalendarAnatomy.caption(),
-                caption_label: CalendarAnatomy.captionLabel(),
-                nav: CalendarAnatomy.nav(),
-                nav_button: CalendarAnatomy.navButton(),
-                nav_button_previous: CalendarAnatomy.navButtonPrevious(),
-                nav_button_next: CalendarAnatomy.navButtonNext(),
-                table: CalendarAnatomy.table(),
-                head_row: CalendarAnatomy.headRow(),
-                head_cell: CalendarAnatomy.headCell(),
-                row: CalendarAnatomy.row(),
-                cell: CalendarAnatomy.cell(),
-                day: CalendarAnatomy.day(),
-                day_range_end: CalendarAnatomy.dayRangeEnd(),
-                day_selected: CalendarAnatomy.daySelected(),
-                day_today: CalendarAnatomy.dayToday(),
-                day_outside: CalendarAnatomy.dayOutside(),
-                day_disabled: CalendarAnatomy.dayDisabled(),
-                day_range_middle: CalendarAnatomy.dayRangeMiddle(),
-                day_hidden: CalendarAnatomy.dayHidden(),
+                months: cn(CalendarAnatomy.months(), monthsClass),
+                month: cn(CalendarAnatomy.month(), monthClass),
+                caption: cn(CalendarAnatomy.caption(), captionClass),
+                caption_label: cn(CalendarAnatomy.captionLabel(), captionLabelClass),
+                nav: cn(CalendarAnatomy.nav(), navClass),
+                nav_button: cn(CalendarAnatomy.navButton(), navButtonClass),
+                nav_button_previous: cn(CalendarAnatomy.navButtonPrevious(), navButtonPreviousClass),
+                nav_button_next: cn(CalendarAnatomy.navButtonNext(), navButtonNextClass),
+                table: cn(CalendarAnatomy.table(), tableClass),
+                head_row: cn(CalendarAnatomy.headRow(), headRowClass),
+                head_cell: cn(CalendarAnatomy.headCell(), headCellClass),
+                row: cn(CalendarAnatomy.row(), rowClass),
+                cell: cn(CalendarAnatomy.cell(), cellClass),
+                day: cn(CalendarAnatomy.day(), dayClass),
+                day_range_end: cn(CalendarAnatomy.dayRangeEnd(), dayRangeEndClass),
+                day_selected: cn(CalendarAnatomy.daySelected(), daySelectedClass),
+                day_today: cn(CalendarAnatomy.dayToday(), dayTodayClass),
+                day_outside: cn(CalendarAnatomy.dayOutside(), dayOutsideClass),
+                day_disabled: cn(CalendarAnatomy.dayDisabled(), dayDisabledClass),
+                day_range_middle: cn(CalendarAnatomy.dayRangeMiddle(), dayRangeMiddleClass),
+                day_hidden: cn(CalendarAnatomy.dayHidden(), dayHiddenClass),
                 ...classNames,
             }}
             components={{
