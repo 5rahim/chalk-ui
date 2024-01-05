@@ -17,9 +17,9 @@ const meta = {
             <div className="">
                 <Button onClick={() => updateArgs({ open: true })}>Open</Button>
                 <Modal
-                    {...args}
                     open={open}
                     onOpenChange={n => updateArgs({ open: n })}
+                    {...args}
                 />
             </div>
         )
@@ -50,5 +50,12 @@ export const WithTrigger: Story = {
                 trigger={<Button>Open</Button>}
             />
         </div>)
+    },
+}
+
+export const Unclosable: Story = {
+    args: {
+        hideCloseButton: true,
+        onOpenChange: () => {},
     },
 }

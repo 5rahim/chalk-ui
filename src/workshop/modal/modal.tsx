@@ -82,6 +82,10 @@ export interface ModalProps extends Omit<React.ComponentPropsWithoutRef<typeof D
      * Optional replacement for the default close button
      */
     closeButton?: React.ReactElement
+    /**
+     * Whether to hide the close button
+     */
+    hideCloseButton?: boolean
 }
 
 export function Modal(props: ModalProps) {
@@ -101,6 +105,7 @@ export function Modal(props: ModalProps) {
         footerClass,
         titleClass,
         descriptionClass,
+        hideCloseButton,
         // Content
         onOpenAutoFocus,
         onCloseAutoFocus,
@@ -142,9 +147,9 @@ export function Modal(props: ModalProps) {
                     {footer}
                 </div>}
 
-                <DialogPrimitive.Close className={cn(ModalAnatomy.close(), closeClass)} asChild>
+                {!hideCloseButton && <DialogPrimitive.Close className={cn(ModalAnatomy.close(), closeClass)} asChild>
                     {closeButton ? closeButton : <CloseButton />}
-                </DialogPrimitive.Close>
+                </DialogPrimitive.Close>}
 
             </DialogPrimitive.Content>
 
