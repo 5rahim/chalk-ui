@@ -27,7 +27,6 @@ const meta = {
     args: {
         label: "Label",
         value: "+1 234 567 8900",
-        // defaultCountry: "US",
     },
 } satisfies Meta<typeof PhoneInput>
 

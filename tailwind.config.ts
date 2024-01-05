@@ -27,6 +27,9 @@ const config: Config = {
             highlighted: "highlighted",
         },
         extend: {
+            animationDuration: {
+                DEFAULT: "0.25s",
+            },
             keyframes: {
                 "accordion-down": {
                     from: { height: "0" },

@@ -12,7 +12,7 @@ export const ButtonAnatomy = defineStyleAnatomy({
         "UI-Button_root",
         "shadow-sm whitespace-nowrap font-semibold rounded-[--radius]",
         "inline-flex items-center text-white transition ease-in duration-100 text-center text-base justify-center",
-        "focus-visible:outline-none focus-visible:ring-2 ring-offset-1 focus-visible:ring-[--ring]",
+        "focus-visible:outline-none focus-visible:ring-2 ring-offset-1 ring-offset-[--background] focus-visible:ring-[--ring]",
         "disabled:opacity-50 disabled:cursor-not-allowed",
     ], {
         variants: {

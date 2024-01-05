@@ -16,8 +16,8 @@
     - [x] PhoneInput
     - [x] NumberInput
     - [x] Calendar
-    - DateInput
-    - DateRangeInput
+    - [ ] DatePicker
+    - [ ] DateRangePicker
     - FileInput
     - TimeInput
     - Form
@@ -25,7 +25,7 @@
     - [x] Popover
     - [x] Command
     - [x] Accordion
-    - Modal
+    - [ ] Modal
     - Tooltip
     - Toast
     - LoadingOverlay
