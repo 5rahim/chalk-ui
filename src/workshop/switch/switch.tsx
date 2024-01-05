@@ -67,9 +67,21 @@ export interface SwitchProps extends BasicFieldOptions,
     Omit<ComponentAnatomy<typeof SwitchAnatomy>, "rootClass">,
     VariantProps<typeof SwitchAnatomy.root>,
     Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>, "value" | "checked" | "disabled" | "required" | "onCheckedChange"> {
+    /**
+     * Whether the switch is checked
+     */
     value: boolean
+    /**
+     * Callback fired when the value changes
+     */
     onValueChange: (value: boolean) => void
+    /**
+     * The value of the switch when used in a form
+     */
     formValue?: string
+    /**
+     *
+     */
     className?: string
 }
 

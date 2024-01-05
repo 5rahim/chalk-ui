@@ -28,7 +28,16 @@ export const PopoverAnatomy = defineStyleAnatomy({
 export type PopoverProps =
     React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Root> &
     Omit<React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>, "asChild"> &
-    { trigger: React.ReactElement, triggerProps?: React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Trigger> }
+    {
+        /**
+         * The trigger element that opens the popover
+         */
+        trigger: React.ReactElement,
+        /**
+         * Additional props for the trigger element
+         */
+        triggerProps?: React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Trigger>
+    }
 
 export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>((props, ref) => {
     const {

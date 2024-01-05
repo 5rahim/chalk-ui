@@ -7,7 +7,12 @@ import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputI
  * TextInput
  * -----------------------------------------------------------------------------------------------*/
 
-export interface TextInputProps extends Omit<React.ComponentPropsWithRef<"input">, "size">, InputStyling, BasicFieldOptions {
+export interface TextInputProps extends Omit<React.ComponentPropsWithRef<"input">, "size">,
+    InputStyling,
+    BasicFieldOptions {
+    /**
+     * Callback fired the value changes
+     */
     onValueChange?: (value: string) => void
 }
 

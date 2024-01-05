@@ -68,11 +68,11 @@ export interface PhoneInputProps extends Omit<React.ComponentPropsWithoutRef<"in
      */
     defaultCountry?: CountryCode
     /**
-     * Callback when the phone number value changes.
+     * Callback fired when the phone number value changes.
      */
     onValueChange: (value: E164Number | undefined) => void
     /**
-     * Callback when the country changes.
+     * Callback fired when the country changes.
      */
     onCountryChange?: (country: Country) => void
     /**

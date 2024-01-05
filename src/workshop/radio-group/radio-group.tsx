@@ -80,11 +80,29 @@ export interface RadioGroupProps extends
     BasicFieldOptions,
     Omit<ComponentAnatomy<typeof RadioGroupAnatomy>, "rootClass">,
     VariantProps<typeof RadioGroupAnatomy.item> {
+    /**
+     * Stack div class
+     */
     stackClass?: string
+    /**
+     * Item div class
+     */
     className?: string
+    /**
+     * Selected value
+     */
     value: string | undefined
+    /**
+     * Callback fired when the selected value changes
+     */
     onValueChange: (value: string) => void
+    /**
+     * Radio options
+     */
     options: { value: string, label?: React.ReactNode, disabled?: boolean, readonly?: boolean }[]
+    /**
+     * Replaces the default check icon
+     */
     itemCheckIcon?: React.ReactNode
 }
 

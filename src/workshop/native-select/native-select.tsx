@@ -8,7 +8,13 @@ import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputI
  * -----------------------------------------------------------------------------------------------*/
 
 export interface NativeSelectProps extends Omit<React.ComponentPropsWithRef<"select">, "size">, InputStyling, BasicFieldOptions {
+    /**
+     * The options to display
+     */
     options: { value: string | number, label?: string }[] | undefined
+    /**
+     * The placeholder text
+     */
     placeholder?: string
 }
 

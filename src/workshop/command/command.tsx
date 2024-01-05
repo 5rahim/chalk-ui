@@ -58,11 +58,12 @@ export const CommandAnatomy = defineStyleAnatomy({
     ]),
 })
 
-const __CommandAnatomyContext = createContext<CommandAnatomyProps>({})
 
 /* -------------------------------------------------------------------------------------------------
  * Command
  * -----------------------------------------------------------------------------------------------*/
+
+const __CommandAnatomyContext = createContext<CommandAnatomyProps>({})
 
 type CommandAnatomyProps = Omit<ComponentAnatomy<typeof CommandAnatomy>, "rootClass">
 

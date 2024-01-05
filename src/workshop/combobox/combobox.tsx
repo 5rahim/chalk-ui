@@ -65,14 +65,41 @@ export interface ComboboxProps extends ComboboxButtonProps,
     BasicFieldOptions,
     InputStyling,
     Omit<ComponentAnatomy<typeof ComboboxAnatomy>, "rootClass"> {
+    /**
+     * The selected values
+     */
     value: string[]
+    /**
+     * Callback fired when the selected values change
+     */
     onValueChange: (value: string[]) => void
+    /**
+     * Callback fired when the search input changes
+     */
     onTextChange?: (value: string) => void
+    /**
+     * Additional props for the command component
+     */
     commandProps?: CommandProps
+    /**
+     * The options to display in the dropdown
+     */
     options: { value: string, textValue?: string, label: React.ReactNode }[]
+    /**
+     * The message to display when there are no options
+     */
     emptyMessage: React.ReactNode
-    placeholder: string
+    /**
+     * The placeholder text
+     */
+    placeholder?: string
+    /**
+     * Allow multiple values to be selected
+     */
     multiple?: boolean
+    /**
+     * Additional props for the button that removes selected item(s)
+     */
     removeItemButtonProps?: CloseButtonProps
 }
 

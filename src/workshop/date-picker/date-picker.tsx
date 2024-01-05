@@ -41,7 +41,7 @@ export interface DatePickerProps extends Omit<React.ComponentPropsWithRef<"butto
      */
     value?: Date
     /**
-     * Callback when the selected date changes
+     * Callback fired when the selected date changes
      */
     onValueChange?: (value: Date | undefined) => void
     /**
