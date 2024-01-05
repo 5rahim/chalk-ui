@@ -14,7 +14,8 @@
     - [x] Textarea
     - [x] CurrencyInput
     - [x] PhoneInput
-    - [ ] NumberInput
+    - [x] NumberInput
+    - [x] Calendar
     - DateInput
     - DateRangeInput
     - FileInput

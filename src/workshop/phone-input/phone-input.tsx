@@ -59,8 +59,10 @@ export interface PhoneInputProps extends Omit<React.ComponentPropsWithoutRef<"in
     Omit<ComponentAnatomy<typeof PhoneInputAnatomy>, "rootClass">,
     InputStyling,
     BasicFieldOptions {
+    /**
+     * The phone number value.
+     */
     value: string | null | undefined
-    countrySelectRef?: React.Ref<HTMLSelectElement>
     /**
      * The default country to select if the value is empty.
      */
@@ -99,7 +101,6 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
         onCountryChange,
         countries,
         /**/
-        countrySelectRef,
         countrySelectClass,
         flagSelectClass,
         flagImageClass,

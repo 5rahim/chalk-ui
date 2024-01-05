@@ -222,6 +222,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                 <InputIcon {...leftIconProps} />
 
                 <input
+                    ref={ref}
                     type="number"
                     name={basicFieldProps.name}
                     className={cn(
@@ -244,7 +245,6 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                     data-readonly={basicFieldProps.readonly}
                     {...api.inputProps}
                     {...rest}
-                    ref={ref}
                 />
 
                 {!hideControls && (<div
