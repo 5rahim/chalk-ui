@@ -38,11 +38,11 @@ export const AccordionAnatomy = defineStyleAnatomy({
     ]),
 })
 
-const __AccordionAnatomyContext = createContext<ComponentAnatomy<typeof AccordionAnatomy>>({})
-
 /* -------------------------------------------------------------------------------------------------
  * Accordion
  * -----------------------------------------------------------------------------------------------*/
+
+const __AccordionAnatomyContext = createContext<ComponentAnatomy<typeof AccordionAnatomy>>({})
 
 export type AccordionProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> & ComponentAnatomy<typeof AccordionAnatomy>
 

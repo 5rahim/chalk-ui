@@ -63,9 +63,9 @@ export const ButtonAnatomy = defineStyleAnatomy({
             },
             size: {
                 xs: "text-sm h-6 px-2",
-                sm: "text-sm h-8 px-3",
-                md: "h-10 px-4",
-                lg: "h-12 px-6",
+                sm: "text-sm h-8 px-4",
+                md: "h-10 px-5",
+                lg: "h-12 px-6 text-lg",
                 xl: "text-2xl h-14 px-8",
             },
         },

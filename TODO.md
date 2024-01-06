@@ -24,21 +24,20 @@
 - Overlays
     - [x] Popover
     - [x] Command
-    - [x] Accordion
     - [x] Modal/Dialog
     - [x] Drawer
-    - Tooltip
-    - Toast
     - [x] LoadingOverlay
     - [x] LoadingSpinner
     - [x] DropdownMenu
+    - Tooltip
+    - Toast
     - HoverCard
     - Skeleton
     - ProgressBar
 - Navigation
     - Breadcrumb
     - HorizontalNav
-    - VerticalNav
+    - [x] VerticalNav
     - Navbar
     - NavTabs
     - Tabs
@@ -47,6 +46,9 @@
     - DataGrid
     - [x] ScrollArea
     - [x] Avatar
+    - [x] Accordion
+    - [x] Disclosure
+    - [x] Collapsible
     - Badge
     - Card
     - Chip
