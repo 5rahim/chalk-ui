@@ -31,6 +31,8 @@
     - Toast
     - [x] LoadingOverlay
     - [x] LoadingSpinner
+    - [x] DropdownMenu
+    - HoverCard
     - Skeleton
     - ProgressBar
 - Navigation
