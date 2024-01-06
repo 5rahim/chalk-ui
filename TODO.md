@@ -9,16 +9,16 @@
     - [x] Checkbox
     - [x] CheckboxGroup
     - [x] Combobox
-    - ToggleButton
     - [x] Switch
     - [x] Textarea
     - [x] CurrencyInput
     - [x] PhoneInput
     - [x] NumberInput
     - [x] Calendar
-    - [ ] DatePicker
-    - [ ] DateRangePicker
-    - FileInput
+    - [x] DatePicker
+    - [x] DateRangePicker
+    - [x] Dropzone
+    - ToggleButton
     - TimeInput
     - Form
 - Overlays
