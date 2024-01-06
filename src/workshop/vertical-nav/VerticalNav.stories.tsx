@@ -20,24 +20,24 @@ const meta = {
     args: {
         items: [
             {
-                name: "My Account", href: "#", icon: BiUser,
+                name: "My Account", href: "#", iconType: BiUser,
                 content: <VerticalNav
                     size="sm"
                     items={[
-                        { name: "Information", href: "#", icon: BiUser },
-                        { name: "Security", href: "#", icon: BiCog },
+                        { name: "Information", href: "#", iconType: BiUser },
+                        { name: "Security", href: "#", iconType: BiCog },
                     ]}
                 />,
             },
-            { name: "Company", href: "#", icon: BiBarChart },
+            { name: "Company", href: "#", iconType: BiBarChart },
             {
                 name: "Team Members",
                 href: "#",
-                icon: BiGroup,
+                iconType: BiGroup,
                 isCurrent: true,
                 addon: <Badge className="absolute right-2" intent="alert-solid">5</Badge>,
             },
-            { name: "Billing", href: "#", icon: BiReceipt },
+            { name: "Billing", href: "#", iconType: BiReceipt },
         ],
     },
 } satisfies Meta<VerticalNavProps>
@@ -61,24 +61,24 @@ export const IconsOnly: Story = {
         iconsOnly: true,
         items: [
             {
-                name: "My Account", href: "#", icon: BiUser,
+                name: "My Account", href: "#", iconType: BiUser,
                 content: <VerticalNav
                     iconsOnly
                     items={[
-                        { name: "Information", href: "#", icon: BiUser },
-                        { name: "Security", href: "#", icon: BiCog },
+                        { name: "Information", href: "#", iconType: BiUser },
+                        { name: "Security", href: "#", iconType: BiCog },
                     ]}
                 />,
             },
-            { name: "Company", href: "#", icon: BiBarChart },
+            { name: "Company", href: "#", iconType: BiBarChart },
             {
                 name: "Team Members",
                 href: "#",
-                icon: BiGroup,
+                iconType: BiGroup,
                 isCurrent: true,
                 addon: <Badge size="sm" className="ml-2 absolute right-1 top-1" intent="alert-solid">5</Badge>,
             },
-            { name: "Billing", href: "#", icon: BiReceipt },
+            { name: "Billing", href: "#", iconType: BiReceipt },
         ],
     },
     render: function Render(args) {

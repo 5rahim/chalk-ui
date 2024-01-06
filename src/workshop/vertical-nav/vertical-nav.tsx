@@ -88,7 +88,7 @@ export interface VerticalNavProps extends React.ComponentPropsWithRef<"div">,
     items: {
         name: string
         href?: string | null | undefined
-        icon?: ((props: any) => JSX.Element) | null | undefined
+        iconType?: React.ElementType
         isCurrent?: boolean
         onClick?: React.MouseEventHandler<HTMLElement>
         addon?: React.ReactNode
@@ -131,7 +131,7 @@ export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((p
                     data-current={item.isCurrent}
                     onClick={item.onClick}
                 >
-                    {item.icon && <item.icon
+                    {item.iconType && <item.iconType
                         className={cn(
                             VerticalNavAnatomy.icon({ size, center: iconsOnly }),
                             iconClass,
@@ -166,7 +166,7 @@ export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((p
                                         iconsOnly && "justify-center",
                                     )}
                                 >
-                                    {item.icon && <item.icon
+                                    {item.iconType && <item.iconType
                                         className={cn(
                                             VerticalNavAnatomy.icon({ size, center: iconsOnly }),
                                             iconClass,
