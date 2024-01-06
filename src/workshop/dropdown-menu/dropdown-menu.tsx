@@ -2,7 +2,6 @@
 
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { cva } from "class-variance-authority"
-import { ChevronRight } from "lucide-react"
 import * as React from "react"
 import { createContext } from "react"
 import { cn } from "../core/classnames"
@@ -170,6 +169,7 @@ DropdownMenuGroup.displayName = "DropdownMenuGroup"
  * -----------------------------------------------------------------------------------------------*/
 
 export type DropdownMenuSubProps =
+    Pick<ComponentAnatomy<typeof DropdownMenuAnatomy>, "subTriggerClass"> &
     Pick<React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Sub>, "defaultOpen" | "open" | "onOpenChange"> &
     React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent> & {
     /**
@@ -198,10 +198,11 @@ export const DropdownMenuSub = React.forwardRef<HTMLDivElement, DropdownMenuSubP
         // SubContent
         sideOffset = 8,
         className,
+        subTriggerClass,
         ...rest
     } = props
 
-    const { subTriggerClass, subContentClass } = React.useContext(__DropdownMenuAnatomyContext)
+    const { subTriggerClass: _subTriggerClass, subContentClass } = React.useContext(__DropdownMenuAnatomyContext)
 
     return (
         <DropdownMenuPrimitive.Sub
@@ -212,13 +213,28 @@ export const DropdownMenuSub = React.forwardRef<HTMLDivElement, DropdownMenuSubP
                     DropdownMenuAnatomy.item(),
                     DropdownMenuAnatomy.subTrigger(),
                     triggerInset && "pl-8",
+                    _subTriggerClass,
                     subTriggerClass,
                     className,
                 )}
                 {...triggerProps}
             >
                 {triggerContent}
-                <ChevronRight className="ml-auto h-4 w-4" />
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={cn(
+                        DropdownMenuAnatomy.shortcut(),
+                        "w-4 h-4 ml-auto",
+                    )}
+                >
+                    <path d="m9 18 6-6-6-6" />
+                </svg>
             </DropdownMenuPrimitive.SubTrigger>
 
             <DropdownMenuPrimitive.Portal>
