@@ -1,23 +1,23 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { Dropzone } from "./dropzone"
+import { SimpleDropzone } from "./simple-dropzone"
 
 const meta = {
-    title: "Components/Forms/Dropzone",
-    component: Dropzone,
+    title: "Components/Forms/SimpleDropzone",
+    component: SimpleDropzone,
     tags: ["autodocs"],
     render: function Render(args) {
         return (
-            <Dropzone
+            <SimpleDropzone
                 {...args}
             />
         )
     },
     args: {},
-} satisfies Meta<typeof Dropzone>
+} satisfies Meta<typeof SimpleDropzone>
 
 
 export default meta
-type Story = StoryObj<typeof Dropzone>;
+type Story = StoryObj<typeof SimpleDropzone>;
 
 export const Image: Story = {
     args: {

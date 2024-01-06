@@ -1,1 +1,1 @@
-export * from "./dropzone"
+export * from "./simple-dropzone"

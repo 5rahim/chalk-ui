@@ -12,75 +12,79 @@ import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
  * Anatomy
  * -----------------------------------------------------------------------------------------------*/
 
-export const DropzoneAnatomy = defineStyleAnatomy({
+export const SimpleDropzoneAnatomy = defineStyleAnatomy({
     root: cva([
-        "UI-Dropzone__root",
+        "UI-SimpleDropzone__root",
         "mb-2 cursor-pointer hover:text-[--text-color] flex items-center justify-center p-4 border rounded-[--radius] border-dashed",
         "gap-3 text-sm sm:text-base",
         "outline-none ring-[--ring] focus-visible:ring-2",
-        "text-[--muted] transition ease-in-out hover:border-[--text-color]",
+        "text-[--muted] transition ease-in-out hover:border-[--foreground]",
         "data-[drag-active=true]:border-brand-500",
         "data-[drag-reject=true]:border-[--red]",
     ]),
     list: cva([
-        "UI-Dropzone__list",
+        "UI-SimpleDropzone__list",
         "flex rounded-md flex-wrap divide-y divide-[--border]",
     ]),
     listItem: cva([
-        "UI-Dropzone__listItem",
-        "flex items-center justify-space-between relative p-1 hover:bg-[--highlight] w-full overflow-hidden",
+        "UI-SimpleDropzone__listItem",
+        "flex items-center justify-space-between relative p-1 hover:bg-[--subtle] w-full overflow-hidden",
     ]),
     listItemDetailsContainer: cva([
-        "UI-Dropzone__listItemDetailsContainer",
+        "UI-SimpleDropzone__listItemDetailsContainer",
         "flex items-center gap-2 truncate w-full",
     ]),
     listItemTitle: cva([
-        "UI-Dropzone__listItemTitle",
+        "UI-SimpleDropzone__listItemTitle",
         "truncate max-w-[180px] text-[.9rem]",
     ]),
     listItemSize: cva([
-        "UI-Dropzone__listItemSize",
+        "UI-SimpleDropzone__listItemSize",
         "text-xs uppercase text-center font-semibold align-center text-[--muted]",
     ]),
     listItemRemoveButton: cva([
-        "UI-Dropzone__listItemRemoveButton",
+        "UI-SimpleDropzone__listItemRemoveButton",
         "ml-2 rounded-full",
     ]),
     imagePreviewGrid: cva([
-        "UI-Dropzone__imagePreviewGrid",
-        "grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 2xl:grid-cols-10 h-full gap-x-2 gap-y-2",
+        "UI-SimpleDropzone__imagePreviewGrid",
+        "flex gap-2 flex-wrap place-content-center pt-4",
+        // "grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 2xl:grid-cols-10 h-full gap-x-2 gap-y-2",
     ]),
     imagePreviewContainer: cva([
-        "UI-Dropzone__imagePreviewContainer",
-        "col-span-1 row-span-1 aspect-square",
+        "UI-SimpleDropzone__imagePreviewContainer",
+        "col-span-1 row-span-1 aspect-square w-36 h-auto",
     ]),
     imagePreview: cva([
-        "UI-Dropzone__imagePreview",
+        "UI-SimpleDropzone__imagePreview",
         "relative bg-transparent border h-full bg-center bg-no-repeat bg-contain rounded-md overflow-hidden",
         "col-span-1 row-span-1",
     ]),
     imagePreviewRemoveButton: cva([
-        "UI-Dropzone__imagePreviewRemoveButton",
+        "UI-SimpleDropzone__imagePreviewRemoveButton",
         "absolute top-1 right-1",
     ]),
     fileIcon: cva([
-        "UI-Dropzone__fileIcon",
+        "UI-SimpleDropzone__fileIcon",
         "w-5 h-5 flex-none",
     ]),
-
+    maxSizeText: cva([
+        "UI-SimpleDropzone__maxSizeText",
+        "text-sm text-[--muted] font-medium",
+    ]),
 })
 
 /* -------------------------------------------------------------------------------------------------
- * Dropzone
+ * SimpleDropzone
  * -----------------------------------------------------------------------------------------------*/
 
-export interface DropzoneProps
+export interface SimpleDropzoneProps
     extends Omit<React.ComponentPropsWithRef<"input">,
-        "size" | "value" | "onChange" | "accept" | "type" | "onError" | "onDrop">,
-        Omit<ComponentAnatomy<typeof DropzoneAnatomy>, "rootClass">,
+        "size" | "value" | "accept" | "type" | "onError" | "onDrop">,
+        Omit<ComponentAnatomy<typeof SimpleDropzoneAnatomy>, "rootClass">,
         BasicFieldOptions {
     /**
-     * Callback function that is called when the value changes.
+     * Callback fired when files are selected
      */
     onValueChange?: (files: File[]) => void,
     /**
@@ -108,7 +112,7 @@ export interface DropzoneProps
      */
     maxFiles?: number
     /**
-     * Whether to prevent drop on document
+     * If false, allow dropped items to take over the current browser window
      */
     preventDropOnDocument?: boolean
     /**
@@ -133,7 +137,7 @@ export interface DropzoneProps
     dropzoneText?: string
 }
 
-export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputElement, DropzoneProps>((props, ref) => {
+export const SimpleDropzone: React.FC<SimpleDropzoneProps> = React.forwardRef<HTMLInputElement, SimpleDropzoneProps>((props, ref) => {
 
     const [{
         children,
@@ -148,11 +152,11 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
         imagePreviewContainerClass,
         imagePreviewRemoveButtonClass,
         imagePreviewClass,
+        maxSizeTextClass,
         fileIconClass,
         onValueChange,
         withImagePreview,
         dropzoneText,
-        // uploadHandler,
         /**/
         accept,
         minSize,
@@ -172,15 +176,12 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
     const onDrop = React.useCallback((acceptedFiles: File[]) => {
         // Update files - add the preview
         onValueChange?.(acceptedFiles)
-        setFiles(acceptedFiles.map((file: File) => Object.assign(file, {
-            preview: URL.createObjectURL(file),
-        })))
+        setFiles(acceptedFiles.map(file => Object.assign(file, { preview: URL.createObjectURL(file) })))
     }, [])
 
     const handleRemoveFile = React.useCallback((file: number) => {
         setFiles(p => {
-            const newFiles = [...p]
-            newFiles.splice(file, 1)
+            const newFiles = p.toSpliced(file, 1)
             onValueChange?.(newFiles)
             return newFiles
         })
@@ -203,20 +204,15 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
         validator,
         accept,
         onError: (e) => {
-            onError && onError(e)
-            console.error(e)
+            onError?.(e)
         },
     })
-
-    React.useEffect(() => () => {
-        files.forEach((file: any) => URL.revokeObjectURL(file.preview))
-    }, [files])
 
     return (
         <BasicField{...basicFieldProps}>
             <div
                 className={cn(
-                    DropzoneAnatomy.root(),
+                    SimpleDropzoneAnatomy.root(),
                     className,
                 )}
                 data-drag-active={isDragActive}
@@ -240,13 +236,13 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
                     <line x1="12" x2="12" y1="15" y2="3" />
                 </svg>
                 <span>
-                    {dropzoneText || "Click or drag file to this area to upload"}
+                    {dropzoneText ?? "Click or drag file to this area to upload"}
                 </span>
             </div>
 
-            {maxSize && <div className={"text-sm text-[--muted] font-medium"}>{`≤`} {humanFileSize(maxSize, 0)}</div>}
+            {maxSize && <div className={cn(SimpleDropzoneAnatomy.maxSizeText(), maxSizeTextClass)}>{`≤`} {humanFileSize(maxSize, 0)}</div>}
 
-            {!withImagePreview && <div className={cn(DropzoneAnatomy.list(), listClass)}>
+            {!withImagePreview && <div className={cn(SimpleDropzoneAnatomy.list(), listClass)}>
                 {files?.map((file: any, index) => {
 
                     let Icon: React.ReactElement
@@ -256,7 +252,7 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor"
                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                            className={cn(DropzoneAnatomy.fileIcon(), fileIconClass)}
+                            className={cn(SimpleDropzoneAnatomy.fileIcon(), fileIconClass)}
                         >
                             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
                             <polyline points="14 2 14 8 20 8" />
@@ -268,7 +264,7 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor"
                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                            className={cn(DropzoneAnatomy.fileIcon(), fileIconClass)}
+                            className={cn(SimpleDropzoneAnatomy.fileIcon(), fileIconClass)}
                         >
                             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
                             <polyline points="14 2 14 8 20 8" />
@@ -279,7 +275,7 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor"
                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                            className={cn(DropzoneAnatomy.fileIcon(), fileIconClass)}
+                            className={cn(SimpleDropzoneAnatomy.fileIcon(), fileIconClass)}
                         >
                             <path
                                 d="M17.5 22h.5c.5 0 1-.2 1.4-.6.4-.4.6-.9.6-1.4V7.5L14.5 2H6c-.5 0-1 .2-1.4.6C4.2 3 4 3.5 4 4v3"
@@ -294,7 +290,7 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor"
                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                            className={cn(DropzoneAnatomy.fileIcon(), fileIconClass)}
+                            className={cn(SimpleDropzoneAnatomy.fileIcon(), fileIconClass)}
                         >
                             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
                             <polyline points="14 2 14 8 20 8" />
@@ -307,7 +303,7 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor"
                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                            className={cn(DropzoneAnatomy.fileIcon(), fileIconClass)}
+                            className={cn(SimpleDropzoneAnatomy.fileIcon(), fileIconClass)}
                         >
                             <path
                                 d="M22 20V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2h6"
@@ -321,7 +317,7 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor"
                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                            className={cn(DropzoneAnatomy.fileIcon(), fileIconClass)}
+                            className={cn(SimpleDropzoneAnatomy.fileIcon(), fileIconClass)}
                         >
                             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
                             <polyline points="14 2 14 8 20 8" />
@@ -332,14 +328,14 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
 
                         <div
                             key={file.name}
-                            className={cn(DropzoneAnatomy.listItem(), listItemClass)}
+                            className={cn(SimpleDropzoneAnatomy.listItem(), listItemClass)}
                         >
                             <div
-                                className={cn(DropzoneAnatomy.listItemDetailsContainer(), listItemDetailsContainerClass)}
+                                className={cn(SimpleDropzoneAnatomy.listItemDetailsContainer(), listItemDetailsContainerClass)}
                             >
                                 {Icon}
-                                <p className={cn(DropzoneAnatomy.listItemTitle(), listItemTitleClass)}>{file.name}</p>
-                                <p className={cn(DropzoneAnatomy.listItemSize(), listItemSizeClass)}>{humanFileSize(file.size)}</p>
+                                <p className={cn(SimpleDropzoneAnatomy.listItemTitle(), listItemTitleClass)}>{file.name}</p>
+                                <p className={cn(SimpleDropzoneAnatomy.listItemSize(), listItemSizeClass)}>{humanFileSize(file.size)}</p>
                             </div>
                             <IconButton
                                 size="xs"
@@ -359,7 +355,7 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
                                         <line x1="14" x2="14" y1="11" y2="17" />
                                     </svg>
                                 }
-                                className={cn(DropzoneAnatomy.listItemRemoveButton(), listItemRemoveButtonClass)}
+                                className={cn(SimpleDropzoneAnatomy.listItemRemoveButton(), listItemRemoveButtonClass)}
                                 onClick={() => handleRemoveFile(index)}
                             />
                         </div>
@@ -367,27 +363,27 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
                 })}
             </div>}
 
-            {withImagePreview && <div className={cn(DropzoneAnatomy.imagePreviewGrid(), imagePreviewGridClass)}>
-                {files?.map((file: any, index) => {
+            {withImagePreview && <div className={cn(SimpleDropzoneAnatomy.imagePreviewGrid(), imagePreviewGridClass)}>
+                {files?.map((file, index) => {
                     return (
                         <div
                             key={file.name}
-                            className={cn(DropzoneAnatomy.imagePreviewContainer(), imagePreviewContainerClass)}
+                            className={cn(SimpleDropzoneAnatomy.imagePreviewContainer(), imagePreviewContainerClass)}
                         >
                             <div
-                                className={cn(DropzoneAnatomy.imagePreview(), imagePreviewClass)}
-                                style={{ backgroundImage: file ? `url(${file.preview})` : undefined }}
+                                className={cn(SimpleDropzoneAnatomy.imagePreview(), imagePreviewClass)}
+                                style={{ backgroundImage: file ? `url(${(file as File & { preview: string }).preview})` : undefined }}
                             >
                                 <CloseButton
                                     intent="alert"
                                     size="xs"
-                                    className={cn(DropzoneAnatomy.imagePreviewRemoveButton(), imagePreviewRemoveButtonClass)}
+                                    className={cn(SimpleDropzoneAnatomy.imagePreviewRemoveButton(), imagePreviewRemoveButtonClass)}
                                     onClick={() => handleRemoveFile(index)}
                                 />
                             </div>
-                            <div className={cn(DropzoneAnatomy.listItemDetailsContainer(), listItemDetailsContainerClass)}>
-                                <p className={cn(DropzoneAnatomy.listItemTitle(), listItemTitleClass)}>{file.name}</p>
-                                <p className={cn(DropzoneAnatomy.listItemSize(), listItemSizeClass)}>{humanFileSize(file.size)}</p>
+                            <div className={cn(SimpleDropzoneAnatomy.listItemDetailsContainer(), listItemDetailsContainerClass)}>
+                                <p className={cn(SimpleDropzoneAnatomy.listItemTitle(), listItemTitleClass)}>{file.name}</p>
+                                <p className={cn(SimpleDropzoneAnatomy.listItemSize(), listItemSizeClass)}>{humanFileSize(file.size)}</p>
                             </div>
                         </div>
                     )
@@ -399,7 +395,7 @@ export const Dropzone: React.FC<DropzoneProps> = React.forwardRef<HTMLInputEleme
 
 })
 
-Dropzone.displayName = "Dropzone"
+SimpleDropzone.displayName = "SimpleDropzone"
 
 function humanFileSize(size: number, precision = 2): string {
     const i = Math.floor(Math.log(size) / Math.log(1024))

@@ -17,7 +17,7 @@
     - [x] Calendar
     - [x] DatePicker
     - [x] DateRangePicker
-    - [x] Dropzone
+    - [x] SimpleDropzone
     - ToggleButton
     - TimeInput
     - Form
@@ -25,7 +25,7 @@
     - [x] Popover
     - [x] Command
     - [x] Accordion
-    - [ ] Modal
+    - [x] Modal
     - Tooltip
     - Toast
     - LoadingOverlay
@@ -39,6 +39,7 @@
     - Navbar
     - NavTabs
     - Tabs
+    - Pagination
 - DataDisplay
     - DataGrid
     - [x] ScrollArea
