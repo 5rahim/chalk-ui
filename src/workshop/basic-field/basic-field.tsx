@@ -1,6 +1,6 @@
-import { cn } from "../core/classnames"
 import { cva } from "class-variance-authority"
 import * as React from "react"
+import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
@@ -122,42 +122,40 @@ export const BasicField = React.memo(React.forwardRef<HTMLDivElement, BasicField
     } = props
 
     return (
-        <>
-            <div
-                className={cn(
-                    BasicFieldAnatomy.field(),
-                    className,
-                    fieldClass,
-                )}
-                {...rest}
-                ref={ref}
-            >
-                {!!label &&
-                    <label
-                        htmlFor={disabled ? undefined : id}
-                        className={cn(BasicFieldAnatomy.fieldLabel(), fieldLabelClass)}
-                        data-error={!!error}
-                        {...labelProps}
-                    >
-                        {label}
-                        {required &&
-                            <span className={cn(BasicFieldAnatomy.fieldAsterisk(), fieldAsteriskClass)}>*</span>
-                        }
-                    </label>
-                }
+        <div
+            className={cn(
+                BasicFieldAnatomy.field(),
+                className,
+                fieldClass,
+            )}
+            {...rest}
+            ref={ref}
+        >
+            {!!label &&
+                <label
+                    htmlFor={disabled ? undefined : id}
+                    className={cn(BasicFieldAnatomy.fieldLabel(), fieldLabelClass)}
+                    data-error={!!error}
+                    {...labelProps}
+                >
+                    {label}
+                    {required &&
+                        <span className={cn(BasicFieldAnatomy.fieldAsterisk(), fieldAsteriskClass)}>*</span>
+                    }
+                </label>
+            }
 
-                {children}
+            {children}
 
-                {(!!help || !!error) &&
-                    <div className={cn(BasicFieldAnatomy.fieldDetails(), fieldDetailsClass)}>
-                        {!!help &&
-                            <p className={cn(BasicFieldAnatomy.fieldHelpText(), fieldHelpTextClass)}>{help}</p>}
-                        {!!error &&
-                            <p className={cn(BasicFieldAnatomy.fieldErrorText(), fieldErrorTextClass)}>{error}</p>}
-                    </div>
-                }
-            </div>
-        </>
+            {(!!help || !!error) &&
+                <div className={cn(BasicFieldAnatomy.fieldDetails(), fieldDetailsClass)}>
+                    {!!help &&
+                        <p className={cn(BasicFieldAnatomy.fieldHelpText(), fieldHelpTextClass)}>{help}</p>}
+                    {!!error &&
+                        <p className={cn(BasicFieldAnatomy.fieldErrorText(), fieldErrorTextClass)}>{error}</p>}
+                </div>
+            }
+        </div>
     )
 
 }))
