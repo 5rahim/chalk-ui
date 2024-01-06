@@ -1,11 +1,11 @@
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
 import { fr } from "date-fns/locale"
-import { DatePicker } from "../date-picker"
+import { DateRangePicker } from "../date-picker"
 
 const meta = {
-    title: "Components/Forms/DatePicker",
-    component: DatePicker,
+    title: "Components/Forms/DateRangePicker",
+    component: DateRangePicker,
     parameters: {
         layout: "centered",
     },
@@ -14,7 +14,7 @@ const meta = {
         const [{ value }, updateArgs] = useArgs()
         return (
             <div className="min-[900px]:w-[800px] w-full">
-                <DatePicker
+                <DateRangePicker
                     {...args}
                     value={value}
                     onValueChange={(value) => updateArgs({ value })}
@@ -24,9 +24,8 @@ const meta = {
     },
     args: {
         label: "Label",
-        // value: true,
     },
-} satisfies Meta<typeof DatePicker>
+} satisfies Meta<typeof DateRangePicker>
 
 
 export default meta
@@ -34,13 +33,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
     args: {},
-}
-
-
-export const HideYearSelector: Story = {
-    args: {
-        hideYearSelector: true,
-    },
 }
 
 export const Locale: Story = {

@@ -93,19 +93,19 @@ export const CalendarAnatomy = defineStyleAnatomy({
     ]),
     dayOutside: cva([
         "UI-Calendar__dayOutside",
-        "day-outside text-[--muted] opacity-50",
+        "day-outside text-[--muted] opacity-30",
         "aria-selected:bg-[--subtle]/50",
         "aria-selected:text-white",
         "aria-selected:opacity-30",
     ]),
     dayDisabled: cva([
         "UI-Calendar__dayDisabled",
-        "text-[--muted] opacity-50",
+        "text-[--muted] opacity-30",
     ]),
     dayRangeMiddle: cva([
         "UI-Calendar__dayRangeMiddle",
         "aria-selected:bg-[--subtle]",
-        "aria-selected:text-black",
+        "aria-selected:text-[--foreground]",
     ]),
     dayHidden: cva([
         "UI-Calendar__dayHidden",
@@ -153,6 +153,7 @@ export function Calendar(props: CalendarProps) {
 
     return (
         <DayPicker
+            fixedWeeks
             showOutsideDays={showOutsideDays}
             className={cn(CalendarAnatomy.root(), className)}
             classNames={{

@@ -1,8 +1,9 @@
 "use client"
 
 import { cva } from "class-variance-authority"
-import { format, getYear, setYear } from "date-fns"
+import { format } from "date-fns"
 import * as React from "react"
+import { DateRange } from "react-day-picker"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { Calendar } from "../calendar"
 import { cn } from "../core/classnames"
@@ -10,38 +11,43 @@ import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 import { Modal } from "../modal"
 import { Popover } from "../popover"
-import { Select } from "../select"
+
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
  * -----------------------------------------------------------------------------------------------*/
 
-export const DatePickerAnatomy = defineStyleAnatomy({
+export const DateRangePickerAnatomy = defineStyleAnatomy({
     root: cva([
-        "UI-DatePicker__root",
+        "UI-DateRangePicker__root",
+        "truncate",
     ]),
     placeholder: cva([
-        "UI-DatePicker__placeholder",
+        "UI-DateRangePicker__placeholder",
         "text-[--muted]",
     ]),
 })
 
 /* -------------------------------------------------------------------------------------------------
- * DatePicker
+ * DateRangePicker
  * -----------------------------------------------------------------------------------------------*/
 
-export interface DatePickerProps extends Omit<React.ComponentPropsWithRef<"button">, "size" | "value">,
-    Omit<ComponentAnatomy<typeof DatePickerAnatomy>, "rootClass">,
+export interface DateRangePickerProps extends Omit<React.ComponentPropsWithRef<"button">, "size" | "value">,
+    Omit<ComponentAnatomy<typeof DateRangePickerAnatomy>, "rootClass">,
     InputStyling,
     BasicFieldOptions {
     /**
      * The selected date
      */
-    value?: Date
+    value?: DateRange
+    /**
+     * Default selected end date
+     */
+    defaultTo?: Date
     /**
      * Callback fired when the selected date changes
      */
-    onValueChange?: (value: Date | undefined) => void
+    onValueChange?: (value: DateRange | undefined) => void
     /**
      * The placeholder text
      */
@@ -51,10 +57,6 @@ export interface DatePickerProps extends Omit<React.ComponentPropsWithRef<"butto
      */
     locale?: Locale
     /**
-     * Hide the year selector above the calendar
-     */
-    hideYearSelector?: boolean
-    /**
      * Props to pass to the calendar
      *
      * This is useful for setting the min and max dates
@@ -62,9 +64,9 @@ export interface DatePickerProps extends Omit<React.ComponentPropsWithRef<"butto
     pickerOptions?: Partial<Omit<React.ComponentProps<typeof Calendar>, "locale" | "mode">>
 }
 
-export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>((props, ref) => {
+export const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps>((props, ref) => {
 
-    const [props1, basicFieldProps] = extractBasicFieldProps<DatePickerProps>(props, React.useId())
+    const [props1, basicFieldProps] = extractBasicFieldProps<DateRangePickerProps>(props, React.useId())
 
     const [{
         size,
@@ -80,8 +82,6 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>((
         onValueChange,
         placeholder,
         locale,
-        hideYearSelector,
-        pickerOptions,
         ...rest
     }, {
         inputContainerProps,
@@ -89,7 +89,7 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>((
         leftIconProps,
         rightAddonProps,
         rightIconProps,
-    }] = extractInputPartProps<DatePickerProps>({
+    }] = extractInputPartProps<DateRangePickerProps>({
         ...props1,
         size: props1.size ?? "md",
         intent: props1.intent ?? "basic",
@@ -113,9 +113,12 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>((
         </svg>,
     })
 
-    const [date, setDate] = React.useState<Date | undefined>(value)
+    const [date, setDate] = React.useState<DateRange | undefined>({
+        from: new Date(),
+        to: undefined,
+    })
 
-    const handleOnSelect = React.useCallback((date: Date | undefined) => {
+    const handleOnSelect = React.useCallback((date: DateRange | undefined) => {
         setDate(date)
         onValueChange?.(date)
     }, [])
@@ -138,7 +141,7 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>((
                     hasLeftAddon: !!leftAddon,
                     hasLeftIcon: !!leftIcon,
                 }),
-                DatePickerAnatomy.root(),
+                DateRangePickerAnatomy.root(),
                 className,
             )}
             disabled={basicFieldProps.disabled || basicFieldProps.readonly}
@@ -146,37 +149,24 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>((
             data-readonly={basicFieldProps.readonly}
             {...rest}
         >
-            {date ?
-                format(date, "PPP", { locale: locale }) :
-                <span className={cn(DatePickerAnatomy.placeholder(), placeholderClass)}>{placeholder || "Select a date"}</span>}
+            {date?.from ? (
+                date.to ? <span className="line-clamp-1">{`${format(date.from, "PPP")} - ${format(date.to, "PPP")}`}</span> : format(date.from, "PPP")
+            ) : <span className={cn(DateRangePickerAnatomy.placeholder(), placeholderClass)}>{placeholder || "Select a date"}</span>}
         </button>
     )
 
     const Picker = (
-        <div>
-            {!hideYearSelector && <div className="flex items-center justify-between p-1 sm:border-b">
-                <Select
-                    size="sm"
-                    intent="filled"
-                    options={Array(getYear(new Date()) - 1899).fill(0).map((_, i) => (
-                        { label: String(getYear(new Date()) + 100 - i), value: String(getYear(new Date()) + 100 - i) }
-                    ))}
-                    value={String(getYear(date ?? new Date()))}
-                    onValueChange={value => setDate(setYear(date ?? new Date(), Number(value)))}
-                />
-            </div>}
-            <Calendar
-                {...pickerOptions}
-                mode="single"
-                month={date ?? new Date()}
-                onMonthChange={month => setDate(month)}
-                selected={date}
-                onSelect={handleOnSelect}
-                locale={locale}
-                initialFocus
-                tableClass="w-auto mx-auto"
-            />
-        </div>
+        <Calendar
+            captionLayout="dropdown-buttons"
+            mode="range"
+            defaultMonth={date?.from ?? new Date()}
+            selected={date}
+            onSelect={handleOnSelect}
+            locale={locale}
+            initialFocus
+            tableClass="w-auto mx-auto"
+            numberOfMonths={2}
+        />
     )
 
     return (
@@ -213,4 +203,4 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>((
 
 })
 
-DatePicker.displayName = "DatePicker"
+DateRangePicker.displayName = "DateRangePicker"
