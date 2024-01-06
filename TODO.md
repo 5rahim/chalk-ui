@@ -25,11 +25,12 @@
     - [x] Popover
     - [x] Command
     - [x] Accordion
-    - [x] Modal
+    - [x] Modal/Dialog
+    - [x] Drawer
     - Tooltip
     - Toast
-    - LoadingOverlay
-    - LoadingSpinner
+    - [x] LoadingOverlay
+    - [x] LoadingSpinner
     - Skeleton
     - ProgressBar
 - Navigation
