@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { BiBarChart, BiCog, BiGroup, BiReceipt, BiUser } from "react-icons/bi"
 import { Badge } from "../badge"
-import { VerticalNav, VerticalNavProps } from "../vertical-nav"
+import { VerticalMenu, VerticalMenuProps } from "./"
 
 const meta = {
-    title: "Components/Navigation/VerticalNav",
+    title: "Components/Navigation/VerticalMenu",
     parameters: {
         layout: "centered",
     },
-    component: VerticalNav,
+    component: VerticalMenu,
     tags: ["autodocs"],
     render: function Render(args) {
         return (
             <div className="sm:w-[300px] w-full">
-                <VerticalNav {...args} />
+                <VerticalMenu {...args} />
             </div>
         )
     },
@@ -21,7 +21,7 @@ const meta = {
         items: [
             {
                 name: "My Account", href: "#", iconType: BiUser,
-                subContent: <VerticalNav
+                subContent: <VerticalMenu
                     size="sm"
                     items={[
                         { name: "Information", href: "#", iconType: BiUser },
@@ -40,11 +40,11 @@ const meta = {
             { name: "Billing", href: "#", iconType: BiReceipt },
         ],
     },
-} satisfies Meta<VerticalNavProps>
+} satisfies Meta<VerticalMenuProps>
 
 
 export default meta
-type Story = StoryObj<VerticalNavProps>;
+type Story = StoryObj<typeof meta>
 
 export const Basic: Story = {
     args: {},
@@ -62,7 +62,7 @@ export const IconsOnly: Story = {
         items: [
             {
                 name: "My Account", href: "#", iconType: BiUser,
-                subContent: <VerticalNav
+                subContent: <VerticalMenu
                     iconsOnly
                     items={[
                         { name: "Information", href: "#", iconType: BiUser },
@@ -84,7 +84,7 @@ export const IconsOnly: Story = {
     render: function Render(args) {
         return (
             <div className="sm:w-[50px] w-full">
-                <VerticalNav {...args} />
+                <VerticalMenu {...args} />
             </div>
         )
     },

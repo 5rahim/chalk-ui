@@ -36,8 +36,8 @@
     - ProgressBar
 - Navigation
     - Breadcrumb
-    - HorizontalNav
-    - [x] VerticalNav
+    - [x] NavigationMenu
+    - [x] VerticalMenu
     - Navbar
     - NavTabs
     - Tabs
@@ -49,7 +49,7 @@
     - [x] Accordion
     - [x] Disclosure
     - [x] Collapsible
-    - Badge
+    - [x] Badge
     - Card
     - Chip
     - Divider

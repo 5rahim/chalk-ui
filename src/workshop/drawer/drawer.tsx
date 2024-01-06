@@ -30,7 +30,7 @@ export const DrawerAnatomy = defineStyleAnatomy({
                 left: "inset-y-0 left-0 h-full border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left",
                 right: "inset-y-0 right-0 h-full border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right",
             },
-            size: { sm: null, md: null, lg: null, xl: null, full: "w-full" },
+            size: { sm: null, md: null, lg: null, xl: null, full: "w-[90%]" },
         },
         compoundVariants: [
             { size: "sm", side: "left", className: "sm:max-w-sm" },
