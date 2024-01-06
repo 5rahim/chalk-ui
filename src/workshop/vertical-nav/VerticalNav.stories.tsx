@@ -35,7 +35,7 @@ const meta = {
                 href: "#",
                 iconType: BiGroup,
                 isCurrent: true,
-                addon: <Badge className="absolute right-2" intent="alert-solid">5</Badge>,
+                addon: <Badge size="sm" className="absolute right-2" intent="alert-solid">5</Badge>,
             },
             { name: "Billing", href: "#", iconType: BiReceipt },
         ],

@@ -2,7 +2,7 @@
 
 import { cva, VariantProps } from "class-variance-authority"
 import Link from "next/link"
-import React from "react"
+import * as React from "react"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { Disclosure, DisclosureContent, DisclosureItem, DisclosureTrigger } from "../disclosure"
@@ -17,7 +17,7 @@ export const VerticalNavAnatomy = defineStyleAnatomy({
         "block space-y-1",
     ]),
     item: cva([
-        "UI-VerticalNav__tab",
+        "UI-VerticalNav__item",
         "group/verticalNav relative flex flex-none truncate items-center text-sm font-medium rounded-[--radius] transition cursor-pointer",
         "hover:bg-[--subtle] hover:text-[--text-color]",
         "focus-visible:bg-[--subtle] outline-none text-[--muted]",
@@ -36,6 +36,18 @@ export const VerticalNavAnatomy = defineStyleAnatomy({
         },
         defaultVariants: {
             size: "md",
+            center: false,
+        },
+    }),
+    itemContent: cva([
+        "UI-VerticalNav__itemContent",
+        "w-full flex items-center",
+    ], {
+        variants: {
+            center: {
+                true: "justify-center",
+                false: null,
+            },
         },
     }),
     parentItem: cva([
@@ -78,6 +90,16 @@ export const VerticalNavAnatomy = defineStyleAnatomy({
  * VerticalNav
  * -----------------------------------------------------------------------------------------------*/
 
+export type VerticalNavItem = {
+    name: string
+    href?: string | null | undefined
+    iconType?: React.ElementType
+    isCurrent?: boolean
+    onClick?: React.MouseEventHandler<HTMLElement>
+    addon?: React.ReactNode
+    content?: React.ReactNode
+}
+
 export interface VerticalNavProps extends React.ComponentPropsWithRef<"div">,
     VariantProps<typeof VerticalNavAnatomy.item>,
     ComponentAnatomy<typeof VerticalNavAnatomy> {
@@ -85,15 +107,7 @@ export interface VerticalNavProps extends React.ComponentPropsWithRef<"div">,
      * If true, the nav will be rendered as a line of icons.
      */
     iconsOnly?: boolean
-    items: {
-        name: string
-        href?: string | null | undefined
-        iconType?: React.ElementType
-        isCurrent?: boolean
-        onClick?: React.MouseEventHandler<HTMLElement>
-        addon?: React.ReactNode
-        content?: React.ReactNode
-    }[]
+    items: VerticalNavItem[]
 }
 
 export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((props, ref) => {
@@ -109,10 +123,40 @@ export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((p
         parentItemClass,
         subContentClass,
         itemChevronClass,
+        itemContentClass,
         className,
         items,
         ...rest
     } = props
+
+    const itemProps = (item: VerticalNavItem) => ({
+        className: cn(
+            VerticalNavAnatomy.item({ size, center: iconsOnly }),
+            itemClass,
+        ),
+        "data-current": item.isCurrent,
+        onClick: item.onClick,
+    })
+
+    const itemContent = React.useCallback((item: VerticalNavItem) => (
+        <div
+            className={cn(
+                VerticalNavAnatomy.itemContent({ center: iconsOnly }),
+                itemClass,
+            )}
+        >
+            {item.iconType && <item.iconType
+                className={cn(
+                    VerticalNavAnatomy.icon({ size, center: iconsOnly }),
+                    iconClass,
+                )}
+                aria-hidden="true"
+                data-current={item.isCurrent}
+            />}
+            {!iconsOnly && <span>{item.name}</span>}
+            {item.addon}
+        </div>
+    ), [iconsOnly, size, itemClass, iconClass])
 
     return (
         <nav
@@ -120,87 +164,63 @@ export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((p
             className={cn(VerticalNavAnatomy.nav(), navClass, className)}
             {...rest}
         >
-            {items.map((item, idx) => !item.content ? (
-                <Link
-                    href={item.href ?? "#"}
-                    className={cn(
-                        VerticalNavAnatomy.item({ size, center: iconsOnly }),
-                        itemClass,
-                    )}
-                    aria-current={item.isCurrent ? "page" : undefined}
-                    data-current={item.isCurrent}
-                    onClick={item.onClick}
-                >
-                    {item.iconType && <item.iconType
-                        className={cn(
-                            VerticalNavAnatomy.icon({ size, center: iconsOnly }),
-                            iconClass,
-                        )}
-                        aria-hidden="true"
-                        data-current={item.isCurrent}
-                    />}
-                    {!iconsOnly && <span>{item.name}</span>}
-                    {item.addon}
-                </Link>
-            ) : (
-                <Disclosure type="multiple" key={item.name}>
+            {items.map((item, idx) => {
+                return (
+                    <React.Fragment key={item.name + idx}>
+                        {!item.content ?
+                            item.href ? (
+                                <Link href={item.href} {...itemProps(item)}>
+                                    {itemContent(item)}
+                                </Link>
+                            ) : (
+                                <button tabIndex={idx} {...itemProps(item)}>
+                                    {itemContent(item)}
+                                </button>
+                            ) : (
+                                <Disclosure type="multiple">
+                                    <DisclosureItem value={item.name}>
+                                        <DisclosureTrigger>
+                                            <button
+                                                tabIndex={idx}
+                                                className={cn(
+                                                    VerticalNavAnatomy.item({ size, center: iconsOnly }),
+                                                    itemClass,
+                                                    VerticalNavAnatomy.parentItem(),
+                                                    parentItemClass,
+                                                )}
+                                                aria-current={item.isCurrent ? "page" : undefined}
+                                                data-current={item.isCurrent}
+                                                onClick={item.onClick}
+                                            >
+                                                {itemContent(item)}
+                                                {!iconsOnly && <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    className={cn(VerticalNavAnatomy.itemChevron(), itemChevronClass)}
+                                                    data-open={`${open}`}
+                                                >
+                                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                                </svg>}
+                                            </button>
+                                        </DisclosureTrigger>
 
-                    <DisclosureItem value={item.name}>
-                        <DisclosureTrigger>
-                            <button
-                                key={item.name}
-                                tabIndex={idx}
-                                className={cn(
-                                    VerticalNavAnatomy.item({ size, center: iconsOnly }),
-                                    itemClass,
-                                    VerticalNavAnatomy.parentItem(),
-                                    parentItemClass,
-                                )}
-                                aria-current={item.isCurrent ? "page" : undefined}
-                                data-current={item.isCurrent}
-                                onClick={item.onClick}
-                            >
-                                <div
-                                    className={cn(
-                                        "w-full flex items-center",
-                                        iconsOnly && "justify-center",
-                                    )}
-                                >
-                                    {item.iconType && <item.iconType
-                                        className={cn(
-                                            VerticalNavAnatomy.icon({ size, center: iconsOnly }),
-                                            iconClass,
-                                        )}
-                                        aria-hidden="true"
-                                        data-current={item.isCurrent}
-                                    />}
-                                    {!iconsOnly && <span>{item.name}</span>}
-                                </div>
-                                {!iconsOnly && <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className={cn(VerticalNavAnatomy.itemChevron(), itemChevronClass)}
-                                    data-open={`${open}`}
-                                >
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>}
-                            </button>
-                        </DisclosureTrigger>
+                                        <DisclosureContent className={cn(VerticalNavAnatomy.subContent(), subContentClass)}>
+                                            {item.content && item.content}
+                                        </DisclosureContent>
+                                    </DisclosureItem>
 
-                        <DisclosureContent className={cn(VerticalNavAnatomy.subContent(), subContentClass)}>
-                            {item.content && item.content}
-                        </DisclosureContent>
-                    </DisclosureItem>
-
-                </Disclosure>
-            ))}
+                                </Disclosure>
+                            )}
+                    </React.Fragment>
+                )
+            })}
         </nav>
     )
 

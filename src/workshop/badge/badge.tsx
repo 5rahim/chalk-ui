@@ -1,5 +1,5 @@
 import { cva, VariantProps } from "class-variance-authority"
-import React, { CSSProperties } from "react"
+import * as React from "react"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
@@ -31,7 +31,7 @@ export const BadgeAnatomy = defineStyleAnatomy({
                 "white-solid": "text-gray-900 bg-white",
             },
             size: {
-                sm: "h-[1.2rem] px-2 text-xs",
+                sm: "h-[1.2rem] px-1.5 text-xs",
                 md: "h-6 px-2 text-xs",
                 lg: "h-7 px-3 text-md",
                 xl: "h-8 px-4 text-lg",
@@ -71,7 +71,7 @@ export interface BadgeProps extends React.ComponentPropsWithRef<"span">, Variant
     onClose?: () => void,
     leftIcon?: React.ReactElement<any, string | React.JSXElementConstructor<any>>
     rightIcon?: React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    iconSpacing?: CSSProperties["marginRight"]
+    iconSpacing?: React.CSSProperties["marginRight"]
 }
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>((props, ref) => {
