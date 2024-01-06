@@ -21,7 +21,7 @@ const meta = {
         items: [
             {
                 name: "My Account", href: "#", iconType: BiUser,
-                content: <VerticalNav
+                subContent: <VerticalNav
                     size="sm"
                     items={[
                         { name: "Information", href: "#", iconType: BiUser },
@@ -62,7 +62,7 @@ export const IconsOnly: Story = {
         items: [
             {
                 name: "My Account", href: "#", iconType: BiUser,
-                content: <VerticalNav
+                subContent: <VerticalNav
                     iconsOnly
                     items={[
                         { name: "Information", href: "#", iconType: BiUser },

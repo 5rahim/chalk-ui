@@ -97,7 +97,7 @@ export type VerticalNavItem = {
     isCurrent?: boolean
     onClick?: React.MouseEventHandler<HTMLElement>
     addon?: React.ReactNode
-    content?: React.ReactNode
+    subContent?: React.ReactNode
 }
 
 export interface VerticalNavProps extends React.ComponentPropsWithRef<"div">,
@@ -167,7 +167,7 @@ export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((p
             {items.map((item, idx) => {
                 return (
                     <React.Fragment key={item.name + idx}>
-                        {!item.content ?
+                        {!item.subContent ?
                             item.href ? (
                                 <Link href={item.href} {...itemProps(item)}>
                                     {itemContent(item)}
@@ -212,7 +212,7 @@ export const VerticalNav = React.forwardRef<HTMLDivElement, VerticalNavProps>((p
                                         </DisclosureTrigger>
 
                                         <DisclosureContent className={cn(VerticalNavAnatomy.subContent(), subContentClass)}>
-                                            {item.content && item.content}
+                                            {item.subContent && item.subContent}
                                         </DisclosureContent>
                                     </DisclosureItem>
 
