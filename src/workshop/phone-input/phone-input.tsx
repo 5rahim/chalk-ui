@@ -62,7 +62,11 @@ export interface PhoneInputProps extends Omit<React.ComponentPropsWithoutRef<"in
     /**
      * The phone number value.
      */
-    value: string | null | undefined
+    value?: string
+    /**
+     * Default phone number when uncontrolled.
+     */
+    defaultValue?: string
     /**
      * The default country to select if the value is empty.
      */
@@ -70,7 +74,7 @@ export interface PhoneInputProps extends Omit<React.ComponentPropsWithoutRef<"in
     /**
      * Callback fired when the phone number value changes.
      */
-    onValueChange: (value: E164Number | undefined) => void
+    onValueChange?: (value: E164Number | undefined) => void
     /**
      * Callback fired when the country changes.
      */
@@ -100,6 +104,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
         defaultCountry,
         onCountryChange,
         countries,
+        defaultValue,
         /**/
         countrySelectClass,
         flagSelectClass,
@@ -122,6 +127,10 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
 
     const handleOnCountryChange = React.useCallback((country: Country) => {
         onCountryChange?.(country)
+    }, [])
+
+    const handleUpdateValue = React.useCallback((value: E164Number | undefined) => {
+        onValueChange?.(value)
     }, [])
 
 
@@ -207,7 +216,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                         </button>
                     )}
                     value={value as E164Number}
-                    onChange={onValueChange}
+                    onChange={handleUpdateValue}
                 />
 
                 <InputAddon {...rightAddonProps} />

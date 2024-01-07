@@ -52,7 +52,7 @@ export const SelectAnatomy = defineStyleAnatomy({
 
 export interface SelectProps extends InputStyling,
     BasicFieldOptions,
-    Omit<React.ComponentPropsWithoutRef<"button">, "value">,
+    Omit<React.ComponentPropsWithoutRef<"button">, "value" | "defaultValue">,
     Omit<ComponentAnatomy<typeof SelectAnatomy>, "rootClass"> {
     /**
      * The options to display in the dropdown
@@ -78,6 +78,10 @@ export interface SelectProps extends InputStyling,
      * Callback fired when the dropdown opens or closes
      */
     onOpenChange?: (open: boolean) => void
+    /**
+     * Default selected value when uncontrolled
+     */
+    defaultValue?: string
 }
 
 export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, ref) => {
@@ -106,6 +110,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
         value,
         onValueChange,
         onOpenChange,
+        defaultValue,
         ...rest
     }, {
         inputContainerProps,
@@ -134,6 +139,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
                     value={value}
                     onValueChange={onValueChange}
                     onOpenChange={onOpenChange}
+                    defaultValue={defaultValue}
                 >
 
                     <SelectPrimitive.Trigger
@@ -195,7 +201,6 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
                             </SelectPrimitive.ScrollUpButton>
 
                             <SelectPrimitive.Viewport className={cn(SelectAnatomy.viewport(), viewportClass)}>
-
 
                                 {options?.map(option => (
                                     <SelectPrimitive.Item

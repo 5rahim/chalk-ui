@@ -56,8 +56,25 @@ export const RightAddon: Story = {
         rightAddon: ".00",
     },
 }
+
 export const RightIcon: Story = {
     args: {
         rightIcon: "%",
+    },
+}
+
+export const Uncontrolled: Story = {
+    args: {
+        value: undefined,
+        defaultValue: 30,
+    },
+    render: function Render(args) {
+        return (
+            <div className="min-[900px]:w-[800px] w-full">
+                <NumberInput
+                    {...args}
+                />
+            </div>
+        )
     },
 }

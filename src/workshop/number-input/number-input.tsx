@@ -85,11 +85,15 @@ export interface NumberInputProps extends Omit<React.ComponentPropsWithoutRef<"i
     /**
      * The value of the input
      */
-    value: number | string
+    value?: number | string
     /**
      * The callback to handle value changes
      */
-    onValueChange: (value: number, valueAsString: string) => void
+    onValueChange?: (value: number, valueAsString: string) => void
+    /**
+     * Default value when uncontrolled
+     */
+    defaultValue?: number | string
     /**
      * The minimum value of the input
      */
@@ -158,7 +162,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         placeholder,
         onValueChange,
         hideControls,
-        value,
+        value: controlledValue,
         min = 0,
         max,
         step,
@@ -168,6 +172,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         translations,
         locale,
         dir,
+        defaultValue,
         ...rest
     }, {
         inputContainerProps,
@@ -190,7 +195,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         name: basicFieldProps.name,
         disabled: basicFieldProps.disabled,
         readOnly: basicFieldProps.readonly,
-        value: value ? String(value) : undefined,
+        value: controlledValue ? String(controlledValue) : (defaultValue ? String(defaultValue) : undefined),
         min,
         max,
         step,
@@ -201,17 +206,17 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         locale,
         dir,
         onValueChange: (details) => {
-            onValueChange(details.valueAsNumber, details.value)
+            onValueChange?.(details.valueAsNumber, details.value)
         },
     }))
 
     React.useLayoutEffect(() => {
-        if (typeof value === "string" && !isNaN(Number(value))) {
-            api.setValue(Number(value))
-        } else if (typeof value === "number") {
-            api.setValue(value)
+        if (typeof controlledValue === "string" && !isNaN(Number(controlledValue))) {
+            api.setValue(Number(controlledValue))
+        } else if (typeof controlledValue === "number") {
+            api.setValue(controlledValue)
         }
-    }, [value])
+    }, [controlledValue])
 
     const api = numberInput.connect(state, send, normalizeProps)
 

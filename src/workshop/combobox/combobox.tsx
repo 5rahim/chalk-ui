@@ -6,7 +6,7 @@ import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandProps } from "../command"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
-import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
+import { extractInputPartProps, hiddenInputStyles, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 import { Popover } from "../popover"
 
 /* -------------------------------------------------------------------------------------------------
@@ -100,6 +100,14 @@ export interface ComboboxProps extends ComboboxButtonProps,
      * Allow multiple values to be selected
      */
     multiple?: boolean
+    /**
+     * Default value when uncontrolled
+     */
+    defaultValue?: string[]
+    /**
+     * Ref to the input element
+     */
+    inputRef?: React.Ref<HTMLInputElement>
 }
 
 export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((props, ref) => {
@@ -126,10 +134,12 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
         options,
         emptyMessage,
         placeholder,
-        value = [],
+        value: controlledValue,
         onValueChange,
         onTextChange,
         multiple = false,
+        defaultValue,
+        inputRef,
         ...rest
     }, {
         inputContainerProps,
@@ -147,7 +157,23 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
         rightIcon: props1.rightIcon,
     })
 
+    const [value, setValue] = React.useState<string[]>(controlledValue || defaultValue || [])
+
     const [open, setOpen] = React.useState(false)
+
+    const handleUpdateValue = React.useCallback((value: string[]) => {
+        setValue(value)
+    }, [])
+
+    React.useLayoutEffect(() => {
+        if (controlledValue !== undefined) {
+            handleUpdateValue(controlledValue)
+        }
+    }, [controlledValue])
+
+    React.useEffect(() => {
+        onValueChange?.(value)
+    }, [value])
 
     const selectedOptions = options.filter((option) => value.includes(option.value))
 
@@ -158,7 +184,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                 <span
                     className={cn(ComboboxAnatomy.removeItemButton(), "rounded-full", removeItemButtonClass)} onClick={(e) => {
                     e.preventDefault()
-                    onValueChange?.(value.filter((v) => v !== option.value))
+                    handleUpdateValue(value.filter((v) => v !== option.value))
                     setOpen(false)
                 }}
                 >
@@ -191,6 +217,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                     trigger={<button
                         ref={ref}
                         id={basicFieldProps.id}
+                        // name={basicFieldProps.name}
                         role="combobox"
                         aria-expanded={open}
                         className={cn(
@@ -219,7 +246,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                                 <span
                                     className={cn(ComboboxAnatomy.removeItemButton(), removeItemButtonClass)} onClick={(e) => {
                                     e.preventDefault()
-                                    onValueChange?.([])
+                                    handleUpdateValue([])
                                     setOpen(false)
                                 }}
                                 >
@@ -271,9 +298,9 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                                             const _option = options.find(n => (n.textValue || n.value).toLowerCase() === currentValue.toLowerCase())
                                             if (_option) {
                                                 if (!multiple) {
-                                                    onValueChange?.(value.includes(_option.value) ? [] : [_option.value])
+                                                    handleUpdateValue(value.includes(_option.value) ? [] : [_option.value])
                                                 } else {
-                                                    onValueChange?.(
+                                                    handleUpdateValue(
                                                         !value.includes(_option.value)
                                                             ? [...value, _option.value]
                                                             : value.filter((v) => v !== _option.value),
@@ -308,6 +335,18 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                         </CommandList>
                     </Command>
                 </Popover>
+
+                <input
+                    ref={inputRef}
+                    type="text"
+                    name={basicFieldProps.name}
+                    className={hiddenInputStyles}
+                    value={basicFieldProps.required ? (!!value.length ? JSON.stringify(value) : "") : JSON.stringify(value)}
+                    aria-hidden="true"
+                    required={basicFieldProps.required}
+                    tabIndex={-1}
+                    onChange={() => {}}
+                />
 
                 <InputAddon {...rightAddonProps} />
                 <InputIcon {...rightIconProps} />

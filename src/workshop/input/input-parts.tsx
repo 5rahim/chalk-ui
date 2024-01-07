@@ -77,6 +77,9 @@ export const InputAnatomy = defineStyleAnatomy({
     }),
 })
 
+export const hiddenInputStyles = cn(
+    "appearance-none absolute bottom-0 border-0 w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap [clip:rect(0px,0px,0px,0px)] [overflow-wrap:normal]")
+
 /* -------------------------------------------------------------------------------------------------
  * InputContainer
  * -----------------------------------------------------------------------------------------------*/

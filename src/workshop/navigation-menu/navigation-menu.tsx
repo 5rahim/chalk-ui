@@ -56,7 +56,7 @@ export const NavigationMenuAnatomy = defineStyleAnatomy({
     }),
     itemChevron: cva([
         "UI-VerticalNav__itemChevron",
-        "ml-2 w-4 h-4 transition-transform duration-[250] group-hover/navigationMenu_item:rotate-180",
+        "ml-2 w-4 h-4 transition-transform duration-200 group-hover/navigationMenu_item:rotate-180",
     ]),
     desktopList: cva([
         "UI-VerticalNav__desktopList",

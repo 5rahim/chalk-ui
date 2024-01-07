@@ -26,7 +26,7 @@ const meta = {
     },
     render: (args) => {
         return (
-            <div className="sm:w-[400px] w-full">
+            <div className="sm:w-[400px] w-full relative">
                 <Form {...args}>
                     <Field.Text label="Name" name="name" />
                     <Field.DatePicker label="Birthday" name="birthday" />
@@ -51,11 +51,11 @@ const meta = {
                     />
                     <Field.Combobox
                         label="Countries" name="countries" placeholder="Select countries..." emptyMessage="No countries found" multiple options={[
-                        { value: "us", label: "United States" },
-                        { value: "ci", label: "Côte d'Ivoire" },
-                        { value: "ca", label: "Canada" },
-                        { value: "jp", label: "Japan" },
-                        { value: "br", label: "Brazil" },
+                        { value: "us", textValue: "United States", label: "United States" },
+                        { value: "ci", textValue: "Côte d'Ivoire", label: "Côte d'Ivoire" },
+                        { value: "ca", textValue: "Canada", label: "Canada" },
+                        { value: "jp", textValue: "Japan", label: "Japan" },
+                        { value: "br", textValue: "Brazil", label: "Brazil" },
                     ]}
                     />
                     <Field.Submit role="create" />

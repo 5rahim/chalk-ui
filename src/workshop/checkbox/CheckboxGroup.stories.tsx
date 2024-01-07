@@ -1,5 +1,6 @@
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
+import * as React from "react"
 import { CheckboxGroup } from "../checkbox/checkbox-group"
 
 const meta = {
@@ -61,5 +62,35 @@ export const DisabledOption: Story = {
             { value: "4", label: "Option 4", disabled: true },
             { value: "5", label: "Option 5", readonly: true },
         ],
+    },
+}
+
+export const Uncontrolled: Story = {
+    args: {
+        value: undefined,
+        defaultValue: ["3"],
+        required: true,
+        name: "option",
+    },
+    render: function (args) {
+        return (
+            <form
+                action="https://run.mocky.io/v3/7bbf8cd5-9e99-46fb-bfd1-725b7bab59fe"
+                method="get"
+                onSubmit={e => {
+                    e.preventDefault()
+                    const data = new FormData(e.currentTarget)
+                    for (let [key, value] of data.entries()) {
+                        console.log(key, value)
+                    }
+                }}
+                className="min-[900px]:w-[800px] w-full"
+            >
+                <CheckboxGroup
+                    {...args}
+                />
+                <button type="submit">Submit</button>
+            </form>
+        )
     },
 }

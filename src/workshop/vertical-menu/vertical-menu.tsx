@@ -182,6 +182,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
         <nav
             ref={ref}
             className={cn(VerticalMenuAnatomy.root(), className)}
+            role="navigation"
             {...rest}
         >
             <__VerticalMenuContext.Provider

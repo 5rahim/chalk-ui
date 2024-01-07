@@ -4,39 +4,50 @@ import * as React from "react"
 import { Checkbox, CheckboxProps } from "."
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { cn } from "../core/classnames"
-
+import { hiddenInputStyles } from "../input"
 
 /* -------------------------------------------------------------------------------------------------
- * Provider
+ * CheckboxGroup
  * -----------------------------------------------------------------------------------------------*/
 
 type CheckboxGroupContextValue = {
     group_size: CheckboxProps["size"]
 }
 
-export const _CheckboxGroupContext = React.createContext<CheckboxGroupContextValue | null>(null)
-
-/* -------------------------------------------------------------------------------------------------
- * CheckboxGroup
- * -----------------------------------------------------------------------------------------------*/
+export const __CheckboxGroupContext = React.createContext<CheckboxGroupContextValue | null>(null)
 
 export interface CheckboxGroupProps extends BasicFieldOptions {
+    /**
+     * The value of the checkbox group.
+     */
     value?: string[]
+    /**
+     * The default value of the checkbox group when uncontrolled.
+     */
     defaultValue?: string[]
+    /**
+     * Callback invoked when the value of the checkbox group changes.
+     */
     onValueChange: (value: string[]) => void
+    /**
+     * The size of the checkboxes.
+     */
     size?: CheckboxProps["size"]
+    /**
+     * The options of the checkbox group.
+     */
+    options: { value: string, label?: React.ReactNode, disabled?: boolean, readonly?: boolean }[]
     stackClass?: string
     itemContainerClass?: string
     itemLabelClass?: string
     itemClass?: string
     itemCheckIconClass?: string
-    options: { value: string, label?: React.ReactNode, disabled?: boolean, readonly?: boolean }[]
 }
 
-export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps>((props, ref) => {
+export const CheckboxGroup = React.forwardRef<HTMLInputElement, CheckboxGroupProps>((props, ref) => {
 
     const [{
-        value,
+        value: controlledValue,
         defaultValue = [],
         onValueChange,
         stackClass,
@@ -48,28 +59,22 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
         size = undefined,
     }, basicFieldProps] = extractBasicFieldProps<CheckboxGroupProps>(props, React.useId())
 
-    // Keep track of selected values
-    const [selectedValues, setSelectedValues] = React.useState<string[]>(value ?? defaultValue)
+    const [selectedValues, setSelectedValues] = React.useState<string[]>(controlledValue ?? defaultValue)
 
-    // Control the state
     React.useLayoutEffect(() => {
-        if (value) {
-            setSelectedValues(value)
+        if (controlledValue !== undefined) {
+            setSelectedValues(controlledValue)
         }
-    }, [value])
-
+    }, [controlledValue])
 
     return (
-        <_CheckboxGroupContext.Provider
+        <__CheckboxGroupContext.Provider
             value={{
                 group_size: size,
             }}
         >
-            <BasicField
-                {...basicFieldProps}
-                ref={ref}
-            >
-                <div className={cn("space-y-1", stackClass)}>
+            <BasicField{...basicFieldProps}>
+                <div className={cn("UI-CheckboxGroup__stack space-y-1", stackClass)}>
                     {options.map((opt) => (
                         <Checkbox
                             key={opt.value}
@@ -98,8 +103,24 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
                         />
                     ))}
                 </div>
+
+                <input
+                    ref={ref}
+                    type="text"
+                    id={basicFieldProps.name}
+                    name={basicFieldProps.name}
+                    className={hiddenInputStyles}
+                    value={basicFieldProps.required
+                        ? (!!selectedValues.length ? JSON.stringify(selectedValues) : "")
+                        : JSON.stringify(selectedValues)}
+                    aria-hidden="true"
+                    required={basicFieldProps.required}
+                    tabIndex={-1}
+                    onChange={() => {}}
+                />
+
             </BasicField>
-        </_CheckboxGroupContext.Provider>
+        </__CheckboxGroupContext.Provider>
     )
 
 })

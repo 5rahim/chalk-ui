@@ -15,7 +15,7 @@ export const BasicFieldAnatomy = defineStyleAnatomy({
     ]),
     fieldAsterisk: cva("UI-BasicField__fieldAsterisk ml-1 text-red-500 text-sm"),
     fieldDetails: cva("UI-BasicField__fieldDetails"),
-    field: cva("UI-BasicField__field w-full space-y-1"),
+    field: cva("UI-BasicField__field relative w-full space-y-1"),
     fieldHelpText: cva("UI-BasicField__fieldHelpText text-sm text-[--muted]"),
     fieldErrorText: cva("UI-BasicField__fieldErrorText text-sm text-red-500"),
 })

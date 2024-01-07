@@ -4,7 +4,7 @@ import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { _CheckboxGroupContext } from "../checkbox"
+import { __CheckboxGroupContext } from "../checkbox"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
@@ -97,7 +97,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
         ...rest
     }, { label, ...basicFieldProps }] = extractBasicFieldProps<CheckboxProps>(props, React.useId())
 
-    const groupContext = React.useContext(_CheckboxGroupContext)
+    const groupContext = React.useContext(__CheckboxGroupContext)
 
     const _size = groupContext?.group_size ?? size
 

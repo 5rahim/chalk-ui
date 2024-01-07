@@ -109,3 +109,33 @@ export const MultipleWithouttextValue: Story = {
         help: "The 'value' property will be displayed if 'textValue' is not provided.",
     },
 }
+
+export const Uncontrolled: Story = {
+    args: {
+        value: undefined,
+        defaultValue: ["ci"],
+        required: true,
+        name: "country",
+    },
+    render: function (args) {
+        return (
+            <form
+                action="https://run.mocky.io/v3/7bbf8cd5-9e99-46fb-bfd1-725b7bab59fe"
+                method="get"
+                onSubmit={e => {
+                    e.preventDefault()
+                    const data = new FormData(e.currentTarget)
+                    for (let [key, value] of data.entries()) {
+                        console.log(key, value)
+                    }
+                }}
+                className="min-[900px]:w-[800px] w-full"
+            >
+                <Combobox
+                    {...args}
+                />
+                <button type="submit">Submit</button>
+            </form>
+        )
+    },
+}
