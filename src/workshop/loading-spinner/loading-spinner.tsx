@@ -1,4 +1,4 @@
-import { ComponentAnatomy, defineStyleAnatomy } from "@/workshop/core/styling"
+import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { cva } from "class-variance-authority"
 import React from "react"
 import { cn } from "../core/classnames"
