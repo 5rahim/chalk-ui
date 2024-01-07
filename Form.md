@@ -17,7 +17,7 @@
 - Input type: `checkbox`
 - Value type: `"on" | "off"`
 - If not required, `"off"` will be submitted if the switch is not checked.
-- - If required, `"on"` will need to be the value of the checkbox (The switch needs to be checked).
+- If required, `"on"` will need to be the value of the checkbox (The switch needs to be checked).
 
 ### Checkbox
 
@@ -41,31 +41,40 @@
 
 - Input type: `text`
 - Value type: `string`
+- If not required, an empty string will be submitted if the input is empty.
 
 ### Combobox
 
 - Input type: `text`
 - Value type: `string` (`JSON.stringify(["a", ...])`)
+- A stringified array of selected values will be submitted.
+- If not required, a stringified empty array will be submitted if no option is selected.
 
 ### CheckboxGroup
 
 - Input type: `text`
 - Value type: `string` (`JSON.stringify(["a", ...])`)
+- A stringified array of selected values will be submitted.
+- If not required, a stringified empty array will be submitted if no option is selected.
 
 ### Autocomplete
 
 - Input type: `text`
-- Value type: `string` (`JSON.stringify({ value: "a", label: "A" })`)
+- Value type: `string`
+- Only the value of the input will be submitted.
+- If not required, an empty string will be submitted if the input is empty.
 
 ### DatePicker
 
 - Input type: `date`
 - Value type: `date` (`"yyyy-MM-dd"`)
+- If not required, an empty string will be submitted if the input is empty.
 
 ### DateRangePicker
 
 - Input type: `text`
 - Value type: `string` (`"yyyy-MM-dd,yyyy-MM-dd"`)
+- If not required, an empty string will be submitted if the input is empty.
 
 ### SimpleDropzone
 
