@@ -6,7 +6,7 @@
 - Value type: `string`
 - If not required, the value will not be submitted if no option is selected.
 
-### Radio
+### RadioGroup
 
 - Input type: `radio`
 - Value type: `string`
@@ -17,13 +17,14 @@
 - Input type: `checkbox`
 - Value type: `"on" | "off"`
 - If not required, `"off"` will be submitted if the switch is not checked.
+- - If required, `"on"` will need to be the value of the checkbox (The switch needs to be checked).
 
 ### Checkbox
 
 - Input type: `checkbox`
 - Value type: `"on" | "off" | "indeterminate"`
 - If not required, `"off"` will be submitted if the checkbox is not checked.
-- If required, `"on"` will need to be the value of the checkbox.
+- If required, `"on"` will need to be the value of the checkbox (The checkbox needs to be checked).
 
 ### PhoneInput
 
@@ -45,6 +46,16 @@
 
 - Input type: `text`
 - Value type: `string` (`JSON.stringify(["a", ...])`)
+
+### CheckboxGroup
+
+- Input type: `text`
+- Value type: `string` (`JSON.stringify(["a", ...])`)
+
+### Autocomplete
+
+- Input type: `text`
+- Value type: `string` (`JSON.stringify({ value: "a", label: "A" })`)
 
 ### DatePicker
 
