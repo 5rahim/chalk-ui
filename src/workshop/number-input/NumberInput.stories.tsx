@@ -1,5 +1,7 @@
+import { Button } from "../button"
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
+import * as React from "react"
 import { NumberInput } from "../number-input"
 
 const meta = {
@@ -18,6 +20,12 @@ const meta = {
                     value={value}
                     onValueChange={(value) => updateArgs({ value })}
                 />
+                <Button
+                    className="absolute top-0 right-0"
+                    size="sm"
+                    intent="gray-outline"
+                    onClick={() => {updateArgs({ value: undefined })}}
+                >Empty</Button>
             </div>
         )
     },
@@ -66,15 +74,29 @@ export const RightIcon: Story = {
 export const Uncontrolled: Story = {
     args: {
         value: undefined,
-        defaultValue: 30,
+        defaultValue: 10,
+        required: true,
+        name: "number",
     },
-    render: function Render(args) {
+    render: function (args) {
         return (
-            <div className="min-[900px]:w-[800px] w-full">
+            <form
+                action="https://run.mocky.io/v3/7bbf8cd5-9e99-46fb-bfd1-725b7bab59fe"
+                method="get"
+                onSubmit={e => {
+                    e.preventDefault()
+                    const data = new FormData(e.currentTarget)
+                    for (let [key, value] of data.entries()) {
+                        console.log(key, value)
+                    }
+                }}
+                className="min-[900px]:w-[800px] w-full"
+            >
                 <NumberInput
                     {...args}
                 />
-            </div>
+                <button type="submit">Submit</button>
+            </form>
         )
     },
 }

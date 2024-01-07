@@ -1,3 +1,4 @@
+import { Button } from "../button"
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
@@ -12,11 +13,19 @@ const meta = {
     render: function Render(args) {
         const [{ value }, updateArgs] = useArgs()
         return (
-            <CheckboxGroup
-                {...args}
-                value={value}
-                onValueChange={(value) => updateArgs({ value })}
-            />
+            <>
+                <CheckboxGroup
+                    {...args}
+                    value={value}
+                    onValueChange={(value) => updateArgs({ value })}
+                />
+                <Button
+                    className="absolute top-0 right-0"
+                    size="sm"
+                    intent="gray-outline"
+                    onClick={() => {updateArgs({ value: [] })}}
+                >Empty</Button>
+            </>
         )
     },
     tags: ["autodocs"],

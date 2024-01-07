@@ -1,4 +1,5 @@
 import { useArgs } from "@storybook/preview-api"
+import * as React from "react"
 import { Switch } from "../switch/switch"
 import type { Meta, StoryObj } from "@storybook/react"
 
@@ -58,3 +59,35 @@ export const Error: Story = {
         error: "Oops!",
     },
 }
+
+export const Uncontrolled: Story = {
+    args: {
+        value: undefined,
+        defaultValue: true,
+        required: true,
+        name: "show",
+        label: "Show",
+    },
+    render: function (args) {
+        return (
+            <form
+                action="https://run.mocky.io/v3/7bbf8cd5-9e99-46fb-bfd1-725b7bab59fe"
+                method="get"
+                onSubmit={e => {
+                    e.preventDefault()
+                    const data = new FormData(e.currentTarget)
+                    for (let [key, value] of data.entries()) {
+                        console.log(key, value)
+                    }
+                }}
+                className="min-[900px]:w-[800px] w-full"
+            >
+                <Switch
+                    {...args}
+                />
+                <button type="submit">Submit</button>
+            </form>
+        )
+    },
+}
+

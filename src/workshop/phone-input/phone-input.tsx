@@ -1,7 +1,7 @@
 "use client"
 
 import { cva } from "class-variance-authority"
-import { CountryCode, E164Number } from "libphonenumber-js"
+import { CountryCode, E164Number, parsePhoneNumber } from "libphonenumber-js"
 import * as React from "react"
 import PhoneInputPrimitive, { Country } from "react-phone-number-input"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
@@ -99,7 +99,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
         leftAddon,
         leftIcon,
         className,
-        value,
+        value: controlledValue,
         onValueChange,
         defaultCountry,
         onCountryChange,
@@ -125,13 +125,34 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
         rightIcon: props1.rightIcon,
     })
 
+    const isFirst = React.useRef(true)
+
+    const _defaults = React.useMemo(() => {
+        return {
+            phoneNumber: controlledValue ?? defaultValue,
+            parsedNumber: parsePhoneNumber((controlledValue ?? defaultValue) || "", defaultCountry),
+        }
+    }, [])
+
+    console.log(_defaults.parsedNumber)
+
+    const [_value, _setValue] = React.useState<E164Number | undefined>(_defaults.phoneNumber)
+
+    const handleOnValueChange = React.useCallback((value: E164Number | undefined) => {
+        _setValue(value)
+        onValueChange?.(value)
+    }, [])
+
     const handleOnCountryChange = React.useCallback((country: Country) => {
         onCountryChange?.(country)
     }, [])
 
-    const handleUpdateValue = React.useCallback((value: E164Number | undefined) => {
-        onValueChange?.(value)
-    }, [])
+    React.useEffect(() => {
+        if (!defaultValue || !isFirst.current) {
+            _setValue(controlledValue)
+        }
+        isFirst.current = false
+    }, [controlledValue])
 
 
     return (
@@ -143,17 +164,19 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                 <PhoneInputPrimitive
                     ref={ref as any}
                     id={basicFieldProps.id}
+                    name={basicFieldProps.name}
                     className={cn(
                         PhoneInputAnatomy.container(),
                         containerClass,
                     )}
                     countries={countries}
-                    defaultCountry={defaultCountry}
+                    defaultCountry={defaultCountry || _defaults.parsedNumber.country}
                     onCountryChange={handleOnCountryChange}
                     addInternationalOption={false}
                     international={false}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     countrySelectProps={{
+                        name: basicFieldProps.name + "_country",
                         className: cn(
                             "form-select",
                             InputAnatomy.root({
@@ -170,6 +193,8 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                         ),
                         disabled: basicFieldProps.disabled || basicFieldProps.readonly,
                         "data-disabled": basicFieldProps.disabled,
+                        "data-readonly": basicFieldProps.readonly,
+                        "aria-readonly": basicFieldProps.readonly,
                     }}
                     numberInputProps={{
                         className: cn(
@@ -186,7 +211,10 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                             className,
                         ),
                         disabled: basicFieldProps.disabled || basicFieldProps.readonly,
+                        required: basicFieldProps.required,
                         "data-disabled": basicFieldProps.disabled,
+                        "data-readonly": basicFieldProps.readonly,
+                        "aria-readonly": basicFieldProps.readonly,
                         ...rest,
                     }}
                     flagComponent={flag => (
@@ -215,8 +243,8 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                             />
                         </button>
                     )}
-                    value={value as E164Number}
-                    onChange={handleUpdateValue}
+                    value={_value}
+                    onChange={handleOnValueChange}
                 />
 
                 <InputAddon {...rightAddonProps} />

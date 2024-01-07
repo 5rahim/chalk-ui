@@ -1,5 +1,6 @@
 "use client"
 
+import { mergeRefs } from "../core/refs"
 import { cva } from "class-variance-authority"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
@@ -157,6 +158,8 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
         rightIcon: props1.rightIcon,
     })
 
+    const buttonRef = React.useRef<HTMLButtonElement>(null)
+
     const [value, setValue] = React.useState<string[]>(controlledValue || defaultValue || [])
 
     const [open, setOpen] = React.useState(false)
@@ -165,7 +168,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
         setValue(value)
     }, [])
 
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         if (controlledValue !== undefined) {
             handleUpdateValue(controlledValue)
         }
@@ -215,9 +218,8 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                         popoverClass,
                     )}
                     trigger={<button
-                        ref={ref}
+                        ref={mergeRefs([buttonRef, ref])}
                         id={basicFieldProps.id}
-                        // name={basicFieldProps.name}
                         role="combobox"
                         aria-expanded={open}
                         className={cn(
@@ -346,6 +348,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
                     required={basicFieldProps.required}
                     tabIndex={-1}
                     onChange={() => {}}
+                    onFocusCapture={() => buttonRef.current?.focus()}
                 />
 
                 <InputAddon {...rightAddonProps} />

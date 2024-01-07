@@ -78,6 +78,9 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
                     )}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     data-disabled={basicFieldProps.disabled}
+                    data-readonly={basicFieldProps.readonly}
+                    aria-readonly={basicFieldProps.readonly}
+                    required={basicFieldProps.required}
                     onChange={handleOnChange}
                     {...rest}
                     ref={ref}

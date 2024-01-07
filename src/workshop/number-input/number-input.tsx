@@ -210,12 +210,19 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         },
     }))
 
-    React.useLayoutEffect(() => {
-        if (typeof controlledValue === "string" && !isNaN(Number(controlledValue))) {
-            api.setValue(Number(controlledValue))
-        } else if (typeof controlledValue === "number") {
-            api.setValue(controlledValue)
+    const isFirst = React.useRef(true)
+
+    React.useEffect(() => {
+        if (!isFirst.current) {
+            if (typeof controlledValue === "string" && !isNaN(Number(controlledValue))) {
+                api.setValue(Number(controlledValue))
+            } else if (typeof controlledValue === "number") {
+                api.setValue(controlledValue)
+            } else if (controlledValue === undefined) {
+                api.setValue(min)
+            }
         }
+        isFirst.current = false
     }, [controlledValue])
 
     const api = numberInput.connect(state, send, normalizeProps)
@@ -248,6 +255,8 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     data-disabled={basicFieldProps.disabled}
                     data-readonly={basicFieldProps.readonly}
+                    aria-readonly={basicFieldProps.readonly}
+                    required={basicFieldProps.required}
                     {...api.inputProps}
                     {...rest}
                 />

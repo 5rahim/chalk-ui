@@ -6,7 +6,9 @@ import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { __CheckboxGroupContext } from "../checkbox"
 import { cn } from "../core/classnames"
+import { mergeRefs } from "../core/refs"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { hiddenInputStyles } from "../input"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -74,17 +76,32 @@ export const CheckboxAnatomy = defineStyleAnatomy({
 export interface CheckboxProps extends BasicFieldOptions,
     VariantProps<typeof CheckboxAnatomy.label>,
     Omit<ComponentAnatomy<typeof CheckboxAnatomy>, "rootClass">,
-    Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, "value" | "checked" | "disabled" | "required" | "onCheckedChange"> {
+    Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, "value" | "checked" | "disabled" | "required" | "onCheckedChange" | "defaultValue"> {
+    /**
+     * If true, no error message will be shown when the field is invalid.
+     */
     hideError?: boolean
-    formValue?: string
-    value: boolean | "indeterminate"
-    onValueChange: (value: boolean | "indeterminate") => void
+    /**
+     * The size of the checkbox.
+     */
+    value?: boolean | "indeterminate"
+    /**
+     * Default value when uncontrolled
+     */
+    defaultValue?: boolean | "indeterminate"
+    /**
+     * Callback fired when the value changes
+     */
+    onValueChange?: (value: boolean | "indeterminate") => void
+    /**
+     * Ref to the input element
+     */
+    inputRef?: React.Ref<HTMLInputElement>
 }
 
 export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((props, ref) => {
 
     const [{
-        formValue,
         className,
         hideError,
         containerClass,
@@ -92,14 +109,34 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
         labelClass,
         indicatorClass,
         onValueChange,
-        value,
-        size = "md",
+        defaultValue,
+        value: controlledValue,
+        size,
+        inputRef,
         ...rest
     }, { label, ...basicFieldProps }] = extractBasicFieldProps<CheckboxProps>(props, React.useId())
 
     const groupContext = React.useContext(__CheckboxGroupContext)
 
     const _size = groupContext?.group_size ?? size
+
+    const isFirst = React.useRef(true)
+
+    const buttonRef = React.useRef<HTMLButtonElement>(null)
+
+    const [_value, _setValue] = React.useState<boolean | "indeterminate">(controlledValue ?? defaultValue ?? false)
+
+    const handleOnValueChange = React.useCallback((value: boolean) => {
+        _setValue(value)
+        onValueChange?.(value)
+    }, [])
+
+    React.useEffect(() => {
+        if (!defaultValue || !isFirst.current) {
+            _setValue(controlledValue ?? false)
+        }
+        isFirst.current = false
+    }, [controlledValue])
 
     return (
         <BasicField
@@ -115,21 +152,19 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                 htmlFor={basicFieldProps.id}
             >
                 <CheckboxPrimitive.Root
-                    ref={ref}
+                    ref={mergeRefs([buttonRef, ref])}
                     id={basicFieldProps.id}
                     className={cn(CheckboxAnatomy.root({ size: _size }), className)}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
-                    required={basicFieldProps.required}
                     data-error={!!basicFieldProps.error}
                     aria-readonly={basicFieldProps.readonly}
                     data-readonly={basicFieldProps.readonly}
-                    checked={value}
-                    value={formValue || (value ? "on" : "off")}
-                    onCheckedChange={onValueChange}
+                    checked={_value}
+                    onCheckedChange={handleOnValueChange}
                     {...rest}
                 >
                     <CheckboxPrimitive.CheckboxIndicator className={cn(CheckboxAnatomy.indicator(), indicatorClass)}>
-                        {(value !== "indeterminate") && <svg
+                        {(_value !== "indeterminate") && <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 16 16"
                             stroke="currentColor"
@@ -142,7 +177,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                             />
                         </svg>}
 
-                        {value === "indeterminate" && <svg
+                        {_value === "indeterminate" && <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                             fill="none"
@@ -162,6 +197,20 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                         {label}
                     </label>
                 }
+
+                <input
+                    ref={inputRef}
+                    type="checkbox"
+                    name={basicFieldProps.name}
+                    className={hiddenInputStyles}
+                    value={_value === "indeterminate" ? "indeterminate" : _value ? "on" : "off"}
+                    checked={basicFieldProps.required ? _value === true : true}
+                    aria-hidden="true"
+                    required={basicFieldProps.required}
+                    tabIndex={-1}
+                    onChange={() => {}}
+                    onFocusCapture={() => buttonRef.current?.focus()}
+                />
             </label>
         </BasicField>
     )

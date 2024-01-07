@@ -1,3 +1,4 @@
+import { Button } from "../button"
 import { useArgs } from "@storybook/preview-api"
 import { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
@@ -32,14 +33,19 @@ const meta = {
                         updateArgs({ value })
                     }}
                 />
+                <Button
+                    className="absolute top-0 right-0"
+                    size="sm"
+                    intent="gray-outline"
+                    onClick={() => {updateArgs({ value: undefined })}}
+                >Empty</Button>
             </div>
         )
     },
     args: {
         options: options,
         label: "Label",
-        placeholder: "Enter a framework...",
-        emptyMessage: "No framework found",
+        placeholder: "Enter a country...",
         value: undefined,
     },
 } satisfies Meta<typeof Autocomplete>
@@ -52,8 +58,57 @@ export const Basic: Story = {
     args: {},
 }
 
+
+export const Disabled: Story = {
+    args: {
+        disabled: true,
+    },
+}
+
+export const Readonly: Story = {
+    args: {
+        readonly: true,
+    },
+}
+
+export const ShowEmptyMessage: Story = {
+    args: {
+        emptyMessage: "No country found",
+    },
+}
+
 export const EmptyList: Story = {
     args: {
         options: [],
+    },
+}
+
+export const Uncontrolled: Story = {
+    args: {
+        value: undefined,
+        defaultValue: { value: "jp", label: "Japan" },
+        required: true,
+        name: "country",
+    },
+    render: function (args) {
+        return (
+            <form
+                action="https://run.mocky.io/v3/7bbf8cd5-9e99-46fb-bfd1-725b7bab59fe"
+                method="get"
+                onSubmit={e => {
+                    e.preventDefault()
+                    const data = new FormData(e.currentTarget)
+                    for (let [key, value] of data.entries()) {
+                        console.log(key, value)
+                    }
+                }}
+                className="min-[900px]:w-[800px] w-full"
+            >
+                <Autocomplete
+                    {...args}
+                />
+                <button type="submit">Submit</button>
+            </form>
+        )
     },
 }

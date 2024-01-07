@@ -2,6 +2,7 @@ import { useArgs } from "@storybook/preview-api"
 import { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 import { BiMapPin } from "react-icons/bi"
+import { Button } from "../button"
 import { Combobox } from "../combobox/combobox"
 
 const meta = {
@@ -22,6 +23,12 @@ const meta = {
                     value={value}
                     onValueChange={(value) => updateArgs({ value })}
                 />
+                <Button
+                    className="absolute top-0 right-0"
+                    size="sm"
+                    intent="gray-outline"
+                    onClick={() => {updateArgs({ value: [] })}}
+                >Empty</Button>
             </div>
         )
     },

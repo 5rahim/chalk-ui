@@ -1,5 +1,7 @@
 "use client"
 
+import { mergeRefs } from "../core/refs"
+import { hiddenInputStyles } from "../input"
 import * as SwitchPrimitive from "@radix-ui/react-switch"
 import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
@@ -66,7 +68,8 @@ export const SwitchAnatomy = defineStyleAnatomy({
 export interface SwitchProps extends BasicFieldOptions,
     Omit<ComponentAnatomy<typeof SwitchAnatomy>, "rootClass">,
     VariantProps<typeof SwitchAnatomy.root>,
-    Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>, "value" | "checked" | "disabled" | "required" | "onCheckedChange"> {
+    Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>,
+        "value" | "checked" | "disabled" | "required" | "defaultValue" | "defaultChecked" | "onCheckedChange"> {
     /**
      * Whether the switch is checked
      */
@@ -76,12 +79,13 @@ export interface SwitchProps extends BasicFieldOptions,
      */
     onValueChange: (value: boolean) => void
     /**
-     * The value of the switch when used in a form
+     * Default value when uncontrolled
      */
-    formValue?: string
+    defaultValue?: boolean
     /**
-     *
+     * Ref to the input element
      */
+    inputRef?: React.Ref<HTMLInputElement>
     className?: string
 }
 
@@ -89,31 +93,49 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>((props, r
 
     const [{
         size,
-        value,
-        formValue,
+        value: controlledValue,
         className,
         onValueChange,
         labelClass,
         containerClass,
         thumbClass,
+        defaultValue,
+        inputRef,
         ...rest
     }, { label, ...basicFieldProps }] = extractBasicFieldProps(props, React.useId())
+
+    const isFirst = React.useRef(true)
+
+    const buttonRef = React.useRef<HTMLButtonElement>(null)
+
+    const [_value, _setValue] = React.useState<boolean | undefined>(controlledValue ?? defaultValue ?? false)
+
+    const handleOnValueChange = React.useCallback((value: boolean) => {
+        _setValue(value)
+        onValueChange?.(value)
+    }, [])
+
+    React.useEffect(() => {
+        if (!defaultValue || !isFirst.current) {
+            _setValue(controlledValue)
+        }
+        isFirst.current = false
+    }, [controlledValue])
 
     return (
         <BasicField{...basicFieldProps} id={basicFieldProps.id}>
             <div className={cn(SwitchAnatomy.container(), containerClass)}>
                 <SwitchPrimitive.Root
-                    ref={ref}
+                    ref={mergeRefs([buttonRef, ref])}
                     id={basicFieldProps.id}
                     className={cn(SwitchAnatomy.root({ size }), className)}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     data-disabled={basicFieldProps.disabled}
                     data-readonly={basicFieldProps.readonly}
-                    required={basicFieldProps.required}
                     data-error={!!basicFieldProps.error}
-                    checked={value}
-                    value={formValue || (value ? "on" : "off")}
-                    onCheckedChange={onValueChange}
+                    checked={_value}
+                    onCheckedChange={handleOnValueChange}
+                    defaultChecked={defaultValue}
                     {...rest}
                 >
                     <SwitchPrimitive.Thumb className={cn(SwitchAnatomy.thumb({ size }), thumbClass)} />
@@ -125,6 +147,20 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>((props, r
                 >
                     {label}
                 </label>}
+
+                <input
+                    ref={inputRef}
+                    type="checkbox"
+                    name={basicFieldProps.name}
+                    className={hiddenInputStyles}
+                    value={_value ? "on" : "off"}
+                    checked={basicFieldProps.required ? _value : true}
+                    aria-hidden="true"
+                    required={basicFieldProps.required}
+                    tabIndex={-1}
+                    onChange={() => {}}
+                    onFocusCapture={() => buttonRef.current?.focus()}
+                />
             </div>
         </BasicField>
     )

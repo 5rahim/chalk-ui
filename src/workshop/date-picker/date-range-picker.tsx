@@ -7,8 +7,9 @@ import { DateRange } from "react-day-picker"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { Calendar } from "../calendar"
 import { cn } from "../core/classnames"
+import { mergeRefs } from "../core/refs"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
-import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
+import { extractInputPartProps, hiddenInputStyles, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 import { Modal } from "../modal"
 import { Popover } from "../popover"
 
@@ -32,7 +33,7 @@ export const DateRangePickerAnatomy = defineStyleAnatomy({
  * DateRangePicker
  * -----------------------------------------------------------------------------------------------*/
 
-export interface DateRangePickerProps extends Omit<React.ComponentPropsWithRef<"button">, "size" | "value">,
+export interface DateRangePickerProps extends Omit<React.ComponentPropsWithRef<"button">, "size" | "value" | "defaultValue">,
     Omit<ComponentAnatomy<typeof DateRangePickerAnatomy>, "rootClass">,
     InputStyling,
     BasicFieldOptions {
@@ -41,9 +42,9 @@ export interface DateRangePickerProps extends Omit<React.ComponentPropsWithRef<"
      */
     value?: DateRange
     /**
-     * Default selected end date
+     * Default value if uncontrolled
      */
-    defaultTo?: Date
+    defaultValue?: DateRange
     /**
      * Callback fired when the selected date changes
      */
@@ -62,6 +63,10 @@ export interface DateRangePickerProps extends Omit<React.ComponentPropsWithRef<"
      * This is useful for setting the min and max dates
      */
     pickerOptions?: Partial<Omit<React.ComponentProps<typeof Calendar>, "locale" | "mode">>
+    /**
+     * Ref to the input element
+     */
+    inputRef?: React.Ref<HTMLInputElement>
 }
 
 export const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps>((props, ref) => {
@@ -78,10 +83,12 @@ export const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePick
         className,
         placeholderClass,
         /**/
-        value,
+        value: controlledValue,
         onValueChange,
         placeholder,
         locale,
+        defaultValue,
+        inputRef,
         ...rest
     }, {
         inputContainerProps,
@@ -113,16 +120,27 @@ export const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePick
         </svg>,
     })
 
-    const [date, setDate] = React.useState<DateRange | undefined>(value)
+    const buttonRef = React.useRef<HTMLButtonElement>(null)
+
+    const isFirst = React.useRef(true)
+
+    const [date, setDate] = React.useState<DateRange | undefined>(controlledValue || defaultValue)
 
     const handleOnSelect = React.useCallback((date: DateRange | undefined) => {
         setDate(date)
         onValueChange?.(date)
     }, [])
 
+    React.useEffect(() => {
+        if (!defaultValue || !isFirst.current) {
+            setDate(controlledValue)
+        }
+        isFirst.current = false
+    }, [controlledValue])
+
     const Input = (
         <button
-            ref={ref}
+            ref={mergeRefs([buttonRef, ref])}
             id={basicFieldProps.id}
             name={basicFieldProps.name}
             className={cn(
@@ -144,6 +162,7 @@ export const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePick
             disabled={basicFieldProps.disabled || basicFieldProps.readonly}
             data-disabled={basicFieldProps.disabled}
             data-readonly={basicFieldProps.readonly}
+            aria-readonly={basicFieldProps.readonly}
             {...rest}
         >
             {date?.from ? (
@@ -190,6 +209,19 @@ export const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePick
                         {Picker}
                     </Modal>
                 </div>
+
+                <input
+                    ref={inputRef}
+                    type="text"
+                    name={basicFieldProps.name}
+                    className={hiddenInputStyles}
+                    value={date ? `${date.from?.toISOString()?.split("T")?.[0]}${date.to ? "," + date.to.toISOString().split("T")[0] : ""}` : ""}
+                    aria-hidden="true"
+                    required={basicFieldProps.required}
+                    tabIndex={-1}
+                    onChange={() => {}}
+                    onFocusCapture={() => buttonRef.current?.focus()}
+                />
 
                 <InputAddon {...rightAddonProps} />
                 <InputIcon {...rightIconProps} />

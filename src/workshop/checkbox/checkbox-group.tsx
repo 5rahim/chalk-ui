@@ -61,7 +61,7 @@ export const CheckboxGroup = React.forwardRef<HTMLInputElement, CheckboxGroupPro
 
     const [selectedValues, setSelectedValues] = React.useState<string[]>(controlledValue ?? defaultValue)
 
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         if (controlledValue !== undefined) {
             setSelectedValues(controlledValue)
         }

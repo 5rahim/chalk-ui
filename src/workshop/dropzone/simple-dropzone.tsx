@@ -222,6 +222,7 @@ export const SimpleDropzone: React.FC<SimpleDropzoneProps> = React.forwardRef<HT
                 <input
                     id={basicFieldProps.id}
                     name={basicFieldProps.name ?? "files"}
+                    required={basicFieldProps.required}
                     {...getInputProps()}
                     ref={ref}
                     {...rest}

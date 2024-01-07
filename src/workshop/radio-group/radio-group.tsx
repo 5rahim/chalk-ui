@@ -1,3 +1,5 @@
+import { mergeRefs } from "../core/refs"
+import { hiddenInputStyles } from "../input"
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
 import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
@@ -91,11 +93,15 @@ export interface RadioGroupProps extends
     /**
      * Selected value
      */
-    value: string | undefined
+    value?: string | undefined
+    /**
+     * Default value when uncontrolled
+     */
+    defaultValue?: string | undefined
     /**
      * Callback fired when the selected value changes
      */
-    onValueChange: (value: string) => void
+    onValueChange?: (value: string) => void
     /**
      * Radio options
      */
@@ -104,6 +110,10 @@ export interface RadioGroupProps extends
      * Replaces the default check icon
      */
     itemCheckIcon?: React.ReactNode
+    /**
+     * Ref to the input element
+     */
+    inputRef?: React.Ref<HTMLInputElement>
 }
 
 export const RadioGroup = React.forwardRef<HTMLButtonElement, RadioGroupProps>((props, ref) => {
@@ -112,9 +122,12 @@ export const RadioGroup = React.forwardRef<HTMLButtonElement, RadioGroupProps>((
         size,
         className,
         stackClass,
-        value,
+        value: controlledValue,
         onValueChange,
         options,
+        inputRef,
+        defaultValue,
+        /**/
         itemClass,
         itemIndicatorClass,
         itemLabelClass,
@@ -123,20 +136,39 @@ export const RadioGroup = React.forwardRef<HTMLButtonElement, RadioGroupProps>((
         itemCheckIconClass,
     }, basicFieldProps] = extractBasicFieldProps<RadioGroupProps>(props, React.useId())
 
+    const isFirst = React.useRef(true)
+
+    const buttonRef = React.useRef<HTMLButtonElement>(null)
+
+    const [_value, _setValue] = React.useState<string | undefined>(controlledValue ?? defaultValue)
+
+    const handleOnValueChange = React.useCallback((value: string) => {
+        _setValue(value)
+        onValueChange?.(value)
+    }, [])
+
+    React.useEffect(() => {
+        if (!defaultValue || !isFirst.current) {
+            _setValue(controlledValue)
+        }
+        isFirst.current = false
+    }, [controlledValue])
+
     return (
         <BasicField{...basicFieldProps}>
             <RadioGroupPrimitive.Root
-                value={value}
-                onValueChange={onValueChange}
+                value={_value}
+                onValueChange={handleOnValueChange}
+                defaultValue={defaultValue}
                 className={cn(RadioGroupAnatomy.root(), className)}
-                required={basicFieldProps.required}
                 disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                 data-error={!!basicFieldProps.error}
                 data-disabled={basicFieldProps.disabled}
                 data-readonly={basicFieldProps.readonly}
+                aria-readonly={basicFieldProps.readonly}
                 loop
             >
-                <div className={cn("space-y-1", stackClass)}>
+                <div className={cn("UI-RadioGroup__stack space-y-1", stackClass)}>
 
                     {options.map(option => {
                         return (
@@ -147,10 +179,10 @@ export const RadioGroup = React.forwardRef<HTMLButtonElement, RadioGroupProps>((
                                 data-error={!!basicFieldProps.error}
                                 data-disabled={basicFieldProps.disabled || option.disabled}
                                 data-readonly={basicFieldProps.readonly || option.readonly}
-                                data-state={value === option.value ? "checked" : "unchecked"}
+                                data-state={_value === option.value ? "checked" : "unchecked"}
                             >
                                 <RadioGroupPrimitive.Item
-                                    ref={ref}
+                                    ref={mergeRefs([buttonRef, ref])}
                                     id={option.value}
                                     key={option.value}
                                     value={option.value}
@@ -189,16 +221,29 @@ export const RadioGroup = React.forwardRef<HTMLButtonElement, RadioGroupProps>((
                                     data-error={!!basicFieldProps.error}
                                     data-disabled={basicFieldProps.disabled || option.disabled || option.disabled}
                                     data-readonly={basicFieldProps.readonly || option.readonly}
-                                    data-state={value === option.value ? "checked" : "unchecked"}
+                                    data-state={_value === option.value ? "checked" : "unchecked"}
                                 >
                                     {option.label ?? option.value}
                                 </label>
                             </label>
                         )
                     })}
-
                 </div>
             </RadioGroupPrimitive.Root>
+
+            <input
+                ref={inputRef}
+                type="radio"
+                name={basicFieldProps.name}
+                className={hiddenInputStyles}
+                value={_value ?? ""}
+                checked={!!_value}
+                aria-hidden="true"
+                required={basicFieldProps.required}
+                tabIndex={-1}
+                onChange={() => {}}
+                onFocusCapture={() => buttonRef.current?.focus()}
+            />
         </BasicField>
     )
 })

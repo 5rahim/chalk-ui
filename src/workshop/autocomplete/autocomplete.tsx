@@ -3,11 +3,11 @@
 import { cva } from "class-variance-authority"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { Command, CommandGroup, CommandInput, CommandItem, CommandList, CommandProps } from "../command"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandProps } from "../command"
 import { cn } from "../core/classnames"
 import { mergeRefs } from "../core/refs"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
-import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
+import { extractInputPartProps, hiddenInputStyles, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 import { Popover } from "../popover"
 
 /* -------------------------------------------------------------------------------------------------
@@ -42,26 +42,53 @@ export const AutocompleteAnatomy = defineStyleAnatomy({
  * Autocomplete
  * -----------------------------------------------------------------------------------------------*/
 
-type AutocompleteInputProps = Omit<React.ComponentPropsWithRef<"input">, "size" | "value">
+type AutocompleteInputProps = Omit<React.ComponentPropsWithRef<"input">, "size" | "value" | "defaultValue">
 
-type AutocompleteOption = { value: string, label: string }
+type AutocompleteOption = { value: string | null, label: string }
 
-export interface AutocompleteProps<T extends Array<AutocompleteOption>> extends AutocompleteInputProps,
+export interface AutocompleteProps extends AutocompleteInputProps,
     BasicFieldOptions,
     InputStyling,
     Omit<ComponentAnatomy<typeof AutocompleteAnatomy>, "rootClass"> {
-    value: AutocompleteOption | undefined
-    onValueChange: (value: { value: string | null, label: string } | undefined) => void
+    /**
+     * The selected option
+     */
+    value?: AutocompleteOption | undefined
+    /**
+     * Callback invoked when the value changes.
+     */
+    onValueChange?: (value: { value: string | null, label: string } | undefined) => void
+    /**
+     * Callback invoked when the input text changes.
+     */
     onTextChange?: (value: string) => void
-    options: T
-    emptyMessage: React.ReactNode
-    placeholder: string
+    /**
+     * The autocompletion options.
+     */
+    options: AutocompleteOption[]
+    /**
+     * The message to display when there are no options.
+     *
+     * If not provided, the options list will be hidden when there are no options.
+     */
+    emptyMessage?: React.ReactNode
+    /**
+     * The placeholder of the input.
+     */
+    placeholder?: string
+    /**
+     * Additional props to pass to the command component.
+     */
     commandProps?: CommandProps
+    /**
+     * Default value of the input when uncontrolled.
+     */
+    defaultValue?: AutocompleteOption
 }
 
-function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteProps<T>, ref: React.ForwardedRef<HTMLInputElement>) {
+export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>((props, ref) => {
 
-    const [props1, basicFieldProps] = extractBasicFieldProps<AutocompleteProps<T>>(props, React.useId())
+    const [props1, basicFieldProps] = extractBasicFieldProps<AutocompleteProps>(props, React.useId())
 
     const [{
         size,
@@ -80,10 +107,11 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
         options,
         emptyMessage,
         placeholder,
-        value,
+        value: controlledValue,
         onValueChange,
         onTextChange,
         onChange,
+        defaultValue,
         ...rest
     }, {
         inputContainerProps,
@@ -91,7 +119,7 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
         leftIconProps,
         rightAddonProps,
         rightIconProps,
-    }] = extractInputPartProps<AutocompleteProps<T>>({
+    }] = extractInputPartProps<AutocompleteProps>({
         ...props1,
         size: props1.size ?? "md",
         intent: props1.intent ?? "basic",
@@ -101,36 +129,59 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
         rightIcon: props1.rightIcon,
     })
 
-    // Set inputValue to the label of the selected option
-    const [inputValue, setInputValue] = React.useState(value?.label ?? "")
+    const isFirst = React.useRef(true)
+
+    const inputValueRef = React.useRef<string>(controlledValue?.label || defaultValue?.label || "")
+    const [inputValue, setInputValue] = React.useState<string>(controlledValue?.label || defaultValue?.label || "")
+
+    const [value, setValue] = React.useState<AutocompleteOption | undefined>(controlledValue || defaultValue || undefined)
 
     const [open, setOpen] = React.useState(false)
 
-    const [filteredOptions, setFilteredOptions] = React.useState<T>(options)
+    const [filteredOptions, setFilteredOptions] = React.useState<AutocompleteOption[]>(options)
 
-    const _shouldOpen = options.length > 0 && filteredOptions.length > 0
+    // The options list should open when there are options or when there is an empty message
+    const _optionListShouldOpen = !!emptyMessage || (options.length > 0 && filteredOptions.length > 0)
 
+    // Function used to compare two labels
     const by = React.useCallback((a: string, b: string) => a.toLowerCase() === b.toLowerCase(), [])
 
     const inputRef = React.useRef<HTMLInputElement>(null)
     const commandInputRef = React.useRef<HTMLInputElement>(null)
 
-    React.useLayoutEffect(() => {
-        setInputValue(value?.label ?? "")
-    }, [value])
+    // Update the input value when the controlled value changes
+    // Only when the default value is empty or when it is an updated value
+    React.useEffect(() => {
+        if (!defaultValue || !isFirst.current) {
+            setInputValue(controlledValue?.label ?? "")
+            setValue(controlledValue)
+        }
+        isFirst.current = false
+    }, [controlledValue])
 
-    const handleOnOpenChange = React.useCallback((_open: boolean) => {
-        if (options.length === 0 && _open) return
-        setOpen(_open)
-        if (!_open) {
+    // Keep track of the input value
+    React.useEffect(() => {
+        inputValueRef.current = inputValue
+    }, [inputValue])
+
+    const handleOnOpenChange = React.useCallback((opening: boolean) => {
+        // If the input is disabled or readonly, do not open the popover
+        if (basicFieldProps.disabled || basicFieldProps.readonly) return
+        // If there are no options and the popover is opening, do not open it
+        if (options.length === 0 && opening) return
+        // If the input value has not and there are no filtered options, do not open the popover
+        // This is to avoid a visual glitch when the popover opens but is empty
+        if (inputValueRef.current === inputValue && opening && filteredOptions.length === 0) return
+
+        setOpen(opening)
+        if (!opening) {
             React.startTransition(() => {
                 inputRef.current?.focus()
             })
         }
-    }, [])
+    }, [options, inputValue, basicFieldProps.disabled, basicFieldProps.readonly])
 
-    // Handle changes in the input value
-    const handleOnChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleOnTextInputChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         onChange?.(e)
         setInputValue(e.target.value)
         onTextChange?.(e.target.value)
@@ -140,17 +191,22 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
         }
     }, [filteredOptions])
 
+    const handleUpdateValue = React.useCallback((value: AutocompleteOption | undefined) => {
+        setValue(value)
+        onValueChange?.(value)
+    }, [])
+
     // Listen to changes in the input value and filter the options
     React.useEffect(() => {
-        setFilteredOptions(options.filter(option => option.label.toLowerCase().includes(inputValue.toLowerCase())) as T)
+        setFilteredOptions(options.filter(option => option.label.toLowerCase().includes(inputValue.toLowerCase())))
 
         const _option = options.find(n => by(n.label, inputValue.trim()))
         if (_option) {
-            onValueChange(_option)
+            handleUpdateValue(_option)
         } else if (inputValue.length > 0) {
-            onValueChange({ value: null, label: inputValue.trim() })
+            handleUpdateValue({ value: null, label: inputValue.trim() })
         } else if (inputValue.length === 0) {
-            onValueChange(undefined)
+            handleUpdateValue(undefined)
         }
 
     }, [inputValue, options])
@@ -167,13 +223,13 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
     }, [open])
 
     return (
-        <BasicField{...basicFieldProps}>
+        <BasicField {...basicFieldProps}>
             <InputContainer {...inputContainerProps}>
                 <InputAddon {...leftAddonProps} />
                 <InputIcon {...leftIconProps} />
 
                 <Popover
-                    open={open && _shouldOpen}
+                    open={open && _optionListShouldOpen}
                     onOpenChange={handleOnOpenChange}
                     className={cn(
                         AutocompleteAnatomy.popover(),
@@ -183,10 +239,11 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
                     trigger={
                         <div className={cn(AutocompleteAnatomy.container(), containerClass)}>
                             <input
-                                ref={mergeRefs([ref, inputRef])}
+                                ref={mergeRefs([inputRef, ref])}
                                 id={basicFieldProps.id}
+                                name={basicFieldProps.name}
                                 value={inputValue}
-                                onChange={handleOnChange}
+                                onChange={handleOnTextInputChange}
                                 placeholder={placeholder}
                                 className={cn(
                                     InputAnatomy.root({
@@ -202,7 +259,13 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
                                     }),
                                     AutocompleteAnatomy.root(),
                                 )}
+                                disabled={basicFieldProps.disabled || basicFieldProps.readonly}
+                                data-disabled={basicFieldProps.disabled}
+                                data-error={!!basicFieldProps.error}
+                                aria-readonly={basicFieldProps.readonly}
+                                data-readonly={basicFieldProps.readonly}
                                 onKeyDown={handleKeyDown}
+                                required={basicFieldProps.required}
                                 {...rest}
                             />
                         </div>
@@ -216,11 +279,14 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
                         <CommandInput
                             value={inputValue}
                             onValueChange={setInputValue}
-                            inputContainerClass="visibility-hidden h-0 overflow-hidden w-0 p-0"
+                            inputContainerClass={hiddenInputStyles}
                             aria-hidden="true"
                             ref={commandInputRef}
                         />
                         <CommandList>
+                            {!!emptyMessage && (
+                                <CommandEmpty>{emptyMessage}</CommandEmpty>
+                            )}
                             <CommandGroup>
                                 {options.map(option => (
                                     <CommandItem
@@ -230,10 +296,10 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
                                             const _option = options.find(n => by(n.label, currentValue))
                                             if (_option) {
                                                 if (value?.value === _option.value) {
-                                                    onValueChange(undefined)
+                                                    handleUpdateValue(undefined)
                                                     setInputValue("")
                                                 } else {
-                                                    onValueChange(_option)
+                                                    handleUpdateValue(_option)
                                                     setInputValue(_option.label)
                                                 }
                                             }
@@ -274,8 +340,6 @@ function _Autocomplete<T extends Array<AutocompleteOption>>(props: AutocompleteP
             </InputContainer>
         </BasicField>
     )
-}
-
-export const Autocomplete = React.forwardRef(_Autocomplete)
+})
 
 Autocomplete.displayName = "Autocomplete"

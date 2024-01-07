@@ -12,7 +12,7 @@ import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputI
  * -----------------------------------------------------------------------------------------------*/
 
 export interface CurrencyInputProps
-    extends Omit<React.ComponentPropsWithoutRef<"input">, "size" | "disabled">,
+    extends Omit<React.ComponentPropsWithoutRef<"input">, "size" | "disabled" | "defaultValue">,
         InputStyling,
         BasicFieldOptions {
     /**
@@ -50,7 +50,7 @@ export interface CurrencyInputProps
      */
     decimalScale?: number
     /**
-     * Default value if not passing in value via props
+     * Default value if uncontrolled
      */
     defaultValue?: number | string
     /**
@@ -115,6 +115,9 @@ export interface CurrencyInputProps
      * Transform the raw value form the input before parsing
      */
     transformRawValue?: (rawValue: string) => string
+    /**
+     * Callback invoked when value changes
+     */
     onValueChange?: (value: (string | undefined), name?: string, values?: CurrencyInputOnChangeValues) => void
 }
 
@@ -149,6 +152,7 @@ export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputPro
         groupSeparator,
         disableGroupSeparators,
         disableAbbreviations,
+        defaultValue,
         ...rest
     }, {
         inputContainerProps,
@@ -176,6 +180,7 @@ export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputPro
                     ref={ref}
                     id={basicFieldProps.id}
                     name={basicFieldProps.name}
+                    defaultValue={defaultValue}
                     className={cn(
                         "form-input",
                         InputAnatomy.root({
@@ -193,6 +198,7 @@ export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputPro
                     )}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     data-disabled={basicFieldProps.disabled}
+                    required={basicFieldProps.required}
                     value={value}
                     onValueChange={onValueChange}
                     transformRawValue={transformRawValue}

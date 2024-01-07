@@ -26,7 +26,7 @@ const meta = {
     },
     args: {
         label: "Label",
-        value: "+1 999 567 9999",
+        value: "+1 (240) 567 9999",
     },
 } satisfies Meta<typeof PhoneInput>
 
@@ -66,15 +66,31 @@ export const LeftAddon: Story = {
 export const Uncontrolled: Story = {
     args: {
         value: undefined,
-        defaultValue: "+1 999 567 9999",
+        defaultValue: "+1 (240) 567 9999",
+        required: true,
+        name: "phone",
+        label: "Phone number",
     },
-    render: function Render(args) {
+    render: function (args) {
         return (
-            <div className="min-[900px]:w-[800px] w-full">
+            <form
+                action="https://run.mocky.io/v3/7bbf8cd5-9e99-46fb-bfd1-725b7bab59fe"
+                method="get"
+                onSubmit={e => {
+                    e.preventDefault()
+                    const data = new FormData(e.currentTarget)
+                    for (let [key, value] of data.entries()) {
+                        console.log(key, value)
+                    }
+                }}
+                className="min-[900px]:w-[800px] w-full"
+            >
                 <PhoneInput
                     {...args}
                 />
-            </div>
+                <button type="submit">Submit</button>
+            </form>
         )
     },
 }
+

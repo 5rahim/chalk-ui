@@ -1,12 +1,13 @@
 "use client"
 
+import { mergeRefs } from "../core/refs"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { cva } from "class-variance-authority"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
-import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
+import { extractInputPartProps, hiddenInputStyles, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -82,6 +83,10 @@ export interface SelectProps extends InputStyling,
      * Default selected value when uncontrolled
      */
     defaultValue?: string
+    /**
+     * Ref to the input element
+     */
+    inputRef?: React.Ref<HTMLInputElement>
 }
 
 export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, ref) => {
@@ -107,10 +112,11 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
         itemClass,
         /**/
         dir,
-        value,
+        value: controlledValue,
         onValueChange,
         onOpenChange,
         defaultValue,
+        inputRef,
         ...rest
     }, {
         inputContainerProps,
@@ -128,6 +134,29 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
         rightIcon: props1.rightIcon,
     })
 
+    const isFirst = React.useRef(true)
+
+    const buttonRef = React.useRef<HTMLButtonElement>(null)
+
+    const [_value, _setValue] = React.useState<string | undefined>(controlledValue ?? defaultValue)
+
+    const handleOnValueChange = React.useCallback((value: string) => {
+        if (value === "__placeholder__") {
+            _setValue("")
+            onValueChange?.("")
+            return
+        }
+        _setValue(value)
+        onValueChange?.(value)
+    }, [])
+
+    React.useEffect(() => {
+        if (!defaultValue || !isFirst.current) {
+            _setValue(controlledValue)
+        }
+        isFirst.current = false
+    }, [controlledValue])
+
     return (
         <BasicField{...basicFieldProps}>
             <InputContainer {...inputContainerProps}>
@@ -136,14 +165,14 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
 
                 <SelectPrimitive.Root
                     dir={dir}
-                    value={value}
-                    onValueChange={onValueChange}
+                    value={_value}
+                    onValueChange={handleOnValueChange}
                     onOpenChange={onOpenChange}
                     defaultValue={defaultValue}
                 >
 
                     <SelectPrimitive.Trigger
-                        ref={ref}
+                        ref={mergeRefs([buttonRef, ref])}
                         id={basicFieldProps.id}
                         className={cn(
                             InputAnatomy.root({
@@ -202,6 +231,18 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
 
                             <SelectPrimitive.Viewport className={cn(SelectAnatomy.viewport(), viewportClass)}>
 
+                                {(!!placeholder && !basicFieldProps.required) && (
+                                    <SelectPrimitive.Item
+                                        className={cn(
+                                            SelectAnatomy.item(),
+                                            itemClass,
+                                        )}
+                                        value={"__placeholder__"}
+                                    >
+                                        <SelectPrimitive.ItemText>{placeholder}</SelectPrimitive.ItemText>
+                                    </SelectPrimitive.Item>
+                                )}
+
                                 {options?.map(option => (
                                     <SelectPrimitive.Item
                                         key={option.value}
@@ -254,6 +295,20 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
                     </SelectPrimitive.Portal>
 
                 </SelectPrimitive.Root>
+
+                <input
+                    ref={inputRef}
+                    type="radio"
+                    name={basicFieldProps.name}
+                    className={hiddenInputStyles}
+                    value={_value ?? ""}
+                    checked={!!_value}
+                    aria-hidden="true"
+                    required={basicFieldProps.required}
+                    tabIndex={-1}
+                    onChange={() => {}}
+                    onFocusCapture={() => buttonRef.current?.focus()}
+                />
 
                 <InputAddon {...rightAddonProps} />
                 <InputIcon {...rightIconProps} />

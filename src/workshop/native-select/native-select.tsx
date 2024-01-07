@@ -74,6 +74,10 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProp
                         className,
                     )}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
+                    data-disabled={basicFieldProps.disabled}
+                    data-readonly={basicFieldProps.readonly}
+                    aria-readonly={basicFieldProps.readonly}
+                    required={basicFieldProps.required}
                     {...rest}
                     ref={ref}
                 >

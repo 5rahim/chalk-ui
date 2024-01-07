@@ -1,6 +1,8 @@
 import { useArgs } from "@storybook/preview-api"
-import { CurrencyInput } from "../currency-input"
 import type { Meta, StoryObj } from "@storybook/react"
+import * as React from "react"
+import { Button } from "../button"
+import { CurrencyInput } from "../currency-input"
 
 const meta = {
     title: "Components/Forms/CurrencyInput",
@@ -9,14 +11,22 @@ const meta = {
     render: function Render(args) {
         const [{ value }, updateArgs] = useArgs()
         return (
-            <CurrencyInput
-                {...args}
-                value={value}
-                onValueChange={(value, name, values) => {
-                    console.log("value", value, name, values)
-                    updateArgs({ value })
-                }}
-            />
+            <>
+                <CurrencyInput
+                    {...args}
+                    value={value}
+                    onValueChange={(value, name, values) => {
+                        console.log("value", value, name, values)
+                        updateArgs({ value })
+                    }}
+                />
+                <Button
+                    className="absolute top-0 right-0"
+                    size="sm"
+                    intent="gray-outline"
+                    onClick={() => {updateArgs({ value: undefined })}}
+                >Empty</Button>
+            </>
         )
     },
     args: {
@@ -94,3 +104,35 @@ export const IconWithAddon: Story = {
         leftIcon: <span>@</span>,
     },
 }
+
+export const Uncontrolled: Story = {
+    args: {
+        value: undefined,
+        defaultValue: "50",
+        required: true,
+        name: "price",
+        label: "Price",
+    },
+    render: function (args) {
+        return (
+            <form
+                action="https://run.mocky.io/v3/7bbf8cd5-9e99-46fb-bfd1-725b7bab59fe"
+                method="get"
+                onSubmit={e => {
+                    e.preventDefault()
+                    const data = new FormData(e.currentTarget)
+                    for (let [key, value] of data.entries()) {
+                        console.log(key, value)
+                    }
+                }}
+                className="min-[900px]:w-[800px] w-full"
+            >
+                <CurrencyInput
+                    {...args}
+                />
+                <button type="submit">Submit</button>
+            </form>
+        )
+    },
+}
+
