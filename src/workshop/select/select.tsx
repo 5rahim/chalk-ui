@@ -69,11 +69,11 @@ export interface SelectProps extends InputStyling,
     /**
      * The selected value
      */
-    value: string | undefined
+    value?: string | undefined
     /**
      * Callback fired when the selected value changes
      */
-    onValueChange: (value: string) => void
+    onValueChange?: (value: string) => void
     /**
      * Callback fired when the dropdown opens or closes
      */

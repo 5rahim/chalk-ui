@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import * as React from "react"
 import { Pie, PieChart as ReChartsDonutChart, ResponsiveContainer, Tooltip } from "recharts"
 import { cn } from "../core/classnames"
 import { ChartTooltipFrame, ChartTooltipRow } from "./chart-tooltip"

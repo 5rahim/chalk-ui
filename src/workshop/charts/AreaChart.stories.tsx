@@ -35,7 +35,7 @@ const areaChartData = [
 ]
 
 const meta = {
-    title: "Components/DataDisplay/AreaChart",
+    title: "Components/Data Display/AreaChart",
     component: AreaChart,
     tags: ["autodocs"],
     args: {

@@ -29,7 +29,7 @@ const cities = [
 ]
 
 const meta = {
-    title: "Components/DataDisplay/DonutChart",
+    title: "Components/Data Display/DonutChart",
     component: DonutChart,
     tags: ["autodocs"],
     args: {

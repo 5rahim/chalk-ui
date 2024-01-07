@@ -4,7 +4,7 @@ import { Disclosure, DisclosureContent, DisclosureItem, DisclosureTrigger } from
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {
-    title: "Components/DataDisplay/Disclosure",
+    title: "Components/Data Display/Disclosure",
     component: Disclosure,
     render: (props) => {
         return (

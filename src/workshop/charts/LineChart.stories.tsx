@@ -236,7 +236,7 @@ const lineChartData = [
 ]
 
 const meta = {
-    title: "Components/DataDisplay/LineChart",
+    title: "Components/Data Display/LineChart",
     component: LineChart,
     tags: ["autodocs"],
     args: {

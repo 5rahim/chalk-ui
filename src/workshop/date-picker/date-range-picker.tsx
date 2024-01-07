@@ -113,10 +113,7 @@ export const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePick
         </svg>,
     })
 
-    const [date, setDate] = React.useState<DateRange | undefined>({
-        from: new Date(),
-        to: undefined,
-    })
+    const [date, setDate] = React.useState<DateRange | undefined>(value)
 
     const handleOnSelect = React.useCallback((date: DateRange | undefined) => {
         setDate(date)

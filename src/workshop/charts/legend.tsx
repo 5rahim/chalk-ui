@@ -1,5 +1,5 @@
 import { cva } from "class-variance-authority"
-import React from "react"
+import * as React from "react"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { ColorPalette, UIColor } from "./color-theme"

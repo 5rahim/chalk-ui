@@ -23,7 +23,7 @@ const barChartData2 = [
 ]
 
 const meta = {
-    title: "Components/DataDisplay/BarChart",
+    title: "Components/Data Display/BarChart",
     component: BarChart,
     tags: ["autodocs"],
     args: {

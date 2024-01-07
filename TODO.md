@@ -18,9 +18,10 @@
     - [x] DatePicker
     - [x] DateRangePicker
     - [x] SimpleDropzone
+    - [ ] AddressInput
     - ToggleButton
     - TimeInput
-    - Form
+    - [ ] Form
 - Overlays
     - [x] Popover
     - [x] Command
@@ -35,14 +36,14 @@
     - Skeleton
     - ProgressBar
 - Navigation
-    - Breadcrumb
+    - [x] Breadcrumbs
     - [x] NavigationMenu
     - [x] VerticalMenu
     - Navbar
     - NavTabs
     - Tabs
     - Pagination
-- DataDisplay
+- Data Display
     - DataGrid
     - [x] ScrollArea
     - [x] Avatar
@@ -50,18 +51,19 @@
     - [x] Disclosure
     - [x] Collapsible
     - [x] Badge
+    - [x] Tag
     - Card
     - Chip
     - Divider
     - Icon
     - Image
     - Table
-    - Tag
     - Alert
     - Banner
-    - BarChart
-    - DonutChart
-    - LineChart
+    - [x] BarChart
+    - [x] DonutChart
+    - [x] LineChart
+    - [x] DonutChart
     - Stats
     - Timeline
     - Slider
