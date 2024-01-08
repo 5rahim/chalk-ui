@@ -166,7 +166,7 @@ const NativeSelectField = React.memo(withControlledInput(forwardRef<HTMLSelectEl
             if (!get(context.formState.defaultValues, props.name) && !controller.field.value && !props.placeholder) {
                 controller.field.onChange(props.options?.[0]?.value)
             }
-        }, [controller.field.value])
+        }, [])
 
         return <NativeSelect
             {...props}
