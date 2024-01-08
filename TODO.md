@@ -21,7 +21,7 @@
     - [ ] AddressInput
     - ToggleButton
     - TimeInput
-    - [ ] Form
+    - [x] Form
 - Overlays
     - [x] Popover
     - [x] Command

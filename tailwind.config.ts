@@ -47,12 +47,21 @@ const config: Config = {
                     from: { transform: "translateY(0)", opacity: "1" },
                     to: { transform: "translateY(-1rem)", opacity: "0" },
                 },
+                "indeterminate-progress": {
+                    "0%": { transform: " translateX(0) scaleX(0)" },
+                    "40%": { transform: "translateX(0) scaleX(0.4)" },
+                    "100%": { transform: "translateX(100%) scaleX(0.5)" },
+                },
             },
             animation: {
                 "accordion-down": "accordion-down 0.15s linear",
                 "accordion-up": "accordion-up 0.15s linear",
                 "slide-down": "slide-down 0.15s ease-in-out",
                 "slide-up": "slide-up 0.15s ease-in-out",
+                "indeterminate-progress": "indeterminate-progress 1s infinite ease-out",
+            },
+            transformOrigin: {
+                "left-right": "0% 100%",
             },
             boxShadow: {
                 "md": "0 1px 3px 0 rgba(0, 0, 0, 0.1),0 1px 2px 0 rgba(0, 0, 0, 0.06)",

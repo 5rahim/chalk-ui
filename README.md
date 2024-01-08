@@ -4,7 +4,7 @@
 
 <h2 align="center">Chalk UI</h2>
 
-<h4 align="center">Opinionated and flexible React components styled with TailwindCSS built for Next.js SaaS applications.</h4>
+<h4 align="center">Opinionated and flexible React components, styled with TailwindCSS, built for Next.js SaaS applications.</h4>
 
 ## Why?
 

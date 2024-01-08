@@ -44,7 +44,7 @@ export const AutocompleteAnatomy = defineStyleAnatomy({
 
 type AutocompleteInputProps = Omit<React.ComponentPropsWithRef<"input">, "size" | "value" | "defaultValue">
 
-type AutocompleteOption = { value: string | null, label: string }
+export type AutocompleteOption = { value: string | null, label: string }
 
 export interface AutocompleteProps extends AutocompleteInputProps,
     BasicFieldOptions,
@@ -84,6 +84,26 @@ export interface AutocompleteProps extends AutocompleteInputProps,
      * Default value of the input when uncontrolled.
      */
     defaultValue?: AutocompleteOption
+    /**
+     * If true, the options list will be filtered based on the input value.
+     * Set this to false if you want to filter the options yourself by listening to the `onTextChange` event.
+     *
+     * @default true
+     */
+    autoFilter?: boolean
+    /**
+     * If true, a loading indicator will be displayed.
+     */
+    isFetching?: boolean
+    /**
+     * The type of the autocomplete.
+     *
+     * - `custom`: Arbitrary values are allowed
+     * - `options`: Only values from the options list are allowed. Falls back to last valid option if the input value is not in the options list.
+     *
+     * @default "custom"
+     */
+    type?: "custom" | "options"
 }
 
 export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>((props, ref) => {
@@ -112,6 +132,9 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
         onTextChange,
         onChange,
         defaultValue,
+        autoFilter = true,
+        isFetching,
+        type,
         ...rest
     }, {
         inputContainerProps,
@@ -133,7 +156,9 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
 
     const inputValueRef = React.useRef<string>(controlledValue?.label || defaultValue?.label || "")
     const [inputValue, setInputValue] = React.useState<string>(controlledValue?.label || defaultValue?.label || "")
+    const deferredInputValue = React.useDeferredValue(inputValue)
 
+    const optionsTypeValueRef = React.useRef<AutocompleteOption | undefined>(controlledValue || defaultValue || undefined)
     const [value, setValue] = React.useState<AutocompleteOption | undefined>(controlledValue || defaultValue || undefined)
 
     const [open, setOpen] = React.useState(false)
@@ -155,6 +180,7 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
         if (!defaultValue || !isFirst.current) {
             setInputValue(controlledValue?.label ?? "")
             setValue(controlledValue)
+            _updateOptionsTypeValueRef(controlledValue)
         }
         isFirst.current = false
     }, [controlledValue])
@@ -182,34 +208,45 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
     }, [options, inputValue, basicFieldProps.disabled, basicFieldProps.readonly])
 
     const handleOnTextInputChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        onChange?.(e)
-        setInputValue(e.target.value)
-        onTextChange?.(e.target.value)
-        // Open the popover if there are filtered options
-        if (filteredOptions.length > 0) {
-            setOpen(true)
-        }
-    }, [filteredOptions])
+        onChange?.(e) // Emit the change event
+        setInputValue(e.target.value) // Update the input value
 
+        React.startTransition(() => {
+            const newFilteredOptions = options.filter(option => option.label.toLowerCase().includes(e.target.value.toLowerCase()))
+
+            if (autoFilter) {
+                setFilteredOptions(newFilteredOptions)
+            }
+
+            const _option = options.find(n => by(n.label, e.target.value))
+            if (_option) {
+                handleUpdateValue(_option)
+            } else if (e.target.value.length > 0) {
+                handleUpdateValue({ value: null, label: e.target.value })
+            } else if (e.target.value.length === 0) {
+                handleUpdateValue(undefined)
+            }
+
+            // Open the popover if there are filtered options
+            if (newFilteredOptions.length > 0) {
+                setOpen(true)
+            }
+        })
+
+    }, [options])
+
+    React.useEffect(() => {
+
+
+    }, [deferredInputValue])
+
+    // Called when an option is selected either by clicking on it or entering a valid value
     const handleUpdateValue = React.useCallback((value: AutocompleteOption | undefined) => {
         setValue(value)
         onValueChange?.(value)
+        onTextChange?.(value?.label ?? "")
+        _updateOptionsTypeValueRef(value)
     }, [])
-
-    // Listen to changes in the input value and filter the options
-    React.useEffect(() => {
-        setFilteredOptions(options.filter(option => option.label.toLowerCase().includes(inputValue.toLowerCase())))
-
-        const _option = options.find(n => by(n.label, inputValue.trim()))
-        if (_option) {
-            handleUpdateValue(_option)
-        } else if (inputValue.length > 0) {
-            handleUpdateValue({ value: null, label: inputValue.trim() })
-        } else if (inputValue.length === 0) {
-            handleUpdateValue(undefined)
-        }
-
-    }, [inputValue, options])
 
     // Focus the command input when arrow down is pressed
     const handleKeyDown = React.useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -221,6 +258,29 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
             commandInputRef.current?.focus()
         }
     }, [open])
+
+    //-----------------------------------------------------------------------------------------------
+
+    // Conditionally update the options type value ref when it is valid
+    const _updateOptionsTypeValueRef = React.useCallback((value: AutocompleteOption | undefined) => {
+        if (!!value?.value || value === undefined) {
+            optionsTypeValueRef.current = value
+        }
+    }, [])
+
+    // If the type is `options`, make sure the value is always a valid option
+    // If the value entered doesn't match any option, fallback to the last valid option
+    const handleOptionsTypeOnBlur = React.useCallback(() => {
+        if (type === "options") {
+            React.startTransition(() => {
+                if (optionsTypeValueRef.current) {
+                    setInputValue(optionsTypeValueRef.current.label)
+                } else {
+                    setInputValue("")
+                }
+            })
+        }
+    }, [])
 
     return (
         <BasicField {...basicFieldProps}>
@@ -244,6 +304,7 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
                                 name={basicFieldProps.name}
                                 value={inputValue}
                                 onChange={handleOnTextInputChange}
+                                onBlur={handleOptionsTypeOnBlur}
                                 placeholder={placeholder}
                                 className={cn(
                                     InputAnatomy.root({
@@ -274,8 +335,14 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
                     <Command
                         className={cn(AutocompleteAnatomy.command(), commandClass)}
                         inputContainerClass="py-1"
+                        shouldFilter={autoFilter}
                         {...commandProps}
                     >
+                        {isFetching && inputValue.length > 0 && <div className="w-full absolute top-0 left-0 px-1">
+                            <div className="h-1 w-full bg-brand-100 overflow-hidden relative rounded-full">
+                                <div className="animate-indeterminate-progress absolute left-0 w-full h-full bg-brand origin-left-right"></div>
+                            </div>
+                        </div>}
                         <CommandInput
                             value={inputValue}
                             onValueChange={setInputValue}
