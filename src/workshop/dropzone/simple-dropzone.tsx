@@ -169,7 +169,7 @@ export const SimpleDropzone = React.forwardRef<HTMLInputElement, SimpleDropzoneP
         onError,
         validator,
         multiple,
-        value,
+        value, // ignored
         ...rest
     }, basicFieldProps] = extractBasicFieldProps(props, React.useId())
 
