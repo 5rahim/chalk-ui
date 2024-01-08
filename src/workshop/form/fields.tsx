@@ -60,7 +60,9 @@ export function withControlledInput<T extends FieldBaseProps>(InputComponent: Re
 
             /* Get the `required` status from the Schema */
             const required = useMemo(() => {
-                return !get(shape, inputProps.name).isOptional() && !get(shape, inputProps.name).isNullable()
+                return !!get(shape, inputProps.name) &&
+                    !get(shape, inputProps.name)?.isOptional() &&
+                    !get(shape, inputProps.name)?.isNullable()
             }, [shape])
 
             return (
@@ -226,15 +228,6 @@ const CheckboxField = React.memo(withControlledInput(forwardRef<HTMLButtonElemen
 
 const CheckboxGroupField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<CheckboxGroupProps>>(
     ({ onChange, ...props }, ref) => {
-        const context = useFormContext()
-        const controller = useController({ name: props.name })
-
-        React.useEffect(() => {
-            if (!get(context.formState.defaultValues, props.name) && !controller.field.value) {
-                controller.field.onChange([])
-            }
-        }, [controller.field.value])
-
         return <CheckboxGroup
             {...props}
             onValueChange={onChange}
@@ -245,20 +238,10 @@ const CheckboxGroupField = React.memo(withControlledInput(forwardRef<HTMLInputEl
 
 
 const RadioGroupField = React.memo(withControlledInput(forwardRef<HTMLButtonElement, FieldComponent<RadioGroupProps>>(
-    (props, ref) => {
-        const context = useFormContext()
-        const controller = useController({ name: props.name })
-
-        /* Set the default value as the first option if no default value is passed */
-        React.useEffect(() => {
-            if (!get(context.formState.defaultValues, props.name) && !controller.field.value) {
-                controller.field.onChange(props.options?.[0]?.value)
-            }
-        }, [controller.field.value])
-
+    ({ onChange, ...props }, ref) => {
         return <RadioGroup
             {...props}
-            value={controller.field.value}
+            onValueChange={onChange}
             ref={ref}
         />
     },

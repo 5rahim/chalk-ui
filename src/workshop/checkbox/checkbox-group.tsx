@@ -1,5 +1,6 @@
 "use client"
 
+import equal from "fast-deep-equal"
 import * as React from "react"
 import { Checkbox, CheckboxProps } from "."
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
@@ -28,7 +29,7 @@ export interface CheckboxGroupProps extends BasicFieldOptions {
     /**
      * Callback invoked when the value of the checkbox group changes.
      */
-    onValueChange: (value: string[]) => void
+    onValueChange?: (value: string[]) => void
     /**
      * The size of the checkboxes.
      */
@@ -59,13 +60,28 @@ export const CheckboxGroup = React.forwardRef<HTMLInputElement, CheckboxGroupPro
         size = undefined,
     }, basicFieldProps] = extractBasicFieldProps<CheckboxGroupProps>(props, React.useId())
 
-    const [selectedValues, setSelectedValues] = React.useState<string[]>(controlledValue ?? defaultValue)
+    const [value, setValue] = React.useState<string[]>(controlledValue ?? defaultValue)
+
+    const handleUpdateValue = React.useCallback((v: string) => {
+        return (checked: boolean | "indeterminate") => {
+            setValue(p => {
+                const newArr = checked === true
+                    ? [...p, ...(p.includes(v) ? [] : [v])]
+                    : checked === false
+                        ? p.filter(v1 => v1 !== v)
+                        : [...p]
+                onValueChange?.(newArr)
+                return newArr
+            })
+        }
+    }, [])
 
     React.useEffect(() => {
         if (controlledValue !== undefined) {
-            setSelectedValues(controlledValue)
+            setValue(controlledValue)
         }
     }, [controlledValue])
+
 
     return (
         <__CheckboxGroupContext.Provider
@@ -73,24 +89,14 @@ export const CheckboxGroup = React.forwardRef<HTMLInputElement, CheckboxGroupPro
                 group_size: size,
             }}
         >
-            <BasicField{...basicFieldProps}>
+            <BasicField {...basicFieldProps}>
                 <div className={cn("UI-CheckboxGroup__stack space-y-1", stackClass)}>
                     {options.map((opt) => (
                         <Checkbox
                             key={opt.value}
                             label={opt.label}
-                            value={selectedValues.includes(opt.value)}
-                            onValueChange={checked => {
-                                setSelectedValues(p => {
-                                    const newArr = checked === true
-                                        ? [...p, ...(p.includes(opt.value) ? [] : [opt.value])]
-                                        : checked === false
-                                            ? p.filter(v => v !== opt.value)
-                                            : [...p]
-                                    onValueChange(newArr)
-                                    return newArr
-                                })
-                            }}
+                            value={value.includes(opt.value)}
+                            onValueChange={handleUpdateValue(opt.value)}
                             hideError
                             error={basicFieldProps.error}
                             className={itemClass}
@@ -111,8 +117,8 @@ export const CheckboxGroup = React.forwardRef<HTMLInputElement, CheckboxGroupPro
                     name={basicFieldProps.name}
                     className={hiddenInputStyles}
                     value={basicFieldProps.required
-                        ? (!!selectedValues.length ? JSON.stringify(selectedValues) : "")
-                        : JSON.stringify(selectedValues)}
+                        ? (!!value.length ? JSON.stringify(value) : "")
+                        : JSON.stringify(value)}
                     aria-hidden="true"
                     required={basicFieldProps.required}
                     tabIndex={-1}

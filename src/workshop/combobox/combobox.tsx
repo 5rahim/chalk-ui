@@ -9,6 +9,7 @@ import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { extractInputPartProps, hiddenInputStyles, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 import { Popover } from "../popover"
+import equal from "fast-deep-equal"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -160,16 +161,18 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>((prop
 
     const buttonRef = React.useRef<HTMLButtonElement>(null)
 
+    const valueRef = React.useRef<string[]>(controlledValue || defaultValue || [])
     const [value, setValue] = React.useState<string[]>(controlledValue || defaultValue || [])
 
     const [open, setOpen] = React.useState(false)
 
     const handleUpdateValue = React.useCallback((value: string[]) => {
         setValue(value)
+        valueRef.current = value
     }, [])
 
     React.useEffect(() => {
-        if (controlledValue !== undefined) {
+        if (controlledValue !== undefined && !equal(controlledValue, valueRef.current)) {
             handleUpdateValue(controlledValue)
         }
     }, [controlledValue])

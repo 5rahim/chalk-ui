@@ -52,6 +52,15 @@ const meta = {
                         { value: "br", label: "Brazil" },
                     ]}
                     />
+                    <Field.RadioGroup
+                        label="Country" name="country" options={[
+                        { value: "us", label: "United States" },
+                        { value: "ci", label: "Côte d'Ivoire" },
+                        { value: "ca", label: "Canada" },
+                        { value: "jp", label: "Japan" },
+                        { value: "br", label: "Brazil" },
+                    ]}
+                    />
                     <Field.Combobox
                         label="Countries" name="countries" placeholder="Select countries..." emptyMessage="No countries found" multiple options={[
                         { value: "us", textValue: "United States", label: "United States" },
@@ -59,6 +68,15 @@ const meta = {
                         { value: "ca", textValue: "Canada", label: "Canada" },
                         { value: "jp", textValue: "Japan", label: "Japan" },
                         { value: "br", textValue: "Brazil", label: "Brazil" },
+                    ]}
+                    />
+                    <Field.CheckboxGroup
+                        label="Countries" name="countries" options={[
+                        { value: "us", label: "United States" },
+                        { value: "ci", label: "Côte d'Ivoire" },
+                        { value: "ca", label: "Canada" },
+                        { value: "jp", label: "Japan" },
+                        { value: "br", label: "Brazil" },
                     ]}
                     />
                     <Field.Autocomplete
@@ -94,7 +112,7 @@ export const DefaultValues: Story = {
         defaultValues: {
             name: "John Doe",
             birthday: new Date(),
-            phone: "(240) 465 9999",
+            phone: "+1 (240) 999 9999",
             booking: {
                 from: new Date(),
                 to: addDays(new Date(), 7),
