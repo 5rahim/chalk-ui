@@ -1,6 +1,5 @@
 "use client"
 
-import equal from "fast-deep-equal"
 import * as React from "react"
 import { Checkbox, CheckboxProps } from "."
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"

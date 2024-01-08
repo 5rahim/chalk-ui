@@ -12,6 +12,7 @@ const testSchema = defineSchema(({ z, presets }) => z.object({
     country: presets.select,
     countries: presets.multiSelect.min(2),
     day: presets.autocomplete,
+    profilePicture: presets.files,
 }))
 
 const meta = {
@@ -84,6 +85,9 @@ const meta = {
                         { value: "mo", label: "Monday" },
                         { value: "tu", label: "Tuesday" },
                     ]}
+                    />
+                    <Field.SimpleDropzone
+                        label="Profile picture" name="profilePicture"
                     />
                     <Field.Submit role="create" />
                 </Form>

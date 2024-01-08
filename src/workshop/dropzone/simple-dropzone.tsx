@@ -7,6 +7,7 @@ import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-
 import { CloseButton, IconButton } from "../button"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { hiddenInputStyles } from "../input"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -15,7 +16,7 @@ import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 export const SimpleDropzoneAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-SimpleDropzone__root",
-        "mb-2 cursor-pointer hover:text-[--text-color] flex items-center justify-center p-4 border rounded-[--radius] border-dashed",
+        "appearance-none w-full mb-2 cursor-pointer hover:text-[--text-color] flex items-center justify-center p-4 border rounded-[--radius] border-dashed",
         "gap-3 text-sm sm:text-base",
         "outline-none ring-[--ring] focus-visible:ring-2",
         "text-[--muted] transition ease-in-out hover:border-[--foreground]",
@@ -80,7 +81,7 @@ export const SimpleDropzoneAnatomy = defineStyleAnatomy({
 
 export interface SimpleDropzoneProps
     extends Omit<React.ComponentPropsWithRef<"input">,
-        "size" | "value" | "accept" | "type" | "onError" | "onDrop">,
+        "size" | "accept" | "type" | "onError" | "onDrop">,
         Omit<ComponentAnatomy<typeof SimpleDropzoneAnatomy>, "rootClass">,
         BasicFieldOptions {
     /**
@@ -168,8 +169,11 @@ export const SimpleDropzone = React.forwardRef<HTMLInputElement, SimpleDropzoneP
         onError,
         validator,
         multiple,
+        value,
         ...rest
     }, basicFieldProps] = extractBasicFieldProps(props, React.useId())
+
+    const buttonRef = React.useRef<HTMLButtonElement>(null)
 
     const [files, setFiles] = React.useState<File[]>([])
 
@@ -210,7 +214,8 @@ export const SimpleDropzone = React.forwardRef<HTMLInputElement, SimpleDropzoneP
 
     return (
         <BasicField {...basicFieldProps}>
-            <div
+            <button
+                ref={buttonRef}
                 className={cn(
                     SimpleDropzoneAnatomy.root(),
                     className,
@@ -218,14 +223,19 @@ export const SimpleDropzone = React.forwardRef<HTMLInputElement, SimpleDropzoneP
                 data-drag-active={isDragActive}
                 data-drag-reject={isDragReject}
                 {...getRootProps()}
+                tabIndex={0}
             >
                 <input
+                    ref={ref}
                     id={basicFieldProps.id}
                     name={basicFieldProps.name ?? "files"}
-                    required={basicFieldProps.required}
+                    value=""
+                    onFocusCapture={() => buttonRef.current?.focus()}
+                    aria-hidden="true"
                     {...getInputProps()}
-                    ref={ref}
                     {...rest}
+                    className={cn("block", hiddenInputStyles)}
+                    style={{ display: "block" }}
                 />
                 <svg
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -239,7 +249,7 @@ export const SimpleDropzone = React.forwardRef<HTMLInputElement, SimpleDropzoneP
                 <span>
                     {dropzoneText ?? "Click or drag file to this area to upload"}
                 </span>
-            </div>
+            </button>
 
             {maxSize && <div className={cn(SimpleDropzoneAnatomy.maxSizeText(), maxSizeTextClass)}>{`≤`} {humanFileSize(maxSize, 0)}</div>}
 
