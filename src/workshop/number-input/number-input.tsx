@@ -228,7 +228,10 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     const api = numberInput.connect(state, send, normalizeProps)
 
     return (
-        <BasicField{...basicFieldProps}>
+        <BasicField
+            {...basicFieldProps}
+            id={api.inputProps.id}
+        >
             <InputContainer {...inputContainerProps}>
                 <InputAddon {...leftAddonProps} />
                 <InputIcon {...leftIconProps} />
