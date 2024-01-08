@@ -8,11 +8,13 @@ const testSchema = defineSchema(({ z, presets }) => z.object({
     name: z.string().min(2),
     birthday: presets.datePicker,
     booking: presets.dateRangePicker,
+    price: z.string(),
+    number: z.number(),
     phone: presets.phone,
     country: presets.select,
     countries: presets.multiSelect.min(2),
     day: presets.autocomplete,
-    profilePicture: presets.files,
+    profilePicture: presets.filesOrEmpty,
 }))
 
 const meta = {
@@ -35,6 +37,8 @@ const meta = {
                     <Field.DatePicker label="Birthday" name="birthday" />
                     <Field.DateRangePicker label="Booking" name="booking" />
                     <Field.Phone label="Phone number" name="phone" />
+                    <Field.Number label="Number" name="number" />
+                    <Field.Currency label="Price" name="price" intlConfig={{ locale: "US", currency: "USD" }} />
                     <Field.NativeSelect
                         label="Country" name="country" placeholder="Select a country..." options={[
                         { value: "us", label: "United States" },
@@ -117,6 +121,8 @@ export const DefaultValues: Story = {
             name: "John Doe",
             birthday: new Date(),
             phone: "+1 (240) 999 9999",
+            number: 50,
+            price: "350.99",
             booking: {
                 from: new Date(),
                 to: addDays(new Date(), 7),

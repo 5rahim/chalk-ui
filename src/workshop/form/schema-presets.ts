@@ -13,9 +13,12 @@ export const schemaPresets = {
     autocomplete: z.object({ label: z.string(), value: z.string().nullable() }),
     time: z.object({ hour: z.number().min(0).max(23), minute: z.number().min(0).max(59) }),
     phone: z.string().min(10, "Invalid phone number"),
-    price: z.number().min(0),
     boolean: z.boolean(),
     files: z.array(z.custom<File>()).refine(
+        // Check if all items in the array are instances of the File object
+        (files) => files.every((file) => file instanceof File), { message: "Expected a file" },
+    ),
+    filesOrEmpty: z.array(z.custom<File>()).min(0).refine(
         // Check if all items in the array are instances of the File object
         (files) => files.every((file) => file instanceof File), { message: "Expected a file" },
     ),

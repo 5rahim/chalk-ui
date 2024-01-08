@@ -280,6 +280,14 @@ const AutocompleteField = React.memo(withControlledInput(forwardRef<HTMLInputEle
 
 const SimpleDropzoneField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<SimpleDropzoneProps>>(
     ({ onChange, ...props }, ref) => {
+
+        const controller = useController({ name: props.name })
+
+        // Set the default value to an empty array
+        React.useEffect(() => {
+            controller.field.onChange([])
+        }, [])
+
         return <SimpleDropzone
             {...props}
             onValueChange={onChange}
