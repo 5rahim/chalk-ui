@@ -153,17 +153,24 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
     })
 
     const isFirst = React.useRef(true)
+    const isUpdating = React.useRef(false)
 
     const inputValueRef = React.useRef<string>(controlledValue?.label || defaultValue?.label || "")
     const [inputValue, setInputValue] = React.useState<string>(controlledValue?.label || defaultValue?.label || "")
     const deferredInputValue = React.useDeferredValue(inputValue)
+    inputValueRef.current = inputValue
 
     const optionsTypeValueRef = React.useRef<AutocompleteOption | undefined>(controlledValue || defaultValue || undefined)
     const [value, setValue] = React.useState<AutocompleteOption | undefined>(controlledValue || defaultValue || undefined)
 
     const [open, setOpen] = React.useState(false)
 
-    const [filteredOptions, setFilteredOptions] = React.useState<AutocompleteOption[]>(options)
+    const filteredOptions = React.useMemo(() => {
+        if (autoFilter) {
+            return options.filter(option => option.label.toLowerCase().includes(deferredInputValue.toLowerCase()))
+        }
+        return options
+    }, [autoFilter, options, deferredInputValue])
 
     // The options list should open when there are options or when there is an empty message
     const _optionListShouldOpen = !!emptyMessage || (options.length > 0 && filteredOptions.length > 0)
@@ -177,6 +184,7 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
     // Update the input value when the controlled value changes
     // Only when the default value is empty or when it is an updated value
     React.useEffect(() => {
+        if (isUpdating.current) return
         if (!defaultValue || !isFirst.current) {
             setInputValue(controlledValue?.label ?? "")
             setValue(controlledValue)
@@ -184,11 +192,6 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
         }
         isFirst.current = false
     }, [controlledValue])
-
-    // Keep track of the input value
-    React.useEffect(() => {
-        inputValueRef.current = inputValue
-    }, [inputValue])
 
     const handleOnOpenChange = React.useCallback((opening: boolean) => {
         // If the input is disabled or readonly, do not open the popover
@@ -208,37 +211,30 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
     }, [options, inputValue, basicFieldProps.disabled, basicFieldProps.readonly])
 
     const handleOnTextInputChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        isUpdating.current = true
         onChange?.(e) // Emit the change event
         setInputValue(e.target.value) // Update the input value
 
-        React.startTransition(() => {
-            const newFilteredOptions = options.filter(option => option.label.toLowerCase().includes(e.target.value.toLowerCase()))
-
-            if (autoFilter) {
-                setFilteredOptions(newFilteredOptions)
-            }
-
-            const _option = options.find(n => by(n.label, e.target.value))
-            if (_option) {
-                handleUpdateValue(_option)
-            } else if (e.target.value.length > 0) {
-                handleUpdateValue({ value: null, label: e.target.value })
-            } else if (e.target.value.length === 0) {
-                handleUpdateValue(undefined)
-            }
-
-            // Open the popover if there are filtered options
-            if (newFilteredOptions.length > 0) {
-                setOpen(true)
-            }
-        })
-
-    }, [options])
+        // Open the popover if there are filtered options
+        if (autoFilter && filteredOptions.length > 0) {
+            setOpen(true)
+        }
+    }, [filteredOptions])
 
     React.useEffect(() => {
+        const v = deferredInputValue
 
+        const _option = options.find(n => by(n.label, v))
+        if (_option) {
+            handleUpdateValue(_option)
+        } else if (v.length > 0) {
+            handleUpdateValue({ value: null, label: v })
+        } else if (v.length === 0) {
+            handleUpdateValue(undefined)
+        }
 
-    }, [deferredInputValue])
+        isUpdating.current = false
+    }, [deferredInputValue, autoFilter])
 
     // Called when an option is selected either by clicking on it or entering a valid value
     const handleUpdateValue = React.useCallback((value: AutocompleteOption | undefined) => {
@@ -258,8 +254,6 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
             commandInputRef.current?.focus()
         }
     }, [open])
-
-    //-----------------------------------------------------------------------------------------------
 
     // Conditionally update the options type value ref when it is valid
     const _updateOptionsTypeValueRef = React.useCallback((value: AutocompleteOption | undefined) => {

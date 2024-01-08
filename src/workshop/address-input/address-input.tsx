@@ -66,6 +66,7 @@ export const AddressInput = React.forwardRef<HTMLInputElement, AddressInputProps
         placeholder = "Enter an address",
         emptyMessage = "No results",
         onTextChange,
+        type = "options",
         ...rest
     }, basicFieldProps] = extractBasicFieldProps<AddressInputProps>(props, React.useId())
 
@@ -98,7 +99,7 @@ export const AddressInput = React.forwardRef<HTMLInputElement, AddressInputProps
             emptyMessage={emptyMessage}
             autoFilter={false}
             isFetching={isFetching}
-            type="options"
+            type={type}
             {...basicFieldProps}
             {...rest}
         />

@@ -1,3 +1,4 @@
+import { Autocomplete } from "@/workshop/autocomplete"
 import { useArgs } from "@storybook/preview-api"
 import { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
@@ -32,6 +33,7 @@ const meta = {
         )
     },
     args: {
+        label: "Address",
         apiKey: process.env.STORYBOOK_GOOGLE_MAPS_API_KEY,
     },
 } satisfies Meta<typeof AddressInput>
@@ -45,8 +47,38 @@ export const Basic: Story = {
 }
 
 
-export const DefaultValue: Story = {
+export const ControlledDefaultValue: Story = {
     args: {
         value: { value: null, label: "Abidjan, Côte d'Ivoire" },
+    },
+}
+
+export const Uncontrolled: Story = {
+    args: {
+        value: undefined,
+        defaultValue: { value: null, label: "Abidjan, Côte d'Ivoire" },
+        required: true,
+        name: "address",
+    },
+    render: function (args) {
+        return (
+            <form
+                action="https://run.mocky.io/v3/7bbf8cd5-9e99-46fb-bfd1-725b7bab59fe"
+                method="get"
+                onSubmit={e => {
+                    e.preventDefault()
+                    const data = new FormData(e.currentTarget)
+                    for (let [key, value] of data.entries()) {
+                        console.log(key, value)
+                    }
+                }}
+                className="min-[900px]:w-[800px] w-full"
+            >
+                <AddressInput
+                    {...args}
+                />
+                <button type="submit">Submit</button>
+            </form>
+        )
     },
 }
