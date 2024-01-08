@@ -10,6 +10,7 @@ export const schemaPresets = {
     select: z.string().min(1),
     checkboxGroup: z.array(z.string()),
     multiSelect: z.array(z.string()),
+    autocomplete: z.object({ label: z.string(), value: z.string().nullable() }),
     time: z.object({ hour: z.number().min(0).max(23), minute: z.number().min(0).max(59) }),
     phone: z.string().min(10, "Invalid phone number"),
     price: z.number().min(0),

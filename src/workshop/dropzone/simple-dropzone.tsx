@@ -137,7 +137,7 @@ export interface SimpleDropzoneProps
     dropzoneText?: string
 }
 
-export const SimpleDropzone: React.FC<SimpleDropzoneProps> = React.forwardRef<HTMLInputElement, SimpleDropzoneProps>((props, ref) => {
+export const SimpleDropzone = React.forwardRef<HTMLInputElement, SimpleDropzoneProps>((props, ref) => {
 
     const [{
         children,
@@ -209,7 +209,7 @@ export const SimpleDropzone: React.FC<SimpleDropzoneProps> = React.forwardRef<HT
     })
 
     return (
-        <BasicField{...basicFieldProps}>
+        <BasicField {...basicFieldProps}>
             <div
                 className={cn(
                     SimpleDropzoneAnatomy.root(),

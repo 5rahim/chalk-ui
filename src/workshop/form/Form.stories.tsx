@@ -8,8 +8,10 @@ const testSchema = defineSchema(({ z, presets }) => z.object({
     name: z.string().min(2),
     birthday: presets.datePicker,
     booking: presets.dateRangePicker,
+    phone: presets.phone,
     country: presets.select,
     countries: presets.multiSelect.min(2),
+    day: presets.autocomplete,
 }))
 
 const meta = {
@@ -26,11 +28,12 @@ const meta = {
     },
     render: (args) => {
         return (
-            <div className="sm:w-[400px] w-full relative">
+            <div className="sm:w-[450px] w-full relative p-4">
                 <Form {...args}>
                     <Field.Text label="Name" name="name" />
                     <Field.DatePicker label="Birthday" name="birthday" />
                     <Field.DateRangePicker label="Booking" name="booking" />
+                    <Field.Phone label="Phone number" name="phone" />
                     <Field.NativeSelect
                         label="Country" name="country" placeholder="Select a country..." options={[
                         { value: "us", label: "United States" },
@@ -56,6 +59,12 @@ const meta = {
                         { value: "ca", textValue: "Canada", label: "Canada" },
                         { value: "jp", textValue: "Japan", label: "Japan" },
                         { value: "br", textValue: "Brazil", label: "Brazil" },
+                    ]}
+                    />
+                    <Field.Autocomplete
+                        label="Day" name="day" placeholder="Select a day" options={[
+                        { value: "mo", label: "Monday" },
+                        { value: "tu", label: "Tuesday" },
                     ]}
                     />
                     <Field.Submit role="create" />
@@ -85,12 +94,14 @@ export const DefaultValues: Story = {
         defaultValues: {
             name: "John Doe",
             birthday: new Date(),
+            phone: "(240) 465 9999",
             booking: {
                 from: new Date(),
                 to: addDays(new Date(), 7),
             },
             country: "ci",
             countries: ["jp", "ci"],
+            day: { value: null, label: "Monday" },
         },
     },
 }

@@ -2,13 +2,16 @@
 
 import React, { forwardRef, useMemo } from "react"
 import { Controller, FormState, get, useController, useFormContext } from "react-hook-form"
+import { Autocomplete, AutocompleteProps } from "../autocomplete"
 import { BasicFieldOptions } from "../basic-field"
 import { Checkbox, CheckboxGroup, CheckboxGroupProps, CheckboxProps } from "../checkbox"
 import { Combobox, ComboboxProps } from "../combobox"
 import { CurrencyInput, CurrencyInputProps } from "../currency-input"
 import { DatePicker, DatePickerProps, DateRangePicker, DateRangePickerProps } from "../date-picker"
+import { SimpleDropzone, SimpleDropzoneProps } from "../dropzone"
 import { NativeSelect, NativeSelectProps } from "../native-select"
 import { NumberInput, NumberInputProps } from "../number-input"
+import { PhoneInput, PhoneInputProps } from "../phone-input"
 import { RadioGroup, RadioGroupProps } from "../radio-group"
 import { Select, SelectProps } from "../select"
 import { Switch, SwitchProps } from "../switch"
@@ -130,17 +133,7 @@ const TextareaField = React.memo(withControlledInput(forwardRef<HTMLTextAreaElem
     },
 )))
 
-type DatePickerFieldProps = Omit<DatePickerProps, "value"> & { value?: Date }
-
-/**
- * @zod z.date()
- * @example
- * <Field.DatePicker
- *    name="name"
- *    label="Appointment date"
- * />
- */
-const DatePickerField = React.memo(withControlledInput(forwardRef<HTMLButtonElement, FieldComponent<DatePickerFieldProps>>((
+const DatePickerField = React.memo(withControlledInput(forwardRef<HTMLButtonElement, FieldComponent<DatePickerProps>>((
     { onChange, ...props }, ref) => {
 
     return <DatePicker
@@ -150,16 +143,6 @@ const DatePickerField = React.memo(withControlledInput(forwardRef<HTMLButtonElem
     />
 })))
 
-
-/**
- * @zod z.object({ from: z.custom<Date>(), to: z.custom<Date>() })
- * @example
- * <Field.DateRangePicker
- *    name="name"
- *    label="Appointment date"
- *    leftAddon="Date range"
- * />
- */
 const DateRangePickerField = React.memo(withControlledInput(forwardRef<HTMLButtonElement, FieldComponent<DateRangePickerProps>>((
     { onChange, ...props }, ref) => {
 
@@ -210,10 +193,7 @@ const NumberField = React.memo(withControlledInput(forwardRef<HTMLInputElement, 
     },
 )))
 
-/**
- * @example
- * <Field.Combobox options={[]} />
- */
+
 const ComboboxField = React.memo(withControlledInput(forwardRef<HTMLButtonElement, FieldComponent<ComboboxProps>>(
     ({ onChange, ...props }, ref) => {
         return <Combobox
@@ -224,44 +204,28 @@ const ComboboxField = React.memo(withControlledInput(forwardRef<HTMLButtonElemen
     },
 )))
 
-/**
- * @example
- * <Field.Switch />
- */
 const SwitchField = React.memo(withControlledInput(forwardRef<HTMLButtonElement, FieldComponent<SwitchProps>>(
     ({ onChange, ...props }, ref) => {
-        const context = useFormContext()
         return <Switch
             {...props}
-            defaultChecked={get(context.formState.defaultValues, props.name)} // Cannot be overridden
             onValueChange={onChange}
             ref={ref}
         />
     },
 )))
 
-/**
- * @example
- * <Field.Checkbox />
- */
 const CheckboxField = React.memo(withControlledInput(forwardRef<HTMLButtonElement, FieldComponent<CheckboxProps>>(
-    (props, ref) => {
-        const context = useFormContext()
+    ({ onChange, ...props }, ref) => {
         return <Checkbox
             {...props}
-            defaultChecked={get(context.formState.defaultValues, props.name)} // Cannot be overridden
+            onValueChange={onChange}
             ref={ref}
         />
     },
 )))
 
-/**
- * @zod presets.checkboxGroup | z.array(z.string())
- * @example
- * <Field.CheckboxGroup options={[{ value: '', label: '' }]} />
- */
-const CheckboxGroupField = React.memo(withControlledInput(forwardRef<HTMLDivElement, FieldComponent<CheckboxGroupProps>>(
-    (props, ref) => {
+const CheckboxGroupField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<CheckboxGroupProps>>(
+    ({ onChange, ...props }, ref) => {
         const context = useFormContext()
         const controller = useController({ name: props.name })
 
@@ -273,17 +237,13 @@ const CheckboxGroupField = React.memo(withControlledInput(forwardRef<HTMLDivElem
 
         return <CheckboxGroup
             {...props}
-            defaultValue={get(context.formState.defaultValues, props.name) ?? []} // Cannot be overridden
+            onValueChange={onChange}
             ref={ref}
         />
     },
 )))
 
-/**
- * @zod presets.radioGroup | z.string()
- * @example
- * <Field.RadioGroup options={[{ value: '', label: '' }]} />
- */
+
 const RadioGroupField = React.memo(withControlledInput(forwardRef<HTMLButtonElement, FieldComponent<RadioGroupProps>>(
     (props, ref) => {
         const context = useFormContext()
@@ -305,15 +265,41 @@ const RadioGroupField = React.memo(withControlledInput(forwardRef<HTMLButtonElem
 )))
 
 
-/**
- * @zod presets.price | z.number()
- * @example
- * <Field.Currency name="price" />
- */
 const CurrencyInputField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<CurrencyInputProps>>(
-    (props, ref) => {
+    ({ onChange, ...props }, ref) => {
         return <CurrencyInput
             {...props}
+            onValueChange={onChange}
+            ref={ref}
+        />
+    },
+)))
+
+const PhoneInputField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<PhoneInputProps>>(
+    ({ onChange, ...props }, ref) => {
+        return <PhoneInput
+            {...props}
+            onValueChange={onChange}
+            ref={ref}
+        />
+    },
+)))
+
+const AutocompleteField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<AutocompleteProps>>(
+    ({ onChange, ...props }, ref) => {
+        return <Autocomplete
+            {...props}
+            onValueChange={onChange}
+            ref={ref}
+        />
+    },
+)))
+
+const SimpleDropzoneField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<SimpleDropzoneProps>>(
+    ({ onChange, ...props }, ref) => {
+        return <SimpleDropzone
+            {...props}
+            onValueChange={onChange}
             ref={ref}
         />
     },
@@ -333,6 +319,9 @@ export const Field = createPolymorphicComponent<"div", FieldProps, {
     DatePicker: typeof DatePickerField
     DateRangePicker: typeof DateRangePickerField
     Combobox: typeof ComboboxField
+    Phone: typeof PhoneInputField
+    Autocomplete: typeof AutocompleteField
+    SimpleDropzone: typeof SimpleDropzoneField
     Submit: typeof SubmitField
 }>({
     Text: TextInputField,
@@ -348,6 +337,9 @@ export const Field = createPolymorphicComponent<"div", FieldProps, {
     DatePicker: DatePickerField,
     DateRangePicker: DateRangePickerField,
     Combobox: ComboboxField,
+    Phone: PhoneInputField,
+    Autocomplete: AutocompleteField,
+    SimpleDropzone: SimpleDropzoneField,
     Submit: SubmitField,
 })
 

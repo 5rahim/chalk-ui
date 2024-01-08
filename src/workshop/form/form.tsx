@@ -74,7 +74,7 @@ export interface FormProps<Schema extends z.ZodObject<z.ZodRawShape> = ZodObject
 export const Form = <Schema extends z.ZodObject<z.ZodRawShape>>(props: FormProps<Schema>) => {
 
     const {
-        mode = "onTouched",
+        mode = "onSubmit",
         resolver,
         reValidateMode,
         shouldFocusError,
@@ -90,7 +90,7 @@ export const Form = <Schema extends z.ZodObject<z.ZodRawShape>>(props: FormProps
         formRef,
         children,
         mRef,
-
+        /**/
         stackClassName,
         ...rest
     } = props

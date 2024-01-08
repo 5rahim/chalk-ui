@@ -128,13 +128,19 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
     const isFirst = React.useRef(true)
 
     const _defaults = React.useMemo(() => {
-        return {
-            phoneNumber: controlledValue ?? defaultValue,
-            parsedNumber: parsePhoneNumber((controlledValue ?? defaultValue) || "", defaultCountry),
+        try {
+            return {
+                phoneNumber: controlledValue ?? defaultValue,
+                parsedNumber: parsePhoneNumber((controlledValue ?? defaultValue) || "", defaultCountry),
+            }
+        }
+        catch (e) {
+            return {
+                phoneNumber: controlledValue ?? defaultValue,
+                parsedNumber: undefined,
+            }
         }
     }, [])
-
-    console.log(_defaults.parsedNumber)
 
     const [_value, _setValue] = React.useState<E164Number | undefined>(_defaults.phoneNumber)
 
@@ -164,13 +170,13 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                 <PhoneInputPrimitive
                     ref={ref as any}
                     id={basicFieldProps.id}
-                    name={basicFieldProps.name}
+                    // name={basicFieldProps.name}
                     className={cn(
                         PhoneInputAnatomy.container(),
                         containerClass,
                     )}
                     countries={countries}
-                    defaultCountry={defaultCountry || _defaults.parsedNumber.country}
+                    defaultCountry={defaultCountry || _defaults.parsedNumber?.country}
                     onCountryChange={handleOnCountryChange}
                     addInternationalOption={false}
                     international={false}
@@ -245,6 +251,16 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
                     )}
                     value={_value}
                     onChange={handleOnValueChange}
+                />
+
+                <input
+                    type="text"
+                    value={_value || ""}
+                    name={basicFieldProps.name}
+                    aria-hidden="true"
+                    hidden
+                    tabIndex={-1}
+                    onChange={() => {}}
                 />
 
                 <InputAddon {...rightAddonProps} />
