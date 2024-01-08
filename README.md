@@ -23,7 +23,11 @@ keeping a consistent design language and API.
 
 ## Documentation
 
-The documentation is available at [chalk.rahim.app](https://chalk.rahim.app/).
+`Work In Progress`
+
+[//]: # (The documentation is available at [chalk.rahim.app]&#40;https://chalk.rahim.app/&#41;.)
+
+The documentation will be available soon.
 
 ## Credits
 
