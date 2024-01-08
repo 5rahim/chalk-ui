@@ -3,7 +3,6 @@ import { addDays } from "date-fns"
 import { Field, Form } from "."
 import { defineSchema } from "../form/define-schema"
 
-
 const testSchema = defineSchema(({ z, presets }) => z.object({
     name: z.string().min(2),
     birthday: presets.datePicker,
@@ -36,6 +35,7 @@ const meta = {
                     <Field.Text label="Name" name="name" />
                     <Field.DatePicker label="Birthday" name="birthday" />
                     <Field.DateRangePicker label="Booking" name="booking" />
+                    <Field.Address apiKey={process.env.STORYBOOK_GOOGLE_MAPS_API_KEY || ""} label="Address" name="address" />
                     <Field.Phone label="Phone number" name="phone" />
                     <Field.Number label="Number" name="number" />
                     <Field.Currency label="Price" name="price" intlConfig={{ locale: "US", currency: "USD" }} />
@@ -121,6 +121,7 @@ export const DefaultValues: Story = {
             name: "John Doe",
             birthday: new Date(),
             phone: "+1 (240) 999 9999",
+            address: { value: null, label: "Abidjan, Côte d'Ivoire" },
             number: 50,
             price: "350.99",
             booking: {

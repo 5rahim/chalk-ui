@@ -2,6 +2,7 @@
 
 import React, { forwardRef, useMemo } from "react"
 import { Controller, FormState, get, useController, useFormContext } from "react-hook-form"
+import { AddressInput, AddressInputProps } from "../address-input"
 import { Autocomplete, AutocompleteProps } from "../autocomplete"
 import { BasicFieldOptions } from "../basic-field"
 import { Checkbox, CheckboxGroup, CheckboxGroupProps, CheckboxProps } from "../checkbox"
@@ -278,6 +279,16 @@ const AutocompleteField = React.memo(withControlledInput(forwardRef<HTMLInputEle
     },
 )))
 
+const AddressInputField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<AddressInputProps>>(
+    ({ onChange, ...props }, ref) => {
+        return <AddressInput
+            {...props}
+            onValueChange={onChange}
+            ref={ref}
+        />
+    },
+)))
+
 const SimpleDropzoneField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<SimpleDropzoneProps>>(
     ({ onChange, ...props }, ref) => {
 
@@ -312,6 +323,7 @@ export const Field = createPolymorphicComponent<"div", FieldProps, {
     Combobox: typeof ComboboxField
     Phone: typeof PhoneInputField
     Autocomplete: typeof AutocompleteField
+    Address: typeof AddressInputField
     SimpleDropzone: typeof SimpleDropzoneField
     Submit: typeof SubmitField
 }>({
@@ -330,6 +342,7 @@ export const Field = createPolymorphicComponent<"div", FieldProps, {
     Combobox: ComboboxField,
     Phone: PhoneInputField,
     Autocomplete: AutocompleteField,
+    Address: AddressInputField,
     SimpleDropzone: SimpleDropzoneField,
     Submit: SubmitField,
 })
