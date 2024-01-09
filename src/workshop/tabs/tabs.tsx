@@ -3,7 +3,6 @@
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 import { cva } from "class-variance-authority"
 import * as React from "react"
-import { createContext, useContext } from "react"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
@@ -38,7 +37,7 @@ export const TabsAnatomy = defineStyleAnatomy({
  * Tabs
  * -----------------------------------------------------------------------------------------------*/
 
-const __TabsAnatomyContext = createContext<Omit<ComponentAnatomy<typeof TabsAnatomy>, "rootClass">>({})
+const __TabsAnatomyContext = React.createContext<Omit<ComponentAnatomy<typeof TabsAnatomy>, "rootClass">>({})
 
 export type TabsProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> & Omit<ComponentAnatomy<typeof TabsAnatomy>, "rootClass">
 
@@ -68,6 +67,7 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>((props, ref) => 
     )
 })
 
+Tabs.displayName = "Tabs"
 
 /* -------------------------------------------------------------------------------------------------
  * TabsList
@@ -78,7 +78,7 @@ export type TabsListProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.
 export const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>((props, ref) => {
     const { className, ...rest } = props
 
-    const { listClass } = useContext(__TabsAnatomyContext)
+    const { listClass } = React.useContext(__TabsAnatomyContext)
 
     return (
         <TabsPrimitive.List
@@ -101,7 +101,7 @@ export type TabsTriggerProps = React.ComponentPropsWithoutRef<typeof TabsPrimiti
 export const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>((props, ref) => {
     const { className, ...rest } = props
 
-    const { triggerClass } = useContext(__TabsAnatomyContext)
+    const { triggerClass } = React.useContext(__TabsAnatomyContext)
 
     return (
         <TabsPrimitive.Trigger
@@ -123,7 +123,7 @@ export type TabsContentProps = React.ComponentPropsWithoutRef<typeof TabsPrimiti
 export const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>((props, ref) => {
     const { className, ...rest } = props
 
-    const { contentClass } = useContext(__TabsAnatomyContext)
+    const { contentClass } = React.useContext(__TabsAnatomyContext)
 
     return (
         <TabsPrimitive.Content

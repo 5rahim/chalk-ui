@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority"
 import Link from "next/link"
-import React from "react"
+import * as React from "react"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 

@@ -3,7 +3,6 @@
 import { cva } from "class-variance-authority"
 import { Command as CommandPrimitive } from "cmdk"
 import * as React from "react"
-import { createContext, useContext } from "react"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { InputAnatomy } from "../input"
@@ -63,7 +62,7 @@ export const CommandAnatomy = defineStyleAnatomy({
  * Command
  * -----------------------------------------------------------------------------------------------*/
 
-const __CommandAnatomyContext = createContext<CommandAnatomyProps>({})
+const __CommandAnatomyContext = React.createContext<CommandAnatomyProps>({})
 
 type CommandAnatomyProps = Omit<ComponentAnatomy<typeof CommandAnatomy>, "rootClass">
 
@@ -129,7 +128,7 @@ export const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps
     const {
         inputContainerClass: _inputContainerClass,
         inputIconClass: _inputIconClass,
-    } = useContext(__CommandAnatomyContext)
+    } = React.useContext(__CommandAnatomyContext)
 
     return (
         <div className={cn(CommandAnatomy.inputContainer(), _inputContainerClass, inputContainerClass)} cmdk-input-wrapper="">
@@ -172,7 +171,7 @@ export type CommandListProps =
 export const CommandList = React.forwardRef<HTMLDivElement, CommandListProps>((props, ref) => {
     const { className, ...rest } = props
 
-    const { listClass } = useContext(__CommandAnatomyContext)
+    const { listClass } = React.useContext(__CommandAnatomyContext)
 
     return (
         <CommandPrimitive.List
@@ -194,7 +193,7 @@ export type CommandEmptyProps =
 export const CommandEmpty = React.forwardRef<HTMLDivElement, CommandEmptyProps>((props, ref) => {
     const { className, ...rest } = props
 
-    const { emptyClass } = useContext(__CommandAnatomyContext)
+    const { emptyClass } = React.useContext(__CommandAnatomyContext)
 
     return (
         <CommandPrimitive.Empty
@@ -216,7 +215,7 @@ export type CommandGroupProps =
 export const CommandGroup = React.forwardRef<HTMLDivElement, CommandGroupProps>((props, ref) => {
     const { className, ...rest } = props
 
-    const { groupClass } = useContext(__CommandAnatomyContext)
+    const { groupClass } = React.useContext(__CommandAnatomyContext)
 
     return (
         <CommandPrimitive.Group
@@ -238,7 +237,7 @@ export type CommandSeparatorProps =
 export const CommandSeparator = React.forwardRef<HTMLDivElement, CommandSeparatorProps>((props, ref) => {
     const { className, ...rest } = props
 
-    const { separatorClass } = useContext(__CommandAnatomyContext)
+    const { separatorClass } = React.useContext(__CommandAnatomyContext)
 
     return (
         <CommandPrimitive.Separator
@@ -265,7 +264,7 @@ export const CommandItem = React.forwardRef<HTMLDivElement, CommandItemProps>((p
     const {
         itemClass,
         itemIconContainerClass: _itemIconContainerClass,
-    } = useContext(__CommandAnatomyContext)
+    } = React.useContext(__CommandAnatomyContext)
 
     return (
         <CommandPrimitive.Item
@@ -293,7 +292,7 @@ export type CommandShortcutProps = React.ComponentPropsWithoutRef<"span">
 export const CommandShortcut = React.forwardRef<HTMLSpanElement, CommandShortcutProps>((props, ref) => {
     const { className, ...rest } = props
 
-    const { shortcutClass } = useContext(__CommandAnatomyContext)
+    const { shortcutClass } = React.useContext(__CommandAnatomyContext)
 
     return (
         <span

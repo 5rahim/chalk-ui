@@ -3,7 +3,6 @@
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { cva } from "class-variance-authority"
 import * as React from "react"
-import { createContext, useContext } from "react"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
@@ -28,7 +27,7 @@ export const DisclosureAnatomy = defineStyleAnatomy({
  * Disclosure
  * -----------------------------------------------------------------------------------------------*/
 
-const __DisclosureAnatomyContext = createContext<ComponentAnatomy<typeof DisclosureAnatomy>>({})
+const __DisclosureAnatomyContext = React.createContext<ComponentAnatomy<typeof DisclosureAnatomy>>({})
 
 export type DisclosureProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> & ComponentAnatomy<typeof DisclosureAnatomy>
 
@@ -68,7 +67,7 @@ export const DisclosureItem = React.forwardRef<HTMLDivElement, DisclosureItemPro
 
     const { className, ...rest } = props
 
-    const { itemClass } = useContext(__DisclosureAnatomyContext)
+    const { itemClass } = React.useContext(__DisclosureAnatomyContext)
 
     return (
         <AccordionPrimitive.Item
@@ -124,7 +123,7 @@ export const DisclosureContent = React.forwardRef<HTMLDivElement, DisclosureCont
     const {
         contentContainerClass: _contentContainerClass,
         contentClass: _contentClass,
-    } = useContext(__DisclosureAnatomyContext)
+    } = React.useContext(__DisclosureAnatomyContext)
 
     return (
         <AccordionPrimitive.Content

@@ -3,7 +3,6 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { cva } from "class-variance-authority"
 import * as React from "react"
-import { createContext } from "react"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
@@ -61,7 +60,7 @@ export const DropdownMenuAnatomy = defineStyleAnatomy({
  * DropdownMenu
  * -----------------------------------------------------------------------------------------------*/
 
-const __DropdownMenuAnatomyContext = createContext<Omit<ComponentAnatomy<typeof DropdownMenuAnatomy>, "rootClass">>({})
+const __DropdownMenuAnatomyContext = React.createContext<Omit<ComponentAnatomy<typeof DropdownMenuAnatomy>, "rootClass">>({})
 
 export type DropdownMenuProps =
     Omit<ComponentAnatomy<typeof DropdownMenuAnatomy>, "rootClass"> &

@@ -3,7 +3,6 @@
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { cva } from "class-variance-authority"
 import * as React from "react"
-import { createContext, useContext } from "react"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
@@ -42,7 +41,7 @@ export const AccordionAnatomy = defineStyleAnatomy({
  * Accordion
  * -----------------------------------------------------------------------------------------------*/
 
-const __AccordionAnatomyContext = createContext<ComponentAnatomy<typeof AccordionAnatomy>>({})
+const __AccordionAnatomyContext = React.createContext<ComponentAnatomy<typeof AccordionAnatomy>>({})
 
 export type AccordionProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> & ComponentAnatomy<typeof AccordionAnatomy>
 
@@ -88,7 +87,7 @@ export const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps
 
     const { className, ...rest } = props
 
-    const { itemClass } = useContext(__AccordionAnatomyContext)
+    const { itemClass } = React.useContext(__AccordionAnatomyContext)
 
     return (
         <AccordionPrimitive.Item
@@ -121,7 +120,7 @@ export const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTri
         headerClass: _headerClass,
         triggerClass: _triggerClass,
         triggerIconClass: _triggerIconClass,
-    } = useContext(__AccordionAnatomyContext)
+    } = React.useContext(__AccordionAnatomyContext)
 
     return (
         <AccordionPrimitive.Header className={cn(AccordionAnatomy.header(), _headerClass, headerClass)}>
@@ -174,7 +173,7 @@ export const AccordionContent = React.forwardRef<HTMLDivElement, AccordionConten
     const {
         contentContainerClass: _contentContainerClass,
         contentClass: _contentClass,
-    } = useContext(__AccordionAnatomyContext)
+    } = React.useContext(__AccordionAnatomyContext)
 
     return (
         <AccordionPrimitive.Content
