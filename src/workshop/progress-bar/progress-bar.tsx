@@ -75,4 +75,4 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>((p
         </ProgressBarPrimitive.Root>
     )
 })
-ProgressBar.displayName = ProgressBarPrimitive.Root.displayName
+ProgressBar.displayName = "ProgressBar"
