@@ -32,8 +32,8 @@
     - [x] DropdownMenu
     - [x] Tooltip
     - [x] Toaster
+    - [x] Skeleton
     - HoverCard
-    - Skeleton
 - Navigation
     - [x] Breadcrumbs
     - [x] NavigationMenu
