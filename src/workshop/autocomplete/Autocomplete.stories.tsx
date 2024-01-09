@@ -71,6 +71,12 @@ export const Readonly: Story = {
     },
 }
 
+export const IsFetching: Story = {
+    args: {
+        isFetching: true,
+    },
+}
+
 export const ShowEmptyMessage: Story = {
     args: {
         emptyMessage: "No country found",

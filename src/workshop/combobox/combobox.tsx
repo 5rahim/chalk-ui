@@ -69,7 +69,7 @@ type ComboboxButtonProps = Omit<React.ComponentPropsWithRef<"button">, "size" | 
 export interface ComboboxProps extends ComboboxButtonProps,
     BasicFieldOptions,
     InputStyling,
-    Omit<ComponentAnatomy<typeof ComboboxAnatomy>, "rootClass"> {
+    ComponentAnatomy<typeof ComboboxAnatomy> {
     /**
      * The selected values
      */

@@ -119,7 +119,7 @@ export const CalendarAnatomy = defineStyleAnatomy({
 
 export type CalendarProps =
     React.ComponentProps<typeof DayPicker> &
-    Omit<ComponentAnatomy<typeof CalendarAnatomy>, "rootClass">
+    ComponentAnatomy<typeof CalendarAnatomy>
 
 export function Calendar(props: CalendarProps) {
 

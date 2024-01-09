@@ -69,7 +69,6 @@ export const DangerZone = React.forwardRef<HTMLDivElement, DangerZoneProps>((pro
         showLoadingOverlayOnDelete = true,
         titleClass,
         iconClass,
-        rootClass,
         dialogBodyClass,
         dialogTitleClass,
         dialogActionClass,

@@ -37,9 +37,9 @@ export const TabsAnatomy = defineStyleAnatomy({
  * Tabs
  * -----------------------------------------------------------------------------------------------*/
 
-const __TabsAnatomyContext = React.createContext<Omit<ComponentAnatomy<typeof TabsAnatomy>, "rootClass">>({})
+const __TabsAnatomyContext = React.createContext<ComponentAnatomy<typeof TabsAnatomy>>({})
 
-export type TabsProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> & Omit<ComponentAnatomy<typeof TabsAnatomy>, "rootClass">
+export type TabsProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> & ComponentAnatomy<typeof TabsAnatomy>
 
 export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>((props, ref) => {
     const {

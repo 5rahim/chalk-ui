@@ -82,7 +82,7 @@ export const SimpleDropzoneAnatomy = defineStyleAnatomy({
 export interface SimpleDropzoneProps
     extends Omit<React.ComponentPropsWithRef<"input">,
         "size" | "accept" | "type" | "onError" | "onDrop">,
-        Omit<ComponentAnatomy<typeof SimpleDropzoneAnatomy>, "rootClass">,
+        ComponentAnatomy<typeof SimpleDropzoneAnatomy>,
         BasicFieldOptions {
     /**
      * Callback fired when files are selected

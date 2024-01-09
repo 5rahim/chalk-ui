@@ -34,14 +34,13 @@
     - Toast
     - HoverCard
     - Skeleton
-    - ProgressBar
 - Navigation
     - [x] Breadcrumbs
     - [x] NavigationMenu
     - [x] VerticalMenu
     - [x] StaticTabs
     - [x] Tabs
-    - Pagination
+    - [x] Pagination
     - Navbar
 - Data Display
     - DataGrid
@@ -52,18 +51,19 @@
     - [x] Collapsible
     - [x] Badge
     - [x] Tag
+    - [x] Alert
+    - [x] BarChart
+    - [x] DonutChart
+    - [x] LineChart
+    - [x] DonutChart
+    - [x] ProgressBar
     - Card
     - Chip
     - Divider
     - Icon
     - Image
     - Table
-    - Alert
     - Banner
-    - [x] BarChart
-    - [x] DonutChart
-    - [x] LineChart
-    - [x] DonutChart
     - Stats
     - Timeline
     - Slider

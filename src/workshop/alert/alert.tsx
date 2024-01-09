@@ -75,7 +75,7 @@ export const AlertAnatomy = defineStyleAnatomy({
 
 export interface AlertProps extends React.ComponentPropsWithRef<"div">,
     VariantProps<typeof AlertAnatomy.root>,
-    Omit<ComponentAnatomy<typeof AlertAnatomy>, "rootClass"> {
+    ComponentAnatomy<typeof AlertAnatomy> {
     title?: string,
     description?: React.ReactNode
     /**

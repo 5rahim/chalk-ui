@@ -46,7 +46,7 @@ export const ScrollAreaAnatomy = defineStyleAnatomy({
 
 export type ScrollAreaProps =
     React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
-    & Omit<ComponentAnatomy<typeof ScrollAreaAnatomy>, "rootClass">
+    & ComponentAnatomy<typeof ScrollAreaAnatomy>
 
 export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>((props, ref) => {
     const {

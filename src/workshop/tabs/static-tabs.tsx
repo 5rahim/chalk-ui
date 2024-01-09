@@ -32,7 +32,7 @@ export const StaticTabsAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface StaticTabsProps extends React.ComponentPropsWithRef<"nav">,
-    Omit<ComponentAnatomy<typeof StaticTabsAnatomy>, "rootClass"> {
+    ComponentAnatomy<typeof StaticTabsAnatomy> {
     items: {
         name: string,
         href: string | null | undefined,

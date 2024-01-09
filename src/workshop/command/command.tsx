@@ -64,7 +64,7 @@ export const CommandAnatomy = defineStyleAnatomy({
 
 const __CommandAnatomyContext = React.createContext<CommandAnatomyProps>({})
 
-type CommandAnatomyProps = Omit<ComponentAnatomy<typeof CommandAnatomy>, "rootClass">
+type CommandAnatomyProps = ComponentAnatomy<typeof CommandAnatomy>
 
 export type CommandProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive> & CommandAnatomyProps
 

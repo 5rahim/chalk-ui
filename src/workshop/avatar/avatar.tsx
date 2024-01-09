@@ -50,7 +50,7 @@ export const AvatarAnatomy = defineStyleAnatomy({
 export type AvatarProps =
     React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> &
     React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image> &
-    Omit<ComponentAnatomy<typeof AvatarAnatomy>, "rootClass"> &
+    ComponentAnatomy<typeof AvatarAnatomy> &
     VariantProps<typeof AvatarAnatomy.root> & {
     fallback?: React.ReactNode
     imageRef?: React.Ref<HTMLImageElement>

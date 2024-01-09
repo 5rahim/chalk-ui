@@ -34,7 +34,7 @@ export const DateRangePickerAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface DateRangePickerProps extends Omit<React.ComponentPropsWithRef<"button">, "size" | "value" | "defaultValue">,
-    Omit<ComponentAnatomy<typeof DateRangePickerAnatomy>, "rootClass">,
+    ComponentAnatomy<typeof DateRangePickerAnatomy>,
     InputStyling,
     BasicFieldOptions {
     /**

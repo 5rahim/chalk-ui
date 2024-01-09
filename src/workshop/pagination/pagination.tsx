@@ -32,10 +32,10 @@ export const PaginationAnatomy = defineStyleAnatomy({
  * Pagination
  * -----------------------------------------------------------------------------------------------*/
 
-const __PaginationAnatomyContext = React.createContext<Omit<ComponentAnatomy<typeof PaginationAnatomy>, "rootClass">>({})
+const __PaginationAnatomyContext = React.createContext<ComponentAnatomy<typeof PaginationAnatomy>>({})
 
 export interface PaginationProps extends React.ComponentPropsWithRef<"ul">,
-    Omit<ComponentAnatomy<typeof PaginationAnatomy>, "rootClass"> {
+    ComponentAnatomy<typeof PaginationAnatomy> {
     children?: React.ReactNode
 }
 

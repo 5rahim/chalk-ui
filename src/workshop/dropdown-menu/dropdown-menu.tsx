@@ -60,10 +60,10 @@ export const DropdownMenuAnatomy = defineStyleAnatomy({
  * DropdownMenu
  * -----------------------------------------------------------------------------------------------*/
 
-const __DropdownMenuAnatomyContext = React.createContext<Omit<ComponentAnatomy<typeof DropdownMenuAnatomy>, "rootClass">>({})
+const __DropdownMenuAnatomyContext = React.createContext<ComponentAnatomy<typeof DropdownMenuAnatomy>>({})
 
 export type DropdownMenuProps =
-    Omit<ComponentAnatomy<typeof DropdownMenuAnatomy>, "rootClass"> &
+    ComponentAnatomy<typeof DropdownMenuAnatomy> &
     Pick<React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Root>, "defaultOpen" | "open" | "onOpenChange" | "dir"> &
     React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content> & {
     /**

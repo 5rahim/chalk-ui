@@ -66,7 +66,7 @@ export const SwitchAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface SwitchProps extends BasicFieldOptions,
-    Omit<ComponentAnatomy<typeof SwitchAnatomy>, "rootClass">,
+    ComponentAnatomy<typeof SwitchAnatomy>,
     VariantProps<typeof SwitchAnatomy.root>,
     Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>,
         "value" | "checked" | "disabled" | "required" | "defaultValue" | "defaultChecked" | "onCheckedChange"> {

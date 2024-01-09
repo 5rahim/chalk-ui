@@ -65,7 +65,7 @@ export const BadgeAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export interface BadgeProps extends React.ComponentPropsWithRef<"span">, VariantProps<typeof BadgeAnatomy.root>,
-    Omit<ComponentAnatomy<typeof BadgeAnatomy>, "rootClass"> {
+    ComponentAnatomy<typeof BadgeAnatomy> {
     tag?: boolean,
     isClosable?: boolean,
     onClose?: () => void,

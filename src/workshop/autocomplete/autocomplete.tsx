@@ -49,7 +49,7 @@ export type AutocompleteOption = { value: string | null, label: string }
 export interface AutocompleteProps extends AutocompleteInputProps,
     BasicFieldOptions,
     InputStyling,
-    Omit<ComponentAnatomy<typeof AutocompleteAnatomy>, "rootClass"> {
+    ComponentAnatomy<typeof AutocompleteAnatomy> {
     /**
      * The selected option
      */

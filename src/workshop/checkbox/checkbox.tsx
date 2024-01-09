@@ -75,7 +75,7 @@ export const CheckboxAnatomy = defineStyleAnatomy({
 
 export interface CheckboxProps extends BasicFieldOptions,
     VariantProps<typeof CheckboxAnatomy.label>,
-    Omit<ComponentAnatomy<typeof CheckboxAnatomy>, "rootClass">,
+    ComponentAnatomy<typeof CheckboxAnatomy>,
     Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, "value" | "checked" | "disabled" | "required" | "onCheckedChange" | "defaultValue"> {
     /**
      * If true, no error message will be shown when the field is invalid.

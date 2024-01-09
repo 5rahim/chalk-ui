@@ -105,7 +105,7 @@ export type VerticalMenuItem = {
 }
 
 export interface VerticalMenuProps extends React.ComponentPropsWithRef<"div">,
-    Omit<ComponentAnatomy<typeof VerticalMenuAnatomy>, "rootClass">,
+    ComponentAnatomy<typeof VerticalMenuAnatomy>,
     VariantProps<typeof VerticalMenuAnatomy.item> {
     /**
      * If true, the nav will be rendered as a line of icons.
