@@ -33,7 +33,7 @@
     - [x] Tooltip
     - [x] Toaster
     - [x] Skeleton
-    - HoverCard
+    - [x] HoverCard
 - Navigation
     - [x] Breadcrumbs
     - [x] NavigationMenu
@@ -60,11 +60,7 @@
     - [x] Card
     - [x] Separator
     - [x] Timeline
-    - Chip
-    - Icon
-    - Image
-    - Table
-    - Banner
+    - [x] Table
     - Stats
     - Slider
 - Layout
