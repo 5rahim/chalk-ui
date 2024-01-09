@@ -57,9 +57,9 @@
     - [x] LineChart
     - [x] DonutChart
     - [x] ProgressBar
-    - Card
+    - [x] Card
+    - Separator
     - Chip
-    - Divider
     - Icon
     - Image
     - Table
