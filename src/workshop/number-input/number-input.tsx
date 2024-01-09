@@ -7,8 +7,7 @@ import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { IconButton } from "../button"
-import { cn } from "../core/classnames"
-import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 
 /* -------------------------------------------------------------------------------------------------

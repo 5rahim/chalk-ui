@@ -1,9 +1,9 @@
 "use client"
 
+import { cn } from "../core/styling"
 import * as React from "react"
 import { Checkbox, CheckboxProps } from "."
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { cn } from "../core/classnames"
 import { hiddenInputStyles } from "../input"
 
 /* -------------------------------------------------------------------------------------------------

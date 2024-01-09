@@ -5,8 +5,7 @@ import * as React from "react"
 import { Accept, FileError, useDropzone } from "react-dropzone"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { CloseButton, IconButton } from "../button"
-import { cn } from "../core/classnames"
-import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { hiddenInputStyles } from "../input"
 
 /* -------------------------------------------------------------------------------------------------

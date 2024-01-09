@@ -5,8 +5,7 @@ import * as SelectPrimitive from "@radix-ui/react-select"
 import { cva } from "class-variance-authority"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { cn } from "../core/classnames"
-import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { extractInputPartProps, hiddenInputStyles, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 
 /* -------------------------------------------------------------------------------------------------

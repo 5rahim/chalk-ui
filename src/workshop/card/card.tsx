@@ -1,8 +1,8 @@
 "use client"
 
+import { cn } from "../core/styling"
 import { cva } from "class-variance-authority"
 import * as React from "react"
-import { cn } from "../core/classnames"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

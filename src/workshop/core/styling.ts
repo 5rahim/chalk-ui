@@ -1,4 +1,6 @@
 import { cva } from "class-variance-authority"
+import { ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
 
 export type Anatomy = { [key: string]: ReturnType<typeof cva> }
 
@@ -39,4 +41,8 @@ export type ComponentAnatomy<T extends Anatomy> = {
  */
 export function defineStyleAnatomy<A extends Anatomy = Anatomy>(config: A) {
     return config
+}
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs))
 }

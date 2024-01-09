@@ -3,8 +3,7 @@
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 import { cva } from "class-variance-authority"
 import * as React from "react"
-import { cn } from "../core/classnames"
-import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

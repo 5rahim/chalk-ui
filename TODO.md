@@ -31,7 +31,7 @@
     - [x] LoadingSpinner
     - [x] DropdownMenu
     - [x] Tooltip
-    - Toast
+    - [x] Toaster
     - HoverCard
     - Skeleton
 - Navigation

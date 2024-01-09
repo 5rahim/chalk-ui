@@ -2,8 +2,7 @@
 
 import { cva } from "class-variance-authority"
 import { ChartValueFormatter } from "../charts/types"
-import { cn } from "../core/classnames"
-import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { UIColor } from "./color-theme"
 
 /* -------------------------------------------------------------------------------------------------

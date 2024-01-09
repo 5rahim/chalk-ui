@@ -1,4 +1,3 @@
-import { Autocomplete } from "@/workshop/autocomplete"
 import { useArgs } from "@storybook/preview-api"
 import { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"

@@ -1,8 +1,7 @@
 import { cva } from "class-variance-authority"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { cn } from "../core/classnames"
-import { defineStyleAnatomy } from "../core/styling"
+import { cn, defineStyleAnatomy } from "../core/styling"
 import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 
 /* -------------------------------------------------------------------------------------------------

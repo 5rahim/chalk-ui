@@ -5,8 +5,7 @@ import { CountryCode, E164Number, parsePhoneNumber } from "libphonenumber-js"
 import * as React from "react"
 import PhoneInputPrimitive, { Country } from "react-phone-number-input"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
-import { cn } from "../core/classnames"
-import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 
 /* -------------------------------------------------------------------------------------------------

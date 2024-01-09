@@ -2,9 +2,8 @@
 
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 import { cva } from "class-variance-authority"
-import React from "react"
-import { cn } from "../core/classnames"
-import { defineStyleAnatomy } from "../core/styling"
+import * as React from "react"
+import { cn, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

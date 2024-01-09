@@ -1,9 +1,9 @@
 "use client"
 
+import { cn } from "../core/styling"
 import * as React from "react"
 import { CartesianGrid, Legend, Line, LineChart as ReChartsLineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 import type { AxisDomain } from "recharts/types/util/types"
-import { cn } from "../core/classnames"
 import { ChartLegend } from "./chart-legend"
 import { ChartTooltip } from "./chart-tooltip"
 import { ColorPalette } from "./color-theme"

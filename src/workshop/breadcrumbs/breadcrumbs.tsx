@@ -3,8 +3,7 @@
 import { cva } from "class-variance-authority"
 import Link from "next/link"
 import * as React from "react"
-import { cn } from "../core/classnames"
-import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

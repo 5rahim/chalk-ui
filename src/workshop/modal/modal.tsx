@@ -4,8 +4,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { cva } from "class-variance-authority"
 import * as React from "react"
 import { CloseButton } from "../button"
-import { cn } from "../core/classnames"
-import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

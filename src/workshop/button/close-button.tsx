@@ -1,6 +1,6 @@
+import { cn } from "../core/styling"
 import * as React from "react"
 import { IconButton, IconButtonProps } from "."
-import { cn } from "../core/classnames"
 
 /* -------------------------------------------------------------------------------------------------
  * CloseButton

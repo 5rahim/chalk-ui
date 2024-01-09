@@ -1,10 +1,9 @@
 "use client"
 
-import { ComponentAnatomy } from "@/workshop/core/styling"
+import { cn, ComponentAnatomy } from "../core/styling"
 import * as ProgressBarPrimitive from "@radix-ui/react-progress"
 import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
-import { cn } from "../core/classnames"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

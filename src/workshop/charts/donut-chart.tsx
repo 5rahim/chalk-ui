@@ -1,8 +1,8 @@
 "use client"
 
+import { cn } from "../core/styling"
 import * as React from "react"
 import { Pie, PieChart as ReChartsDonutChart, ResponsiveContainer, Tooltip } from "recharts"
-import { cn } from "../core/classnames"
 import { ChartTooltipFrame, ChartTooltipRow } from "./chart-tooltip"
 import { ColorPalette, UIColor } from "./color-theme"
 import { ChartValueFormatter } from "./types"
