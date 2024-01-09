@@ -18,7 +18,7 @@ export const VerticalMenuAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-VerticalMenu__item",
-        "group/verticalMenu_item relative flex flex-none truncate items-center font-medium rounded-[--radius] transition cursor-pointer",
+        "group/verticalMenu_item relative flex flex-none truncate items-center w-full font-medium rounded-[--radius] transition cursor-pointer",
         "hover:bg-[--subtle] hover:text-[--text-color]",
         "focus-visible:bg-[--subtle] outline-none text-[--muted]",
         "data-[current=true]:bg-[--subtle] data-[current=true]:text-[--foreground]",
@@ -111,7 +111,13 @@ export interface VerticalMenuProps extends React.ComponentPropsWithRef<"div">,
      */
     iconsOnly?: boolean
     items: VerticalMenuItem[]
+    /**
+     * Callback when any item is clicked.
+     */
     onAnyItemClick?: React.MouseEventHandler<HTMLElement>
+    /**
+     * Callback when a link item is clicked.
+     */
     onLinkItemClick?: React.MouseEventHandler<HTMLElement>
 }
 

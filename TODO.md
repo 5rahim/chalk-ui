@@ -61,9 +61,9 @@
     - [x] Separator
     - [x] Timeline
     - [x] Table
-    - Stats
+    - [x] Stats
     - Slider
 - Layout
-    - AppLayout
+    - [x] AppLayout
     - PageHeader
     - PageLayout

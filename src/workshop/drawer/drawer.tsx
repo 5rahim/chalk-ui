@@ -139,47 +139,49 @@ export function Drawer(props: DrawerProps) {
         ...rest
     } = props
 
-    return <DialogPrimitive.Root modal={!allowOutsideInteraction} {...rest}>
+    return (
+        <DialogPrimitive.Root modal={!allowOutsideInteraction} {...rest}>
 
-        {trigger && <DialogPrimitive.Trigger asChild>{trigger}</DialogPrimitive.Trigger>}
+            {trigger && <DialogPrimitive.Trigger asChild>{trigger}</DialogPrimitive.Trigger>}
 
-        <DialogPrimitive.Overlay className={cn(DrawerAnatomy.overlay(), overlayClass)} />
+            <DialogPrimitive.Overlay className={cn(DrawerAnatomy.overlay(), overlayClass)} />
 
-        <DialogPrimitive.Portal>
+            <DialogPrimitive.Portal>
 
-            <DialogPrimitive.Content
-                className={cn(DrawerAnatomy.content({ size, side }), contentClass)}
-                onOpenAutoFocus={onOpenAutoFocus}
-                onCloseAutoFocus={onCloseAutoFocus}
-                onEscapeKeyDown={onEscapeKeyDown}
-                onPointerDownCapture={onPointerDownCapture}
-                onInteractOutside={onInteractOutside}
-            >
+                <DialogPrimitive.Content
+                    className={cn(DrawerAnatomy.content({ size, side }), contentClass)}
+                    onOpenAutoFocus={onOpenAutoFocus}
+                    onCloseAutoFocus={onCloseAutoFocus}
+                    onEscapeKeyDown={onEscapeKeyDown}
+                    onPointerDownCapture={onPointerDownCapture}
+                    onInteractOutside={onInteractOutside}
+                >
 
-                {(title || description) && <div className={cn(DrawerAnatomy.header(), headerClass)}>
-                    {title && <DialogPrimitive.Title className={cn(DrawerAnatomy.title(), titleClass)}>
-                        {title}
-                    </DialogPrimitive.Title>}
-                    {description && <DialogPrimitive.Description className={cn(DrawerAnatomy.description(), descriptionClass)}>
-                        {description}
-                    </DialogPrimitive.Description>}
-                </div>}
+                    {(title || description) && <div className={cn(DrawerAnatomy.header(), headerClass)}>
+                        {title && <DialogPrimitive.Title className={cn(DrawerAnatomy.title(), titleClass)}>
+                            {title}
+                        </DialogPrimitive.Title>}
+                        {description && <DialogPrimitive.Description className={cn(DrawerAnatomy.description(), descriptionClass)}>
+                            {description}
+                        </DialogPrimitive.Description>}
+                    </div>}
 
-                {children}
+                    {children}
 
-                {footer && <div className={cn(DrawerAnatomy.footer(), footerClass)}>
-                    {footer}
-                </div>}
+                    {footer && <div className={cn(DrawerAnatomy.footer(), footerClass)}>
+                        {footer}
+                    </div>}
 
-                {!hideCloseButton && <DialogPrimitive.Close className={cn(DrawerAnatomy.close(), closeClass)} asChild>
-                    {closeButton ? closeButton : <CloseButton />}
-                </DialogPrimitive.Close>}
+                    {!hideCloseButton && <DialogPrimitive.Close className={cn(DrawerAnatomy.close(), closeClass)} asChild>
+                        {closeButton ? closeButton : <CloseButton />}
+                    </DialogPrimitive.Close>}
 
-            </DialogPrimitive.Content>
+                </DialogPrimitive.Content>
 
-        </DialogPrimitive.Portal>
+            </DialogPrimitive.Portal>
 
-    </DialogPrimitive.Root>
+        </DialogPrimitive.Root>
+    )
 }
 
 Drawer.displayName = "Drawer"

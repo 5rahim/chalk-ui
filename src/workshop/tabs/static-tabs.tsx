@@ -35,7 +35,7 @@ export interface StaticTabsProps extends React.ComponentPropsWithRef<"nav">,
     items: {
         name: string,
         href: string | null | undefined,
-        icon?: React.ElementType,
+        iconType?: React.ElementType,
         isCurrent: boolean
     }[]
 }
@@ -69,7 +69,7 @@ export const StaticTabs = React.forwardRef<HTMLElement, StaticTabsProps>((props,
                     aria-current={tab.isCurrent ? "page" : undefined}
                     data-selected={tab.isCurrent}
                 >
-                    {tab.icon && <tab.icon
+                    {tab.iconType && <tab.iconType
                         className={cn(
                             StaticTabsAnatomy.icon(),
                             iconClass,

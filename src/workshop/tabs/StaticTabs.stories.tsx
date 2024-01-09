@@ -11,7 +11,7 @@ const meta = {
             { name: "My Account", href: "#", isCurrent: false },
             { name: "Company", href: "#", isCurrent: false },
             { name: "Team Members", href: "#", isCurrent: true },
-            { name: "Billing", href: "#", icon: BiReceipt, isCurrent: false },
+            { name: "Billing", href: "#", iconType: BiReceipt, isCurrent: false },
         ],
         className: "",
         triggerClass: "",
