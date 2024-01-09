@@ -18,7 +18,7 @@
     - [x] DatePicker
     - [x] DateRangePicker
     - [x] SimpleDropzone
-    - [ ] AddressInput
+    - [x] AddressInput
     - ToggleButton
     - TimeInput
     - [x] Form

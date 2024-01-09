@@ -86,7 +86,7 @@ export const Cards: Story = {
             "bg-gray-50 dark:bg-gray-900",
             "data-[state=checked]:bg-white data-[state=checked]:border-[--border]",
             "dark:data-[state=checked]:bg-gray-800",
-            "focus:ring-2 ring-brand-300 dark:ring-brand-800 ring-offset-1 ring-offset-[--background] focus-within:ring-2 transition",
+            "focus:ring-2 ring-[--ring] ring-offset-1 ring-offset-[--background] focus-within:ring-2 transition",
             "data-[state=checked]:border-2 data-[state=checked]:border-[--brand] data-[state=checked]:ring-offset-0",
         ),
         itemClass: cn(

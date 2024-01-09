@@ -81,10 +81,6 @@ export const AddressInput = React.forwardRef<HTMLInputElement, AddressInputProps
         loaderApiOptions: loaderOptions,
     })
 
-    React.useEffect(() => {
-        console.log(onTextChange)
-    }, [onTextChange])
-
     return (
         <Autocomplete
             ref={ref}
