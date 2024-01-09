@@ -58,14 +58,14 @@
     - [x] DonutChart
     - [x] ProgressBar
     - [x] Card
-    - Separator
+    - [x] Separator
+    - [x] Timeline
     - Chip
     - Icon
     - Image
     - Table
     - Banner
     - Stats
-    - Timeline
     - Slider
 - Layout
     - AppLayout
