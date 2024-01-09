@@ -39,10 +39,10 @@
     - [x] Breadcrumbs
     - [x] NavigationMenu
     - [x] VerticalMenu
-    - Navbar
-    - NavTabs
-    - Tabs
+    - [x] StaticTabs
+    - [x] Tabs
     - Pagination
+    - Navbar
 - Data Display
     - DataGrid
     - [x] ScrollArea
