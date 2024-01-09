@@ -30,7 +30,7 @@
     - [x] LoadingOverlay
     - [x] LoadingSpinner
     - [x] DropdownMenu
-    - Tooltip
+    - [x] Tooltip
     - Toast
     - HoverCard
     - Skeleton

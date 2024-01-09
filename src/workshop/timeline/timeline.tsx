@@ -1,7 +1,5 @@
-"use client"
-
 import { cva } from "class-variance-authority"
-import React from "react"
+import * as React from "react"
 import { cn } from "../core/classnames"
 import { ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
@@ -47,7 +45,7 @@ export const TimelineAnatomy = defineStyleAnatomy({
  * Timeline
  * -----------------------------------------------------------------------------------------------*/
 
-export interface TimelineProps extends React.ComponentPropsWithRef<"div">, ComponentAnatomy<typeof TimelineAnatomy> {
+export interface TimelineProps extends React.ComponentPropsWithoutRef<"div">, ComponentAnatomy<typeof TimelineAnatomy> {
     children?: React.ReactNode
     items: {
         title: React.ReactNode
@@ -88,23 +86,21 @@ export const Timeline = React.forwardRef<HTMLDivElement, TimelineProps>((props, 
         >
             {items.map((item, idx) => (
                 <div
-                    key={`${item.title}-${idx}`}
+                    key={`${idx}`}
                     className={cn(TimelineAnatomy.item(), itemClass)}
                 >
                     {/*Left section*/}
                     <div className={cn(TimelineAnatomy.leftSection(), leftSectionClass)}>
-                        <div>
-                            <div
-                                className={cn(
-                                    item.unstyledIcon ?
-                                        null :
-                                        TimelineAnatomy.icon(),
-                                    iconClass,
-                                    item.iconClass,
-                                )}
-                            >
-                                {item.icon}
-                            </div>
+                        <div
+                            className={cn(
+                                item.unstyledIcon ?
+                                    null :
+                                    TimelineAnatomy.icon(),
+                                iconClass,
+                                item.iconClass,
+                            )}
+                        >
+                            {item.icon}
                         </div>
                         {(idx < items.length - 1) && <div className={cn(TimelineAnatomy.line(), lineClass, item.lineClass)} />}
                     </div>

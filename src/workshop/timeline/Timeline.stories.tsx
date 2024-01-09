@@ -36,8 +36,10 @@ export const Customized: Story = {
             {
                 title: "Jack",
                 description: "Replied 2d ago",
-                content: <div className="flex gap-2"><BiReply className="text-xl text-[--muted]" /> <span>Lorem ipsum dolor sit amet, consectetur
-                                                                                                          adipisicing elit.</span></div>,
+                content: <div className="flex gap-2">
+                    <BiReply className="text-xl text-[--muted]" />
+                    <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+                </div>,
                 icon: <BiUser />,
             },
             {
