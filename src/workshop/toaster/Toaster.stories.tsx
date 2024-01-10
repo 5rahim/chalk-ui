@@ -48,6 +48,7 @@ export const Success: Story = {
                 <Button
                     onClick={() =>
                         toast.success("Event has been created", {
+                            description: "Go to your settings to change your email preferences.",
                             position: "top-center",
                         })
                     }
@@ -68,6 +69,7 @@ export const Warning: Story = {
                 <Button
                     onClick={() =>
                         toast.warning("Event has been trashed", {
+                            description: "Go to your settings to change your email preferences.",
                             position: "top-center",
                         })
                     }
@@ -87,6 +89,7 @@ export const Error: Story = {
                 <Button
                     onClick={() =>
                         toast.error("Event could not be created", {
+                            description: "Go to your settings to change your email preferences.",
                             position: "top-center",
                         })
                     }
@@ -107,6 +110,7 @@ export const Info: Story = {
                 <Button
                     onClick={() =>
                         toast.info("Download has started", {
+                            description: "Go to your settings to change your email preferences.",
                             position: "top-center",
                         })
                     }
@@ -126,7 +130,12 @@ export const CloseButton: Story = {
                 <Button
                     onClick={() =>
                         toast.info("Download has started", {
+                            description: "Go to your settings to change your email preferences.",
                             position: "top-center",
+                            action: {
+                                label: "Undo",
+                                onClick: () => console.log("Undo"),
+                            },
                         })
                     }
                 >

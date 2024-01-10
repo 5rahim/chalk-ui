@@ -65,5 +65,9 @@
     - Slider
 - Layout
     - [x] AppLayout
-    - PageHeader
+    - [x] PageHeader
     - PageLayout
+
+Issues:
+- Drawer not restoring scrollbar upon closing
+- Datagrid date filter should not filter when no date is selected

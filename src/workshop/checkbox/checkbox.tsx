@@ -23,7 +23,7 @@ export const CheckboxAnatomy = defineStyleAnatomy({
         "data-[state=unchecked]:bg-white dark:data-[state=unchecked]:bg-gray-700", // Unchecked
         "data-[state=unchecked]:hover:bg-gray-100 dark:data-[state=unchecked]:hover:bg-gray-600", // Unchecked hover
         "data-[state=checked]:bg-brand dark:data-[state=checked]:bg-brand data-[state=checked]:border-brand", // Checked
-        "data-[state=indeterminate]:bg-[--muted] dark:data-[state=indeterminate]:text-gray-800 data-[state=indeterminate]:border-transparent", // Checked
+        "data-[state=indeterminate]:bg-[--muted] dark:data-[state=indeterminate]:bg-gray-700 data-[state=indeterminate]:text-white data-[state=indeterminate]:border-transparent", // Checked
         "data-[error=true]:border-red-500 data-[error=true]:dark:border-red-500 data-[error=true]:data-[state=checked]:border-red-500 data-[error=true]:dark:data-[state=checked]:border-red-500", // Error
     ], {
         variants: {
@@ -171,7 +171,6 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                             className={cn(CheckboxAnatomy.checkIcon({ size: _size }), checkIconClass)}
                         >
                             <path
-                                fill="#fff"
                                 d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"
                             />
                         </svg>}
@@ -181,6 +180,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
+                            strokeWidth="3"
                             className={cn(CheckboxAnatomy.checkIcon({ size: _size }), checkIconClass)}
                         >
                             <line x1="5" x2="19" y1="12" y2="12" />

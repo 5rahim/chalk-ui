@@ -1,5 +1,5 @@
 import { Mdx } from "@/components/mdx-components"
-import { cn } from "../core/styling"
+import { cn } from "@/workshop/core/styling"
 import { ChevronRightIcon } from "@radix-ui/react-icons"
 import { allDocs } from "contentlayer/generated"
 

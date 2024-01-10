@@ -12,7 +12,7 @@ import { cn, defineStyleAnatomy } from "../core/styling"
 export const ToasterAnatomy = defineStyleAnatomy({
     toaster: cva(["group toaster"]),
     toast: cva([
-        "group toast",
+        "group/toast",
         "group-[.toaster]:py-3",
         "group-[.toaster]:text-base group-[.toaster]:bg-[--paper] group-[.toaster]:text-[--foreground] group-[.toaster]:border-[--border] group-[.toaster]:shadow-lg",
         // Success
@@ -32,9 +32,15 @@ export const ToasterAnatomy = defineStyleAnatomy({
         // "group-[.toaster]:data-[type=info]:border-blue-200", // Subtle
         "group-[.toaster]:data-[type=info]:bg-blue-500 group-[.toaster]:data-[type=info]:text-white group-[.toaster]:data-[type=info]:border-[--blue]",
     ]),
-    description: cva(["group-[.toast]:text-sm group-[.toast]:text-[--muted]"]),
-    actionButton: cva(["group-[.toast]:bg-[--subtle] group-[.toast]:text-[--foreground]"]),
-    cancelButton: cva(["group-[.toast]:bg-muted group-[.toast]:text-[--muted]"]),
+    description: cva([
+        "group/toast:text-sm group/toast:text-[--muted]",
+        "group-data-[type=success]/toast:text-green-100",
+        "group-data-[type=warning]/toast:text-yellow-100",
+        "group-data-[type=error]/toast:text-red-100",
+        "group-data-[type=info]/toast:text-blue-100",
+    ]),
+    actionButton: cva(["group/toast:bg-[--subtle] group/toast:text-[--foreground]"]),
+    cancelButton: cva(["group/toast:bg-[--subtle] group/toast:text-[--muted]"]),
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -43,10 +49,11 @@ export const ToasterAnatomy = defineStyleAnatomy({
 
 export type ToasterProps = React.ComponentProps<typeof Sonner>
 
-export const Toaster = ({ ...props }: ToasterProps) => {
+export const Toaster = ({ position = "top-center", ...props }: ToasterProps) => {
 
     return (
         <Sonner
+            position={position}
             className={cn(ToasterAnatomy.toaster())}
             toastOptions={{
                 classNames: {
