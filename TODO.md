@@ -22,6 +22,8 @@
     - ToggleButton
     - TimeInput
     - [x] Form
+    - Slider
+    - Rating
 - Overlays
     - [x] Popover
     - [x] Command

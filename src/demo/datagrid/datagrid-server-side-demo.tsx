@@ -225,12 +225,12 @@ export const DatagridServerSideDemo: React.FC<DataGridServerSideTestProps> = (pr
                     options: [
                         {
                             value: "out_of_stock",
-                            label: <span className={"flex items-center gap-2"}><BiBasket className={"text-red-500"} /><span>Out of
+                            label: <span className="flex items-center gap-2"><BiBasket className={"text-red-500"} /><span>Out of
                                                                                                                             stock</span></span>,
                         },
                         {
                             value: "in_stock",
-                            label: <span className={"flex items-center gap-2"}><BiBasket className={"text-green-500"} /><span>In stock</span></span>,
+                            label: <span className="flex items-center gap-2"><BiBasket className={"text-green-500"} /><span>In stock</span></span>,
                         },
                     ],
                     valueFormatter: (value) => {

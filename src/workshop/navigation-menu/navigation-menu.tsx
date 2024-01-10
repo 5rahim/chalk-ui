@@ -259,7 +259,7 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
                                         menuContainerClass,
                                     )}
                                 >
-                                    <div className={"w-full"}>
+                                    <div className="w-full">
                                         {item.subContent && item.subContent}
                                     </div>
                                 </NavigationMenuPrimitive.Content>

@@ -77,7 +77,7 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
             {...rest}
         >
             {(filterParams.type === "select" && (!options || options.length === 0)) && (
-                <div className={"text-red-500"}>/!\ "Select" filtering option passed without options</div>
+                <div className="text-red-500">/!\ "Select" filtering option passed without options</div>
             )}
             {/*Select*/}
             {(filterParams.type === "select" && !!options && options.length > 0) && (
@@ -102,7 +102,7 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
             {/*Boolean*/}
             {(filterParams.type === "boolean") && (
                 <DropdownMenu
-                    className={"right-[inherit] left"}
+                    className="right-[inherit] left"
                     trigger={
                         <DataGridActiveFilter
                             options={filterParams}
@@ -123,7 +123,7 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
             {/*Checkbox*/}
             {(filterParams.type === "checkbox" && !!options.length) && (
                 <DropdownMenu
-                    className={"right-[inherit] left"}
+                    className="right-[inherit] left"
                     trigger={
                         <DataGridActiveFilter
                             options={filterParams}
@@ -133,7 +133,7 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
                             }
                         />}
                 >
-                    <DropdownMenuGroup className={"p-1"}>
+                    <DropdownMenuGroup className="p-1">
                         {filterParams.options?.length && (
                             <CheckboxGroup
                                 options={filterParams.options}
@@ -149,7 +149,7 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
             {/*Radio*/}
             {(filterParams.type === "radio" && !!options.length) && (
                 <DropdownMenu
-                    className={"right-[inherit] left"}
+                    className="right-[inherit] left"
                     trigger={
                         <DataGridActiveFilter
                             options={filterParams}
@@ -159,7 +159,7 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
                             }
                         />}
                 >
-                    <DropdownMenuGroup className={"p-1"}>
+                    <DropdownMenuGroup className="p-1">
                         {filterParams.options?.length && (
                             <RadioGroup
                                 options={filterParams.options}
@@ -222,7 +222,7 @@ export const DataGridActiveFilter = React.forwardRef<HTMLButtonElement, DataGrid
         >
             {options.icon && <span>{options.icon}</span>}
             <span>{options.name}:</span>
-            <span className={"font-semibold flex flex-none overflow-hidden whitespace-normal"}>{displayedValue}</span>
+            <span className="font-semibold flex flex-none overflow-hidden whitespace-normal">{displayedValue}</span>
         </button>
     )
 

@@ -57,7 +57,7 @@ export const Sidebar: Story = {
                     </AppLayoutSidebar>
                     <AppLayout>
                         <AppLayoutHeader>
-                            <div className={"w-full h-16 border-b border-[--border] flex items-center bg-[--paper] px-2"}>
+                            <div className="w-full h-16 border-b border-[--border] flex items-center bg-[--paper] px-2">
                                 <AppSidebarTrigger />
                                 <TextInput
                                     className="shadow-none border-none focus:border-none focus:ring-0"
@@ -66,7 +66,7 @@ export const Sidebar: Story = {
                                 />
                             </div>
                             <StaticTabs
-                                className={"border-b border-[--border] px-4"}
+                                className="border-b border-[--border] px-4"
                                 items={[
                                     { name: "My Account", href: "#", isCurrent: false },
                                     { name: "Company", href: "#", isCurrent: false },
@@ -75,7 +75,7 @@ export const Sidebar: Story = {
                                 ]}
                             />
                             <PageHeader
-                                className={"p-4 border-b border-[--border]"}
+                                className="p-4 border-b border-[--border]"
                                 title={"Dashboard"}
                                 size={"lg"}
                                 action={<Button>Action</Button>}
@@ -95,14 +95,14 @@ export const Sidebar: Story = {
                                         { name: "Avg. Open Rate", value: "58.16%", unit: "from 56.14%", change: "2.02%", trend: "up" },
                                         { name: "Avg. Click Rate", value: "24.57%" },
                                     ]}
-                                    className={"border-b border-[--border]"}
+                                    className="border-b border-[--border]"
                                 />
                             </div>
-                            <div className={"container max-w-full p-4"}>
+                            <div className="container max-w-full p-4">
 
                                 <AppLayoutStack>
 
-                                    <div className={"flex items-center gap-2"}>
+                                    <div className="flex items-center gap-2">
                                         <h4>Performance History</h4>
                                         <Tooltip trigger={<span><BiInfoCircle className={"w-5 h-5 text-[--blue]"} /></span>}>
                                             Shows the trends
@@ -112,11 +112,11 @@ export const Sidebar: Story = {
                                     <DemoLineChart />
 
                                     <AppLayoutGrid cols={5}>
-                                        <div className={"col-span-1"}>
+                                        <div className="col-span-1">
                                             <h4>Grid</h4>
-                                            <p className={"text-sm text-[--muted]"}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                            <p className="text-sm text-[--muted]">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                         </div>
-                                        <div className={"col-span-4"}>
+                                        <div className="col-span-4">
                                             <Card className="p-4">
                                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis
                                                 deserunt
@@ -127,7 +127,7 @@ export const Sidebar: Story = {
                                     </AppLayoutGrid>
 
                                     <AppLayoutGrid breakBelow={"lg"}>
-                                        <div className={"col-span-2"}>
+                                        <div className="col-span-2">
                                             <Card className="p-4">
                                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis
                                                 deserunt
@@ -135,7 +135,7 @@ export const Sidebar: Story = {
                                                 voluptas!
                                             </Card>
                                         </div>
-                                        <div className={"col-span-1 basis-[40rem]"}>
+                                        <div className="col-span-1 basis-[40rem]">
                                             <Card className="p-4">
                                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis
                                                 deserunt
@@ -150,7 +150,7 @@ export const Sidebar: Story = {
 
                             </div>
                         </AppLayoutContent>
-                        <AppLayoutFooter className={"text-center font-medium text-[--muted] pb-10"}>
+                        <AppLayoutFooter className="text-center font-medium text-[--muted] pb-10">
                             &copy; 2023 5rahim
                         </AppLayoutFooter>
                     </AppLayout>
