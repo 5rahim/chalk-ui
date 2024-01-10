@@ -12,7 +12,7 @@ export const ButtonAnatomy = defineStyleAnatomy({
         "shadow-sm whitespace-nowrap font-semibold rounded-[--radius]",
         "inline-flex items-center text-white transition ease-in duration-100 text-center text-base justify-center",
         "focus-visible:outline-none focus-visible:ring-2 ring-offset-1 ring-offset-[--background] focus-visible:ring-[--ring]",
-        "disabled:opacity-50 disabled:cursor-not-allowed",
+        "disabled:opacity-50 disabled:pointer-events-none",
     ], {
         variants: {
             intent: {
@@ -41,7 +41,7 @@ export const ButtonAnatomy = defineStyleAnatomy({
                 "alert-basic": "shadow-none text-red-500 border border-transparent bg-transparent hover:bg-red-100 active:bg-red-200 dark:text-red-300 dark:hover:bg-opacity-10 dark:active:text-red-200",
 
                 "gray": "bg-gray-500 hover:bg-gray-600 active:bg-gray-700 border border-transparent",
-                "gray-outline": "text-gray-600 border border-gray-300 bg-transparent hover:bg-gray-500 hover:border-transparent active:border-transparent hover:text-white active:bg-gray-600 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-500 dark:active:bg-gray-600 dark:active:border-transparent dark:hover:text-gray-100",
+                "gray-outline": "text-gray-600 border border-gray-300 bg-transparent hover:bg-gray-100 active:border-transparent active:bg-gray-200 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-800 dark:active:bg-gray-700 dark:active:border-transparent dark:hover:text-gray-100",
                 "gray-subtle": "text-gray-600 border border-gray-500 bg-gray-100 border-transparent hover:bg-gray-200 active:bg-gray-300 dark:text-gray-300 dark:bg-opacity-10 dark:hover:bg-opacity-20",
                 "gray-link": "shadow-none text-gray-500 border border-transparent bg-transparent hover:underline active:text-gray-700 dark:text-gray-300 dark:active:text-gray-400",
                 "gray-basic": "shadow-none text-gray-500 border border-transparent bg-transparent hover:bg-gray-100 active:bg-gray-200 dark:text-gray-300 dark:hover:bg-opacity-10 dark:active:text-gray-200",
