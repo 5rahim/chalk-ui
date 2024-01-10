@@ -12,7 +12,7 @@ export const TimelineAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-Timeline__item",
-        "flex text-md flex-none",
+        "flex text-md",
     ]),
     leftSection: cva([
         "UI-Timeline__leftSection",
@@ -20,7 +20,7 @@ export const TimelineAnatomy = defineStyleAnatomy({
     ]),
     icon: cva([
         "UI-Timeline__icon",
-        "flex items-center justify-center w-8 h-8 border border-[--border] rounded-full",
+        "flex items-center justify-center w-8 h-8 border border-[--border] rounded-full flex-none",
     ]),
     line: cva([
         "UI-Timeline__line",
