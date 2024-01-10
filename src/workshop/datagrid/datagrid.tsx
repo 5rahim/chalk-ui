@@ -18,13 +18,11 @@ import { DataGridCellInputField } from "./datagrid-cell-input-field"
 import { DataGridFilter } from "./datagrid-filter"
 import { DataGridApi, DataGridInstanceProps, useDataGrid } from "./datagrid-instance"
 import { getColumnHelperMeta, getValueFormatter } from "./helpers"
-import translations from "./locales.json"
+import translations from "./locales"
 import { useDataGridEditing } from "./use-datagrid-editing"
 import { useDataGridFiltering } from "./use-datagrid-filtering"
 import { useDataGridResponsiveness } from "./use-datagrid-responsiveness"
 import { useDataGridRowSelection } from "./use-datagrid-row-selection"
-
-const locales = translations as any
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -117,13 +115,13 @@ export type DataGridProps<T extends Record<string, any>> = ComponentAnatomy<type
     globalSearchInputProps?: Partial<DataGridSearchInputProps & TextInputProps>
     hideGlobalSearchInput?: boolean
     className?: string
-    locale?: string
+    lng?: string
 }
 
 export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>) {
 
     const {
-        locale: lng = "en",
+        lng = "en",
         className,
         headerClass,
         toolbarClass,
@@ -251,7 +249,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                     >
                                         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
                                     </svg>
-                                    <span>{locales["filters"][lng]} ({unselectedFilterableColumns.length})</span>
+                                    <span>{translations["filters"][lng]} ({unselectedFilterableColumns.length})</span>
                                 </button>
                             }
                         >
@@ -294,12 +292,12 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                 onClick={() => handleColumnFiltersChange([])}
                             />}
                         >
-                            {locales["remove-filters"][lng]}
+                            {translations["remove-filters"][lng]}
                         </Tooltip>
                     )}
                     {/*Selected row count*/}
                     {(selectedRowCount > 0) && <div className="text-sm">
-                        {selectedRowCount} {locales[`row${selectedRowCount > 1 ? "s" : ""}-selected`][lng]}
+                        {selectedRowCount} {translations[`row${selectedRowCount > 1 ? "s" : ""}-selected`][lng]}
                     </div>}
                 </div>
 
@@ -312,6 +310,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                 key={col.id}
                                 column={col}
                                 onRemove={() => handleColumnFiltersChange(filters => [...filters.filter(filter => filter.id !== col.id)])}
+                                lng={lng}
                             />
                         )
                     })}
@@ -321,7 +320,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                 {getIsCurrentlyEditing() &&
                     <Card className={cn(DataGridAnatomy.editingCard(), editingCardClass)}>
                         <Button size="sm" onClick={handleOnSave} loading={isDataMutating}>
-                            {locales["save"][lng]}
+                            {translations["save"][lng]}
                         </Button>
                         <Button
                             size="sm"
@@ -329,7 +328,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                             intent="gray-outline"
                             disabled={isDataMutating}
                         >
-                            {locales["cancel"][lng]}
+                            {translations["cancel"][lng]}
                         </Button>
                     </Card>}
 
@@ -535,7 +534,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                 </g>
                             </svg>
                         </p>
-                        <p>{locales["no-matching-result"][lng]}</p>
+                        <p>{translations["no-matching-result"][lng]}</p>
                     </div>
                 )}
             </div>
@@ -570,7 +569,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                 <div className={cn(DataGridAnatomy.footerPageDisplayContainer(), footerPageDisplayContainerClass)}>
                     {table.getPageCount() > 0 && (
                         <>
-                            <div>{locales["page"][lng]}</div>
+                            <div>{translations["page"][lng]}</div>
                             <strong>
                                 {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
                             </strong>

@@ -11,9 +11,7 @@ import { DateRangePicker } from "../date-picker"
 import { DropdownMenu, DropdownMenuGroup, DropdownMenuItem } from "../dropdown-menu"
 import { RadioGroup } from "../radio-group"
 import { Select } from "../select"
-import translations from "./locales.json"
-
-const locales = translations as any
+import translations, { dateFnsLocales } from "./locales"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -41,7 +39,7 @@ export interface DataGridFilterProps<T extends Record<string, any>> extends Reac
     ComponentAnatomy<typeof DataGridFilterAnatomy> {
     column: Column<T>
     onRemove: () => void
-    locale?: string
+    lng?: string
 }
 
 export function DataGridFilter<T extends Record<string, any>>(props: DataGridFilterProps<T>) {
@@ -51,7 +49,7 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
         className,
         column,
         onRemove,
-        locale: lng = "en",
+        lng = "en",
         ...rest
     } = props
 
@@ -95,7 +93,7 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
                     options={[...options.map(n => ({ value: n.value, label: valueFormatter(n.value) }))]}
                     onValueChange={v => handleUpdate(v.trim().toLowerCase())}
                     size={"sm"}
-                    fieldClass={"w-fit"}
+                    fieldClass="w-fit"
                     className="sm:w-auto pr-8 md:max-w-sm"
                 />
             )}
@@ -112,10 +110,10 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
                 >
                     <DropdownMenuGroup>
                         <DropdownMenuItem onClick={() => handleUpdate(true)}>
-                            {typeof valueFormatter(true) === "boolean" ? locales["true"][lng] : valueFormatter(true)}
+                            {typeof valueFormatter(true) === "boolean" ? translations["true"][lng] : valueFormatter(true)}
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleUpdate(false)}>
-                            {typeof valueFormatter(false) === "boolean" ? locales["false"][lng] : valueFormatter(false)}
+                            {typeof valueFormatter(false) === "boolean" ? translations["false"][lng] : valueFormatter(false)}
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
                 </DropdownMenu>
@@ -139,8 +137,8 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
                                 options={filterParams.options}
                                 value={filterValue}
                                 onValueChange={handleUpdate}
-                                itemContainerClass={"flex flex-row-reverse w-full justify-between"}
-                                itemLabelClass={"cursor-pointer"}
+                                itemContainerClass="flex flex-row-reverse w-full justify-between"
+                                itemLabelClass="cursor-pointer"
                             />
                         )}
                     </DropdownMenuGroup>
@@ -165,8 +163,8 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
                                 options={filterParams.options}
                                 value={filterValue}
                                 onValueChange={handleUpdate}
-                                itemContainerClass={"flex flex-row-reverse w-full justify-between"}
-                                itemLabelClass={"cursor-pointer"}
+                                itemContainerClass="flex flex-row-reverse w-full justify-between"
+                                itemLabelClass="cursor-pointer"
                             />
                         )}
                     </DropdownMenuGroup>
@@ -186,8 +184,9 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
                             start: value?.from,
                             end: value?.to,
                         })}
+                        placeholder={translations["date-range-placeholder"][lng]}
                         intent={"unstyled"}
-                        // locale={locale} TODO
+                        locale={dateFnsLocales[lng]}
                     />
                 </div>
             )}

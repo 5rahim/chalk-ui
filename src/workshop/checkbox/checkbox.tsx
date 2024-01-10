@@ -139,7 +139,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
 
     return (
         <BasicField
-            fieldClass={"flex gap-2"}
+            fieldClass="flex gap-2"
             {...basicFieldProps}
             error={hideError ? undefined : basicFieldProps.error} // The error message hidden when `hideError` is true
         >

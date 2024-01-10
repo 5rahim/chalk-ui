@@ -72,4 +72,3 @@
 
 Issues:
 - Drawer not restoring scrollbar upon closing
-- Datagrid datarangefilter locale

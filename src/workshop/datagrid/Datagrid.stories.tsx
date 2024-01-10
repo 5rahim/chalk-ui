@@ -33,6 +33,20 @@ export const Responsive: Story = {
     />,
 }
 
+export const Locale: Story = {
+    render: () => <DatagridDemo
+        tableProps={{
+            hideColumns: [
+                { below: 850, hide: ["availability", "price"] },
+                { below: 600, hide: ["_actions"] },
+                { below: 515, hide: ["category"] },
+                { below: 400, hide: ["visible"] },
+            ],
+            lng: "fr",
+        }}
+    />,
+}
+
 export const ServerSide: Story = {
     render: () => <DatagridServerSideDemo />,
 }
