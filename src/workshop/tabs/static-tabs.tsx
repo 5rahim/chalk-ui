@@ -15,9 +15,8 @@ export const StaticTabsAnatomy = defineStyleAnatomy({
     trigger: cva([
         "UI-StaticTabs__trigger",
         "group/staticTabs__trigger inline-flex flex-none shrink-0 basis-auto items-center py-4 px-2 font-medium text-sm transition outline-none min-w-0 justify-center",
-        "focus-visible:bg-[--highlight]",
-        "text-[--muted]",
-        "hover:text-[--text-color]",
+        "focus-visible:bg-[--subtle]",
+        "text-[--muted] hover:text-[--text-color]",
         "data-[selected=true]:border-[--brand] data-[selected=true]:font-semibold data-[selected=true]:text-[--brand]",
     ]),
     icon: cva([

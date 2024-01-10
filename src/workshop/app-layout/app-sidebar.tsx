@@ -32,7 +32,7 @@ export const AppSidebarTriggerAnatomy = defineStyleAnatomy({
     trigger: cva([
         "UI-AppSidebarTrigger__trigger",
         "block lg:hidden",
-        "items-center justify-center rounded-[--radius] p-2 text-[--muted] hover:bg-[--highlight] hover:text-[--foreground] transition-colors",
+        "items-center justify-center rounded-[--radius] p-2 text-[--muted] hover:bg-[--subtle] hover:text-[--foreground] transition-colors",
         "focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[--ring]",
     ]),
 })
@@ -68,7 +68,7 @@ export const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>((pro
                 open={ctx.open}
                 onOpenChange={v => ctx.setOpen(v)}
                 side="left"
-                allowOutsideInteraction={false}
+                allowOutsideInteraction={true}
             >
                 {children}
             </Drawer>

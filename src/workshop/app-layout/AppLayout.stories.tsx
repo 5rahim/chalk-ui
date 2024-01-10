@@ -20,6 +20,8 @@ import { StaticTabs } from "../tabs"
 import { TextInput } from "../text-input"
 import { Tooltip } from "../tooltip"
 import { VerticalMenu } from "../vertical-menu"
+import { PageHeader } from "../page-header"
+import { Button } from "../button"
 
 const meta = {
     title: "Components/Layout/AppLayout",
@@ -72,12 +74,12 @@ export const Sidebar: Story = {
                                     { name: "Billing", href: "#", iconType: BiReceipt, isCurrent: false },
                                 ]}
                             />
-                            {/*<PageHeader*/}
-                            {/*    className={"p-4 border-b border-[--border]"}*/}
-                            {/*    title={"Dashboard"}*/}
-                            {/*    size={"lg"}*/}
-                            {/*    action={<Button>Action</Button>}*/}
-                            {/*/>*/}
+                            <PageHeader
+                                className={"p-4 border-b border-[--border]"}
+                                title={"Dashboard"}
+                                size={"lg"}
+                                action={<Button>Action</Button>}
+                            />
                         </AppLayoutHeader>
                         <AppLayoutContent>
                             <div>

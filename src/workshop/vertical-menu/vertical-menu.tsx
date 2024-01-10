@@ -205,7 +205,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
                                         <ItemContent {...item} />
                                     </Link>
                                 ) : (
-                                    <button tabIndex={idx} {...itemProps(item)}>
+                                    <button {...itemProps(item)}>
                                         <ItemContent {...item} />
                                     </button>
                                 ) : (
@@ -213,7 +213,6 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
                                         <DisclosureItem value={item.name}>
                                             <DisclosureTrigger>
                                                 <button
-                                                    tabIndex={idx}
                                                     className={cn(
                                                         VerticalMenuAnatomy.item({ size, center: iconsOnly }),
                                                         itemClass,

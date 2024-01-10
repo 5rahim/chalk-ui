@@ -21,7 +21,7 @@ export const NavigationMenuAnatomy = defineStyleAnatomy({
     item: cva([
         "UI-NavigationMenu__item",
         "relative group/navigationMenu_item inline-flex items-center h-full select-none rounded-[--radius] leading-none no-underline outline-none transition-colors",
-        "text-[--muted] hover:bg-[--highlight] hover:text-[--text-color] focus:bg-[--highlight]",
+        "text-[--muted] hover:bg-[--subtle] hover:text-[--text-color] focus:bg-[--subtle]",
         "data-[current=true]:text-[--brand]", // Selected
         "font-[600] leading-none",
         "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[--ring]",
@@ -75,7 +75,7 @@ export const NavigationMenuAnatomy = defineStyleAnatomy({
     }),
     mobileTrigger: cva([
         "UI-VerticalNav__mobileTrigger",
-        "items-center justify-center rounded-[--radius] p-2 text-[--muted] hover:bg-[--highlight] hover:text-[--text-color]",
+        "items-center justify-center rounded-[--radius] p-2 text-[--muted] hover:bg-[--subtle] hover:text-[--text-color]",
         "focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[--ring]",
     ], {
         variants: {
