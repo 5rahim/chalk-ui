@@ -43,7 +43,7 @@
     - [x] Pagination
     - Navbar
 - Data Display
-    - DataGrid
+    - [x] DataGrid
     - [x] ScrollArea
     - [x] Avatar
     - [x] Accordion
@@ -70,4 +70,4 @@
 
 Issues:
 - Drawer not restoring scrollbar upon closing
-- Datagrid date filter should not filter when no date is selected
+- Datagrid datarangefilter locale

@@ -55,6 +55,7 @@ export function useDataGridFiltering<T>(props: DataGridFilteringHookProps<T>) {
 }
 
 export const dateRangeFilter = (row: any, columnId: string, filterValue: any) => {
+    if (!filterValue || !filterValue.start || !filterValue.end) return true
     const value: Date = row.getValue(columnId)
     return (value >= filterValue.start && value <= filterValue.end) || isSameDay(value, filterValue.start) || isSameDay(value, filterValue.end)
 }
