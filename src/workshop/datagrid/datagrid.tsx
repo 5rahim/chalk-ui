@@ -594,13 +594,13 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                     />}
                     <Select
                         value={String(table.getState().pagination.pageSize)}
-                        onChange={v => {
+                        onValueChange={v => {
                             table.setPageSize(Number(v))
                         }}
                         options={[Number(table.getState().pagination.pageSize),
                             ...[5, 10, 20, 30, 40, 50].filter(n => n !== Number(table.getState().pagination.pageSize))].map(pageSize => ({
                             value: String(pageSize),
-                            label: `${pageSize}`,
+                            label: String(pageSize),
                         }))}
                         fieldClass="w-auto"
                         className="w-auto"
