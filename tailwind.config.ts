@@ -19,6 +19,9 @@ const config: Config = {
                 xl: "5rem",
                 "2xl": "6rem",
             },
+            screens: {
+                "2xl": "1400px",
+            },
         },
         data: {
             checked: "checked",
@@ -78,6 +81,7 @@ const config: Config = {
                     700: "#3f2eb2",
                     800: "#312887",
                     900: "#231c6b",
+                    950: "#1c155e",
                     DEFAULT: "#6152df",
                 },
                 gray: {
@@ -91,6 +95,7 @@ const config: Config = {
                     700: "#404040",
                     800: "#262626",
                     900: "#171717",
+                    950: "#101010",
                     DEFAULT: "#737373",
                 },
                 green: {
@@ -103,7 +108,8 @@ const config: Config = {
                     600: "#1a6444",
                     700: "#154f37",
                     800: "#103b29",
-                    900: "#05130d",
+                    900: "#0a2318",
+                    950: "#05130d",
                     DEFAULT: "#258c60",
                 },
             },

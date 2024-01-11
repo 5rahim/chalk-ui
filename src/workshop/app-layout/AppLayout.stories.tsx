@@ -67,7 +67,7 @@ export const Sidebar: Story = {
                                 />
                             </div>
                             <StaticTabs
-                                className="border-b border-[--border] px-4"
+                                className="border-b border-[--border] px-4 py-2"
                                 items={[
                                     { name: "My Account", href: "#", isCurrent: false },
                                     { name: "Company", href: "#", isCurrent: false },
@@ -78,7 +78,7 @@ export const Sidebar: Story = {
                             <PageHeader
                                 className="p-4 border-b border-[--border]"
                                 title={"Dashboard"}
-                                size={"lg"}
+                                size={"md"}
                                 action={<Button>Action</Button>}
                             />
                         </AppLayoutHeader>

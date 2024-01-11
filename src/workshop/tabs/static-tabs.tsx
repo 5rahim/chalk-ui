@@ -14,10 +14,11 @@ export const StaticTabsAnatomy = defineStyleAnatomy({
     ]),
     trigger: cva([
         "UI-StaticTabs__trigger",
-        "group/staticTabs__trigger inline-flex flex-none shrink-0 basis-auto items-center py-4 px-2 font-medium text-sm transition outline-none min-w-0 justify-center",
-        "focus-visible:bg-[--subtle]",
+        "group/staticTabs__trigger inline-flex flex-none shrink-0 basis-auto items-center font-medium text-sm transition outline-none min-w-0 justify-center",
         "text-[--muted] hover:text-[--text-color]",
-        "data-[selected=true]:border-[--brand] data-[selected=true]:font-semibold data-[selected=true]:text-[--brand]",
+        "h-10 px-4 rounded-full",
+        "data-[current=true]:bg-[--subtle] data-[current=true]:font-semibold data-[current=true]:text-[--foreground]",
+        "focus-visible:bg-[--subtle]",
     ]),
     icon: cva([
         "UI-StaticTabs__icon",
@@ -66,7 +67,7 @@ export const StaticTabs = React.forwardRef<HTMLElement, StaticTabsProps>((props,
                         triggerClass,
                     )}
                     aria-current={tab.isCurrent ? "page" : undefined}
-                    data-selected={tab.isCurrent}
+                    data-current={tab.isCurrent}
                 >
                     {tab.iconType && <tab.iconType
                         className={cn(
@@ -74,7 +75,7 @@ export const StaticTabs = React.forwardRef<HTMLElement, StaticTabsProps>((props,
                             iconClass,
                         )}
                         aria-hidden="true"
-                        data-selected={tab.isCurrent}
+                        data-current={tab.isCurrent}
                     />}
                     <span>{tab.name}</span>
                 </Link>

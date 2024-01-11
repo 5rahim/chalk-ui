@@ -39,7 +39,7 @@ export const AppLayoutAnatomy = defineStyleAnatomy({
 export const AppLayoutHeaderAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-AppLayoutHeader__root",
-        "block w-full",
+        "relative w-full",
     ]),
 })
 
@@ -58,18 +58,21 @@ export const AppLayoutSidebarAnatomy = defineStyleAnatomy({
 export const AppLayoutContentAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-AppLayoutContent__root",
+        "relative",
     ]),
 })
 
 export const AppLayoutFooterAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-AppLayoutFooter__root",
+        "relative",
     ]),
 })
 
 export const AppLayoutStackAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-AppLayoutStack__root",
+        "relative",
     ], {
         variants: {
             spacing: {
@@ -88,7 +91,7 @@ export const AppLayoutStackAnatomy = defineStyleAnatomy({
 export const AppLayoutGridAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-AppLayoutGrid__root",
-        "block",
+        "relative block",
     ], {
         variants: {
             breakBelow: {
