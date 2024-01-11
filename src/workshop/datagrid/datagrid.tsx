@@ -452,8 +452,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                             data-row-selected={cell.getContext().row.getIsSelected()} // If cell's row is currently selected
                                             data-editing={getIsCellActivelyEditing(cell.id)} // If cell is being edited
                                             data-editable={isCurrentlyEditable} // If cell is editable
-                                            data-row-editing={getFirstCellBeingEdited()?.rowId === cell.row.id} // If cell's row is being
-                                            // edited
+                                            data-row-editing={getFirstCellBeingEdited()?.rowId === cell.row.id} // If cell's row is being edited
                                             style={{
                                                 width: cell.column.getSize(),
                                                 maxWidth: cell.column.columnDef.maxSize,

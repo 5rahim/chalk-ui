@@ -13,13 +13,13 @@ export const BadgeAnatomy = defineStyleAnatomy({
     ], {
         variants: {
             intent: {
-                "gray": "text-gray-800 bg-gray-100 border border-gray-500 border-opacity-40 __UI_DARK__ dark:text-gray-300 dark:bg-opacity-10",
-                "primary": "text-brand-500 bg-brand-50 border border-brand-500 border-opacity-40 __UI_DARK__ dark:text-brand-300 dark:bg-opacity-10",
-                "success": "text-green-500 bg-green-50 border border-green-500 border-opacity-40 __UI_DARK__ dark:text-green-300 dark:bg-opacity-10",
-                "warning": "text-orange-500 bg-orange-50 border border-orange-500 border-opacity-40 __UI_DARK__ dark:text-orange-300 dark:bg-opacity-10",
-                "alert": "text-red-500 bg-red-50 border border-red-500 border-opacity-40 __UI_DARK__ dark:text-red-300 dark:bg-opacity-10",
-                "blue": "text-blue-500 bg-blue-50 border border-blue-500 border-opacity-40 __UI_DARK__ dark:text-blue-300 dark:bg-opacity-10",
-                "white": "text-white bg-gray-800 border border-gray-500 border-opacity-40 __UI_DARK__ dark:text-white dark:bg-opacity-10",
+                "gray": "text-gray-800 bg-gray-100 border border-gray-500 border-opacity-40 dark:text-gray-300 dark:bg-opacity-10",
+                "primary": "text-brand-500 bg-brand-50 border border-brand-500 border-opacity-40 dark:text-brand-300 dark:bg-opacity-10",
+                "success": "text-green-500 bg-green-50 border border-green-500 border-opacity-40 dark:text-green-300 dark:bg-opacity-10",
+                "warning": "text-orange-500 bg-orange-50 border border-orange-500 border-opacity-40 dark:text-orange-300 dark:bg-opacity-10",
+                "alert": "text-red-500 bg-red-50 border border-red-500 border-opacity-40 dark:text-red-300 dark:bg-opacity-10",
+                "blue": "text-blue-500 bg-blue-50 border border-blue-500 border-opacity-40 dark:text-blue-300 dark:bg-opacity-10",
+                "white": "text-white bg-gray-800 border border-gray-500 border-opacity-40 dark:text-white dark:bg-opacity-10",
                 "basic": "text-gray-900 bg-transparent",
                 "primary-solid": "text-white bg-brand-500",
                 "success-solid": "text-white bg-green-500",
@@ -37,7 +37,7 @@ export const BadgeAnatomy = defineStyleAnatomy({
             },
             tag: {
                 false: "font-semibold tracking-wide rounded-full",
-                true: "font-semibold rounded-[--radius]",
+                true: "font-semibold border-none rounded-[--radius]",
             },
         },
         defaultVariants: {
@@ -45,9 +45,6 @@ export const BadgeAnatomy = defineStyleAnatomy({
             size: "md",
             tag: false,
         },
-        compoundVariants: [
-            { tag: true, className: "border-none" },
-        ],
     }),
     closeButton: cva([
         "UI-Badge__close-button",
@@ -93,12 +90,9 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>((props, ref) 
 
     return (
         <span
-            className={cn(
-                BadgeAnatomy.root({ size, intent, tag }),
-                className,
-            )}
-            {...rest}
             ref={ref}
+            className={cn(BadgeAnatomy.root({ size, intent, tag }), className)}
+            {...rest}
         >
             {leftIcon && <span className={cn(BadgeAnatomy.icon(), iconClass)} style={{ marginRight: iconSpacing }}>{leftIcon}</span>}
 

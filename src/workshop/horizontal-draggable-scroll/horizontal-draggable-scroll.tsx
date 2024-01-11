@@ -163,7 +163,7 @@ export const HorizontalDraggableScroll = React.forwardRef<HTMLDivElement, Horizo
     }, [])
 
     return (
-        <div className={cn(HorizontalDraggableScrollAnatomy.root(), className)}>
+        <div ref={forwadedRef} className={cn(HorizontalDraggableScrollAnatomy.root(), className)}>
             <div
                 onClick={slideLeft}
                 className={cn(HorizontalDraggableScrollAnatomy.chevronOverlay({ hidden: isScrolledToLeft, side: "left" }), chevronOverlayClass)}
