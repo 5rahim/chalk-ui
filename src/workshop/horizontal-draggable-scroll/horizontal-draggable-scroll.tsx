@@ -20,7 +20,7 @@ const HorizontalDraggableScrollAnatomy = defineStyleAnatomy({
         "flex max-w-full w-full space-x-3 overflow-x-scroll scrollbar-hide scroll",
     ]),
     chevronOverlay: cva([
-        "flex flex-none items-center cursor-pointer hover:text-[--foreground] absolute bg-gradient-to-r from-[--background] z-40",
+        "flex flex-none items-center justify-center cursor-pointer hover:text-[--foreground] absolute bg-gradient-to-r from-[--background] z-40",
         "h-full w-16 opacity-50 hover:opacity-100 transition-opacity",
         "data-[state=hidden]:opacity-0 data-[state=hidden]:pointer-events-none",
         "data-[state=visible]:animate-in data-[state=hidden]:animate-out",
