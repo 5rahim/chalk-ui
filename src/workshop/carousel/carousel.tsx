@@ -287,7 +287,7 @@ export const CarouselPrevious = React.forwardRef<HTMLButtonElement, CarouselButt
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={cn(CarouselAnatomy.chevronIcon(), "", chevronIconClass)}
+                className={cn(CarouselAnatomy.chevronIcon(), chevronIconClass)}
             >
                 <path d="m15 18-6-6 6-6" />
             </svg>}
@@ -320,7 +320,7 @@ export const CarouselNext = React.forwardRef<HTMLButtonElement, CarouselButton>(
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={cn(CarouselAnatomy.chevronIcon(), "", chevronIconClass)}
+                className={cn(CarouselAnatomy.chevronIcon(), chevronIconClass)}
             >
                 <path d="m9 18 6-6-6-6" />
             </svg>}

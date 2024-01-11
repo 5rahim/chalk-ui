@@ -64,7 +64,7 @@
     - [x] Timeline
     - [x] Table
     - [x] Stats
-    - Slider
+    - [x] HorizontalDraggableScroll
 - Layout
     - [x] AppLayout
     - [x] PageHeader

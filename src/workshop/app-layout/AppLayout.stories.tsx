@@ -1,3 +1,4 @@
+import { DatagridDemo } from "../../demo/datagrid/datagrid-demo"
 import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 import { BiInfoCircle, BiReceipt, BiSearch } from "react-icons/bi"
@@ -129,10 +130,16 @@ export const Sidebar: Story = {
                                     <AppLayoutGrid breakBelow={"lg"}>
                                         <div className="col-span-2">
                                             <Card className="p-4">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis
-                                                deserunt
-                                                distinctio earum explicabo, fugiat fugit id placeat quas quasi repudiandae sint totam unde vero
-                                                voluptas!
+                                                <DatagridDemo
+                                                    tableProps={{
+                                                        hideColumns: [
+                                                            { below: 850, hide: ["availability", "price"] },
+                                                            { below: 600, hide: ["_actions"] },
+                                                            { below: 515, hide: ["category"] },
+                                                            { below: 400, hide: ["visible"] },
+                                                        ],
+                                                    }}
+                                                />
                                             </Card>
                                         </div>
                                         <div className="col-span-1 basis-[40rem]">
