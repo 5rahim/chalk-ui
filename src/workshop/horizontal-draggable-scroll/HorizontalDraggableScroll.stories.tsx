@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { Card, CardContent } from "../card"
+import { Card, CardContent } from "@/workshop/card"
 import { HorizontalDraggableScroll } from "./"
 
 const meta = {

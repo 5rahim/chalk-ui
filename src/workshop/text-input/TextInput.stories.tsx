@@ -1,4 +1,4 @@
-import { TextInput } from "../text-input"
+import { TextInput } from "@/workshop/text-input"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {

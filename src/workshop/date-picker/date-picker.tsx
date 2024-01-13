@@ -1,6 +1,6 @@
 "use client"
 
-import { mergeRefs } from "../core/refs"
+import { mergeRefs } from "../core/utils"
 import { cva } from "class-variance-authority"
 import { format, getYear, setYear } from "date-fns"
 import * as React from "react"

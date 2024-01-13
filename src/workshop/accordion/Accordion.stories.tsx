@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../accordion"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/workshop/accordion"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { LineChart } from "../charts"
+import { LineChart } from "@/workshop/charts"
 
 const lineChartData = [
     {

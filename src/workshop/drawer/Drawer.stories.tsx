@@ -1,8 +1,8 @@
-import { TextInput } from "../text-input"
+import { TextInput } from "@/workshop/text-input"
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Button } from "../button"
-import { Drawer } from "../drawer"
+import { Button } from "@/workshop/button"
+import { Drawer } from "@/workshop/drawer"
 
 const meta = {
     title: "Components/Overlays/Drawer",

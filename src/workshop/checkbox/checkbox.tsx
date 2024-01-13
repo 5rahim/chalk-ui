@@ -5,7 +5,7 @@ import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { __CheckboxGroupContext } from "../checkbox"
-import { mergeRefs } from "../core/refs"
+import { mergeRefs } from "../core/utils"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { hiddenInputStyles } from "../input"
 

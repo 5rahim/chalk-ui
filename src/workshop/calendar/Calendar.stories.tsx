@@ -1,7 +1,7 @@
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
 import { fr } from "date-fns/locale"
-import { Calendar } from "../calendar"
+import { Calendar } from "@/workshop/calendar"
 
 
 const meta = {

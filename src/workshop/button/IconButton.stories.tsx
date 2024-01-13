@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { BiSolidSun } from "react-icons/bi"
-import { IconButton } from "../button/icon-button"
+import { IconButton } from "@/workshop/button"
 
 const meta = {
     title: "Components/Forms/IconButton",

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { BiStore } from "react-icons/bi"
-import { Breadcrumbs } from "."
+import { Breadcrumbs } from "@/workshop/breadcrumbs"
 
 const meta = {
     title: "Components/Navigation/Breadcrumbs",

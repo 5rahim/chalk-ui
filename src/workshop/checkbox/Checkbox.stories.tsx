@@ -1,7 +1,7 @@
 import { useArgs } from "@storybook/preview-api"
 import { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
-import { Checkbox, CheckboxProps } from "../checkbox/checkbox"
+import { Checkbox, CheckboxProps } from "@/workshop/checkbox"
 
 const meta = {
     title: "Components/Forms/Checkbox",

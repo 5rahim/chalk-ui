@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { addDays } from "date-fns"
-import { Field, Form } from "."
-import { defineSchema } from "../form/define-schema"
+import { Field, Form } from "@/workshop/form"
+import { defineSchema } from "@/workshop/form"
 
 const testSchema = defineSchema(({ z, presets }) => z.object({
     name: z.string().min(2),

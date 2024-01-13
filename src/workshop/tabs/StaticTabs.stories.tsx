@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { BiReceipt } from "react-icons/bi"
-import { StaticTabs } from "../tabs"
+import { StaticTabs } from "@/workshop/tabs"
 
 const meta = {
     title: "Components/Navigation/StaticTabs",

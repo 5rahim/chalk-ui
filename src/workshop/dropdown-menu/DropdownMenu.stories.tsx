@@ -1,7 +1,14 @@
 import { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
-import { Button } from "../button"
-import { DropdownMenu, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub } from "../dropdown-menu"
+import { Button } from "@/workshop/button"
+import {
+    DropdownMenu,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
+} from "@/workshop/dropdown-menu"
 
 const meta = {
     title: "Components/Overlays/DropdownMenu",

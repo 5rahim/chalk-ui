@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { ScrollArea, ScrollAreaProps } from "../scroll-area/scroll-area"
+import { ScrollArea, ScrollAreaProps } from "@/workshop/scroll-area"
 
 const meta = {
     title: "Components/Data Display/ScrollArea",

@@ -1,4 +1,4 @@
-import { DatagridDemo } from "../../demo/datagrid/datagrid-demo"
+import { DatagridDemo } from "@/demo/datagrid/datagrid-demo"
 import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 import { BiInfoCircle, BiReceipt, BiSearch } from "react-icons/bi"
@@ -13,16 +13,16 @@ import {
     AppSidebar,
     AppSidebarProvider,
     AppSidebarTrigger,
-} from "."
-import { DemoLineChart, DemoNavigationItems } from "../../demo/demo"
-import { Card } from "../card"
-import { Stats } from "../stats"
-import { StaticTabs } from "../tabs"
-import { TextInput } from "../text-input"
-import { Tooltip } from "../tooltip"
-import { VerticalMenu } from "../vertical-menu"
-import { PageHeader } from "../page-header"
-import { Button } from "../button"
+} from "@/workshop/app-layout"
+import { DemoLineChart, DemoNavigationItems } from "@/demo/demo"
+import { Card } from "@/workshop/card"
+import { Stats } from "@/workshop/stats"
+import { StaticTabs } from "@/workshop/tabs"
+import { TextInput } from "@/workshop/text-input"
+import { Tooltip } from "@/workshop/tooltip"
+import { VerticalMenu } from "@/workshop/vertical-menu"
+import { PageHeader } from "@/workshop/page-header"
+import { Button } from "@/workshop/button"
 
 const meta = {
     title: "Components/Layout/AppLayout",

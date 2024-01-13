@@ -1,4 +1,4 @@
-import { Skeleton } from "."
+import { Skeleton } from "@/workshop/skeleton"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {

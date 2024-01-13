@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React from "react"
-import { DatagridDemo } from "../../demo/datagrid/datagrid-demo"
-import { DatagridEditingServerSideValidationDemo } from "../../demo/datagrid/datagrid-editing-server-side-validation-demo"
-import { DatagridServerSideDemo } from "../../demo/datagrid/datagrid-server-side-demo"
-import { Toaster } from "../toaster"
+import { DatagridDemo } from "@/demo/datagrid/datagrid-demo"
+import { DatagridEditingServerSideValidationDemo } from "@/demo/datagrid/datagrid-editing-server-side-validation-demo"
+import { DatagridServerSideDemo } from "@/demo/datagrid/datagrid-server-side-demo"
+import { Toaster } from "@/workshop/toaster"
 
 const meta = {
     title: "Advanced/DataGrid",

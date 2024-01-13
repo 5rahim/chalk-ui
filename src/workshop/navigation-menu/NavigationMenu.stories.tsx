@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { BiBarChart, BiGroup, BiReceipt, BiUser } from "react-icons/bi"
-import { Badge } from "../badge"
-import { NavigationMenu } from "../navigation-menu"
-import { VerticalMenu } from "../vertical-menu"
+import { Badge } from "@/workshop/badge"
+import { NavigationMenu } from "@/workshop/navigation-menu"
+import { VerticalMenu } from "@/workshop/vertical-menu"
 
 const meta = {
     title: "Components/Navigation/NavigationMenu",

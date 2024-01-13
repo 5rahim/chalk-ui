@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react"
 import { BiCalculator, BiCalendarAlt, BiCog, BiReceipt, BiSmile, BiUser } from "react-icons/bi"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from "../command/command"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from "@/workshop/command"
 
 const meta = {
     title: "Components/Overlays/Command",

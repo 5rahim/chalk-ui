@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { BiBarChart, BiLineChart, BiMouseAlt } from "react-icons/bi"
-import { Stats } from "."
+import { Stats } from "@/workshop/stats"
 
 const meta = {
     title: "Components/Data Display/Stats",

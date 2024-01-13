@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { CloseButton } from "../button/close-button"
+import { CloseButton } from "@/workshop/button"
 
 const meta = {
     title: "Components/Forms/CloseButton",

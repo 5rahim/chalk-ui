@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { BiAdjust } from "react-icons/bi"
-import { Button } from "../button/button"
+import { Button } from "@/workshop/button"
 
 
 const meta = {

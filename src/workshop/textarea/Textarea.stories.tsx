@@ -1,4 +1,4 @@
-import { Textarea } from "../textarea"
+import { Textarea } from "@/workshop/textarea"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {

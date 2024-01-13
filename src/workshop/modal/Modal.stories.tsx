@@ -1,8 +1,8 @@
-import { TextInput } from "../text-input"
+import { TextInput } from "@/workshop/text-input"
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Button } from "../button"
-import { Modal } from "../modal"
+import { Button } from "@/workshop/button"
+import { Modal } from "@/workshop/modal"
 
 const meta = {
     title: "Components/Overlays/Modal",

@@ -1,7 +1,6 @@
 "use client"
 import { cva } from "class-variance-authority"
 import * as React from "react"
-import { CarouselAnatomy } from "../carousel"
 import { useIsomorphicLayoutEffect, useUpdateEffect } from "../core/hooks"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { useDraggableScroll } from "./use-draggable-scroll"
@@ -177,7 +176,7 @@ export const HorizontalDraggableScroll = React.forwardRef<HTMLDivElement, Horizo
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className={cn(CarouselAnatomy.chevronIcon(), chevronIconClass)}
+                    className={cn(HorizontalDraggableScrollAnatomy.chevronIcon(), chevronIconClass)}
                 >
                     <path d="m15 18-6-6 6-6" />
                 </svg>
@@ -203,7 +202,7 @@ export const HorizontalDraggableScroll = React.forwardRef<HTMLDivElement, Horizo
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className={cn(CarouselAnatomy.chevronIcon(), chevronIconClass)}
+                    className={cn(HorizontalDraggableScrollAnatomy.chevronIcon(), chevronIconClass)}
                 >
                     <path d="m9 18 6-6-6-6" />
                 </svg>

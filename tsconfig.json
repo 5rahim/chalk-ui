@@ -27,6 +27,9 @@
       "@/*": [
         "./src/*"
       ],
+      "@internals/ds": [
+        "./src/design-system/build"
+      ],
       "contentlayer/generated": [
         "./.contentlayer/generated"
       ]

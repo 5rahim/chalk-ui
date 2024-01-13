@@ -1,6 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import _isObject from "lodash/isObject"
-import _isString from "lodash/isString"
 import { FieldValues, get } from "react-hook-form"
 import * as z from "zod"
 
@@ -138,8 +136,8 @@ export function getZodParsedDescription<T extends {
     [p: string]: any
 }>(schema: z.AnyZodObject, key: string): T | undefined {
     const obj = getZodDescriptions(schema)
-    const parsedDescription = _isString(obj[key]) ? JSON.parse(obj[key]) : undefined
-    if (_isObject(parsedDescription)) {
+    const parsedDescription = (typeof obj[key] === "string" || obj[key] instanceof String) ? JSON.parse(obj[key]) : undefined
+    if (parsedDescription.constructor == Object) {
         return parsedDescription as T
     }
     return undefined

@@ -1,8 +1,8 @@
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
-import { Button } from "../button"
-import { CurrencyInput } from "../currency-input"
+import { Button } from "@/workshop/button"
+import { CurrencyInput } from "@/workshop/currency-input"
 
 const meta = {
     title: "Components/Forms/CurrencyInput",

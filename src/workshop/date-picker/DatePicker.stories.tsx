@@ -1,9 +1,9 @@
-import { Button } from "../button"
+import { Button } from "@/workshop/button"
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
 import { fr } from "date-fns/locale"
 import * as React from "react"
-import { DatePicker } from "../date-picker"
+import { DatePicker } from "@/workshop/date-picker"
 
 const meta = {
     title: "Components/Forms/DatePicker",

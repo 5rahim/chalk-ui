@@ -1,6 +1,6 @@
-import { Button } from "../button"
+import { Button } from "@/workshop/button"
 import * as React from "react"
-import { Disclosure, DisclosureContent, DisclosureItem, DisclosureTrigger } from "../disclosure"
+import { Disclosure, DisclosureContent, DisclosureItem, DisclosureTrigger } from "@/workshop/disclosure"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {

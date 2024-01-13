@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { BiLock, BiReply, BiUser } from "react-icons/bi"
-import { Timeline } from "."
-import { Badge } from "../badge"
+import { Timeline } from "@/workshop/timeline"
+import { Badge } from "@/workshop/badge"
 
 const meta = {
     title: "Components/Data Display/Timeline",

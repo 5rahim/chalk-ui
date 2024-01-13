@@ -1,6 +1,6 @@
 import { useArgs } from "@storybook/preview-api"
 import * as React from "react"
-import { Select } from "../select"
+import { Select } from "@/workshop/select"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {

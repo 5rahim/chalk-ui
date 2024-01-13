@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { Pagination, PaginationEllipsis, PaginationItem, PaginationProps, PaginationTrigger } from "../pagination"
+import { Pagination, PaginationEllipsis, PaginationItem, PaginationTrigger } from "@/workshop/pagination"
 
 const meta = {
     title: "Components/Navigation/Pagination",

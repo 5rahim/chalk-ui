@@ -1,6 +1,6 @@
 import { useArgs } from "@storybook/preview-api"
 import * as React from "react"
-import { Switch } from "../switch/switch"
+import { Switch } from "@/workshop/switch/switch"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {

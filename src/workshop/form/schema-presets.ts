@@ -1,10 +1,5 @@
-import _isDate from "lodash/isDate"
 import { z } from "zod"
 
-/**
- * @internal
- * createTypesafeFormSchema presets
- */
 export const schemaPresets = {
     name: z.string().min(2).trim(),
     select: z.string().min(1),
@@ -26,8 +21,6 @@ export const schemaPresets = {
     filesOrEmpty: z
         .array(z.custom<File>()).min(0)
         .refine((files) => files.every((file) => file instanceof File), { message: "Expected a file" }),
-    dateRangePicker: z
-        .object({ from: z.date(), to: z.date() })
-        .refine(data => _isDate(data.from) && _isDate(data.to), { message: "Incorrect dates" }),
+    dateRangePicker: z.object({ from: z.date(), to: z.date() }),
     datePicker: z.date(),
 }

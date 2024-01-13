@@ -1,4 +1,4 @@
-import { Avatar } from "../avatar/avatar"
+import { Avatar } from "@/workshop/avatar"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {

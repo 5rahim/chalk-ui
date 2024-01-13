@@ -1,8 +1,8 @@
-import { Button } from "../button"
+import { Button } from "@/workshop/button"
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
-import { CheckboxGroup } from "../checkbox/checkbox-group"
+import { CheckboxGroup } from "@/workshop/checkbox"
 
 const meta = {
     title: "Components/Forms/CheckboxGroup",

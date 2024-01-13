@@ -1,6 +1,6 @@
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
-import { PhoneInput } from "../phone-input"
+import { PhoneInput } from "@/workshop/phone-input"
 
 const meta = {
     title: "Components/Forms/PhoneInput",

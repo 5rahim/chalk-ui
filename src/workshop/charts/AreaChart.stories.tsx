@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { AreaChart } from "."
+import { AreaChart } from "@/workshop/charts"
 
 const areaChartData = [
     {

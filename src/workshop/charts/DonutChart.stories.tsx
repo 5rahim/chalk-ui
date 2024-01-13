@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { DonutChart } from "."
+import { DonutChart } from "@/workshop/charts"
 
 const cities = [
     {

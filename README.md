@@ -35,7 +35,7 @@ keeping a consistent design language and API.
 | Fully-featured DataGrid                                        | ✅        | ❌         | ❌        |
 | Customizable                                                   | ✅        | ✅         | ✅        |
 | Opinionated                                                    | Yes      | No        | No       |
-| Components                                                     | 54       | 46        | 28       |
+| Components                                                     | 52       | 46        | 28       |
 
 
 ## Documentation

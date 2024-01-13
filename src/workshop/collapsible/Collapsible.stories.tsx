@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
-import { Button } from "../button"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../collapsible"
+import { Button } from "@/workshop/button"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/workshop/collapsible"
 
 const meta = {
     title: "Components/Data Display/Collapsible",

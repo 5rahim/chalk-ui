@@ -1,9 +1,9 @@
-import { cn } from "../core/styling"
-import { Button } from "../button"
+import { cn } from "@/workshop/core/styling"
+import { Button } from "@/workshop/button"
 import * as React from "react"
 import { useArgs } from "@storybook/preview-api"
 import { BiCheck } from "react-icons/bi"
-import { RadioGroup } from "../radio-group"
+import { RadioGroup } from "@/workshop/radio-group"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {

@@ -1,6 +1,5 @@
 import { Row, Table } from "@tanstack/react-table"
 import equal from "fast-deep-equal"
-import flatten from "lodash/flatten"
 import * as React from "react"
 import { AnyZodObject, ZodIssue } from "zod"
 import { DataGridEditingValueUpdater } from "./datagrid-cell-input-field"
@@ -103,7 +102,7 @@ export function useDataGridEditing<T extends Record<string, any>>(props: Props<T
     // Keep track of editable cells (cells whose columns are editable)
     const editableCells = React.useMemo(() => {
         if (rows.length > 0) {
-            return flatten(rows.map(row => row.getVisibleCells().filter(cell => !!editableColumns.find(col => col.id === cell.column.id)?.id)))
+            return rows.flatMap(row => row.getVisibleCells().filter(cell => !!editableColumns.find(col => col.id === cell.column.id)?.id))
         }
         return []
     }, [rows])

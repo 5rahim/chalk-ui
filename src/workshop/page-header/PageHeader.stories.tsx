@@ -1,7 +1,7 @@
-import { Avatar } from "../avatar"
-import { PageHeader } from "."
+import { Avatar } from "@/workshop/avatar"
+import { PageHeader } from "@/workshop/page-header"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Button } from "../button"
+import { Button } from "@/workshop/button"
 
 const meta = {
     title: "Components/Layout/PageHeader",

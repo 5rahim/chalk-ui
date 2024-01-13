@@ -1,8 +1,8 @@
-import { Button } from "../button"
+import { Button } from "@/workshop/button"
 import { useArgs } from "@storybook/preview-api"
 import { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
-import { Autocomplete } from "../autocomplete/autocomplete"
+import { Autocomplete } from "@/workshop/autocomplete/autocomplete"
 
 const options = [
     { value: "us", label: "United States" },

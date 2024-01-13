@@ -8,9 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006 -h 127.0.0.1",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "snapshot": "tsx scripts/snapshot.ts"
   },
   "dependencies": {
+    "@codesandbox/sandpack-react": "^2.11.2",
     "@faker-js/faker": "^8.2.0",
     "@gfpacheco/storybook-tailwind-dark-mode": "^1.0.25",
     "@googlemaps/js-api-loader": "^1.16.2",
@@ -59,6 +61,7 @@
     "embla-carousel-autoplay": "8.0.0-rc15",
     "embla-carousel-react": "8.0.0-rc15",
     "fast-deep-equal": "^3.1.3",
+    "fs-extra": "^11.2.0",
     "geist": "^1.1.0",
     "jotai": "^2.1.0",
     "libphonenumber-js": "^1.10.53",
@@ -84,6 +87,7 @@
     "tailwind-merge": "^1.12.0",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
+    "tsup": "^8.0.1",
     "use-debounce": "^10.0.0",
     "vaul": "^0.2.0",
     "zod": "^3.21.4"
@@ -98,7 +102,8 @@
     "@storybook/nextjs": "^7.6.6",
     "@storybook/react": "^7.6.6",
     "@storybook/test": "^7.6.6",
-    "@types/googlemaps": "^3.43.3",
+    "@types/fs-extra": "^11.0.4",
+    "@types/google.maps": "^3.54.10",
     "@types/lodash.template": "^4.5.1",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -120,6 +125,7 @@
     "shiki": "^0.12.1",
     "storybook": "^7.6.6",
     "tailwindcss": "^3.4.0",
+    "tsx": "^4.7.0",
     "typescript": "^5",
     "unist-builder": "3.0.0",
     "unist-util-visit": "^4.1.2"

@@ -1,17 +1,14 @@
 "use client"
 
-import { NumberInputAnatomy } from "@/workshop/number-input"
 import { cva } from "class-variance-authority"
 import useEmblaCarousel, {
     type EmblaCarouselType as CarouselApi,
     type EmblaOptionsType as CarouselOptions,
     type EmblaPluginType as CarouselPlugin,
 } from "embla-carousel-react"
-import { ArrowRight } from "lucide-react"
 import * as React from "react"
 import { IconButton } from "../button"
-
-import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { cn, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy

@@ -2,8 +2,8 @@ import { useArgs } from "@storybook/preview-api"
 import { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 import { BiMapPin } from "react-icons/bi"
-import { Button } from "../button"
-import { Combobox } from "../combobox/combobox"
+import { Button } from "@/workshop/button"
+import { Combobox } from "@/workshop/combobox"
 
 const meta = {
     title: "Components/Forms/Combobox",

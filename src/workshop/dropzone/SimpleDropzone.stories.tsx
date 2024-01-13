@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { SimpleDropzone } from "./simple-dropzone"
+import { SimpleDropzone } from "@/workshop/dropzone"
 
 const meta = {
     title: "Components/Forms/SimpleDropzone",

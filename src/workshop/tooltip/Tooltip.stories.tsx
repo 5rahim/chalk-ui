@@ -1,4 +1,4 @@
-import { Tooltip } from "."
+import { Tooltip } from "@/workshop/tooltip"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {

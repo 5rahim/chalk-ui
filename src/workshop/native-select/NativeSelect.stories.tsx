@@ -1,4 +1,4 @@
-import { NativeSelect } from "../native-select/native-select"
+import { NativeSelect } from "@/workshop/native-select"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { BarChart, BarChartProps } from "."
+import { BarChart } from "@/workshop/charts"
 
 const barChartData2 = [
     {

@@ -1,4 +1,4 @@
-import { mergeRefs } from "../core/refs"
+import { mergeRefs } from "../core/utils"
 import { hiddenInputStyles } from "../input"
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
 import { cva, VariantProps } from "class-variance-authority"

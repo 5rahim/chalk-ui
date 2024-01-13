@@ -3,7 +3,6 @@
 import { Autocomplete, AutocompleteOption, AutocompleteProps } from "../autocomplete"
 import { LoaderOptions } from "@googlemaps/js-api-loader"
 import * as React from "react"
-import { extractBasicFieldProps } from "../basic-field"
 import { GoogleMapsAutocompletionRequest, useGoogleMapsAutocomplete } from "./use-address-autocomplete"
 
 /* -------------------------------------------------------------------------------------------------
@@ -54,7 +53,7 @@ export interface AddressInputProps extends Omit<AutocompleteProps, "options" | "
 
 export const AddressInput = React.forwardRef<HTMLInputElement, AddressInputProps>((props, ref) => {
 
-    const [{
+    const {
         children,
         className,
         autocompletionRequest,
@@ -68,7 +67,7 @@ export const AddressInput = React.forwardRef<HTMLInputElement, AddressInputProps
         onTextChange,
         type = "options",
         ...rest
-    }, basicFieldProps] = extractBasicFieldProps<AddressInputProps>(props, React.useId())
+    } = props
 
     const { suggestions, fetchSuggestions, isFetching } = useGoogleMapsAutocomplete({
         apiKey: apiKey,
@@ -96,7 +95,6 @@ export const AddressInput = React.forwardRef<HTMLInputElement, AddressInputProps
             autoFilter={false}
             isFetching={isFetching}
             type={type}
-            {...basicFieldProps}
             {...rest}
         />
     )

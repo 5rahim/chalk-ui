@@ -1,11 +1,11 @@
 "use client"
 
-import { cn } from "../core/styling"
 import { zodResolver } from "@hookform/resolvers/zod"
-import _isEmpty from "lodash/isEmpty"
 import * as React from "react"
 import { FormProvider, SubmitErrorHandler, SubmitHandler, useForm, UseFormProps, UseFormReturn, WatchObserver } from "react-hook-form"
 import { z, ZodObject } from "zod"
+import { cn } from "../core/styling"
+import { isEmpty } from "../core/utils"
 import { getZodDefaults } from "./zod-resolver"
 
 /* -------------------------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ export const Form = <Schema extends z.ZodObject<z.ZodRawShape>>(props: FormProps
     } = props
 
     const defaultValues = React.useMemo(() => {
-        if (_isEmpty(getZodDefaults(schema)) && _isEmpty(_defaultValues)) return undefined
+        if (isEmpty(getZodDefaults(schema)) && isEmpty(_defaultValues)) return undefined
         return {
             ...getZodDefaults(schema),
             ..._defaultValues,
@@ -123,7 +123,7 @@ export const Form = <Schema extends z.ZodObject<z.ZodRawShape>>(props: FormProps
     React.useImperativeHandle(mRef, () => methods, [mRef, methods])
 
     React.useEffect(() => {
-        let subscription: any
+        let subscription: ReturnType<typeof methods.watch> | undefined
         if (onChange) {
             subscription = methods.watch(onChange)
         }

@@ -1,8 +1,8 @@
-import { Button } from "../button"
+import { Button } from "@/workshop/button"
 import { useArgs } from "@storybook/preview-api"
 import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
-import { NumberInput } from "../number-input"
+import { NumberInput } from "@/workshop/number-input"
 
 const meta = {
     title: "Components/Forms/NumberInput",

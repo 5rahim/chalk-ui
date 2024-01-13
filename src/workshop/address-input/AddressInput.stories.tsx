@@ -1,8 +1,8 @@
 import { useArgs } from "@storybook/preview-api"
 import { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
-import { AddressInput } from "../address-input"
-import { Button } from "../button"
+import { AddressInput } from "@/workshop/address-input"
+import { Button } from "@/workshop/button"
 
 const meta = {
     title: "Components/Forms/AddressInput",

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { Alert } from "."
+import { Alert } from "@/workshop/alert"
 
 const meta = {
     title: "Components/Data Display/Alert",

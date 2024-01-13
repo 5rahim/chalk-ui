@@ -1,6 +1,6 @@
 "use client"
 
-import { mergeRefs } from "../core/refs"
+import { mergeRefs } from "../core/utils"
 import { hiddenInputStyles } from "../input"
 import * as SwitchPrimitive from "@radix-ui/react-switch"
 import { cva, VariantProps } from "class-variance-authority"

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { HoverCard } from "."
+import { HoverCard } from "@/workshop/hover-card"
 
 const meta = {
     title: "Components/Overlays/HoverCard",
