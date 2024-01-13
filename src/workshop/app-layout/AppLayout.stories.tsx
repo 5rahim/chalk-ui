@@ -14,7 +14,7 @@ import {
     AppSidebarProvider,
     AppSidebarTrigger,
 } from "@/workshop/app-layout"
-import { DemoLineChart, DemoNavigationItems } from "@/demo/demo"
+import { DemoLineChart, DemoNavigationItems } from "@/demo/demo-data"
 import { Card } from "@/workshop/card"
 import { Stats } from "@/workshop/stats"
 import { StaticTabs } from "@/workshop/tabs"

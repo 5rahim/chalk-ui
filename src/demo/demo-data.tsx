@@ -1,6 +1,6 @@
-import { LineChart } from "../workshop/charts"
-import { Badge } from "../workshop/badge"
-import { VerticalMenu } from "../workshop/vertical-menu"
+import { LineChart } from "@/workshop/charts"
+import { Badge } from "@/workshop/badge"
+import { VerticalMenu } from "@/workshop/vertical-menu"
 import React from "react"
 import { BiBarChart, BiReceipt } from "react-icons/bi"
 

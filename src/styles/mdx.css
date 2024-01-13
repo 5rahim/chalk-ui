@@ -33,7 +33,7 @@
 }
 
 [data-rehype-pretty-code-fragment] [data-line-numbers] > .line::before {
-    @apply text-zinc-50/40 text-xs;
+    @apply text-gray-50 text-xs;
     counter-increment: line;
     content: counter(line);
     display: inline-block;

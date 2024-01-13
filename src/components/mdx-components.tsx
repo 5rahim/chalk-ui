@@ -1,10 +1,5 @@
 "use client"
 
-import { cn } from "@/workshop/core/styling"
-import * as React from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { useMDXComponent } from "next-contentlayer/hooks"
 // import { NpmCommands } from "types/unist"
 //
 // import { Event } from "@/lib/events"
@@ -13,7 +8,10 @@ import { useMDXComponent } from "next-contentlayer/hooks"
 // import { Callout } from "@/components/callout"
 // import { CodeBlockWrapper } from "@/components/code-block-wrapper"
 // import { ComponentExample } from "@/components/component-example"
-// import { ComponentPreview } from "@/components/component-preview"
+import { ComponentPreview } from "@/components/component-preview"
+import { cn } from "@/workshop/core/styling"
+import { useMDXComponent } from "next-contentlayer/hooks"
+import * as React from "react"
 // import { ComponentSource } from "@/components/component-source"
 // import { CopyButton, CopyNpmCommandButton } from "@/components/copy-button"
 // import { FrameworkDocs } from "@/components/framework-docs"
@@ -199,7 +197,7 @@ const components = {
     // ),
     // Image,
     // Callout,
-    // ComponentPreview,
+    ComponentPreview,
     // ComponentExample,
     // ComponentSource,
     // AspectRatio,

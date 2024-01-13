@@ -1,16 +1,13 @@
-import path                        from "path"
-import {
-    defineDocumentType,
-    defineNestedType,
-    makeSource,
-}                                  from "contentlayer/source-files"
-import rehypeAutolinkHeadings      from "rehype-autolink-headings"
-import rehypePrettyCode            from "rehype-pretty-code"
-import rehypeSlug                  from "rehype-slug"
-import {codeImport}                from "remark-code-import"
-import remarkGfm                   from "remark-gfm"
-import {getHighlighter, loadTheme} from "shiki"
-import {visit}                     from "unist-util-visit"
+import {defineDocumentType, defineNestedType, makeSource,} from "contentlayer/source-files"
+import rehypeAutolinkHeadings                              from "rehype-autolink-headings"
+import rehypePrettyCode                                    from "rehype-pretty-code"
+import rehypeSlug                                          from "rehype-slug"
+import {codeImport}                                        from "remark-code-import"
+import remarkGfm                                           from "remark-gfm"
+import {visit}                                             from "unist-util-visit"
+import {rehypeComponent}                                   from "./lib/rehype-component";
+import {getHighlighter, loadTheme}                         from "shiki";
+import path                                                from "path";
 
 /** @type {import('contentlayer/source-files').ComputedFields} */
 const computedFields = {
@@ -83,7 +80,7 @@ export default makeSource({
         remarkPlugins: [remarkGfm, codeImport],
         rehypePlugins: [
             rehypeSlug,
-            // rehypeComponent,
+            rehypeComponent,
             () => (tree) => {
                 visit(tree, (node) => {
                     if (node?.type === "element" && node?.tagName === "pre") {
@@ -111,25 +108,25 @@ export default makeSource({
             [
                 rehypePrettyCode,
                 {
-                    // getHighlighter: async () => {
-                    //     const theme = await loadTheme(
-                    //         path.join(process.cwd(), "/lib/themes/light.json")
-                    //     )
-                    //     return await getHighlighter({ theme })
-                    // },
-                    // onVisitLine(node) {
-                    //     // Prevent lines from collapsing in `display: grid` mode, and allow empty
-                    //     // lines to be copy/pasted
-                    //     if (node.children.length === 0) {
-                    //         node.children = [{ type: "text", value: " " }]
-                    //     }
-                    // },
-                    // onVisitHighlightedLine(node) {
-                    //     node.properties.className.push("line--highlighted")
-                    // },
-                    // onVisitHighlightedWord(node) {
-                    //     node.properties.className = ["word--highlighted"]
-                    // },
+                    getHighlighter: async () => {
+                        const theme = await loadTheme(
+                            path.join(process.cwd(), "/lib/themes/dark.json")
+                        )
+                        return await getHighlighter({theme})
+                    },
+                    onVisitLine(node) {
+                        // Prevent lines from collapsing in `display: grid` mode, and allow empty
+                        // lines to be copy/pasted
+                        if (node.children.length === 0) {
+                            node.children = [{type: "text", value: " "}]
+                        }
+                    },
+                    onVisitHighlightedLine(node) {
+                        node.properties.className.push("line--highlighted")
+                    },
+                    onVisitHighlightedWord(node) {
+                        node.properties.className = ["word--highlighted"]
+                    },
                 },
             ],
             () => (tree) => {
