@@ -47,7 +47,7 @@ export const decorators = [
             dark: "dark",
         },
         defaultTheme: "light",
-        attributeName: "data-mode",
+        attributeName: "class",
     }),
     withBg,
 ]

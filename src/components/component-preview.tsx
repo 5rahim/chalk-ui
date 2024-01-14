@@ -31,7 +31,7 @@ export function ComponentPreview({
 
         if (!Component) {
             return (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-[--foreground]">
                     Component{" "}
                     <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">
                         {name}
@@ -61,7 +61,7 @@ export function ComponentPreview({
             {...props}
         >
             <Tabs
-                className="border rounded-[--radius]"
+                className=""
                 defaultValue="preview"
             >
                 <TabsList className="flex border-b">
@@ -83,7 +83,7 @@ export function ComponentPreview({
                     >
                         <div
                             className={cn(
-                                "preview flex min-h-[350px] w-full justify-center p-10",
+                                "preview flex min-h-[200px] w-full justify-center p-10",
                                 {
                                     "items-center": align === "center",
                                     "items-start": align === "start",
@@ -96,7 +96,7 @@ export function ComponentPreview({
                     </React.Suspense>
                 </TabsContent>
                 <TabsContent value="code">
-                    <div className="flex flex-col space-y-4 p-2 lg:p-10">
+                    <div className="flex flex-col space-y-4 py-4">
                         <div className="w-full rounded-[--radius] [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">
                             {Code}
                         </div>

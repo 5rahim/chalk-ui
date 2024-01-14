@@ -9,6 +9,7 @@ const config: StorybookConfig = {
         "@storybook/addon-styling",
         "@storybook/addon-onboarding",
         "@storybook/addon-interactions",
+        "@storybook/addon-mdx-gfm",
     ],
     framework: {
         name: "@storybook/nextjs",

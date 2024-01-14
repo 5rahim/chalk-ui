@@ -46,7 +46,8 @@
 
     .dark, [data-mode="dark"] {
         --foreground: theme('colors.gray.200');
-        --background: #121212;
+        /*--background: #121212;*/
+        --background: #0c0c0c;
 
         --brand: theme('colors.brand.400');
         --slate: theme('colors.slate.400');
@@ -72,7 +73,8 @@
         --pink: theme('colors.pink.400');
         --rose: theme('colors.rose.400');
 
-        --border: theme('colors.gray.700');
+        /*--border: theme('colors.gray.700');*/
+        --border: #313131;
         --ring: theme('colors.brand.200');
 
         --muted: theme('colors.gray.400');

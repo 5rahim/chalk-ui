@@ -2,7 +2,7 @@
   "name": "Lambda Studio — Fleet Dark",
   "semanticHighlighting": true,
   "colors": {
-    "editorLink.activeForeground": "#de91d7",
+    "editorLink.activeForeground": "#a391de",
     "foreground": "#fff8",
     "list.highlightForeground": "#fff",
     "textLink.foreground": "#fff",
@@ -74,7 +74,7 @@
       "foreground": "#7ecbc7"
     },
     "string": {
-      "foreground": "#de91d7"
+      "foreground": "#a391de"
     },
     "selfKeyword": {
       "foreground": "#c97b89"
@@ -220,7 +220,7 @@
         "string"
       ],
       "settings": {
-        "foreground": "#de91d7"
+        "foreground": "#a391de"
       }
     },
     {
