@@ -1,8 +1,8 @@
 import { toast } from "sonner"
-import { DataGridWithApi, defineDataGridColumns, useDataGrid } from "../../workshop/datagrid"
-import { defineSchema } from "../../workshop/form"
-import { NumberInput } from "../../workshop/number-input"
-import { TextInput } from "../../workshop/text-input"
+import { DataGridWithApi, defineDataGridColumns, useDataGrid } from "@/workshop/datagrid"
+import { defineSchema } from "@/workshop/form"
+import { NumberInput } from "@/workshop/number-input"
+import { TextInput } from "@/workshop/text-input"
 import * as React from "react"
 import { newProduct, Product, range } from "./datagrid-fake-api"
 

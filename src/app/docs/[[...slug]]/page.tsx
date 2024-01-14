@@ -84,13 +84,6 @@ export default async function DocPage({ params }: DocPageProps) {
     return (
         <main className="relative p-8 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
             <div className="mx-auto w-full min-w-0">
-                <div className="mb-4 flex items-center space-x-1 text-sm text-[--foreground]">
-                    <div className="overflow-hidden text-ellipsis whitespace-nowrap">
-                        Docs
-                    </div>
-                    <ChevronRightIcon className="h-4 w-4" />
-                    <div className="font-medium text-foreground">{doc.title}</div>
-                </div>
                 <div className="space-y-2">
                     <h1 className={cn("scroll-m-20 text-4xl font-bold tracking-tight")}>
                         {doc.title}

@@ -2,12 +2,12 @@ import { ColumnFiltersState, ColumnSort, PaginationState, SortingState } from "@
 import _ from "lodash"
 import React, { startTransition, useCallback, useEffect, useMemo, useState } from "react"
 import { BiBasket, BiCalendar, BiCheck, BiDotsHorizontal, BiEditAlt, BiFolder, BiLowVision } from "react-icons/bi"
-import { Badge } from "../../workshop/badge"
-import { IconButton } from "../../workshop/button"
-import { defineDataGridColumns, DataGrid } from "../../workshop/datagrid"
-import { DropdownMenu, DropdownMenuItem } from "../../workshop/dropdown-menu"
-import { defineSchema } from "../../workshop/form"
-import { TextInput } from "../../workshop/text-input"
+import { Badge } from "@/workshop/badge"
+import { IconButton } from "@/workshop/button"
+import { defineDataGridColumns, DataGrid } from "@/workshop/datagrid"
+import { DropdownMenu, DropdownMenuItem } from "@/workshop/dropdown-menu"
+import { defineSchema } from "@/workshop/form"
+import { TextInput } from "@/workshop/text-input"
 import { newProduct, Product, range } from "./datagrid-fake-api"
 
 interface DataGridServerSideTestProps {

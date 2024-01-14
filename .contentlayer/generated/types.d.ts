@@ -15,6 +15,7 @@ export type Doc = {
     type: "Doc"
     title: string
     description: string
+    componentName?: string | undefined
     published: boolean
     links?: LinksProperties | undefined
     featured: boolean
