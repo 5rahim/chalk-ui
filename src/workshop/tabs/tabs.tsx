@@ -15,19 +15,19 @@ export const TabsAnatomy = defineStyleAnatomy({
     ]),
     list: cva([
         "UI-Tabs__list",
-        "inline-flex h-12 items-center justify-center rounded-md w-full",
+        "inline-flex h-12 items-center justify-center w-full",
     ]),
     trigger: cva([
-        "UI-Tabs__trigger",
-        "inline-flex h-full items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm text-[--muted] font-medium ring-offset-[--background]",
+        "UI-Tabs__trigger appearance-none shadow-none",
+        "inline-flex h-full items-center justify-center whitespace-nowrap px-3 py-1.5 text-sm text-[--muted] font-medium ring-offset-[--background]",
         "transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         "disabled:pointer-events-none disabled:opacity-50",
         "border-transparent border-b-2 -mb-px",
-        "data-[state=active]:border-[--brand] data-[state=active]:bg-[--subtle] data-[state=active]:text-[--foreground] data-[state=active]:shadow-sm",
+        "data-[state=active]:border-[--brand] data-[state=active]:text-[--foreground]",
     ]),
     content: cva([
         "UI-Tabs__content",
-        "mt-2 ring-offset-[--background]",
+        "ring-offset-[--background]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--ring] focus-visible:ring-offset-2",
     ]),
 })

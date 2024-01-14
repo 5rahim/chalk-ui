@@ -1,4 +1,5 @@
 import { Mdx } from "@/components/mdx-components"
+import { DashboardTableOfContents } from "@/components/toc"
 import { cn } from "@/workshop/core/styling"
 import { ChevronRightIcon } from "@radix-ui/react-icons"
 import { allDocs } from "contentlayer/generated"
@@ -6,6 +7,8 @@ import { allDocs } from "contentlayer/generated"
 import "@/styles/mdx.css"
 import { notFound } from "next/navigation"
 import Balancer from "react-wrap-balancer"
+import { getTableOfContents } from "../../../../lib/toc"
+import { ScrollArea } from "@/workshop/scroll-area"
 
 
 interface DocPageProps {
@@ -76,10 +79,10 @@ export default async function DocPage({ params }: DocPageProps) {
         notFound()
     }
 
-    // const toc = await getTableOfContents(doc.body.raw)
+    const toc = await getTableOfContents(doc.body.raw)
 
     return (
-        <main className="relative">
+        <main className="relative p-8 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
             <div className="mx-auto w-full min-w-0">
                 <div className="mb-4 flex items-center space-x-1 text-sm text-muted-foreground">
                     <div className="overflow-hidden text-ellipsis whitespace-nowrap">
@@ -129,6 +132,17 @@ export default async function DocPage({ params }: DocPageProps) {
                 </div>
                 {/*<DocsPager doc={doc} />*/}
             </div>
+            {doc.toc && (
+                <div className="hidden text-sm xl:block">
+                    <div className="sticky top-16 -mt-10 pt-4">
+                        <ScrollArea className="pb-10">
+                            <div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12">
+                                <DashboardTableOfContents toc={toc} />
+                            </div>
+                        </ScrollArea>
+                    </div>
+                </div>
+            )}
         </main>
     )
 }

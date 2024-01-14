@@ -3,6 +3,7 @@
 import { Bank } from "@/bank"
 import { cn } from "@/workshop/core/styling"
 import { LoadingSpinner } from "@/workshop/loading-spinner"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/workshop/tabs"
 import * as React from "react"
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -59,21 +60,51 @@ export function ComponentPreview({
             className={cn("group relative", className)}
             {...props}
         >
-            <React.Suspense
-                fallback={
-                    <div className="flex items-center text-sm text-muted-foreground">
-                        <LoadingSpinner />
-                        Loading...
-                    </div>
-                }
+            <Tabs
+                className="border rounded-[--radius]"
+                defaultValue="preview"
             >
-                {Preview}
-            </React.Suspense>
-            <div className="flex flex-col space-y-4">
-                <div className="w-full rounded-[--radius] [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">
-                    {Code}
-                </div>
-            </div>
+                <TabsList className="flex border-b">
+                    <TabsTrigger value="preview">
+                        Preview
+                    </TabsTrigger>
+                    <TabsTrigger value="code">
+                        Code
+                    </TabsTrigger>
+                </TabsList>
+                <TabsContent value="preview">
+                    <React.Suspense
+                        fallback={
+                            <div className="w-full">
+                                <LoadingSpinner />
+                                Loading...
+                            </div>
+                        }
+                    >
+                        <div
+                            className={cn(
+                                "preview flex min-h-[350px] w-full justify-center p-10",
+                                {
+                                    "items-center": align === "center",
+                                    "items-start": align === "start",
+                                    "items-end": align === "end",
+                                },
+                            )}
+                        >
+                            {Preview}
+                        </div>
+                    </React.Suspense>
+                </TabsContent>
+                <TabsContent value="code">
+                    <div className="flex flex-col space-y-4 p-2 lg:p-10">
+                        <div className="w-full rounded-[--radius] [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">
+                            {Code}
+                        </div>
+                    </div>
+                </TabsContent>
+            </Tabs>
+
+
         </div>
     )
 }

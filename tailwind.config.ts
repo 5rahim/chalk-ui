@@ -4,10 +4,10 @@ const config: Config = {
     darkMode: ["class", "[data-mode=\"dark\"]"],
     content: [
         "./index.html",
-        "./src/pages/**/*.{ts,tsx}",
-        "./src/components/**/*.{ts,tsx}",
-        "./src/workshop/**/*.{ts,tsx}",
-        "./src/app/**/*.{ts,tsx}",
+        "./src/pages/**/*.{ts,tsx,mdx}",
+        "./src/components/**/*.{ts,tsx,mdx}",
+        "./src/workshop/**/*.{ts,tsx,mdx}",
+        "./src/app/**/*.{ts,tsx,mdx}",
     ],
     theme: {
         container: {
