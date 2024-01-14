@@ -53,10 +53,13 @@ export const ModalAnatomy = defineStyleAnatomy({
  * Modal
  * -----------------------------------------------------------------------------------------------*/
 
-export interface ModalProps extends Omit<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>, "modal">,
-    Pick<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
-        "onOpenAutoFocus" | "onCloseAutoFocus" | "onEscapeKeyDown" | "onPointerDownCapture" | "onInteractOutside">,
-    ComponentAnatomy<typeof ModalAnatomy> {
+export type ModalProps =
+    Omit<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>, "modal">
+    &
+    Pick<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>, "onOpenAutoFocus" | "onCloseAutoFocus" | "onEscapeKeyDown" | "onPointerDownCapture" | "onInteractOutside">
+    &
+    ComponentAnatomy<typeof ModalAnatomy>
+    & {
     /**
      * Interaction with outside elements will be enabled and other elements will be visible to screen readers.
      */

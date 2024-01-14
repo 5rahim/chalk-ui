@@ -10,6 +10,9 @@ import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
  * -----------------------------------------------------------------------------------------------*/
 
 export const AccordionAnatomy = defineStyleAnatomy({
+    root: cva([
+        "UI-Accordion__root",
+    ]),
     header: cva([
         "UI-Accordion__header",
         "flex text-lg",
@@ -47,6 +50,7 @@ export type AccordionProps = React.ComponentPropsWithoutRef<typeof AccordionPrim
 export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>((props, ref) => {
 
     const {
+        className,
         headerClass,
         triggerClass,
         triggerIconClass,
@@ -69,6 +73,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>((props
         >
             <AccordionPrimitive.Root
                 ref={ref}
+                className={cn(AccordionAnatomy.root(), className)}
                 {...rest}
             />
         </__AccordionAnatomyContext.Provider>

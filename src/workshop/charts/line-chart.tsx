@@ -14,7 +14,7 @@ import { constructCategoryColors, defaultValueFormatter, getYAxisDomain } from "
  * LineChart
  * -----------------------------------------------------------------------------------------------*/
 
-export interface LineChartProps extends React.ComponentPropsWithRef<"div">, BaseChartProps {
+export type LineChartProps = React.ComponentPropsWithRef<"div"> & BaseChartProps & {
     /**
      * The type of curve to use for the line
      */
@@ -28,6 +28,7 @@ export interface LineChartProps extends React.ComponentPropsWithRef<"div">, Base
      */
     angledLabels?: boolean
 }
+
 
 export const LineChart: React.FC<LineChartProps> = React.forwardRef<HTMLDivElement, LineChartProps>((props, ref) => {
 

@@ -41,6 +41,7 @@
 
         --paper: theme('colors.white');
         --subtle: rgba(0, 0, 0, 0.04);
+        --subtle-highlight: rgba(0, 0, 0, 0.06);
 
     }
 
@@ -82,6 +83,7 @@
 
         --paper: theme('colors.gray.900');
         --subtle: rgba(255, 255, 255, 0.06);
+        --subtle-highlight: rgba(255, 255, 255, 0.08);
 
     }
 }

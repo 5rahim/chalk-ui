@@ -45,10 +45,10 @@ type AutocompleteInputProps = Omit<React.ComponentPropsWithRef<"input">, "size" 
 
 export type AutocompleteOption = { value: string | null, label: string }
 
-export interface AutocompleteProps extends AutocompleteInputProps,
-    BasicFieldOptions,
-    InputStyling,
-    ComponentAnatomy<typeof AutocompleteAnatomy> {
+export type AutocompleteProps = AutocompleteInputProps &
+    BasicFieldOptions &
+    InputStyling &
+    ComponentAnatomy<typeof AutocompleteAnatomy> & {
     /**
      * The selected option
      */

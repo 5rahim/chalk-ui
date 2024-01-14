@@ -30,10 +30,10 @@ export const DatePickerAnatomy = defineStyleAnatomy({
  * DatePicker
  * -----------------------------------------------------------------------------------------------*/
 
-export interface DatePickerProps extends Omit<React.ComponentPropsWithRef<"button">, "size" | "value" | "defaultValue">,
-    ComponentAnatomy<typeof DatePickerAnatomy>,
-    InputStyling,
-    BasicFieldOptions {
+export type DatePickerProps = Omit<React.ComponentPropsWithRef<"button">, "size" | "value" | "defaultValue"> &
+    ComponentAnatomy<typeof DatePickerAnatomy> &
+    InputStyling &
+    BasicFieldOptions & {
     /**
      * The selected date
      */

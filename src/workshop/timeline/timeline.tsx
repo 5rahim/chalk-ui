@@ -44,21 +44,23 @@ export const TimelineAnatomy = defineStyleAnatomy({
  * Timeline
  * -----------------------------------------------------------------------------------------------*/
 
-export interface TimelineProps extends React.ComponentPropsWithoutRef<"div">, ComponentAnatomy<typeof TimelineAnatomy> {
+export type TimelineItem = {
+    title: React.ReactNode
+    description?: React.ReactNode
+    content?: React.ReactNode
+    icon: React.ReactNode
+    unstyledTitle?: boolean
+    unstyledDescription?: boolean
+    unstyledIcon?: boolean
+    titleClass?: string
+    descriptionClass?: string
+    iconClass?: string
+    lineClass?: string
+}
+
+export type TimelineProps = React.ComponentPropsWithoutRef<"div"> & ComponentAnatomy<typeof TimelineAnatomy> & {
     children?: React.ReactNode
-    items: {
-        title: React.ReactNode
-        description?: React.ReactNode
-        content?: React.ReactNode
-        icon: React.ReactNode
-        unstyledTitle?: boolean
-        unstyledDescription?: boolean
-        unstyledIcon?: boolean
-        titleClass?: string
-        descriptionClass?: string
-        iconClass?: string
-        lineClass?: string
-    }[]
+    items: TimelineItem[]
 }
 
 export const Timeline = React.forwardRef<HTMLDivElement, TimelineProps>((props, ref) => {

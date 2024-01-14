@@ -45,8 +45,8 @@ export const BreadcrumbsAnatomy = defineStyleAnatomy({
  * Breadcrumbs
  * -----------------------------------------------------------------------------------------------*/
 
-export interface BreadcrumbsProps extends React.ComponentPropsWithRef<"nav">,
-    ComponentAnatomy<typeof BreadcrumbsAnatomy> {
+export type BreadcrumbsProps = React.ComponentPropsWithRef<"nav"> &
+    ComponentAnatomy<typeof BreadcrumbsAnatomy> & {
     rootHref?: string
     items: { name: string, href: string | null | undefined, isCurrent: boolean }[]
     showHomeButton?: boolean

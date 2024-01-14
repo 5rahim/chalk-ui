@@ -30,14 +30,16 @@ export const StaticTabsAnatomy = defineStyleAnatomy({
  * StaticTabs
  * -----------------------------------------------------------------------------------------------*/
 
-export interface StaticTabsProps extends React.ComponentPropsWithRef<"nav">,
-    ComponentAnatomy<typeof StaticTabsAnatomy> {
-    items: {
-        name: string,
-        href: string | null | undefined,
-        iconType?: React.ElementType,
-        isCurrent: boolean
-    }[]
+export type StaticTabsItem = {
+    name: string,
+    href: string | null | undefined,
+    iconType?: React.ElementType,
+    isCurrent: boolean
+}
+
+export type StaticTabsProps = React.ComponentPropsWithRef<"nav"> &
+    ComponentAnatomy<typeof StaticTabsAnatomy> & {
+    items: StaticTabsItem[]
 }
 
 export const StaticTabs = React.forwardRef<HTMLElement, StaticTabsProps>((props, ref) => {

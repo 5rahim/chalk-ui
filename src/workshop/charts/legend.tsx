@@ -31,7 +31,7 @@ export const LegendAnatomy = defineStyleAnatomy({
  * LegendItem
  * -----------------------------------------------------------------------------------------------*/
 
-export interface LegendItemProps {
+export type LegendItemProps = {
     name: string
     color: UIColor
     dotClass?: string
@@ -59,7 +59,7 @@ const LegendItem = ({ name, color, dotClass, legendItemClass, labelClass }: Lege
  * Legend
  * -----------------------------------------------------------------------------------------------*/
 
-export interface LegendProps extends React.ComponentPropsWithRef<"ol">, ComponentAnatomy<typeof LegendAnatomy> {
+export type LegendProps = React.ComponentPropsWithRef<"ol"> & ComponentAnatomy<typeof LegendAnatomy> & {
     categories: string[]
     colors?: UIColor[]
 }

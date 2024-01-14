@@ -43,7 +43,10 @@ export const DangerZoneAnatomy = defineStyleAnatomy({
  * DangerZone
  * -----------------------------------------------------------------------------------------------*/
 
-export interface DangerZoneProps extends React.ComponentPropsWithRef<"div">, ComponentAnatomy<typeof DangerZoneAnatomy> {
+export type DangerZoneProps = React.ComponentPropsWithRef<"div"> & ComponentAnatomy<typeof DangerZoneAnatomy> & {
+    /**
+     * Description of the action that will be performed when the delete button is clicked.
+     */
     actionText: string
     /**
      * Callback fired when the delete button is clicked.

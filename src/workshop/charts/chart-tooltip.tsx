@@ -1,6 +1,7 @@
 "use client"
 
 import { cva } from "class-variance-authority"
+import * as React from "react"
 import { ChartValueFormatter } from "../charts/types"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { UIColor } from "./color-theme"
@@ -55,8 +56,7 @@ export const ChartTooltipRowAnatomy = defineStyleAnatomy({
  * ChartTooltipFrame
  * -----------------------------------------------------------------------------------------------*/
 
-interface ChartTooltipFrameProps extends React.ComponentPropsWithoutRef<"div"> {
-}
+export type ChartTooltipFrameProps = React.ComponentPropsWithoutRef<"div">
 
 export const ChartTooltipFrame = ({ children, className }: ChartTooltipFrameProps) => (
     <div className={cn(ChartTooltipAnatomy.frame(), className)}>
@@ -68,10 +68,10 @@ export const ChartTooltipFrame = ({ children, className }: ChartTooltipFrameProp
  * ChartTooltipRow
  * -----------------------------------------------------------------------------------------------*/
 
-export interface ChartTooltipRowProps extends ComponentAnatomy<typeof ChartTooltipRowAnatomy> {
-    value: string;
-    name: string;
-    color: UIColor;
+export type ChartTooltipRowProps = ComponentAnatomy<typeof ChartTooltipRowAnatomy> & {
+    value: string
+    name: string
+    color: UIColor
 }
 
 export const ChartTooltipRow = (
@@ -105,12 +105,12 @@ export const ChartTooltipRow = (
  * ChartTooltip
  * -----------------------------------------------------------------------------------------------*/
 
-export interface ChartTooltipProps extends ComponentAnatomy<typeof ChartTooltipAnatomy> {
-    active: boolean | undefined;
-    payload: any;
-    label: string;
-    categoryColors: Map<string, UIColor>;
-    valueFormatter: ChartValueFormatter;
+export type ChartTooltipProps = ComponentAnatomy<typeof ChartTooltipAnatomy> & {
+    active: boolean | undefined
+    payload: any
+    label: string
+    categoryColors: Map<string, UIColor>
+    valueFormatter: ChartValueFormatter
 }
 
 export const ChartTooltip = (props: ChartTooltipProps) => {

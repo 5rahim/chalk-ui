@@ -9,7 +9,7 @@ import { GoogleMapsAutocompletionRequest, useGoogleMapsAutocomplete } from "./us
  * AddressInput
  * -----------------------------------------------------------------------------------------------*/
 
-export interface AddressInputProps extends Omit<AutocompleteProps, "options" | "onInputChange" | "onChange" | "defaultValue"> {
+export type AddressInputProps = Omit<AutocompleteProps, "options" | "onInputChange" | "onChange" | "defaultValue"> & {
     /**
      * Custom autocompletion request
      */

@@ -670,7 +670,7 @@ export function DataGridSearchInput(props: DataGridSearchInputProps & Omit<TextI
  * DataGridWithApi
  * -----------------------------------------------------------------------------------------------*/
 
-export interface DataGridWithApiProps<T extends Record<string, any>> extends ComponentAnatomy<typeof DataGridAnatomy> {
+export type DataGridWithApiProps<T extends Record<string, any>> = ComponentAnatomy<typeof DataGridAnatomy> & {
     api: DataGridApi<T>
 }
 

@@ -54,10 +54,10 @@ const PhoneInputAnatomy = defineStyleAnatomy({
  * PhoneInput
  * -----------------------------------------------------------------------------------------------*/
 
-export interface PhoneInputProps extends Omit<React.ComponentPropsWithoutRef<"input">, "value" | "size">,
-    ComponentAnatomy<typeof PhoneInputAnatomy>,
-    InputStyling,
-    BasicFieldOptions {
+export type PhoneInputProps = Omit<React.ComponentPropsWithoutRef<"input">, "value" | "size"> &
+    ComponentAnatomy<typeof PhoneInputAnatomy> &
+    InputStyling &
+    BasicFieldOptions & {
     /**
      * The phone number value.
      */

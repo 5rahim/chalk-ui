@@ -1,9 +1,9 @@
 "use client"
 
-import { cn } from "../core/styling"
 import * as React from "react"
 import { Area, AreaChart as ReChartsAreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 import type { AxisDomain } from "recharts/types/util/types"
+import { cn } from "../core/styling"
 import { ChartLegend } from "./chart-legend"
 import { ChartTooltip } from "./chart-tooltip"
 import { ColorPalette } from "./color-theme"
@@ -14,8 +14,8 @@ import { constructCategoryColors, defaultValueFormatter, getYAxisDomain } from "
  * AreaChart
  * -----------------------------------------------------------------------------------------------*/
 
-export interface AreaChartProps extends React.ComponentPropsWithoutRef<"div">,
-    BaseChartProps {
+export type AreaChartProps = React.ComponentPropsWithoutRef<"div"> &
+    BaseChartProps & {
     stack?: boolean
     /**
      * The type of curve to use for the line

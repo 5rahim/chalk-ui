@@ -23,8 +23,8 @@ export const TooltipAnatomy = defineStyleAnatomy({
  * Tooltip
  * -----------------------------------------------------------------------------------------------*/
 
-export interface TooltipProps extends React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>,
-    React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root> {
+export type TooltipProps = React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> &
+    React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root> & {
     /**
      * The trigger that toggles the tooltip.
      * - Passed props: `data-state`	("closed" | "delayed-open" | "instant-open")

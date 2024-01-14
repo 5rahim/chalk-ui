@@ -53,12 +53,24 @@ export const PageHeaderAnatomy = defineStyleAnatomy({
  * PageHeader
  * -----------------------------------------------------------------------------------------------*/
 
-export interface PageHeaderProps extends React.ComponentPropsWithRef<"header">,
-    ComponentAnatomy<typeof PageHeaderAnatomy>,
-    VariantProps<typeof PageHeaderAnatomy.title> {
+export type PageHeaderProps = React.ComponentPropsWithRef<"header"> &
+    ComponentAnatomy<typeof PageHeaderAnatomy> &
+    VariantProps<typeof PageHeaderAnatomy.title> & {
+    /**
+     * Page title.
+     */
     title?: string
+    /**
+     * Page description.
+     */
     description?: string
+    /**
+     * Elements rendered in the action container.
+     */
     action?: React.ReactNode
+    /**
+     * Image elements rendered next to the title and description.
+     */
     image?: React.ReactNode
 }
 

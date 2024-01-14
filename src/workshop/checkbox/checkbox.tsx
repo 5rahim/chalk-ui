@@ -5,8 +5,8 @@ import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { __CheckboxGroupContext } from "../checkbox"
-import { mergeRefs } from "../core/utils"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { mergeRefs } from "../core/utils"
 import { hiddenInputStyles } from "../input"
 
 /* -------------------------------------------------------------------------------------------------
@@ -72,10 +72,12 @@ export const CheckboxAnatomy = defineStyleAnatomy({
  * Checkbox
  * -----------------------------------------------------------------------------------------------*/
 
-export interface CheckboxProps extends BasicFieldOptions,
-    VariantProps<typeof CheckboxAnatomy.label>,
-    ComponentAnatomy<typeof CheckboxAnatomy>,
-    Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, "value" | "checked" | "disabled" | "required" | "onCheckedChange" | "defaultValue"> {
+export type CheckboxProps =
+    BasicFieldOptions &
+    VariantProps<typeof CheckboxAnatomy.label> &
+    ComponentAnatomy<typeof CheckboxAnatomy> &
+    Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>,
+        "value" | "checked" | "disabled" | "required" | "onCheckedChange" | "defaultValue"> & {
     /**
      * If true, no error message will be shown when the field is invalid.
      */
@@ -95,7 +97,7 @@ export interface CheckboxProps extends BasicFieldOptions,
     /**
      * Ref to the input element
      */
-    inputRef?: React.Ref<HTMLInputElement>
+    inputRef?: React.Ref<HTMLInputElement>,
 }
 
 export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((props, ref) => {

@@ -72,10 +72,16 @@ export const AlertAnatomy = defineStyleAnatomy({
  * Alert
  * -----------------------------------------------------------------------------------------------*/
 
-export interface AlertProps extends React.ComponentPropsWithRef<"div">,
-    VariantProps<typeof AlertAnatomy.root>,
-    ComponentAnatomy<typeof AlertAnatomy> {
+export type AlertProps = React.ComponentPropsWithRef<"div"> &
+    VariantProps<typeof AlertAnatomy.root> &
+    ComponentAnatomy<typeof AlertAnatomy> & {
+    /**
+     * The title of the alert
+     */
     title?: string,
+    /**
+     * The description text or content of the alert
+     */
     description?: React.ReactNode
     /**
      * Replace the default icon with a custom icon

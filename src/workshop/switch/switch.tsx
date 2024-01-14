@@ -1,12 +1,12 @@
 "use client"
 
-import { mergeRefs } from "../core/utils"
-import { hiddenInputStyles } from "../input"
 import * as SwitchPrimitive from "@radix-ui/react-switch"
 import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { mergeRefs } from "../core/utils"
+import { hiddenInputStyles } from "../input"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -64,11 +64,11 @@ export const SwitchAnatomy = defineStyleAnatomy({
  * Switch
  * -----------------------------------------------------------------------------------------------*/
 
-export interface SwitchProps extends BasicFieldOptions,
-    ComponentAnatomy<typeof SwitchAnatomy>,
-    VariantProps<typeof SwitchAnatomy.root>,
+export type SwitchProps = BasicFieldOptions &
+    ComponentAnatomy<typeof SwitchAnatomy> &
+    VariantProps<typeof SwitchAnatomy.root> &
     Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>,
-        "value" | "checked" | "disabled" | "required" | "defaultValue" | "defaultChecked" | "onCheckedChange"> {
+        "value" | "checked" | "disabled" | "required" | "defaultValue" | "defaultChecked" | "onCheckedChange"> & {
     /**
      * Whether the switch is checked
      */

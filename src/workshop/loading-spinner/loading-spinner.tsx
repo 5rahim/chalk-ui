@@ -1,6 +1,6 @@
-import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { cva } from "class-variance-authority"
 import React from "react"
+import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -22,8 +22,7 @@ export const LoadingSpinnerAnatomy = defineStyleAnatomy({
  * LoadingSpinner
  * -----------------------------------------------------------------------------------------------*/
 
-export interface LoadingSpinnerProps extends React.ComponentPropsWithRef<"div">, ComponentAnatomy<typeof LoadingSpinnerAnatomy> {
-}
+export type LoadingSpinnerProps = React.ComponentPropsWithRef<"div"> & ComponentAnatomy<typeof LoadingSpinnerAnatomy>
 
 export const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerProps>((props, ref) => {
 

@@ -33,10 +33,7 @@ export const PaginationAnatomy = defineStyleAnatomy({
 
 const __PaginationAnatomyContext = React.createContext<ComponentAnatomy<typeof PaginationAnatomy>>({})
 
-export interface PaginationProps extends React.ComponentPropsWithRef<"ul">,
-    ComponentAnatomy<typeof PaginationAnatomy> {
-    children?: React.ReactNode
-}
+export type PaginationProps = React.ComponentPropsWithRef<"ul"> & ComponentAnatomy<typeof PaginationAnatomy>
 
 export const Pagination = React.forwardRef<HTMLUListElement, PaginationProps>((props, ref) => {
 

@@ -12,10 +12,10 @@ import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputI
 
 type IntlConfig = { locale: string, currency?: string }
 
-export interface CurrencyInputProps
-    extends Omit<React.ComponentPropsWithoutRef<"input">, "size" | "disabled" | "defaultValue">,
-        InputStyling,
-        BasicFieldOptions {
+export type CurrencyInputProps =
+    Omit<React.ComponentPropsWithoutRef<"input">, "size" | "disabled" | "defaultValue"> &
+    InputStyling &
+    BasicFieldOptions & {
     /**
      * Allow decimals
      *

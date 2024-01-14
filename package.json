@@ -9,7 +9,8 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006 -h 127.0.0.1",
     "build-storybook": "storybook build",
-    "snapshot": "tsx scripts/snapshot.ts"
+    "snapshot": "tsx scripts/snapshot.ts",
+    "generate-bank": "tsx scripts/generate-bank.ts"
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^2.11.2",
@@ -115,6 +116,7 @@
     "eslint": "^8.41.0",
     "mdast-util-toc": "^6.1.1",
     "postcss": "^8",
+    "react-docgen-typescript": "^2.2.2",
     "rehype": "^12.0.1",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-pretty-code": "^0.6.0",

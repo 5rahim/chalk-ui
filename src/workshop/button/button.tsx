@@ -83,11 +83,10 @@ export const ButtonAnatomy = defineStyleAnatomy({
  * Button
  * -----------------------------------------------------------------------------------------------*/
 
-type ButtonAnatomyProps =
-    Omit<VariantProps<typeof ButtonAnatomy.root>, "isDisabled"> &
-    ComponentAnatomy<typeof ButtonAnatomy>
 
-export interface ButtonProps extends React.ComponentPropsWithoutRef<"button">, ButtonAnatomyProps {
+export type ButtonProps = React.ComponentPropsWithoutRef<"button"> &
+    VariantProps<typeof ButtonAnatomy.root> &
+    ComponentAnatomy<typeof ButtonAnatomy> & {
     loading?: boolean,
     leftIcon?: React.ReactNode
     rightIcon?: React.ReactNode

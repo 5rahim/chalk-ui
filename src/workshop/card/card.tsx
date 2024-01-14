@@ -1,6 +1,6 @@
 "use client"
 
-import { cn } from "../core/styling"
+import { cn, defineStyleAnatomy } from "../core/styling"
 import { cva } from "class-variance-authority"
 import * as React from "react"
 
@@ -8,7 +8,7 @@ import * as React from "react"
  * Anatomy
  * -----------------------------------------------------------------------------------------------*/
 
-export const CardAnatomy = {
+export const CardAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-Card__root",
         "rounded-lg border bg-[--paper] shadow-sm",
@@ -33,7 +33,7 @@ export const CardAnatomy = {
         "UI-Card__footer",
         "flex items-center p-4 pt-0",
     ]),
-}
+})
 
 /* -------------------------------------------------------------------------------------------------
  * Card

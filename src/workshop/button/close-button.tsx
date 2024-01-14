@@ -6,7 +6,7 @@ import { IconButton, IconButtonProps } from "."
  * CloseButton
  * -----------------------------------------------------------------------------------------------*/
 
-export interface CloseButtonProps extends Omit<IconButtonProps, "icon"> {
+export type CloseButtonProps = Omit<IconButtonProps, "icon"> & {
     icon?: React.ReactNode
 }
 

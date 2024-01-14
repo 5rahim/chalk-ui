@@ -9,7 +9,7 @@ import { Checkbox, CheckboxGroup, CheckboxGroupProps, CheckboxProps } from "../c
 import { Combobox, ComboboxProps } from "../combobox"
 import { CurrencyInput, CurrencyInputProps } from "../currency-input"
 import { DatePicker, DatePickerProps, DateRangePicker, DateRangePickerProps } from "../date-picker"
-import { SimpleDropzone, SimpleDropzoneProps } from "../dropzone"
+import { SimpleDropzone, SimpleDropzoneProps } from "../simple-dropzone"
 import { NativeSelect, NativeSelectProps } from "../native-select"
 import { NumberInput, NumberInputProps } from "../number-input"
 import { PhoneInput, PhoneInputProps } from "../phone-input"
@@ -26,7 +26,7 @@ import { SubmitField } from "./submit-field"
 /**
  * Add the BasicField types to any Field
  */
-export interface FieldBaseProps extends Omit<BasicFieldOptions, "name"> {
+export type FieldBaseProps = Omit<BasicFieldOptions, "name"> & {
     name: string
     onChange?: any
     onBlur?: any
@@ -35,8 +35,7 @@ export interface FieldBaseProps extends Omit<BasicFieldOptions, "name"> {
 
 export type FieldComponent<T> = T & FieldBaseProps
 
-export interface FieldProps extends React.ComponentPropsWithRef<"div"> {
-}
+export type FieldProps = React.ComponentPropsWithRef<"div">
 
 /**
  * @description This wrapper makes it easier to work with custom form components by controlling their state.

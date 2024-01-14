@@ -110,10 +110,10 @@ export const NavigationMenuAnatomy = defineStyleAnatomy({
  * NavigationMenu
  * -----------------------------------------------------------------------------------------------*/
 
-export interface NavigationMenuProps extends ComponentAnatomy<typeof NavigationMenuAnatomy>,
-    React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root>,
-    VariantProps<typeof NavigationMenuAnatomy.desktopList>,
-    VariantProps<typeof NavigationMenuAnatomy.item> {
+export type NavigationMenuProps = ComponentAnatomy<typeof NavigationMenuAnatomy> &
+    React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root> &
+    VariantProps<typeof NavigationMenuAnatomy.desktopList> &
+    VariantProps<typeof NavigationMenuAnatomy.item> & {
     children?: React.ReactNode
     items: VerticalMenuItem[],
     /**

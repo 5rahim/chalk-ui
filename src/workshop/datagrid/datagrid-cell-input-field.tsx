@@ -46,8 +46,7 @@ export type DataGridEditingValueUpdater<T extends Record<string, any>> = (
 /**
  * @internal
  */
-export interface DataGridCellInputFieldProps<T extends Record<string, any>>
-    extends ComponentAnatomy<typeof DataGridCellInputFieldAnatomy> {
+export type DataGridCellInputFieldProps<T extends Record<string, any>> = ComponentAnatomy<typeof DataGridCellInputFieldAnatomy> & {
     /**
      * Meta information about the field from the column definition
      * - This is defined by the `withEditing` helper

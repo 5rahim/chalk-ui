@@ -24,7 +24,7 @@ export const BasicFieldAnatomy = defineStyleAnatomy({
  * - Field components inherit these props
  * -----------------------------------------------------------------------------------------------*/
 
-export interface BasicFieldOptions extends ComponentAnatomy<typeof BasicFieldAnatomy> {
+export type BasicFieldOptions = ComponentAnatomy<typeof BasicFieldAnatomy> & {
     id?: string | undefined
     name?: string
     label?: React.ReactNode
@@ -95,8 +95,7 @@ export function extractBasicFieldProps<Props extends BasicFieldOptions>(props: P
  * BasicField
  * -----------------------------------------------------------------------------------------------*/
 
-export interface BasicFieldProps extends React.ComponentPropsWithoutRef<"div">, BasicFieldOptions {
-}
+export type BasicFieldProps = React.ComponentPropsWithoutRef<"div"> & BasicFieldOptions
 
 export const BasicField = React.memo(React.forwardRef<HTMLDivElement, BasicFieldProps>((props, ref) => {
 

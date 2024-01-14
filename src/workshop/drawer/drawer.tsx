@@ -75,11 +75,11 @@ export const DrawerAnatomy = defineStyleAnatomy({
  * Drawer
  * -----------------------------------------------------------------------------------------------*/
 
-export interface DrawerProps extends Omit<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>, "modal">,
+export type DrawerProps = Omit<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>, "modal"> &
     Pick<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
-        "onOpenAutoFocus" | "onCloseAutoFocus" | "onEscapeKeyDown" | "onPointerDownCapture" | "onInteractOutside">,
-    VariantProps<typeof DrawerAnatomy.content>,
-    ComponentAnatomy<typeof DrawerAnatomy> {
+        "onOpenAutoFocus" | "onCloseAutoFocus" | "onEscapeKeyDown" | "onPointerDownCapture" | "onInteractOutside"> &
+    VariantProps<typeof DrawerAnatomy.content> &
+    ComponentAnatomy<typeof DrawerAnatomy> & {
     /**
      * Interaction with outside elements will be enabled and other elements will be visible to screen readers.
      */

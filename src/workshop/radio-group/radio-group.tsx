@@ -77,10 +77,9 @@ export const RadioGroupAnatomy = defineStyleAnatomy({
  * RadioGroup
  * -----------------------------------------------------------------------------------------------*/
 
-export interface RadioGroupProps extends
-    BasicFieldOptions,
-    ComponentAnatomy<typeof RadioGroupAnatomy>,
-    VariantProps<typeof RadioGroupAnatomy.item> {
+export type RadioGroupProps = BasicFieldOptions &
+    ComponentAnatomy<typeof RadioGroupAnatomy> &
+    VariantProps<typeof RadioGroupAnatomy.item> & {
     /**
      * Stack div class
      */

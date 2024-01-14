@@ -28,9 +28,9 @@ export const useFormSchema = (): { shape: z.ZodRawShape, schema: z.ZodObject<z.Z
  * Form
  * -----------------------------------------------------------------------------------------------*/
 
-export interface FormProps<Schema extends z.ZodObject<z.ZodRawShape> = ZodObject<any>>
-    extends UseFormProps<z.infer<Schema>>,
-        Omit<React.ComponentPropsWithRef<"form">, "children" | "onChange" | "onSubmit" | "onError" | "ref"> {
+export type FormProps<Schema extends z.ZodObject<z.ZodRawShape> = ZodObject<any>> =
+    UseFormProps<z.infer<Schema>> &
+    Omit<React.ComponentPropsWithRef<"form">, "children" | "onChange" | "onSubmit" | "onError" | "ref"> & {
     /**
      * The schema of the form.
      */

@@ -92,9 +92,9 @@ export type StatsItem = {
     icon?: React.ReactElement
 }
 
-export interface StatsProps extends React.ComponentPropsWithRef<"dl">,
-    ComponentAnatomy<typeof StatsAnatomy>,
-    VariantProps<typeof StatsAnatomy.root> {
+export type StatsProps = React.ComponentPropsWithRef<"dl"> &
+    ComponentAnatomy<typeof StatsAnatomy> &
+    VariantProps<typeof StatsAnatomy.root> & {
     children?: React.ReactNode,
     items: StatsItem[]
 }

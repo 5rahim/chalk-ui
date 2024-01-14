@@ -76,11 +76,11 @@ export const NumberInputAnatomy = defineStyleAnatomy({
  * NumberInput
  * -----------------------------------------------------------------------------------------------*/
 
-export interface NumberInputProps extends Omit<React.ComponentPropsWithoutRef<"input">, "value" | "size" | "defaultValue">,
-    ComponentAnatomy<typeof NumberInputAnatomy>,
-    Omit<VariantProps<typeof NumberInputAnatomy.root>, "size" | "intent">,
-    BasicFieldOptions,
-    InputStyling {
+export type NumberInputProps = Omit<React.ComponentPropsWithoutRef<"input">, "value" | "size" | "defaultValue"> &
+    ComponentAnatomy<typeof NumberInputAnatomy> &
+    Omit<VariantProps<typeof NumberInputAnatomy.root>, "size" | "intent"> &
+    BasicFieldOptions &
+    InputStyling & {
     /**
      * The value of the input
      */

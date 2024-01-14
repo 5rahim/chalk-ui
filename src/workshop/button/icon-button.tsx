@@ -28,10 +28,9 @@ export const IconButtonAnatomy = defineStyleAnatomy({
  * IconButton
  * -----------------------------------------------------------------------------------------------*/
 
-type IconButtonAnatomyProps = VariantProps<typeof IconButtonAnatomy.root>
 
-export interface IconButtonProps extends Omit<ButtonProps, "leftIcon" | "rightIcon" | "iconSpacing" | "iconClass" | "children">,
-    IconButtonAnatomyProps {
+export type IconButtonProps = Omit<ButtonProps, "leftIcon" | "rightIcon" | "iconSpacing" | "iconClass" | "children"> &
+    VariantProps<typeof IconButtonAnatomy.root> & {
     icon?: React.ReactNode
 }
 

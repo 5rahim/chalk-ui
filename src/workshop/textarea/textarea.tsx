@@ -30,7 +30,12 @@ export const TextareaAnatomy = defineStyleAnatomy({
  * Textarea
  * -----------------------------------------------------------------------------------------------*/
 
-export interface TextareaProps extends Omit<React.ComponentPropsWithRef<"textarea">, "size">, InputStyling, BasicFieldOptions {
+export type TextareaProps = Omit<React.ComponentPropsWithRef<"textarea">, "size"> &
+    InputStyling &
+    BasicFieldOptions & {
+    /**
+     * Callback invoked when the value changes. Returns the string value.
+     */
     onValueChange?: (value: string) => void
 }
 

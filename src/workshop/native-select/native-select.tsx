@@ -1,13 +1,15 @@
-import { cn } from "../core/styling"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
+import { cn } from "../core/styling"
 import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 
 /* -------------------------------------------------------------------------------------------------
  * NativeSelect
  * -----------------------------------------------------------------------------------------------*/
 
-export interface NativeSelectProps extends Omit<React.ComponentPropsWithRef<"select">, "size">, InputStyling, BasicFieldOptions {
+export type NativeSelectProps = Omit<React.ComponentPropsWithRef<"select">, "size"> &
+    InputStyling &
+    BasicFieldOptions & {
     /**
      * The options to display
      */

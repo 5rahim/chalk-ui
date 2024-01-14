@@ -35,8 +35,8 @@ export const DataGridActiveFilterAnatomy = defineStyleAnatomy({
  * DataGridFilter
  * -----------------------------------------------------------------------------------------------*/
 
-export interface DataGridFilterProps<T extends Record<string, any>> extends React.ComponentPropsWithoutRef<"div">,
-    ComponentAnatomy<typeof DataGridFilterAnatomy> {
+export type DataGridFilterProps<T extends Record<string, any>> = React.ComponentPropsWithoutRef<"div"> &
+    ComponentAnatomy<typeof DataGridFilterAnatomy> & {
     column: Column<T>
     onRemove: () => void
     lng?: string

@@ -12,14 +12,12 @@ import { defaultValueFormatter, parseChartData, parseChartLabelInput } from "./u
  * DonutChart
  * -----------------------------------------------------------------------------------------------*/
 
-type DonutChartVariant = "donut" | "pie"
-
-export interface DonutChartProps extends React.HTMLAttributes<HTMLDivElement> {
+export type DonutChartProps = React.HTMLAttributes<HTMLDivElement> & {
     data: any[]
     category?: string
     index?: string
     colors?: UIColor[]
-    variant?: DonutChartVariant
+    variant?: "donut" | "pie"
     valueFormatter?: ChartValueFormatter
     label?: string
     showLabel?: boolean
@@ -105,9 +103,8 @@ DonutChart.displayName = "DonutChart"
  * DonutChartTooltip
  * -----------------------------------------------------------------------------------------------*/
 
-
-export interface DonutChartTooltipProps {
-    active: boolean | undefined
+export type DonutChartTooltipProps = {
+    active?: boolean
     payload: any
     valueFormatter: ChartValueFormatter
 }

@@ -15,14 +15,14 @@ import { constructCategoryColors, defaultValueFormatter, getYAxisDomain } from "
  * BarChart
  * -----------------------------------------------------------------------------------------------*/
 
-export interface BarChartProps extends React.ComponentPropsWithRef<"div">,
-    BaseChartProps {
+export type BarChartProps = React.ComponentPropsWithRef<"div"> &
+    BaseChartProps & {
     /**
      * Display bars vertically or horizontally
      */
     layout?: "vertical" | "horizontal"
     /**
-     * Stack bars
+     * If true, the bars will be stacked
      */
     stack?: boolean
     /**

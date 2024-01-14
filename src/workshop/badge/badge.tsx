@@ -60,13 +60,32 @@ export const BadgeAnatomy = defineStyleAnatomy({
  * Badge
  * -----------------------------------------------------------------------------------------------*/
 
-export interface BadgeProps extends React.ComponentPropsWithRef<"span">, VariantProps<typeof BadgeAnatomy.root>,
-    ComponentAnatomy<typeof BadgeAnatomy> {
+export type BadgeProps = React.ComponentPropsWithRef<"span"> &
+    VariantProps<typeof BadgeAnatomy.root> &
+    ComponentAnatomy<typeof BadgeAnatomy> & {
+    /**
+     * If true, the badge will not be fully rounded.
+     */
     tag?: boolean,
+    /**
+     * If true, a close button will be rendered.
+     */
     isClosable?: boolean,
+    /**
+     * Callback invoked when the close button is clicked.
+     */
     onClose?: () => void,
-    leftIcon?: React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    rightIcon?: React.ReactElement<any, string | React.JSXElementConstructor<any>>
+    /**
+     * The left icon element.
+     */
+    leftIcon?: React.ReactElement
+    /**
+     * The right icon element.
+     */
+    rightIcon?: React.ReactElement
+    /**
+     * The spacing between the icon and the badge content.
+     */
     iconSpacing?: React.CSSProperties["marginRight"]
 }
 

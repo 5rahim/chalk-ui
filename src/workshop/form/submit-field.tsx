@@ -8,8 +8,7 @@ import locales from "./locales.json"
  * SubmitField
  * -----------------------------------------------------------------------------------------------*/
 
-export interface SubmitFieldProps extends Omit<ButtonProps, "type"> {
-    uploadHandler?: any
+export type SubmitFieldProps = Omit<ButtonProps, "type"> & {
     /**
      * Role of the button.
      * - If "create", a loading overlay will be shown when the submission is successful.
@@ -30,7 +29,6 @@ export interface SubmitFieldProps extends Omit<ButtonProps, "type"> {
     showLoadingOverlayOnSuccess?: boolean
     /**
      * If true, a loading overlay will be shown when the form is submitted when the role is "create".
-     *
      * @default true
      */
     showLoadingOverlayOnCreate?: boolean
@@ -50,7 +48,6 @@ export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>
         children,
         loading,
         disabled,
-        uploadHandler,
         role = "save",
         disableOnSuccess = role === "create",
         disableIfInvalid = false,
@@ -77,7 +74,7 @@ export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>
 
             <Button
                 type="submit"
-                loading={formState.isSubmitting || loading || uploadHandler?.isLoading}
+                loading={formState.isSubmitting || loading}
                 disabled={disableInvalid || disabled || disableSuccess}
                 ref={ref}
                 {...rest}

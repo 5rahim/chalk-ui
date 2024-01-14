@@ -103,9 +103,9 @@ export type VerticalMenuItem = {
     subContent?: React.ReactNode
 }
 
-export interface VerticalMenuProps extends React.ComponentPropsWithRef<"div">,
-    ComponentAnatomy<typeof VerticalMenuAnatomy>,
-    VariantProps<typeof VerticalMenuAnatomy.item> {
+export type VerticalMenuProps = React.ComponentPropsWithRef<"div"> &
+    ComponentAnatomy<typeof VerticalMenuAnatomy> &
+    VariantProps<typeof VerticalMenuAnatomy.item> & {
     /**
      * If true, the nav will be rendered as a line of icons.
      */

@@ -63,12 +63,10 @@ export const ComboboxAnatomy = defineStyleAnatomy({
  * Combobox
  * -----------------------------------------------------------------------------------------------*/
 
-type ComboboxButtonProps = Omit<React.ComponentPropsWithRef<"button">, "size" | "value">
-
-export interface ComboboxProps extends ComboboxButtonProps,
-    BasicFieldOptions,
-    InputStyling,
-    ComponentAnatomy<typeof ComboboxAnatomy> {
+export type ComboboxProps = Omit<React.ComponentPropsWithRef<"button">, "size" | "value"> &
+    BasicFieldOptions &
+    InputStyling &
+    ComponentAnatomy<typeof ComboboxAnatomy> & {
     /**
      * The selected values
      */

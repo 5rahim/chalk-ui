@@ -108,10 +108,10 @@ export const InputContainer = ({ className, children }: InputContainerProps) => 
  * InputStyling
  * -----------------------------------------------------------------------------------------------*/
 
-export interface InputStyling
-    extends Omit<VariantProps<typeof InputAnatomy.root>, "isDisabled" | "hasError" | "hasLeftAddon" | "hasRightAddon" | "hasLeftIcon" | "hasRightIcon">,
-        ComponentAnatomy<typeof InputAddonsAnatomy>,
-        ComponentAnatomy<typeof InputContainerAnatomy> {
+export type InputStyling = Omit<VariantProps<typeof InputAnatomy.root>,
+    "isDisabled" | "hasError" | "hasLeftAddon" | "hasRightAddon" | "hasLeftIcon" | "hasRightIcon"> &
+    ComponentAnatomy<typeof InputAddonsAnatomy> &
+    ComponentAnatomy<typeof InputContainerAnatomy> & {
     leftAddon?: string
     leftIcon?: React.ReactNode
     rightAddon?: string

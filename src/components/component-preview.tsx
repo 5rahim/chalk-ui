@@ -63,6 +63,7 @@ export function ComponentPreview({
             <Tabs
                 className=""
                 defaultValue="preview"
+                triggerClass="text-base"
             >
                 <TabsList className="flex border-b">
                     <TabsTrigger value="preview">
