@@ -16,7 +16,7 @@ export function ComponentAnatomy({
     return (
         <div className="space-y-4">
             <Accordion
-                type="multiple" defaultValue={["types"]}
+                type="multiple"
                 className="space-y-2"
                 triggerClass="bg-[--subtle] hover:bg-[--subtle-highlight] rounded-[--radius]"
                 itemClass="border-none"

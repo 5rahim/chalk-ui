@@ -26,12 +26,13 @@ componentName: app-layout
 npx @rahimstack@latest add app-layout
 ```
 
-
-## Anatomy
-
-<ComponentAnatomy name="app-layout" />
-
 ## Sidebar
+
+- `AppLayoutSidebar` is used to size and position the sidebar, it should not be styled.
+- `AppSidebar` will become a drawer on small screens. (under `lg` breakpoint)
+- `AppSidebarProvider` is used to share the sidebar state between `AppSidebar` and `AppSidebarTrigger`.
+- `AppSidebarTrigger` is used to open/close the sidebar on small screens. It is hidden on large screens.
+
 
 <ComponentPreview name="app-layout-sidebar-demo" hideCode />
 
@@ -59,15 +60,7 @@ npx @rahimstack@latest add app-layout
 </AppSidebarProvider>
 ```
 
-### Description
-
-- `AppLayoutSidebar` is used to size and position the sidebar, it should not be styled.
-- `AppSidebar` will become a drawer on small screens. (under `lg` breakpoint)
-- `AppSidebarProvider` is used to share the sidebar state between `AppSidebar` and `AppSidebarTrigger`.
-- `AppSidebarTrigger` is used to open/close the sidebar on small screens. It is hidden on large screens.
-
-
-### Close drawer on link click
+### Close mobile drawer
 
 You might want to close the sidebar automatically when a link is clicked. You can do that by using the `useAppSidebarContext` hook.
 
@@ -109,3 +102,10 @@ export function CustomSidebar() {
     )
 }
 ```
+
+## Page Layout
+
+
+## API Reference
+
+<ComponentAnatomy name="app-layout" />

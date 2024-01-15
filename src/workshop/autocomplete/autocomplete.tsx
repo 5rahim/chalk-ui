@@ -4,8 +4,8 @@ import { cva } from "class-variance-authority"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandProps } from "../command"
-import { mergeRefs } from "../core/utils"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { mergeRefs } from "../core/utils"
 import { extractInputPartProps, hiddenInputStyles, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 import { Popover } from "../popover"
 
@@ -363,7 +363,6 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
                                                     setInputValue(_option.label)
                                                 }
                                             }
-                                            setOpen(false)
                                             React.startTransition(() => {
                                                 inputRef.current?.focus()
                                             })

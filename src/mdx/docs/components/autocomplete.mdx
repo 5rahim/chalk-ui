@@ -1,6 +1,6 @@
 ---
 title: Autocomplete
-description: Description
+description: Text input with a dynamic list of suggestions.
 componentName: autocomplete
 ---
 
@@ -12,7 +12,48 @@ componentName: autocomplete
 npx @rahimstack@latest add autocomplete
 ```
 
+## Usage
 
-## Anatomy
+- By default, **Autocomplete** has a `type` of `"custom"`, meaning the user can enter arbitrary values not present in the options.
+- The user's input is compared to the `label` prop of each option. The comparison is case-insensitive but space-sensitive.
+An option will be auto-selected while the user is typing if the comparison is successful.
+- Returned arbitrary values will have a `value` prop of `null`.
+    - Example: `{ value: null, label: "New value" }`
+
+### No custom values
+
+Change the `type` to `"options"` to disallow custom values.
+
+<ComponentPreview name="autocomplete-options-demo" />
+
+```tsx {3}
+<Autocomplete
+    {...props}
+    type="options"
+/>
+```
+
+### No filtering
+
+Set `autoFilter` to `false` to deactive auto filtering of options.
+
+<ComponentPreview name="autocomplete-no-filtering-demo" />
+
+```tsx {3}
+<Autocomplete
+    {...props}
+    autoFilter={false}
+/>
+```
+
+### Uncontrolled
+
+- Input type: `"text"`, Ref prop: `ref`
+- Unlike the controlled version, the uncontrolled version does not give access to the `value` prop of the selected option.
+- If not required, an empty string will be submitted if the input is empty.
+
+<ComponentPreview name="autocomplete-uncontrolled-demo" />
+
+## API Reference
 
 <ComponentAnatomy name="autocomplete" />

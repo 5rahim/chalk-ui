@@ -431,6 +431,24 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/autocomplete-demo.tsx"],
     },
+    "autocomplete-no-filtering-demo": {
+        name: "autocomplete-no-filtering-demo",
+        component: React.lazy(() => import("@/demo/autocomplete-no-filtering-demo")),
+        family: [],
+        files: ["src/demo/autocomplete-no-filtering-demo.tsx"],
+    },
+    "autocomplete-options-demo": {
+        name: "autocomplete-options-demo",
+        component: React.lazy(() => import("@/demo/autocomplete-options-demo")),
+        family: [],
+        files: ["src/demo/autocomplete-options-demo.tsx"],
+    },
+    "autocomplete-uncontrolled-demo": {
+        name: "autocomplete-uncontrolled-demo",
+        component: React.lazy(() => import("@/demo/autocomplete-uncontrolled-demo")),
+        family: [],
+        files: ["src/demo/autocomplete-uncontrolled-demo.tsx"],
+    },
     "avatar-demo": {
         name: "avatar-demo",
         component: React.lazy(() => import("@/demo/avatar-demo")),
