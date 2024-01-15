@@ -1,10 +1,24 @@
 ---
 title: App Layout
-description: Description
+description: Scaffold your app using responsive layout components.
 componentName: app-layout
 ---
 
-<ComponentPreview name="app-layout-demo" />
+<ComponentPreview name="app-layout-demo" hideCode />
+
+```tsx
+<AppLayout>
+    <AppLayoutHeader>
+        {/*Header/Navbar*/}
+    </AppLayoutHeader>
+    <AppLayoutContent className="container max-w-7xl py-5">
+        {/*Content*/}
+    </AppLayoutContent>
+    <AppLayoutFooter>
+        {/*Footer*/}
+    </AppLayoutFooter>
+</AppLayout>
+```
 
 ## Installation
 
@@ -16,3 +30,82 @@ npx @rahimstack@latest add app-layout
 ## Anatomy
 
 <ComponentAnatomy name="app-layout" />
+
+## Sidebar
+
+<ComponentPreview name="app-layout-sidebar-demo" hideCode />
+
+```tsx {2,10}
+<AppSidebarProvider>
+    <AppLayout wideSidebar sidebarSize="md">
+        <AppLayoutSidebar>
+            <AppSidebar>
+                {/*Sidebar content*/}
+            </AppSidebar>
+        </AppLayoutSidebar>
+        <AppLayout>
+            <AppLayoutHeader>
+                <AppSidebarTrigger />
+                {/*Header/Navbar*/}
+            </AppLayoutHeader>
+            <AppLayoutContent>
+                {/*Content*/}
+            </AppLayoutContent>
+            <AppLayoutFooter>
+                {/*Footer*/}
+            </AppLayoutFooter>
+        </AppLayout>
+    </AppLayout>
+</AppSidebarProvider>
+```
+
+### Description
+
+- `AppLayoutSidebar` is used to size and position the sidebar, it should not be styled.
+- `AppSidebar` will become a drawer on small screens. (under `lg` breakpoint)
+- `AppSidebarProvider` is used to share the sidebar state between `AppSidebar` and `AppSidebarTrigger`.
+- `AppSidebarTrigger` is used to open/close the sidebar on small screens. It is hidden on large screens.
+
+
+### Close drawer on link click
+
+You might want to close the sidebar automatically when a link is clicked. You can do that by using the `useAppSidebarContext` hook.
+
+```tsx {7,22}
+// layout.tsx
+export default function Layout() {
+    return (
+        <AppSidebarProvider>
+            <AppLayout wideSidebar>
+                <AppLayoutSidebar>
+                    <CustomSidebar/>
+                </AppLayoutSidebar>
+                <AppLayout>
+                    {/*...*/}
+                </AppLayout>
+            </AppLayout>
+        </AppSidebarProvider>
+    )
+}
+
+// custom-sidebar.tsx
+"use client"
+import {useAppSidebarContext} from "@/workshop/app-layout"
+
+export function CustomSidebar() {
+    const { setOpen } = useAppSidebarContext()
+
+    return (
+        <AppSidebar>
+            <ScrollArea className="p-4 h-dvh">
+                <AppSidebarNav>
+                    <VerticalMenu
+                        items={[...]}
+                        onLinkItemClick={() => setOpen(false)}
+                    />
+                </AppSidebarNav>
+            </ScrollArea>
+        </AppSidebar>
+    )
+}
+```

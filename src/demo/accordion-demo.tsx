@@ -2,7 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 export default function AccordionDemo() {
     return (
-        <div className="max-w-20 w-full">
+        <div className="w-full">
             <Accordion type="multiple">
                 <AccordionItem value="item-1">
                     <AccordionTrigger>

@@ -6,6 +6,7 @@ const config: Config = {
         "./index.html",
         "./src/pages/**/*.{ts,tsx,mdx}",
         "./src/components/**/*.{ts,tsx,mdx}",
+        "./src/demo/**/*.{ts,tsx,mdx}",
         "./src/workshop/**/*.{ts,tsx,mdx}",
         "./src/app/**/*.{ts,tsx,mdx}",
     ],

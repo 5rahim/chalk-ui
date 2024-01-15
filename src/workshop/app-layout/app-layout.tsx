@@ -8,13 +8,8 @@ import * as React from "react"
 
 export const AppLayoutAnatomy = defineStyleAnatomy({
     root: cva([
-        "UI-AppLayout__root",
-        "flex w-full min-h-screen group",
-        "group-[.with-sidebar]:group-[.sidebar-slim]:lg:pl-20",
-        "group-[.with-sidebar]:group-[.sidebar-sm]:lg:pl-48",
-        "group-[.with-sidebar]:group-[.sidebar-md]:lg:pl-64",
-        "group-[.with-sidebar]:group-[.sidebar-lg]:lg:pl-[20rem]",
-        "group-[.with-sidebar]:group-[.sidebar-xl]:lg:pl-[25rem]",
+        "UI-AppLayout__root appLayout",
+        "flex w-full group/appLayout",
     ], {
         variants: {
             withSidebar: {
@@ -29,6 +24,13 @@ export const AppLayoutAnatomy = defineStyleAnatomy({
                 xl: "sidebar-xl",
             },
         },
+        compoundVariants: [
+            { withSidebar: true, sidebarSize: "slim", className: "lg:[&>.appLayout]:pl-20" },
+            { withSidebar: true, sidebarSize: "sm", className: "lg:[&>.appLayout]:pl-48" },
+            { withSidebar: true, sidebarSize: "md", className: "lg:[&>.appLayout]:pl-64" },
+            { withSidebar: true, sidebarSize: "lg", className: "lg:[&>.appLayout]:pl-[20rem]" },
+            { withSidebar: true, sidebarSize: "xl", className: "lg:[&>.appLayout]:pl-[25rem]" },
+        ],
         defaultVariants: {
             withSidebar: false,
             sidebarSize: "md",
@@ -47,11 +49,11 @@ export const AppLayoutSidebarAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-AppLayoutSidebar__root",
         "hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col grow-0 shrink-0 basis-0",
-        "group-[.sidebar-slim]:w-20",
-        "group-[.sidebar-sm]:w-48",
-        "group-[.sidebar-md]:w-64",
-        "group-[.sidebar-lg]:w-[20rem]",
-        "group-[.sidebar-xl]:w-[25rem]",
+        "group-[.sidebar-slim]/appLayout:w-20",
+        "group-[.sidebar-sm]/appLayout:w-48",
+        "group-[.sidebar-md]/appLayout:w-64",
+        "group-[.sidebar-lg]/appLayout:w-[20rem]",
+        "group-[.sidebar-xl]/appLayout:w-[25rem]",
     ]),
 })
 
@@ -136,7 +138,7 @@ export const AppLayout = React.forwardRef<HTMLDivElement, AppLayoutProps>((props
     const {
         children,
         className,
-        withSidebar,
+        withSidebar = false,
         sidebarSize,
         ...rest
     } = props

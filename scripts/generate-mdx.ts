@@ -1,3 +1,6 @@
+/**
+ * Unused
+ */
 import { Bank } from "@/bank"
 import { promises as fs } from "fs"
 import startCase from "lodash/startCase"

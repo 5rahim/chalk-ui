@@ -17,6 +17,12 @@ const __AppSidebarContext = React.createContext<{
     setOpen: () => {},
 })
 
+export function useAppSidebarContext() {
+    const ctx = React.useContext(__AppSidebarContext)
+    if (!ctx) throw new Error("useAppSidebarContext must be used within a AppSidebarProvider")
+    return ctx
+}
+
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
  * -----------------------------------------------------------------------------------------------*/
@@ -68,7 +74,6 @@ export const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>((pro
                 open={ctx.open}
                 onOpenChange={v => ctx.setOpen(v)}
                 side="left"
-                allowOutsideInteraction={true}
             >
                 {children}
             </Drawer>

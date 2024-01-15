@@ -17,13 +17,18 @@ npx @rahimstack@latest add address-input
 
 <ComponentAnatomy name="address-input" />
 
-## Examples
-
-### Allow custom addresses
+## Allow custom addresses
 
 <ComponentPreview name="address-input-custom-demo" />
 
+```tsx {3}
+<AddressInput
+    {...props}
+    type="custom"
+/>
+```
 
-### Uncontrolled
+
+## Uncontrolled
 
 <ComponentPreview name="address-input-uncontrolled-demo" />

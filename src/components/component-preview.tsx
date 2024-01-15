@@ -11,6 +11,7 @@ interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
     extractClassname?: boolean
     extractedClassNames?: string
     align?: "center" | "start" | "end"
+    hideCode?: boolean
 }
 
 export function ComponentPreview({
@@ -20,6 +21,7 @@ export function ComponentPreview({
     extractClassname,
     extractedClassNames,
     align = "center",
+    hideCode,
     ...props
 }: ComponentPreviewProps) {
 
@@ -69,9 +71,9 @@ export function ComponentPreview({
                     <TabsTrigger value="preview">
                         Preview
                     </TabsTrigger>
-                    <TabsTrigger value="code">
+                    {!hideCode && <TabsTrigger value="code">
                         Code
-                    </TabsTrigger>
+                    </TabsTrigger>}
                 </TabsList>
                 <TabsContent value="preview">
                     <React.Suspense
@@ -84,7 +86,7 @@ export function ComponentPreview({
                     >
                         <div
                             className={cn(
-                                "preview flex min-h-[200px] w-full justify-center py-4 lg:p-10",
+                                "preview relative flex min-h-[200px] w-full justify-center py-4 lg:p-10",
                                 {
                                     "items-center": align === "center",
                                     "items-start": align === "start",
@@ -96,13 +98,13 @@ export function ComponentPreview({
                         </div>
                     </React.Suspense>
                 </TabsContent>
-                <TabsContent value="code">
+                {!hideCode && <TabsContent value="code">
                     <div className="flex flex-col space-y-4 py-4">
-                        <div className="w-full rounded-[--radius] [&_pre]:my-0 [&_pre]:max-h-[600px] [&_pre]:overflow-auto">
+                        <div className="w-full rounded-[--radius] [&_pre]:my-0 [&_pre]:max-h-[150px] lg:[&_pre]:max-h-[600px] [&_pre]:overflow-auto">
                             {Code}
                         </div>
                     </div>
-                </TabsContent>
+                </TabsContent>}
             </Tabs>
 
 
