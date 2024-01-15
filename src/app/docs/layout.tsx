@@ -2,6 +2,7 @@
 import { ModeToggle } from "@/components/client-providers"
 import { DocsVerticalMenu } from "@/components/docs-vertical-menu"
 import { AppLayout, AppLayoutHeader, AppLayoutSidebar, AppSidebar, AppSidebarProvider, AppSidebarTrigger } from "@/workshop/app-layout"
+import { ScrollArea } from "@/workshop/scroll-area"
 import { Separator } from "@/workshop/separator"
 import React from "react"
 
@@ -10,6 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <AppSidebarProvider>
             <AppLayout withSidebar sidebarSize={"md"}>
                 <AppLayoutSidebar>
+                    <ScrollArea className="h-dvh">
                     <AppSidebar className="p-4 space-y-4">
                         <div className="flex flex-col items-center justify-center gap-2">
                             {<img src="/images/logo.png" className="size-16 w-auto" />}
@@ -20,6 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             <DocsVerticalMenu />
                         </div>
                     </AppSidebar>
+                    </ScrollArea>
                 </AppLayoutSidebar>
                 <AppLayout>
                     <AppLayoutHeader className="w-full h-16 border-b flex items-center justify-between px-4">

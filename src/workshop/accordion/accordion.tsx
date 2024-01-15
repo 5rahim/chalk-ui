@@ -27,7 +27,7 @@ export const AccordionAnatomy = defineStyleAnatomy({
     ]),
     item: cva([
         "UI-Accordion__item",
-        "border-b border-[--border]",
+        "border-b",
     ]),
     contentContainer: cva([
         "UI-Accordion__contentContainer",
@@ -81,11 +81,13 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>((props
 
 })
 
+Accordion.displayName = "Accordion"
+
 /* -------------------------------------------------------------------------------------------------
  * AccordionItem
  * -----------------------------------------------------------------------------------------------*/
 
-export type AccordionItemProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item> & ComponentAnatomy<typeof AccordionAnatomy>
+export type AccordionItemProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
 
 export const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>((props, ref) => {
 
@@ -103,12 +105,14 @@ export const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps
 
 })
 
+AccordionItem.displayName = "AccordionItem"
+
 /* -------------------------------------------------------------------------------------------------
  * AccordionTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-type AccordionTriggerAnatomyProps = Omit<ComponentAnatomy<typeof AccordionAnatomy>, "itemClass" | "triggerClass">
-type AccordionTriggerProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> & AccordionTriggerAnatomyProps
+export type AccordionTriggerProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> &
+    Pick<ComponentAnatomy<typeof AccordionAnatomy>, "headerClass" | "triggerIconClass">
 
 export const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerProps>((props, ref) => {
 
@@ -158,12 +162,14 @@ export const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTri
 
 })
 
+AccordionTrigger.displayName = "AccordionTrigger"
+
 /* -------------------------------------------------------------------------------------------------
  * AccordionContent
  * -----------------------------------------------------------------------------------------------*/
 
-type AccordionContentAnatomyProps = Omit<ComponentAnatomy<typeof AccordionAnatomy>, "contentClass">
-type AccordionContentProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content> & AccordionContentAnatomyProps
+export type AccordionContentProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content> &
+    Pick<ComponentAnatomy<typeof AccordionAnatomy>, "contentContainerClass">
 
 export const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>((props, ref) => {
 
@@ -192,7 +198,5 @@ export const AccordionContent = React.forwardRef<HTMLDivElement, AccordionConten
     )
 })
 
-AccordionItem.displayName = "AccordionItem"
-AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
-AccordionContent.displayName = AccordionPrimitive.Content.displayName
+AccordionContent.displayName = "AccordionContent"
 

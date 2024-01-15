@@ -36,7 +36,7 @@ export function ComponentPreview({
                     <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">
                         {name}
                     </code>{" "}
-                    not found in registry.
+                    not found bank.
                 </p>
             )
         }
@@ -84,7 +84,7 @@ export function ComponentPreview({
                     >
                         <div
                             className={cn(
-                                "preview flex min-h-[200px] w-full justify-center p-10",
+                                "preview flex min-h-[200px] w-full justify-center py-4 lg:p-10",
                                 {
                                     "items-center": align === "center",
                                     "items-start": align === "start",
@@ -98,7 +98,7 @@ export function ComponentPreview({
                 </TabsContent>
                 <TabsContent value="code">
                     <div className="flex flex-col space-y-4 py-4">
-                        <div className="w-full rounded-[--radius] [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">
+                        <div className="w-full rounded-[--radius] [&_pre]:my-0 [&_pre]:max-h-[600px] [&_pre]:overflow-auto">
                             {Code}
                         </div>
                     </div>

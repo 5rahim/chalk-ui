@@ -13,14 +13,14 @@ export const AlertAnatomy = defineStyleAnatomy({
     ], {
         variants: {
             intent: {
-                "info": "bg-blue-50 text-blue-500 __UI__DARK__ dark:bg-opacity-10 dark:text-blue-200",
-                "success": "bg-green-50 text-green-500 __UI__DARK__ dark:bg-opacity-10 dark:text-green-200",
-                "warning": "bg-orange-50 text-orange-500 __UI__DARK__ dark:bg-opacity-10 dark:text-orange-200",
-                "alert": "bg-red-50 text-red-500 __UI__DARK__ dark:bg-opacity-10 dark:text-red-200",
-                "info-basic": "bg-white text-gray-800 border border-[--border] __UI__DARK__ dark:bg-gray-800 dark:text-gray-200",
-                "success-basic": "bg-white text-gray-800 border border-[--border] __UI__DARK__ dark:bg-gray-800 dark:text-gray-200",
-                "warning-basic": "bg-white text-gray-800 border border-[--border] __UI__DARK__ dark:bg-gray-800 dark:text-gray-200",
-                "alert-basic": "bg-white text-gray-800 border border-[--border] __UI__DARK__ dark:bg-gray-800 dark:text-gray-200",
+                "info": "bg-blue-50 text-blue-500 dark:bg-opacity-10 dark:text-blue-200",
+                "success": "bg-green-50 text-green-500 dark:bg-opacity-10 dark:text-green-200",
+                "warning": "bg-orange-50 text-orange-500 dark:bg-opacity-10 dark:text-orange-200",
+                "alert": "bg-red-50 text-red-500 dark:bg-opacity-10 dark:text-red-200",
+                "info-basic": "bg-white text-gray-800 border dark:bg-gray-800 dark:text-gray-200",
+                "success-basic": "bg-white text-gray-800 border dark:bg-gray-800 dark:text-gray-200",
+                "warning-basic": "bg-white text-gray-800 border dark:bg-gray-800 dark:text-gray-200",
+                "alert-basic": "bg-white text-gray-800 border dark:bg-gray-800 dark:text-gray-200",
             },
         },
         defaultVariants: {
@@ -64,7 +64,7 @@ export const AlertAnatomy = defineStyleAnatomy({
     }),
     closeButton: cva([
         "UI-Alert__closeButton",
-        "self-start text-2xl hover:opacity-50 transition ease-in cursor-pointer h-5 w-5",
+        "flex-none self-start text-2xl hover:opacity-50 transition ease-in cursor-pointer h-5 w-5",
     ]),
 })
 

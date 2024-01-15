@@ -1,14 +1,16 @@
 import { Mdx } from "@/components/mdx-components"
 import { DashboardTableOfContents } from "@/components/toc"
+import { ButtonAnatomy } from "@/workshop/button"
 import { cn } from "@/workshop/core/styling"
-import { ChevronRightIcon } from "@radix-ui/react-icons"
+import { ScrollArea } from "@/workshop/scroll-area"
 import { allDocs } from "contentlayer/generated"
 
 import "@/styles/mdx.css"
+import { ExternalLinkIcon } from "lucide-react"
+import Link from "next/link"
 import { notFound } from "next/navigation"
 import Balancer from "react-wrap-balancer"
 import { getTableOfContents } from "../../../../lib/toc"
-import { ScrollArea } from "@/workshop/scroll-area"
 
 
 interface DocPageProps {
@@ -94,32 +96,41 @@ export default async function DocPage({ params }: DocPageProps) {
                         </p>
                     )}
                 </div>
-                {/*{doc.links ? (*/}
-                {/*  <div className="flex items-center space-x-2 pt-4">*/}
-                {/*    {doc.links?.doc && (*/}
-                {/*      <Link*/}
-                {/*        href={doc.links.doc}*/}
-                {/*        target="_blank"*/}
-                {/*        rel="noreferrer"*/}
-                {/*        className={cn(badgeVariants({ variant: "secondary" }), "gap-1")}*/}
-                {/*      >*/}
-                {/*        Docs*/}
-                {/*        <ExternalLinkIcon className="h-3 w-3" />*/}
-                {/*      </Link>*/}
-                {/*    )}*/}
-                {/*    {doc.links?.api && (*/}
-                {/*      <Link*/}
-                {/*        href={doc.links.api}*/}
-                {/*        target="_blank"*/}
-                {/*        rel="noreferrer"*/}
-                {/*        className={cn(badgeVariants({ variant: "secondary" }), "gap-1")}*/}
-                {/*      >*/}
-                {/*        API Reference*/}
-                {/*        <ExternalLinkIcon className="h-3 w-3" />*/}
-                {/*      </Link>*/}
-                {/*    )}*/}
-                {/*  </div>*/}
-                {/*) : null}*/}
+                <div className="flex items-center gap-2 pt-4">
+                    {doc.componentName && (
+                        <Link
+                            href={"https://github.com/5rahim/chalk-ui/tree/main/src/workshop/" + doc.componentName}
+                            target="_blank"
+                            rel="noreferrer"
+                            className={cn(ButtonAnatomy.root({ size: "xs", intent: "gray-subtle" }), "flex items-center gap-1")}
+                        >
+                            Source
+                            <ExternalLinkIcon className="h-3 w-3" />
+                        </Link>
+                    )}
+                    {doc.links?.doc && (
+                        <Link
+                            href={doc.links.doc}
+                            target="_blank"
+                            rel="noreferrer"
+                            className={cn(ButtonAnatomy.root({ size: "xs", intent: "gray-subtle" }), "flex items-center gap-1")}
+                        >
+                            Docs
+                            <ExternalLinkIcon className="h-3 w-3" />
+                        </Link>
+                    )}
+                    {doc.links?.api && (
+                        <Link
+                            href={doc.links.api}
+                            target="_blank"
+                            rel="noreferrer"
+                            className={cn(ButtonAnatomy.root({ size: "xs", intent: "gray-subtle" }), "flex items-center gap-1")}
+                        >
+                            API Reference
+                            <ExternalLinkIcon className="h-3 w-3" />
+                        </Link>
+                    )}
+                </div>
                 <div className="pb-12 pt-8">
                     <Mdx code={doc.body.code} />
                 </div>

@@ -20,7 +20,7 @@ export const TimelineAnatomy = defineStyleAnatomy({
     ]),
     icon: cva([
         "UI-Timeline__icon",
-        "flex items-center justify-center w-8 h-8 border border-[--border] rounded-full flex-none",
+        "flex items-center justify-center w-8 h-8 border rounded-full flex-none",
     ]),
     line: cva([
         "UI-Timeline__line",

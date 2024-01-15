@@ -58,7 +58,7 @@ export const Sidebar: Story = {
                     </AppLayoutSidebar>
                     <AppLayout>
                         <AppLayoutHeader>
-                            <div className="w-full h-16 border-b border-[--border] flex items-center bg-[--paper] px-2">
+                            <div className="w-full h-16 border-b flex items-center bg-[--paper] px-2">
                                 <AppSidebarTrigger />
                                 <TextInput
                                     className="shadow-none border-none focus:border-none focus:ring-0"
@@ -67,7 +67,7 @@ export const Sidebar: Story = {
                                 />
                             </div>
                             <StaticTabs
-                                className="border-b border-[--border] px-4 py-2"
+                                className="border-b px-4 py-2"
                                 items={[
                                     { name: "My Account", href: "#", isCurrent: false },
                                     { name: "Company", href: "#", isCurrent: false },
@@ -76,7 +76,7 @@ export const Sidebar: Story = {
                                 ]}
                             />
                             <PageHeader
-                                className="p-4 border-b border-[--border]"
+                                className="p-4 border-b"
                                 title={"Dashboard"}
                                 size={"md"}
                                 action={<Button>Action</Button>}
@@ -96,7 +96,7 @@ export const Sidebar: Story = {
                                         { name: "Avg. Open Rate", value: "58.16%", unit: "from 56.14%", change: "2.02%", trend: "up" },
                                         { name: "Avg. Click Rate", value: "24.57%" },
                                     ]}
-                                    className="border-b border-[--border]"
+                                    className="border-b"
                                 />
                             </div>
                             <div className="container max-w-full p-4">

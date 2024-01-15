@@ -92,23 +92,6 @@ export const CarouselAnatomy = defineStyleAnatomy({
  * Carousel
  * -----------------------------------------------------------------------------------------------*/
 
-type CarouselProps = {
-    opts?: CarouselOptions
-    plugins?: CarouselPlugin[]
-    orientation?: "horizontal" | "vertical"
-    gap?: "none" | "sm" | "md" | "lg" | "xl"
-    setApi?: (api: CarouselApi) => void
-}
-
-type CarouselContextProps = {
-    carouselRef: ReturnType<typeof useEmblaCarousel>[0]
-    api: ReturnType<typeof useEmblaCarousel>[1]
-    scrollPrev: () => void
-    scrollNext: () => void
-    canScrollPrev: boolean
-    canScrollNext: boolean
-} & CarouselProps
-
 export const __CarouselContext = React.createContext<CarouselContextProps | null>(null)
 
 function useCarousel() {
@@ -120,6 +103,23 @@ function useCarousel() {
 
     return context
 }
+
+export type CarouselProps = {
+    opts?: CarouselOptions
+    plugins?: CarouselPlugin[]
+    orientation?: "horizontal" | "vertical"
+    gap?: "none" | "sm" | "md" | "lg" | "xl"
+    setApi?: (api: CarouselApi) => void
+}
+
+export type CarouselContextProps = {
+    carouselRef: ReturnType<typeof useEmblaCarousel>[0]
+    api: ReturnType<typeof useEmblaCarousel>[1]
+    scrollPrev: () => void
+    scrollNext: () => void
+    canScrollPrev: boolean
+    canScrollNext: boolean
+} & CarouselProps
 
 export const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & CarouselProps>((props, ref) => {
 
@@ -217,7 +217,7 @@ Carousel.displayName = "Carousel"
  * CarouselContent
  * -----------------------------------------------------------------------------------------------*/
 
-type CarouselContentProps = React.ComponentPropsWithoutRef<"div"> & {
+export type CarouselContentProps = React.ComponentPropsWithoutRef<"div"> & {
     contentClass?: string
 }
 
@@ -241,7 +241,7 @@ CarouselContent.displayName = "CarouselContent"
  * CarouselItem
  * -----------------------------------------------------------------------------------------------*/
 
-type CarouselItemProps = React.ComponentPropsWithoutRef<"div">
+export type CarouselItemProps = React.ComponentPropsWithoutRef<"div">
 
 export const CarouselItem = React.forwardRef<HTMLDivElement, CarouselItemProps>((props, ref) => {
     const { className, ...rest } = props
@@ -263,7 +263,7 @@ CarouselItem.displayName = "CarouselItem"
  * CarouselPrevious
  * -----------------------------------------------------------------------------------------------*/
 
-type CarouselButton = React.ComponentProps<typeof IconButton> & { chevronIconClass?: string }
+export type CarouselButton = React.ComponentProps<typeof IconButton> & { chevronIconClass?: string }
 
 export const CarouselPrevious = React.forwardRef<HTMLButtonElement, CarouselButton>((props, ref) => {
     const { className, chevronIconClass, intent = "gray-outline", ...rest } = props

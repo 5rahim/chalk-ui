@@ -27,7 +27,7 @@ export const DataGridFilterAnatomy = defineStyleAnatomy({
 export const DataGridActiveFilterAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-DataGridActiveFilter__root",
-        "py-1 px-2 rounded-[--radius] border border-[--border] flex gap-2 items-center",
+        "py-1 px-2 rounded-[--radius] border flex gap-2 items-center",
     ]),
 })
 

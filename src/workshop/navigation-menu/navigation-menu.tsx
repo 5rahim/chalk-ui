@@ -100,7 +100,7 @@ export const NavigationMenuAnatomy = defineStyleAnatomy({
     viewport: cva([
         "UI-NavigationMenu__viewport",
         "relative mt-1.5 duration-300 h-[var(--radix-navigation-menu-viewport-height)]",
-        "w-full min-w-96 overflow-hidden rounded-[--radius] shadow-sm border border-[--border] bg-[--paper] text-[--text-color]",
+        "w-full min-w-96 overflow-hidden rounded-[--radius] shadow-sm border bg-[--paper] text-[--text-color]",
         "data-[state=open]:animate-in data-[state=open]:zoom-in-90 data-[state=open]:fade-in-25",
         "data-[state=closed]:animate-out data-[state=closed]:zoom-out-100 data-[state=closed]:fade-out-0",
     ]),

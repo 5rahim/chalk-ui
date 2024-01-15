@@ -31,10 +31,6 @@ const HorizontalDraggableScrollAnatomy = defineStyleAnatomy({
                 left: "left-0 bg-gradient-to-r",
                 right: "right-0 bg-gradient-to-l",
             },
-            hidden: {
-                true: "",
-                false: null,
-            },
         },
     }),
     scrollContainer: cva([
@@ -165,7 +161,7 @@ export const HorizontalDraggableScroll = React.forwardRef<HTMLDivElement, Horizo
         <div ref={forwadedRef} className={cn(HorizontalDraggableScrollAnatomy.root(), className)}>
             <div
                 onClick={slideLeft}
-                className={cn(HorizontalDraggableScrollAnatomy.chevronOverlay({ hidden: isScrolledToLeft, side: "left" }), chevronOverlayClass)}
+                className={cn(HorizontalDraggableScrollAnatomy.chevronOverlay({ side: "left" }), chevronOverlayClass)}
                 data-state={isScrolledToLeft ? "hidden" : "visible"}
             >
                 <svg
@@ -191,7 +187,7 @@ export const HorizontalDraggableScroll = React.forwardRef<HTMLDivElement, Horizo
             </div>
             <div
                 onClick={slideRight}
-                className={cn(HorizontalDraggableScrollAnatomy.chevronOverlay({ hidden: isScrolledToRight, side: "right" }), chevronOverlayClass)}
+                className={cn(HorizontalDraggableScrollAnatomy.chevronOverlay({ side: "right" }), chevronOverlayClass)}
                 data-state={!isScrolledToRight && showChevronRight ? "visible" : "hidden"}
             >
                 <svg

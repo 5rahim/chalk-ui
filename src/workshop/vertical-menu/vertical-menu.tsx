@@ -167,7 +167,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
         <div
             className={cn(
                 VerticalMenuAnatomy.itemContent({ center: iconsOnly }),
-                itemClass,
+                itemContentClass,
             )}
         >
             {item.iconType && <item.iconType
@@ -181,7 +181,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
             {!iconsOnly && <span>{item.name}</span>}
             {item.addon}
         </div>
-    ), [iconsOnly, size, itemClass, iconClass])
+    ), [iconsOnly, size, itemContentClass, iconClass])
 
     return (
         <nav

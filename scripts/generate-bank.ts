@@ -37,6 +37,13 @@ const specialDivisions = [
             ["Loading Overlay", "loading-overlay"],
         ],
     },
+    {
+        name: "date-picker",
+        parts: [
+            ["Date Picker", "date-picker"],
+            ["Date Range Picker", "date-range-picker"],
+        ],
+    },
 ]
 
 export async function createSnapshot() {
@@ -63,7 +70,7 @@ export const Bank: Bank = {`
         for (const part of division.parts) {
             output += `
     "${part[1]}": {
-        name: "${part[0]}",
+        name: "${part[1]}",
         component: React.lazy(() => import("@/workshop/${division.name}/${part[1]}")),
         family: [${componentData.family.map(family => `"${family}"`).join(", ")}],
         files: [${componentData.files.map(file => `"src/workshop/${componentData?.component}/${file.name}"`).join(", ")}],
@@ -82,7 +89,7 @@ export const Bank: Bank = {`
 
         output += `
     "${component.component}": {
-        name: "${component.name}",
+        name: "${component.component}",
         component: React.lazy(() => import("@/workshop/${component.component}/${component.component}")),
         family: [${component.family.map(family => `"${family}"`).join(", ")}],
         files: [${component.files.map(file => `"src/workshop/${component.component}/${file.name}"`).join(", ")}],

@@ -35,7 +35,7 @@ const meta = {
                 value: "24.57%",
             },
         ],
-        className: "border border-[--border]",
+        className: "border",
     },
 } satisfies Meta<typeof Stats>
 

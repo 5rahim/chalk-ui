@@ -48,6 +48,6 @@ export const Custom: Story = {
         type: "multiple",
         className: "space-y-4",
         itemClass: "border-none",
-        contentClass: "border border-[--border] rounded-md mt-4",
+        contentClass: "border rounded-md mt-4",
     },
 }

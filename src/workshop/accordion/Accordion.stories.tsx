@@ -49,6 +49,6 @@ export const Custom: Story = {
         className: "space-y-4",
         triggerClass: "rounded-md bg-gray-100 dark:bg-gray-900",
         itemClass: "border-none",
-        contentClass: "border border-[--border] rounded-md mt-4",
+        contentClass: "border rounded-md mt-4",
     },
 }

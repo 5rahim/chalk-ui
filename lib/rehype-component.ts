@@ -83,9 +83,10 @@ export function rehypeComponent() {
 
             if (node.name === "ComponentAnatomy") {
                 const name = getNodeAttributeByName(node, "name")?.value as string
-                const fileName = getNodeAttributeByName(node, "fileName")?.value as
-                    | string
-                    | undefined
+                const fileName = name
+                // const fileName = getNodeAttributeByName(node, "fileName")?.value as
+                //     | string
+                //     | undefined
 
                 if (!name && !srcPath) {
                     return null
@@ -148,6 +149,10 @@ export function rehypeComponent() {
                     for (let i = 0; i < anatomySlices.length; i++) {
                         anatomyString += anatomySlices[i].join("\n")
                     }
+                    anatomyString = anatomyString.replaceAll(
+                        `export const`,
+                        "const",
+                    )
                     anatomyString = anatomyString.trim()
 
                     /** Types **/
@@ -175,6 +180,13 @@ export function rehypeComponent() {
                     for (let i = 0; i < typesSlices.length; i++) {
                         typesString += typesSlices[i].join("\n")
                     }
+                    typesString = typesString.replaceAll(
+                        `export type`,
+                        "type",
+                    ).replaceAll(
+                        `export interface`,
+                        "interface",
+                    )
                     typesString = typesString.trim()
 
 
@@ -252,6 +264,7 @@ export function rehypeComponent() {
                         "@/components/ui/",
                     )
                     source = source.replaceAll("export default", "export")
+                    source = source.replaceAll("//@ts-nocheck\n", "")
 
                     // Add code as children so that rehype can take over at build time.
                     node.children?.push(
