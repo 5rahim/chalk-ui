@@ -15,8 +15,6 @@ export function ComponentAnatomy({
 
     return (
         <div className="space-y-4">
-            <h3>Types</h3>
-
             <Accordion
                 type="multiple" defaultValue={["types"]}
                 className="space-y-2"

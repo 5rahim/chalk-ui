@@ -54,7 +54,7 @@ export const useGoogleMapsAutocomplete = ({
 
         setAutocompleteService(new window.google.maps.places.AutocompleteService())
         setSessionToken(new google.maps.places.AutocompleteSessionToken())
-    }, [window])
+    }, [])
 
     // Initialize service
     React.useEffect(() => {

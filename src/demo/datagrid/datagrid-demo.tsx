@@ -188,3 +188,5 @@ export const DatagridDemo: React.FC<DataGridTestProps> = (props) => {
     )
 
 }
+
+export default DatagridDemo
