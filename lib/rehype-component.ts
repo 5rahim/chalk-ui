@@ -163,7 +163,7 @@ export function rehypeComponent() {
                             let j = i + 1
                             while (j < lines.length) {
                                 if (lines[j].startsWith("export const") || lines[j].startsWith("export function") || lines[j].startsWith(
-                                    "export default")) {
+                                    "export default") || lines[j].startsWith("export enum") || lines[j].startsWith("export type")) {
                                     typesIndices.push([i, j])
                                     break
                                 }

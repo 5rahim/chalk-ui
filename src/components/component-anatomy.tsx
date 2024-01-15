@@ -21,6 +21,7 @@ export function ComponentAnatomy({
                 triggerClass="bg-[--subtle] hover:bg-[--subtle-highlight] rounded-[--radius]"
                 itemClass="border-none"
                 contentClass="px-0 py-0"
+                defaultValue={["types"]}
             >
                 <AccordionItem value="types">
                     <AccordionTrigger>Types</AccordionTrigger>

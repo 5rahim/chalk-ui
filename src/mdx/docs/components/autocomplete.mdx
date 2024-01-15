@@ -46,6 +46,47 @@ Set `autoFilter` to `false` to deactive auto filtering of options.
 />
 ```
 
+
+### Dynamic suggestions
+
+You can use the `onTextChange` prop to dynamically change the list of suggestions as the user is typing.
+
+- `isFetching` will render a loading indicator if set to `true`.
+
+```tsx
+const defaultAddress = "1600 Amphitheatre Parkway, Mountain View, CA, USA"
+
+const { suggestions, fetchSuggestions, isFetching } = useGoogleMapsAutocomplete({ ...autocompleteOptions })
+
+const handleTextChange = (v: string) => {
+    fetchSuggestions(v)
+}
+
+return (
+    <Autocomplete
+        options={suggestions}
+        defaultValue={{ value: null, label: defaultAddress }}
+        onTextChange={handleTextChange}
+        isFetching={isFetching}
+        emptyMessage="No results"
+        {...rest}
+    />
+)
+```
+
+
+### Empty message
+
+- `emptyMessage` will be rendered if there are no suggestions when `autoFilter` is `true`.
+- If not provided, the options list will be hidden when there are no options.
+
+```tsx
+<Autocomplete
+    {...props}
+    emptyMessage="No results"
+/>
+```
+
 ### Uncontrolled
 
 - Input type: `"text"`, Ref prop: `ref`

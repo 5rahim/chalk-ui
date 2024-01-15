@@ -41,11 +41,9 @@ export const AutocompleteAnatomy = defineStyleAnatomy({
  * Autocomplete
  * -----------------------------------------------------------------------------------------------*/
 
-type AutocompleteInputProps = Omit<React.ComponentPropsWithRef<"input">, "size" | "value" | "defaultValue">
-
 export type AutocompleteOption = { value: string | null, label: string }
 
-export type AutocompleteProps = AutocompleteInputProps &
+export type AutocompleteProps = Omit<React.ComponentPropsWithRef<"input">, "size" | "value" | "defaultValue"> &
     BasicFieldOptions &
     InputStyling &
     ComponentAnatomy<typeof AutocompleteAnatomy> & {
