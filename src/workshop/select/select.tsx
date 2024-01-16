@@ -50,6 +50,8 @@ export const SelectAnatomy = defineStyleAnatomy({
  * Select
  * -----------------------------------------------------------------------------------------------*/
 
+export type SelectOption = { value: string, label?: string, disabled?: boolean }
+
 export type SelectProps = InputStyling &
     BasicFieldOptions &
     Omit<React.ComponentPropsWithoutRef<"button">, "value" | "defaultValue"> &
@@ -57,7 +59,7 @@ export type SelectProps = InputStyling &
     /**
      * The options to display in the dropdown
      */
-    options: { value: string, label?: string, disabled?: boolean }[] | undefined
+    options: SelectOption[] | undefined
     /**
      * The placeholder text
      */

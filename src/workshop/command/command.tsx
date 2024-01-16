@@ -61,11 +61,9 @@ export const CommandAnatomy = defineStyleAnatomy({
  * Command
  * -----------------------------------------------------------------------------------------------*/
 
-const __CommandAnatomyContext = React.createContext<CommandAnatomyProps>({})
+const __CommandAnatomyContext = React.createContext<ComponentAnatomy<typeof CommandAnatomy>>({})
 
-type CommandAnatomyProps = ComponentAnatomy<typeof CommandAnatomy>
-
-export type CommandProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive> & CommandAnatomyProps
+export type CommandProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive> & ComponentAnatomy<typeof CommandAnatomy>
 
 export const Command = React.forwardRef<HTMLDivElement, CommandProps>((props, ref) => {
     const {

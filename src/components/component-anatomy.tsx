@@ -2,9 +2,14 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/workshop/accordion"
 import { useIsomorphicLayoutEffect } from "@/workshop/core/hooks"
+import { HoverCard } from "@/workshop/hover-card"
+import { Popover } from "@/workshop/popover"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/workshop/table"
+import kebabCase from "lodash/kebabCase"
+import Link from "next/link"
 import * as React from "react"
-import { ParsedType, parseTypes } from "../../lib/type-parser"
+import { BiInfoCircle } from "react-icons/bi"
+import { ParsedType, ParsedTypeProperty, parseTypes } from "../../lib/type-parser"
 
 interface ComponentAnatomyProps extends React.HTMLAttributes<HTMLDivElement> {
     src: string
@@ -49,17 +54,17 @@ export function ComponentAnatomy({
                                     <Table className="border rounded-[--radius] table-fixed">
                                         <TableHeader className="bg-[--subtle-highlight]">
                                             <TableRow>
-                                                <TableHead>Prop</TableHead>
+                                                <TableHead className="w-[200px]">Prop</TableHead>
                                                 <TableHead>Type</TableHead>
-                                                <TableHead>Default</TableHead>
+                                                <TableHead className="w-[200px]">Default</TableHead>
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
                                             {type.typeValues.map((prop, i) => (
                                                 <TableRow key={prop.name + i}>
-                                                    <TableCell>{prop.name}</TableCell>
-                                                    <TableCell>{prop.value}</TableCell>
-                                                    <TableCell>{""}</TableCell>
+                                                    <TableCell><TypeProperty prop={prop} /></TableCell>
+                                                    <TableCell><TypeValue value={prop.value} /></TableCell>
+                                                    <TableCell><TypePropertyDefault prop={prop} /></TableCell>
                                                 </TableRow>
                                             ))}
                                         </TableBody>
@@ -83,30 +88,79 @@ export function ComponentAnatomy({
     )
 }
 
-const obj = [
-    {
-        type: "type",
-        name: "AutocompleteOption",
-        typeValues: [{
-            type: "object",
-            value: "{ value: string | null, label: string }",
-        }],
-    },
-    {
-        type: "type",
-        name: "AutocompleteProps",
-        typeValues: [
-            {
-                type: "type",
-                value: `Omit<React.ComponentPropsWithRef<"input">`,
-            },
-            {
-                type: "property",
-                name: "options",
-                required: true,
-                description: "The autocompletion options.",
-                value: "AutocompleteOption[]",
-            },
-        ],
-    },
-]
+export function TypeProperty({ prop }: { prop: ParsedTypeProperty }) {
+    return (
+        <div className="flex gap-1 items-center">
+            {prop.name} {prop.required && <span className="text-[--red] text-lg">*</span>} {!!prop.description && (
+            <Popover
+                trigger={<span className="cursor-pointer"><BiInfoCircle className="text-[--muted] hover:text-[--foreground] text-lg" /></span>}
+            >
+                <p className="text-sm">
+                    {prop.description.replaceAll("*", "\n").split("\n").filter(n => n.trim() !== "").map((line, i) => (
+                        <span key={i}>
+                            {line}
+                            <br />
+                        </span>
+                    ))}
+                </p>
+            </Popover>
+        )}
+        </div>
+    )
+}
+
+export function TypePropertyDefault({ prop }: { prop: ParsedTypeProperty }) {
+    return (
+        <div className="flex gap-1 items-center">
+            {prop.description?.replaceAll("*", "\n").split("\n").filter(n => n.trim().startsWith("@default")).map((line, i) => (
+                <code key={i}>
+                    {line.replace("@default", "").trim()}
+                </code>
+            ))}
+        </div>
+    )
+}
+
+export function TypeValue({ value }: { value: string }) {
+
+    if (value.includes("Primitive.") && !value.toLowerCase().includes("command")) {
+        const radixType = value.split("typeof ")[1].split(".")
+        const part = radixType[1]?.split(">")[0]
+        const component = radixType[0].replace("Primitive", "")
+        return <Link
+            href={`https://www.radix-ui.com/primitives/docs/components/${kebabCase(component).toLowerCase()}#${part?.toLowerCase()}`}
+            className="text-[--indigo] hover:underline"
+            target="_blank"
+            rel="noreferrer"
+        >
+            {value}
+        </Link>
+    }
+
+    if (value === "InputStyling" || value === "BasicFieldOptions") {
+        return <Link
+            href={`#`}
+            className="text-[--orange] font-medium hover:underline"
+        >
+            {value}
+        </Link>
+    }
+
+    if (value.includes("VariantProps")) {
+        return <HoverCard
+            trigger={<span className="flex items-center gap-1 text-[--blue]">{value} <BiInfoCircle className="text-[--blue] text-lg" /></span>}
+        >
+            Check out the Anatomy source code to see the available variants props for this component.
+        </HoverCard>
+    }
+
+    if (value.includes("ComponentAnatomy")) {
+        return <HoverCard
+            trigger={<span className="flex items-center gap-1 text-[--brand]">{value} <BiInfoCircle className="text-[--brand] text-lg" /></span>}
+        >
+            Check out the Anatomy source code to see the available class properties for this component.
+        </HoverCard>
+    }
+
+    return <code className="border bg-gray-50 dark:bg-gray-900 rounded-[--radius] py-1 px-1.5">{value}</code>
+}

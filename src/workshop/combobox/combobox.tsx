@@ -63,6 +63,8 @@ export const ComboboxAnatomy = defineStyleAnatomy({
  * Combobox
  * -----------------------------------------------------------------------------------------------*/
 
+export type ComboboxOption = { value: string, textValue?: string, label: React.ReactNode }
+
 export type ComboboxProps = Omit<React.ComponentPropsWithRef<"button">, "size" | "value"> &
     BasicFieldOptions &
     InputStyling &
@@ -86,7 +88,7 @@ export type ComboboxProps = Omit<React.ComponentPropsWithRef<"button">, "size" |
     /**
      * The options to display in the dropdown
      */
-    options: { value: string, textValue?: string, label: React.ReactNode }[]
+    options: ComboboxOption[]
     /**
      * The message to display when there are no options
      */

@@ -1,7 +1,7 @@
 "use client"
 
 import { cn, ComponentAnatomy } from "../core/styling"
-import * as ProgressBarPrimitive from "@radix-ui/react-progress"
+import * as ProgressPrimitive from "@radix-ui/react-progress"
 import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
 
@@ -46,7 +46,7 @@ export const ProgressBarAnatomy = {
  * ProgressBar
  * -----------------------------------------------------------------------------------------------*/
 
-export type ProgressBarProps = React.ComponentPropsWithoutRef<typeof ProgressBarPrimitive.Root>
+export type ProgressBarProps = React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
     & ComponentAnatomy<typeof ProgressBarAnatomy>
     & VariantProps<typeof ProgressBarAnatomy.root>
     & VariantProps<typeof ProgressBarAnatomy.indicator>
@@ -62,16 +62,16 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>((p
     } = props
 
     return (
-        <ProgressBarPrimitive.Root
+        <ProgressPrimitive.Root
             ref={ref}
             className={cn(ProgressBarAnatomy.root({ size }), className)}
             {...rest}
         >
-            <ProgressBarPrimitive.Indicator
+            <ProgressPrimitive.Indicator
                 className={cn(ProgressBarAnatomy.indicator({ isIndeterminate }), indicatorClass)}
                 style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
             />
-        </ProgressBarPrimitive.Root>
+        </ProgressPrimitive.Root>
     )
 })
 ProgressBar.displayName = "ProgressBar"

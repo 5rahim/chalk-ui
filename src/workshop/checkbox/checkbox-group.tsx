@@ -16,6 +16,8 @@ type CheckboxGroupContextValue = {
 
 export const __CheckboxGroupContext = React.createContext<CheckboxGroupContextValue | null>(null)
 
+export type CheckboxGroupOption = { value: string, label?: React.ReactNode, disabled?: boolean, readonly?: boolean }
+
 export type CheckboxGroupProps = BasicFieldOptions & {
     /**
      * The value of the checkbox group.
@@ -36,7 +38,7 @@ export type CheckboxGroupProps = BasicFieldOptions & {
     /**
      * The options of the checkbox group.
      */
-    options: { value: string, label?: React.ReactNode, disabled?: boolean, readonly?: boolean }[]
+    options: CheckboxGroupOption[]
     /**
      * Class names applied to the container.
      */

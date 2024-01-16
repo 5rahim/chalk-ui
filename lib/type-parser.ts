@@ -1,4 +1,4 @@
-export type TypeValue = {
+export type ParsedTypeProperty = {
     name: string;
     value: string;
     description?: string;
@@ -8,7 +8,7 @@ export type TypeValue = {
 export type ParsedType = {
     kind: "type" | "interface";
     name: string;
-    typeValues: TypeValue[];
+    typeValues: ParsedTypeProperty[];
 }
 
 
@@ -93,7 +93,7 @@ export function parseTypes(input: string): ParsedType[] {
                     cursor++
                 }
 
-                let typeValues: TypeValue[] = []
+                let typeValues: ParsedTypeProperty[] = []
 
                 for (let i = 0; i < propertyTkns.length; i++) {
                     const propertyTkn = propertyTkns[i]
