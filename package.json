@@ -84,7 +84,6 @@
     "react-resizable-panels": "^0.0.55",
     "react-wrap-balancer": "^0.4.1",
     "recharts": "^2.6.2",
-    "sharp": "^0.33.1",
     "sonner": "^1.2.3",
     "tailwind-merge": "^1.12.0",
     "tailwind-scrollbar-hide": "^1.1.7",
