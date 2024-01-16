@@ -4,13 +4,14 @@ import { ButtonAnatomy } from "@/workshop/button"
 import { cn } from "@/workshop/core/styling"
 import { ScrollArea } from "@/workshop/scroll-area"
 import { allDocs } from "contentlayer/generated"
-
 import "@/styles/mdx.css"
 import { ExternalLinkIcon } from "lucide-react"
+import { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import Balancer from "react-wrap-balancer"
 import { getTableOfContents } from "../../../../lib/toc"
+import { absoluteUrl } from "../../../../lib/utils"
 
 
 interface DocPageProps {
@@ -30,34 +31,26 @@ async function getDocFromParams({ params }: DocPageProps) {
     return doc
 }
 
-// export async function generateMetadata({
-//   params,
-// }: DocPageProps): Promise<Metadata> {
-//   const doc = await getDocFromParams({ params })
-//
-//   if (!doc) {
-//     return {}
-//   }
-//
-//   return {
-//     title: doc.title,
-//     description: doc.description,
-//     openGraph: {
-//       title: doc.title,
-//       description: doc.description,
-//       type: "article",
-//       url: absoluteUrl(doc.slug),
-//       images: [
-//         {
-//           url: siteConfig.ogImage,
-//           width: 1200,
-//           height: 630,
-//           alt: siteConfig.name,
-//         },
-//       ],
-//     },
-//   }
-// }
+export async function generateMetadata({
+    params,
+}: DocPageProps): Promise<Metadata> {
+    const doc = await getDocFromParams({ params })
+
+    if (!doc) {
+        return {}
+    }
+
+    return {
+        title: doc.title,
+        description: doc.description,
+        openGraph: {
+            title: doc.title,
+            description: doc.description,
+            type: "article",
+            url: absoluteUrl(doc.slug),
+        },
+    }
+}
 
 export async function generateStaticParams(): Promise<
     DocPageProps["params"][]
