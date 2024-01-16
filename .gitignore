@@ -37,7 +37,7 @@ next-env.d.ts
 
 .idea
 
-.contentlayer/.cache*
+.contentlayer
 
 .env
 
