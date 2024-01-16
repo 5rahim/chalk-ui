@@ -449,17 +449,47 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/autocomplete-uncontrolled-demo.tsx"],
     },
+    "avatar-default-demo": {
+        name: "avatar-default-demo",
+        component: React.lazy(() => import("@/demo/avatar-default-demo")),
+        family: [],
+        files: ["src/demo/avatar-default-demo.tsx"],
+    },
     "avatar-demo": {
         name: "avatar-demo",
         component: React.lazy(() => import("@/demo/avatar-demo")),
         family: [],
         files: ["src/demo/avatar-demo.tsx"],
     },
+    "avatar-fallback-demo": {
+        name: "avatar-fallback-demo",
+        component: React.lazy(() => import("@/demo/avatar-fallback-demo")),
+        family: [],
+        files: ["src/demo/avatar-fallback-demo.tsx"],
+    },
+    "avatar-size-demo": {
+        name: "avatar-size-demo",
+        component: React.lazy(() => import("@/demo/avatar-size-demo")),
+        family: [],
+        files: ["src/demo/avatar-size-demo.tsx"],
+    },
     "badge-demo": {
         name: "badge-demo",
         component: React.lazy(() => import("@/demo/badge-demo")),
         family: [],
         files: ["src/demo/badge-demo.tsx"],
+    },
+    "badge-intent-demo": {
+        name: "badge-intent-demo",
+        component: React.lazy(() => import("@/demo/badge-intent-demo")),
+        family: [],
+        files: ["src/demo/badge-intent-demo.tsx"],
+    },
+    "badge-size-demo": {
+        name: "badge-size-demo",
+        component: React.lazy(() => import("@/demo/badge-size-demo")),
+        family: [],
+        files: ["src/demo/badge-size-demo.tsx"],
     },
     "bar-chart-demo": {
         name: "bar-chart-demo",

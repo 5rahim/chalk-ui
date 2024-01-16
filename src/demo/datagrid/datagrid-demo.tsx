@@ -1,52 +1,22 @@
-import React, { useEffect, useMemo, useState } from "react"
-import { BiBasket, BiCalendar, BiCheck, BiDotsHorizontal, BiEditAlt, BiFolder, BiLowVision } from "react-icons/bi"
 import { Badge } from "@/workshop/badge"
 import { IconButton } from "@/workshop/button"
 import { DataGrid, DataGridProps, defineDataGridColumns } from "@/workshop/datagrid"
 import { DropdownMenu, DropdownMenuItem } from "@/workshop/dropdown-menu"
+import React, { useEffect, useMemo, useState } from "react"
+import { BiBasket, BiCalendar, BiCheck, BiDotsHorizontal, BiEditAlt, BiFolder, BiLowVision } from "react-icons/bi"
 import { newProduct, Product, range } from "./datagrid-fake-api"
 
-interface DataGridTestProps {
-    tableProps?: Partial<DataGridProps<any>>
-}
-
-function makeData(...lens: number[]) {
-    const makeDataLevel = (depth = 0): Product[] => {
-        const len = lens[depth]!
-        return range(len).map((d): Product => {
-            return {
-                ...newProduct(),
-            }
-        })
-    }
-
-    return makeDataLevel()
-}
-
-const _data = makeData(30)
-
-export async function fetchData() {
-    // Simulate some network latency
-    await new Promise(r => setTimeout(r, 1000))
-    return {
-        rows: _data,
-    }
-}
-
-
-export const DatagridDemo: React.FC<DataGridTestProps> = (props) => {
+export const DatagridDemo = (props: DataGridTestProps) => {
 
     const { tableProps } = props
 
     const [clientData, setClientData] = useState<Product[] | undefined>(undefined)
 
     useEffect(() => {
-        async function fetch() {
-            const res = await fetchData()
+        (async function () {
+            const res = await fetchFakeData()
             setClientData(res.rows)
-        }
-
-        fetch()
+        })()
     }, [])
 
     const columns = useMemo(() => defineDataGridColumns<Product>(({ withFiltering, getFilterFn, withValueFormatter }) => [
@@ -171,22 +141,35 @@ export const DatagridDemo: React.FC<DataGridTestProps> = (props) => {
     ]), [])
 
     return (
-        <>
-            <DataGrid<Product>
-                columns={columns}
-                data={clientData}
-                rowCount={_data.length}
-                isLoading={!clientData}
-                enableRowSelection
-                rowSelectionPrimaryKey={"id"}
-                onRowSelect={data => {
-                    console.log(data)
-                }}
-                {...tableProps as any}
-            />
-        </>
+        <DataGrid<Product>
+            columns={columns}
+            data={clientData}
+            rowCount={_data.length}
+            isLoading={!clientData}
+            enableRowSelection
+            rowSelectionPrimaryKey={"id"}
+            onRowSelect={data => {
+                console.log(data)
+            }}
+            {...tableProps as any}
+        />
     )
 
 }
 
 export default DatagridDemo
+
+
+interface DataGridTestProps {
+    tableProps?: Partial<DataGridProps<any>>
+}
+
+const _data = range(30).map(() => newProduct())
+
+export async function fetchFakeData() {
+    // Simulate some network latency
+    await new Promise(r => setTimeout(r, 1000))
+    return {
+        rows: _data,
+    }
+}

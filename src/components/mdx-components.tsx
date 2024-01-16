@@ -4,6 +4,7 @@
 // import { ComponentExample } from "@/components/component-example"
 import { ComponentPreview } from "@/components/component-preview"
 import { ComponentAnatomy } from "@/components/component-anatomy"
+import { Alert } from "@/workshop/alert"
 import { cn } from "@/workshop/core/styling"
 import { useMDXComponent } from "next-contentlayer/hooks"
 import * as React from "react"
@@ -14,7 +15,7 @@ const components = {
     // AccordionContent,
     // AccordionItem,
     // AccordionTrigger,
-    // Alert,
+    Alert,
     // AlertTitle,
     // AlertDescription,
     h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
@@ -73,7 +74,7 @@ const components = {
     ),
     a: ({ className, ...props }: React.HTMLAttributes<HTMLAnchorElement>) => (
       <a
-        className={cn("font-medium underline underline-offset-4", className)}
+        className={cn("font-medium underline underline-offset-2 hover:text-[--brand]", className)}
         {...props}
       />
     ),

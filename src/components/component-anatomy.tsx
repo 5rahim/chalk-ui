@@ -84,6 +84,7 @@ export function ComponentAnatomy({
 }
 
 export function TypeProperty({ prop }: { prop: ParsedTypeProperty }) {
+    const lines = prop.description?.replaceAll("*", "\n\n")?.split("\n\n")?.filter(n => n.trim() !== "")
     return (
         <div className="flex gap-1 items-center">
             {prop.name} {prop.required && <span className="text-[--red] text-lg">*</span>} {!!prop.description && (
@@ -91,10 +92,11 @@ export function TypeProperty({ prop }: { prop: ParsedTypeProperty }) {
                 trigger={<span className="cursor-pointer"><BiInfoCircle className="text-[--muted] hover:text-[--foreground] text-lg" /></span>}
             >
                 <p className="text-sm">
-                    {prop.description.replaceAll("*", "\n").split("\n").filter(n => n.trim() !== "").map((line, i) => (
+                    {lines?.map((line, i) => (
                         <span key={i}>
                             {line}
                             <br />
+                            {i !== (lines.length-1) && <br />}
                         </span>
                     ))}
                 </p>
