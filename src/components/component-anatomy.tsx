@@ -34,21 +34,21 @@ export function ComponentAnatomy({
             <Accordion
                 type="multiple"
                 className="space-y-2"
-                triggerClass="bg-[--subtle] hover:bg-[--subtle-highlight] rounded-[--radius]"
+                triggerClass="border rounded-[--radius] data-[state=open]:rounded-b-none bg-[--subtle] hover:bg-[--subtle-highlight]"
                 itemClass="border-none"
-                contentClass="px-0 py-0"
+                contentClass="border border-t-0 rounded-b-[--radius]"
                 defaultValue={["types", "anatomy"]}
             >
                 <AccordionItem value="types">
                     <AccordionTrigger>Types</AccordionTrigger>
                     <AccordionContent>
-                        <div className="py-4 space-y-6">
+                        <div className="space-y-6">
                             {parsedTypes.map((type, i) => (
                                 <div key={type.name + type.kind}>
-                                    <h4 className="text-medium mb-2">{type.name.replace("Props", "")}</h4>
-                                    <Table className="border rounded-[--radius] table-fixed">
-                                        <TableHeader className="bg-[--subtle-highlight]">
-                                            <TableRow>
+                                    <p className="font-semibold text-sm tracking-wider w-fit bg-brand-50 dark:bg-gray-800 text-[--brand] dark:text-gray-50 px-3 py-1">{type.name.replace("Props", "")}</p>
+                                    <Table className="rounded-[--radius] table-fixed">
+                                        <TableHeader className="bg-[--background] text-md font-medium">
+                                            <TableRow className="">
                                                 <TableHead className="w-[200px]">Prop</TableHead>
                                                 <TableHead>Type</TableHead>
                                                 <TableHead className="w-[200px]">Default</TableHead>
@@ -72,7 +72,7 @@ export function ComponentAnatomy({
                 <AccordionItem value="anatomy">
                     <AccordionTrigger>Anatomy</AccordionTrigger>
                     <AccordionContent>
-                        <div>
+                        <div className="relative">
                             {/*// @ts-expect-error*/}
                             {children[0]}
                         </div>

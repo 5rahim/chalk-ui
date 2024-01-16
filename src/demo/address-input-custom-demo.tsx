@@ -3,7 +3,6 @@ import { AutocompleteOption } from "@/workshop/autocomplete"
 import * as React from "react"
 
 export default function AddressInputCustomDemo() {
-
     const [address, setAddress] = React.useState<AutocompleteOption | undefined>({ value: null, label: "" })
 
     return (

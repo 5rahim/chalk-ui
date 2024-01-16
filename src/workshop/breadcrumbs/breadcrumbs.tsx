@@ -45,10 +45,12 @@ export const BreadcrumbsAnatomy = defineStyleAnatomy({
  * Breadcrumbs
  * -----------------------------------------------------------------------------------------------*/
 
+export type BreadcrumbsOption = { name: string, href: string | null | undefined, isCurrent: boolean }
+
 export type BreadcrumbsProps = React.ComponentPropsWithRef<"nav"> &
     ComponentAnatomy<typeof BreadcrumbsAnatomy> & {
     rootHref?: string
-    items: { name: string, href: string | null | undefined, isCurrent: boolean }[]
+    items: BreadcrumbsOption[]
     showHomeButton?: boolean
     homeIcon?: React.ReactElement
 }

@@ -509,6 +509,30 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/button-demo.tsx"],
     },
+    "button-icon-demo": {
+        name: "button-icon-demo",
+        component: React.lazy(() => import("@/demo/button-icon-demo")),
+        family: [],
+        files: ["src/demo/button-icon-demo.tsx"],
+    },
+    "button-intent-demo": {
+        name: "button-intent-demo",
+        component: React.lazy(() => import("@/demo/button-intent-demo")),
+        family: [],
+        files: ["src/demo/button-intent-demo.tsx"],
+    },
+    "button-size-demo": {
+        name: "button-size-demo",
+        component: React.lazy(() => import("@/demo/button-size-demo")),
+        family: [],
+        files: ["src/demo/button-size-demo.tsx"],
+    },
+    "button-state-demo": {
+        name: "button-state-demo",
+        component: React.lazy(() => import("@/demo/button-state-demo")),
+        family: [],
+        files: ["src/demo/button-state-demo.tsx"],
+    },
     "calendar-demo": {
         name: "calendar-demo",
         component: React.lazy(() => import("@/demo/calendar-demo")),

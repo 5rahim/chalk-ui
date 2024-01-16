@@ -2,7 +2,6 @@ import { Alert } from "@/workshop/alert"
 import * as React from "react"
 
 export default function AlertDemo() {
-
     const [isOpen, setIsOpen] = React.useState(true)
 
     return (
