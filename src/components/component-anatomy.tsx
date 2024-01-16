@@ -29,11 +29,6 @@ export function ComponentAnatomy({
         setParsedTypes(parseTypes(rawString) || [])
     }, [])
 
-    const anatomyContent = React.useMemo(() => {
-        // @ts-expect-error
-        return children[0].props.children.props.__rawString__
-    }, [])
-
     return (
         <div className="space-y-4">
             <Accordion

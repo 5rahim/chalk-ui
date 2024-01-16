@@ -84,7 +84,7 @@ export default makeSource({
         remarkPlugins: [remarkGfm, codeImport],
         rehypePlugins: [
             rehypeSlug,
-            // rehypeComponent,
+            rehypeComponent,
             () => (tree) => {
                 visit(tree, (node) => {
                     if (node?.type === "element" && node?.tagName === "pre") {
