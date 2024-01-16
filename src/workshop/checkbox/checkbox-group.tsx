@@ -42,19 +42,19 @@ export type CheckboxGroupProps = BasicFieldOptions & {
      */
     stackClass?: string
     /**
-     * Class names applied to the checkbox container.
+     * Class names applied to each checkbox container.
      */
     itemContainerClass?: string
     /**
-     * Class names applied to the checkbox label.
+     * Class names applied to each checkbox label.
      */
     itemLabelClass?: string
     /**
-     * Class names applied to the checkbox button.
+     * Class names applied to each checkbox button.
      */
     itemClass?: string
     /**
-     * Class names applied to the checkbox check icon.
+     * Class names applied to each checkbox check icon.
      */
     itemCheckIconClass?: string
 }

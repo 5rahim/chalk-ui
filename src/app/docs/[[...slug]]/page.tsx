@@ -56,13 +56,6 @@ async function getDocFromParams({ params }: DocPageProps) {
 //         },
 //       ],
 //     },
-//     twitter: {
-//       card: "summary_large_image",
-//       title: doc.title,
-//       description: doc.description,
-//       images: [siteConfig.ogImage],
-//       creator: "@shadcn",
-//     },
 //   }
 // }
 

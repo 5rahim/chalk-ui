@@ -263,9 +263,9 @@ CarouselItem.displayName = "CarouselItem"
  * CarouselPrevious
  * -----------------------------------------------------------------------------------------------*/
 
-export type CarouselButton = React.ComponentProps<typeof IconButton> & { chevronIconClass?: string }
+export type CarouselButtonProps = React.ComponentProps<typeof IconButton> & { chevronIconClass?: string }
 
-export const CarouselPrevious = React.forwardRef<HTMLButtonElement, CarouselButton>((props, ref) => {
+export const CarouselPrevious = React.forwardRef<HTMLButtonElement, CarouselButtonProps>((props, ref) => {
     const { className, chevronIconClass, intent = "gray-outline", ...rest } = props
     const { orientation, scrollPrev, canScrollPrev } = useCarousel()
 
@@ -298,7 +298,7 @@ CarouselPrevious.displayName = "CarouselPrevious"
  * CarouselNext
  * -----------------------------------------------------------------------------------------------*/
 
-export const CarouselNext = React.forwardRef<HTMLButtonElement, CarouselButton>((props, ref) => {
+export const CarouselNext = React.forwardRef<HTMLButtonElement, CarouselButtonProps>((props, ref) => {
     const { className, chevronIconClass, intent = "gray-outline", ...rest } = props
     const { orientation, scrollNext, canScrollNext } = useCarousel()
 

@@ -112,7 +112,7 @@ export const DataGridAnatomy = defineStyleAnatomy({
 
 export type DataGridProps<T extends Record<string, any>> = ComponentAnatomy<typeof DataGridAnatomy> & DataGridInstanceProps<T> & {
     tableApi?: DataGridApi<T>,
-    globalSearchInputProps?: Partial<DataGridSearchInputProps & TextInputProps>
+    globalSearchInputProps?: Partial<DataGridSearchInputProps>
     hideGlobalSearchInput?: boolean
     className?: string
     lng?: string
@@ -622,13 +622,13 @@ DataGrid.displayName = "DataGrid"
  * DataGridSearchInput
  * -----------------------------------------------------------------------------------------------*/
 
-interface DataGridSearchInputProps {
+type DataGridSearchInputProps = Omit<TextInputProps, "onChange"> & {
     value: string,
     onChange: (value: string) => void
     debounce?: number
 }
 
-export function DataGridSearchInput(props: DataGridSearchInputProps & Omit<TextInputProps, "onChange">) {
+export function DataGridSearchInput(props: DataGridSearchInputProps) {
 
     const { value: initialValue, onChange, debounce = 500, ...rest } = props
 

@@ -24,7 +24,7 @@ export const HoverCardAnatomy = defineStyleAnatomy({
  * HoverCard
  * -----------------------------------------------------------------------------------------------*/
 
-type HoverCardProps = React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content> & {
+export type HoverCardProps = React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content> & {
     trigger: React.ReactElement
 }
 

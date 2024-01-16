@@ -19,7 +19,7 @@ export const LoadingOverlayAnatomy = defineStyleAnatomy({
  * LoadingOverlay
  * -----------------------------------------------------------------------------------------------*/
 
-interface LoadingOverlayProps {
+export type LoadingOverlayProps = {
     children?: React.ReactNode
     hideSpinner?: boolean
     show?: boolean

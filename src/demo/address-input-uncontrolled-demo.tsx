@@ -1,6 +1,5 @@
 //@ts-nocheck
 import { AddressInput } from "@/workshop/address-input"
-import { AutocompleteOption } from "@/workshop/autocomplete"
 import { Button } from "@/workshop/button"
 import * as React from "react"
 

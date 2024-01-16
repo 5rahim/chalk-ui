@@ -49,7 +49,6 @@ export const SimpleDropzoneAnatomy = defineStyleAnatomy({
     imagePreviewGrid: cva([
         "UI-SimpleDropzone__imagePreviewGrid",
         "flex gap-2 flex-wrap place-content-center pt-4",
-        // "grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 2xl:grid-cols-10 h-full gap-x-2 gap-y-2",
     ]),
     imagePreviewContainer: cva([
         "UI-SimpleDropzone__imagePreviewContainer",

@@ -140,11 +140,11 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, DropdownMenuProps>(
 DropdownMenu.displayName = "DropdownMenu"
 
 
-export type DropdownMenuGroupProps = React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Group>;
-
 /* -------------------------------------------------------------------------------------------------
  * DropdownMenuGroup
  * -----------------------------------------------------------------------------------------------*/
+
+export type DropdownMenuGroupProps = React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Group>
 
 export const DropdownMenuGroup = React.forwardRef<HTMLDivElement, DropdownMenuGroupProps>((props, ref) => {
     const { className, ...rest } = props

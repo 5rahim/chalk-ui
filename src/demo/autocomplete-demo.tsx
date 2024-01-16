@@ -1,5 +1,5 @@
 import { Autocomplete, AutocompleteOption } from "@/workshop/autocomplete"
-import React from "react"
+import * as React from "react"
 
 const options: AutocompleteOption[] = [
     { label: "United States", value: "us" },

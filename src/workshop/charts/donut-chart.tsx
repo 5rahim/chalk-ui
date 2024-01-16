@@ -103,13 +103,13 @@ DonutChart.displayName = "DonutChart"
  * DonutChartTooltip
  * -----------------------------------------------------------------------------------------------*/
 
-export type DonutChartTooltipProps = {
+type DonutChartTooltipProps = {
     active?: boolean
     payload: any
     valueFormatter: ChartValueFormatter
 }
 
-export const DonutChartTooltip = ({ active, payload, valueFormatter }: DonutChartTooltipProps) => {
+const DonutChartTooltip = ({ active, payload, valueFormatter }: DonutChartTooltipProps) => {
     if (active && payload[0]) {
         const payloadRow = payload[0]
         return (

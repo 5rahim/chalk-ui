@@ -48,7 +48,7 @@ export const TableAnatomy = defineStyleAnatomy({
  * Table
  * -----------------------------------------------------------------------------------------------*/
 
-type TableProps = React.ComponentPropsWithoutRef<"table">
+export type TableProps = React.ComponentPropsWithoutRef<"table">
 
 export const Table = React.forwardRef<HTMLTableElement, TableProps>((props, ref) => {
     const { className, ...rest } = props
@@ -69,7 +69,7 @@ Table.displayName = "Table"
  * TableHeader
  * -----------------------------------------------------------------------------------------------*/
 
-type TableHeaderProps = React.ComponentPropsWithoutRef<"thead">
+export type TableHeaderProps = React.ComponentPropsWithoutRef<"thead">
 
 export const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>((props, ref) => {
     const { className, ...rest } = props
@@ -82,7 +82,7 @@ TableHeader.displayName = "TableHeader"
  * TableBody
  * -----------------------------------------------------------------------------------------------*/
 
-type TableBodyProps = React.ComponentPropsWithoutRef<"tbody">
+export type TableBodyProps = React.ComponentPropsWithoutRef<"tbody">
 
 export const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>((props, ref) => {
     const { className, ...rest } = props
@@ -95,7 +95,7 @@ TableBody.displayName = "TableBody"
  * TableFooter
  * -----------------------------------------------------------------------------------------------*/
 
-type TableFooterProps = React.ComponentPropsWithoutRef<"tfoot">
+export type TableFooterProps = React.ComponentPropsWithoutRef<"tfoot">
 
 export const TableFooter = React.forwardRef<HTMLTableSectionElement, TableFooterProps>((props, ref) => {
     const { className, ...rest } = props
@@ -108,7 +108,7 @@ TableFooter.displayName = "TableFooter"
  * TableRow
  * -----------------------------------------------------------------------------------------------*/
 
-type TableRowProps = React.ComponentPropsWithoutRef<"tr">
+export type TableRowProps = React.ComponentPropsWithoutRef<"tr">
 
 export const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>((props, ref) => {
     const { className, ...rest } = props
@@ -121,7 +121,7 @@ TableRow.displayName = "TableRow"
  * TableHead
  * -----------------------------------------------------------------------------------------------*/
 
-type TableHeadProps = React.ComponentPropsWithoutRef<"th">
+export type TableHeadProps = React.ComponentPropsWithoutRef<"th">
 
 export const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>((props, ref) => {
     const { className, ...rest } = props
@@ -134,7 +134,7 @@ TableHead.displayName = "TableHead"
  * TableCell
  * -----------------------------------------------------------------------------------------------*/
 
-type TableCellProps = React.ComponentPropsWithoutRef<"td">
+export type TableCellProps = React.ComponentPropsWithoutRef<"td">
 
 export const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>((props, ref) => {
     const { className, ...rest } = props
@@ -147,7 +147,7 @@ TableCell.displayName = "TableCell"
  * TableCaption
  * -----------------------------------------------------------------------------------------------*/
 
-type TableCaptionProps = React.ComponentPropsWithoutRef<"caption">
+export type TableCaptionProps = React.ComponentPropsWithoutRef<"caption">
 
 export const TableCaption = React.forwardRef<HTMLTableCaptionElement, TableCaptionProps>((props, ref) => {
     const { className, ...rest } = props

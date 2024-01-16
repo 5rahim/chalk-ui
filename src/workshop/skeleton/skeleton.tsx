@@ -17,7 +17,7 @@ export const SkeletonAnatomy = defineStyleAnatomy({
  * Skeleton
  * -----------------------------------------------------------------------------------------------*/
 
-type SkeletonProps = React.ComponentPropsWithoutRef<"div">
+export type SkeletonProps = React.ComponentPropsWithoutRef<"div">
 
 export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>((props, ref) => {
     const { className, ...rest } = props
