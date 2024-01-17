@@ -7,7 +7,7 @@ import { getAvailableComponentDependencyListFromDir, getAvailableComponents } fr
 import process from "process"
 import _ from "lodash"
 import ora from "ora"
-import execa from "execa"
+import { execa } from "execa"
 import path from "path"
 import { existsSync, promises as fs } from "fs"
 import { getProjectInfo } from "../helpers/project"
@@ -53,7 +53,7 @@ export const remove = new Command()
         ])
 
         // Get available components
-        const availableComponents = getAvailableComponents()
+        const availableComponents = await getAvailableComponents()
         const installedComponentDependencies = await getAvailableComponentDependencyListFromDir(dir)
 
         if (!availableComponents?.length) {

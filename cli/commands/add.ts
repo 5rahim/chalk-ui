@@ -1,5 +1,4 @@
 import { Command } from "commander"
-
 import { defaultUIFolder } from "../info"
 import { logger } from "../utils/logger"
 import prompts from "prompts"
@@ -39,7 +38,7 @@ export const add = new Command()
         ])
 
         // Get available components
-        const availableComponents = getAvailableComponents()
+        const availableComponents = await getAvailableComponents()
         if (!availableComponents?.length) {
             logger.error("An error occurred while fetching components. Please try again.",)
             process.exit(0)

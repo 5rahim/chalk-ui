@@ -30,9 +30,9 @@ export function getDependencyListFromPackage() {
 /**
  * Get all dependencies that are used by components
  */
-export function getComponentDependencyListFromPackage() {
+export async function getComponentDependencyListFromPackage() {
     const packageJsonDependencies = getDependencyListFromPackage()
-    const availableComponentsDependencies = getAvailableComponentDependencyList()
+    const availableComponentsDependencies = await getAvailableComponentDependencyList()
 
     return _.intersection(_.uniq([...availableComponentsDependencies, ...mainDependencies.map(n => n[0])]), packageJsonDependencies)
 }

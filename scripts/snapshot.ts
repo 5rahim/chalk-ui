@@ -3,7 +3,7 @@ import { existsSync } from "node:fs"
 import path from "path"
 import * as process from "process"
 import { logger } from "../cli/utils/logger"
-import { createJSONSnapshot } from "./create-bank-snapshot"
+import { createBankSnapshot } from "./create-bank-snapshot"
 
 
 (async () => {
@@ -26,10 +26,12 @@ import { createJSONSnapshot } from "./create-bank-snapshot"
     }
 
     const snapshotPath = path.join(snapshotDir, "/bank/bank.json")
+    const snapshotWebPath = path.join(process.cwd(), "/src/pages/api/bank.json")
 
-    const jsonData = await createJSONSnapshot()
+    const jsonData = await createBankSnapshot()
     const jsonOutput = JSON.stringify(jsonData.filter(n => n.name.length > 0), null, 2)
     await fs.writeFile(snapshotPath, jsonOutput, { encoding: "utf-8" })
+    await fs.writeFile(snapshotWebPath, jsonOutput, { encoding: "utf-8" })
     logger.success(`✔ Snapshot created`)
 
 })()

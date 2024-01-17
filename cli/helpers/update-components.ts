@@ -1,6 +1,5 @@
 import _ from "lodash"
 
-
 export function mergeFileContent(originalContent: string, updatedContent: string): string {
     const originalLines = originalContent.split("\n")
     const updatedLines = updatedContent.split("\n")

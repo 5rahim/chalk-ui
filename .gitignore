@@ -44,3 +44,9 @@ next-env.d.ts
 cli/snapshot
 
 test
+
+dist
+
+cli/node_modules
+cli/.env
+cli/src

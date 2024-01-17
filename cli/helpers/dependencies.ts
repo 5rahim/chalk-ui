@@ -1,6 +1,6 @@
 import { getPackageManager } from "../utils/package"
 import { logger } from "../utils/logger"
-import execa from "execa"
+import { execa } from "execa"
 import ora from "ora"
 import path from "path"
 import fs from "fs-extra"

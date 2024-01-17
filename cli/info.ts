@@ -1,4 +1,4 @@
-export const defaultUIFolder = "./test/components/ui"
+export const defaultUIFolder = "./src/components/ui"
 export const mainDependencies: DependencyDef[] = [
     ["class-variance-authority", "^0.7.0", ""],
     ["clsx", "^2.1.0", ""],

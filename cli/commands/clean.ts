@@ -4,7 +4,7 @@ import ora from "ora"
 
 import { defaultUIFolder } from "../info"
 import { getComponentDependencyListFromPackage, getPackageInfo, getPackageManager } from "../utils/package"
-import execa from "execa"
+import { execa } from "execa"
 import path from "path"
 import { existsSync, promises as fs } from "fs"
 import { logger } from "../utils/logger"
@@ -31,7 +31,7 @@ export const clean = new Command()
         const spinner = ora(`Uninstalling component dependencies...`).start()
 
         // Get only component dependencies that are installed in the project
-        let deps = getComponentDependencyListFromPackage()
+        let deps = await getComponentDependencyListFromPackage()
 
 
         // DEVNOTE - Dev only

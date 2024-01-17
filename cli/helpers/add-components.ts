@@ -1,9 +1,9 @@
-import { DependencyDef } from "../helpers/dependencies"
+import { DependencyDef } from "./dependencies"
 import _ from "lodash"
 import ora from "ora"
 import fs from "fs"
 import path from "path"
-import { Component, getAvailableComponents, getAvailableComponentsFromDir } from "../helpers/components"
+import { Component, getAvailableComponents, getAvailableComponentsFromDir } from "./components"
 import chalk from "chalk"
 
 export async function script_addComponents(
@@ -22,7 +22,7 @@ export async function script_addComponents(
     }
 ) {
 
-    const availableComponents = getAvailableComponents()
+    const availableComponents = await getAvailableComponents()
     const installedComponents = await getAvailableComponentsFromDir(componentDestination)
 
     let componentsToAdd: Component[] = components

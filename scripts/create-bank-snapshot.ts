@@ -1,11 +1,13 @@
-import { promises as fs, statSync } from "fs"
-import { accessSync, constants } from "fs-extra"
+import { accessSync, constants, promises as fs, statSync } from "fs"
 import _ from "lodash"
 import path from "path"
 import process from "process"
 import { DependencyDef, DirectoryData, FileData, mainDependencies } from "../cli/info"
 
-export async function createJSONSnapshot(_srcPath?: string, _packageJsonPath?: string): Promise<DirectoryData[]> {
+/**
+ * This is used to create a snapshot of the components
+ */
+export async function createBankSnapshot(_srcPath?: string, _packageJsonPath?: string): Promise<DirectoryData[]> {
     const srcPath = _srcPath ?? path.resolve("src/workshop")
     const packageJsonPath = _packageJsonPath ?? path.resolve("package.json")
 

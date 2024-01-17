@@ -73,3 +73,7 @@ Chalk UI is inspired by the following projects:
 - [tailwind-merge](https://github.com/dcastil/tailwind-merge)
 - [tailwindcss-animate](https://github.com/jamiebuilds/tailwindcss-animate)
 - And many more...
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/5rahim/chalk-ui/blob/main/LICENSE) file for details.

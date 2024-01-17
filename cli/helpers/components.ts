@@ -1,15 +1,21 @@
-import * as z from "zod"
-import { createJSONSnapshot } from "../../scripts/create-bank-snapshot"
-import components from "../bank/bank.json"
 import fs from "fs"
+import { HttpsProxyAgent } from "https-proxy-agent"
 import _ from "lodash"
+import fetch from "node-fetch"
 import path from "path"
+import * as z from "zod"
+import { createBankSnapshot } from "../../scripts/create-bank-snapshot"
+
+const URL = process.env.COMPONENTS_BANK_URL || "https://chalk.rahim.app"
+const agent = process.env.https_proxy
+    ? new HttpsProxyAgent(process.env.https_proxy)
+    : undefined
 
 const componentSchema = z.object({
     component: z.string(),
     name: z.string(),
-    dependencies: z.array(z.array(z.string())).optional(),
-    family: z.array(z.string()).optional(),
+    dependencies: z.array(z.array(z.string())),
+    family: z.array(z.string()),
     files: z.array(
         z.object({
             name: z.string(),
@@ -21,29 +27,27 @@ const componentSchema = z.object({
 
 export type Component = z.infer<typeof componentSchema>
 
-const componentsSchema = z.array(componentSchema)
-
 /**
- * Get all components from components.json file
+ * Get all components from the components bank
  */
-export function getAvailableComponents() {
-    return components.map((component: Component) => {
-        return {
-            component: component.component,
-            name: component.name,
-            dependencies: component.dependencies,
-            family: component.family,
-            files: component.files,
-        }
-    })
+export async function getAvailableComponents(): Promise<Component[]> {
+    try {
+        const res = await fetch(`${URL}/api/bank`, { agent })
+        console.log(URL)
+        return await res.json() as Component[]
+    }
+    catch (error) {
+        console.error(error)
+        throw new Error(`Failed to fetch components bank from ${URL}`)
+    }
 }
 
 /**
  * Get the latest component list from components.js
  * -> ['button', ...]
  */
-export function getAvailableComponentDependencyList() {
-    const availableComponents = getAvailableComponents()
+export async function getAvailableComponentDependencyList() {
+    const availableComponents = await getAvailableComponents()
     return _.flatten(availableComponents.map(c => c.dependencies?.map(n => n[0]))).filter(n => n!.length > 0) as string[]
 }
 
@@ -51,7 +55,7 @@ export function getAvailableComponentDependencyList() {
  *  Get the latest version of already installed components
  */
 export async function getAvailableComponentsFromDir(dir: string) {
-    const availableComponents = getAvailableComponents()
+    const availableComponents = await getAvailableComponents()
     const installedComponents = await getInstalledComponentList(dir)
     return installedComponents.map(name => availableComponents.filter(comp => comp.component === name)[0])
 }
@@ -69,7 +73,7 @@ export async function getAvailableComponentDependencyListFromDir(dir: string) {
  */
 export async function getInstalledComponents(dir: string) {
     const srcPath = path.resolve(dir)
-    return await createJSONSnapshot(srcPath, path.resolve("./package.json"))
+    return await createBankSnapshot(srcPath, path.resolve("./package.json"))
 }
 
 /**
@@ -77,13 +81,13 @@ export async function getInstalledComponents(dir: string) {
  */
 export async function getInstalledComponentList(dir: string) {
     try {
-
         const directoryEntries = await fs.promises.readdir(dir, { withFileTypes: true })
 
         return directoryEntries
             .filter((entry) => entry.isDirectory())
             .map((entry) => entry.name)
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Error occurred while reading directory names:", error)
         return []
     }

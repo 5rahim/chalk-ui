@@ -119,7 +119,7 @@ export const init = new Command()
          * -----------------------------------------------------------------------------------------------*/
 
         // Get available components
-        const availableComponents = getAvailableComponents()
+        const availableComponents = await getAvailableComponents()
 
         if (!availableComponents?.length) {
             logger.error("An error occurred while fetching components. Please try again.")

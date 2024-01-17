@@ -1,4 +1,4 @@
-import { Component } from "../helpers/components"
+import { Component } from "./components"
 import prompts from "prompts"
 
 export async function promptForComponents(components: Component[]) {

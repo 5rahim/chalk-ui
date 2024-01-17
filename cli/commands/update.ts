@@ -56,7 +56,7 @@ export const update = new Command()
         const maintainStyling = false
 
         // Get available components
-        const availableComponents = getAvailableComponents()
+        const availableComponents = await getAvailableComponents()
         const installedComponents = await getInstalledComponents(dir)
 
         console.log("")
