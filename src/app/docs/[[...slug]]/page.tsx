@@ -112,7 +112,7 @@ export default async function DocPage({ params }: DocPageProps) {
                             rel="noreferrer"
                             className={cn(ButtonAnatomy.root({ size: "xs", intent: "gray-subtle" }), "flex items-center gap-1")}
                         >
-                            API Reference
+                            Dependency API
                             <ExternalLinkIcon className="h-3 w-3" />
                         </Link>
                     )}

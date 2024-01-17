@@ -1,7 +1,9 @@
 ---
 title: Carousel
-description: Description
+description: Embla Carousel component
 componentName: carousel
+links:
+    api: https://www.embla-carousel.com/api/options/#reference
 ---
 
 <ComponentPreview name="carousel-demo" />
@@ -12,6 +14,22 @@ componentName: carousel
 npx @rahimstack@latest add carousel
 ```
 
+
+```jsx
+<Carousel>
+  <CarouselContent>
+    <CarouselItem>...</CarouselItem>
+    <CarouselItem>...</CarouselItem>
+    <CarouselItem>...</CarouselItem>
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>
+```
+
+## Vertical
+
+<ComponentPreview name="carousel-vertical-demo" />
 
 ## API Reference
 

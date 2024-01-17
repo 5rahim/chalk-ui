@@ -389,6 +389,12 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/address-input-demo.tsx"],
     },
+    "address-input-state-demo": {
+        name: "address-input-state-demo",
+        component: React.lazy(() => import("@/demo/address-input-state-demo")),
+        family: [],
+        files: ["src/demo/address-input-state-demo.tsx"],
+    },
     "address-input-uncontrolled-demo": {
         name: "address-input-uncontrolled-demo",
         component: React.lazy(() => import("@/demo/address-input-uncontrolled-demo")),
@@ -550,6 +556,12 @@ export const Bank: Bank = {
         component: React.lazy(() => import("@/demo/carousel-demo")),
         family: [],
         files: ["src/demo/carousel-demo.tsx"],
+    },
+    "carousel-vertical-demo": {
+        name: "carousel-vertical-demo",
+        component: React.lazy(() => import("@/demo/carousel-vertical-demo")),
+        family: [],
+        files: ["src/demo/carousel-vertical-demo.tsx"],
     },
     "checkbox-demo": {
         name: "checkbox-demo",

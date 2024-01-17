@@ -143,6 +143,22 @@ export function TypeValue({ value }: { value: string }) {
         </Link>
     }
 
+    if (value === "CarouselOptions") {
+        return <Link
+            href={`https://www.embla-carousel.com/api/options/#reference`}
+            className="text-[--indigo] font-medium hover:underline"
+        >
+            {value}
+        </Link>
+    } else if (value.startsWith("CarouselPlugin")) {
+        return <Link
+            href={`https://www.embla-carousel.com/api/plugins/`}
+            className="text-[--indigo] font-medium hover:underline"
+        >
+            {value}
+        </Link>
+    }
+
     if (value.includes("VariantProps")) {
         return <HoverCard
             trigger={<span className="flex items-center gap-1 text-[--blue]">{value} <BiInfoCircle className="text-[--blue] text-lg" /></span>}
