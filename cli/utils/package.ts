@@ -2,6 +2,8 @@ import fs from "fs-extra"
 import path from "path"
 import { type PackageJson } from "type-fest"
 import _ from "lodash"
+import { getAvailableComponentDependencyList } from "../helpers/components"
+import { mainDependencies } from "../info"
 
 export function getPackageInfo() {
     const packageJsonPath = path.join("package.json")
@@ -24,6 +26,17 @@ export function getDependencyListFromPackage() {
 
     return res
 }
+
+/**
+ * Get all dependencies that are used by components
+ */
+export function getComponentDependencyListFromPackage() {
+    const packageJsonDependencies = getDependencyListFromPackage()
+    const availableComponentsDependencies = getAvailableComponentDependencyList()
+
+    return _.intersection(_.uniq([...availableComponentsDependencies, ...mainDependencies.map(n => n[0])]), packageJsonDependencies)
+}
+
 
 
 export function getPackageManager() {

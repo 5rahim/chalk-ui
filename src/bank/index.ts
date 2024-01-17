@@ -497,6 +497,12 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/badge-size-demo.tsx"],
     },
+    "badge-tag-demo": {
+        name: "badge-tag-demo",
+        component: React.lazy(() => import("@/demo/badge-tag-demo")),
+        family: [],
+        files: ["src/demo/badge-tag-demo.tsx"],
+    },
     "bar-chart-demo": {
         name: "bar-chart-demo",
         component: React.lazy(() => import("@/demo/bar-chart-demo")),
@@ -521,11 +527,23 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/breadcrumbs-demo.tsx"],
     },
+    "button-close-demo": {
+        name: "button-close-demo",
+        component: React.lazy(() => import("@/demo/button-close-demo")),
+        family: [],
+        files: ["src/demo/button-close-demo.tsx"],
+    },
     "button-demo": {
         name: "button-demo",
         component: React.lazy(() => import("@/demo/button-demo")),
         family: [],
         files: ["src/demo/button-demo.tsx"],
+    },
+    "button-icon-button-demo": {
+        name: "button-icon-button-demo",
+        component: React.lazy(() => import("@/demo/button-icon-button-demo")),
+        family: [],
+        files: ["src/demo/button-icon-button-demo.tsx"],
     },
     "button-icon-demo": {
         name: "button-icon-demo",

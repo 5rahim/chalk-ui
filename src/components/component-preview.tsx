@@ -79,7 +79,6 @@ export function ComponentPreview({
                         fallback={
                             <div className="w-full">
                                 <LoadingSpinner />
-                                Loading...
                             </div>
                         }
                     >

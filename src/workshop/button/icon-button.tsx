@@ -45,20 +45,18 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>((
     } = props
 
     return (
-        <>
-            <Button
-                className={cn(
-                    IconButtonAnatomy.root({ size }),
-                    className,
-                )}
-                loading={loading}
-                iconSpacing="0"
-                {...rest}
-                ref={ref}
-            >
-                {!loading && icon}
-            </Button>
-        </>
+        <Button
+            className={cn(
+                IconButtonAnatomy.root({ size }),
+                className,
+            )}
+            loading={loading}
+            iconSpacing="0"
+            {...rest}
+            ref={ref}
+        >
+            {!loading && icon}
+        </Button>
     )
 
 })
