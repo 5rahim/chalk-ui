@@ -1,6 +1,6 @@
 "use client"
 
-import { UIColor } from "./color-theme"
+import { ChartColor } from "./color-theme"
 import * as React from "react"
 import { Legend } from "./legend"
 
@@ -10,7 +10,7 @@ import { Legend } from "./legend"
 
 export const ChartLegend = (
     { payload }: any,
-    categoryColors: Map<string, UIColor>,
+    categoryColors: Map<string, ChartColor>,
     setLegendHeight: React.Dispatch<React.SetStateAction<number>>,
 ) => {
     const legendRef = React.useRef<HTMLDivElement>(null)

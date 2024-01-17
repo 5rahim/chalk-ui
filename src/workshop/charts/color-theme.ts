@@ -27,4 +27,4 @@ export const ColorPalette = [
     "gray",
     "rose",
 ]
-export type UIColor = (typeof ColorPalette)[number];
+export type ChartColor = (typeof ColorPalette)[number]

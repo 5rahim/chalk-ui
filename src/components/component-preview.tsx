@@ -1,10 +1,13 @@
 "use client"
 
 import { Bank } from "@/bank"
+import { IconButton } from "@/workshop/button"
 import { cn } from "@/workshop/core/styling"
 import { LoadingSpinner } from "@/workshop/loading-spinner"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/workshop/tabs"
 import * as React from "react"
+import { BiCheck, BiCopy } from "react-icons/bi"
+import { Event, trackEvent } from "../../lib/events"
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
     name: string
@@ -47,13 +50,9 @@ export function ComponentPreview({
     }, [name])
 
     const codeString = React.useMemo(() => {
-        if (
-            typeof Code?.props["data-rehype-pretty-code-fragment"] !== "undefined"
-        ) {
-            const [, Button] = React.Children.toArray(
-                Code.props.children,
-            ) as React.ReactElement[]
-            return Button?.props?.value || Button?.props?.__rawString__ || null
+        if (typeof Code?.props["data-rehype-pretty-code-fragment"] !== "undefined") {
+            const [CodeC] = React.Children.toArray(Code.props.children) as React.ReactElement[]
+            return CodeC?.props?.value || CodeC?.props?.__rawString__ || null
         }
     }, [Code])
 
@@ -99,7 +98,10 @@ export function ComponentPreview({
                     </React.Suspense>
                 </TabsContent>
                 {!hideCode && <TabsContent value="code">
-                    <div className="flex flex-col space-y-4 py-4">
+                    <div className="relative flex flex-col space-y-4 py-4">
+                        <div className="absolute top-10 right-6 z-10">
+                            {codeString && <CopyButton value={codeString} />}
+                        </div>
                         <div className="w-full rounded-[--radius] [&_pre]:my-0 [&_pre]:max-h-[150px] lg:[&_pre]:max-h-[600px] [&_pre]:overflow-auto">
                             {Code}
                         </div>
@@ -109,5 +111,64 @@ export function ComponentPreview({
 
 
         </div>
+    )
+}
+
+type CopyButtonProps = React.HTMLAttributes<HTMLButtonElement> & {
+    value: string
+    src?: string
+    event?: Event["name"]
+}
+
+export async function copyToClipboardWithMeta(value: string, event?: Event) {
+    navigator.clipboard.writeText(value)
+    if (event) {
+        trackEvent(event)
+    }
+}
+
+export function CopyButton({
+    value,
+    className,
+    src,
+    event,
+    ...props
+}: CopyButtonProps) {
+    const [hasCopied, setHasCopied] = React.useState(false)
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setHasCopied(false)
+        }, 2000)
+    }, [hasCopied])
+
+    return (
+        <IconButton
+            intent="white-outline"
+            size="sm"
+            className={cn(
+                className,
+            )}
+            onClick={() => {
+                copyToClipboardWithMeta(
+                    value,
+                    event
+                        ? {
+                            name: event,
+                            properties: {
+                                code: value,
+                            },
+                        }
+                        : undefined,
+                )
+                setHasCopied(true)
+            }}
+            icon={hasCopied ? (
+                <BiCheck className="h-3 w-3" />
+            ) : (
+                <BiCopy className="h-3 w-3" />
+            )}
+            {...props}
+        />
     )
 }

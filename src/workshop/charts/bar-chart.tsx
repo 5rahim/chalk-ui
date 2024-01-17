@@ -1,9 +1,9 @@
 "use client"
 
-import { cn } from "../core/styling"
 import * as React from "react"
 import { Bar, BarChart as ReChartsBarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 import type { AxisDomain } from "recharts/types/util/types"
+import { cn } from "../core/styling"
 import { ChartLegend } from "./chart-legend"
 import { ChartTooltip } from "./chart-tooltip"
 import { ColorPalette } from "./color-theme"
@@ -15,8 +15,7 @@ import { constructCategoryColors, defaultValueFormatter, getYAxisDomain } from "
  * BarChart
  * -----------------------------------------------------------------------------------------------*/
 
-export type BarChartProps = React.ComponentPropsWithRef<"div"> &
-    BaseChartProps & {
+export type BarChartProps = React.ComponentPropsWithRef<"div"> & BaseChartProps & {
     /**
      * Display bars vertically or horizontally
      */
@@ -29,6 +28,11 @@ export type BarChartProps = React.ComponentPropsWithRef<"div"> &
      * Display bars as a percentage of the total
      */
     relative?: boolean
+    /**
+     * Interval type for x-axis labels
+     * @default "equidistantPreserveStart"
+     */
+    intervalType?: "preserveStart" | "preserveEnd" | "preserveStartEnd" | "equidistantPreserveStart"
 }
 
 export const BarChart: React.FC<BarChartProps> = React.forwardRef<HTMLDivElement, BarChartProps>((props, ref) => {
@@ -53,12 +57,12 @@ export const BarChart: React.FC<BarChartProps> = React.forwardRef<HTMLDivElement
         showTooltip = true,
         showLegend = true,
         showGridLines = true,
-        showGradient = true,
         autoMinValue = false,
         minValue,
         maxValue,
         allowDecimals = true,
-        noDataText,
+        intervalType = "equidistantPreserveStart",
+        emptyDisplay = <></>,
         ...rest
     } = props
 
@@ -85,6 +89,7 @@ export const BarChart: React.FC<BarChartProps> = React.forwardRef<HTMLDivElement
                                 strokeDasharray="3 3"
                                 horizontal={layout !== "vertical"}
                                 vertical={layout === "vertical"}
+                                className="stroke-gray-300 dark:stroke-gray-600"
                             />
                         ) : null}
 
@@ -96,7 +101,7 @@ export const BarChart: React.FC<BarChartProps> = React.forwardRef<HTMLDivElement
                                 tick={{ transform: "translate(0, 6)" }} // Padding between labels and axis
                                 ticks={startEndOnly ? [data[0][index], data[data.length - 1][index]] : undefined}
                                 style={{
-                                    fontSize: "12px",
+                                    fontSize: ".75rem",
                                     fontFamily: "Inter; Helvetica",
                                     marginTop: "20px",
                                 }}
@@ -110,7 +115,7 @@ export const BarChart: React.FC<BarChartProps> = React.forwardRef<HTMLDivElement
                                 tick={{ transform: "translate(-3, 0)" }}
                                 domain={yAxisDomain as AxisDomain}
                                 style={{
-                                    fontSize: "12px",
+                                    fontSize: ".8rem",
                                     fontFamily: "Inter; Helvetica",
                                 }}
                                 tickLine={false}
@@ -156,23 +161,26 @@ export const BarChart: React.FC<BarChartProps> = React.forwardRef<HTMLDivElement
                                 }}
                             />
                         )}
-                        {showTooltip ? (
-                            <Tooltip
-                                wrapperStyle={{ outline: "none" }}
-                                isAnimationActive={false}
-                                cursor={{ fill: "#d1d5db", opacity: "0.15" }}
-                                content={({ active, payload, label }) => (
-                                    <ChartTooltip
-                                        active={active}
-                                        payload={payload}
-                                        label={label}
-                                        valueFormatter={valueFormatter}
-                                        categoryColors={categoryColors}
-                                    />
-                                )}
-                                position={{ y: 0 }}
-                            />
-                        ) : null}
+                        <Tooltip
+                            wrapperStyle={{
+                                outline: "none",
+                            }}
+                            cursor={{
+                                fill: "var(--gray)",
+                                opacity: 0.05,
+                            }}
+                            isAnimationActive={false}
+                            content={showTooltip ? ({ active, payload, label }) => (
+                                <ChartTooltip
+                                    active={active}
+                                    payload={payload}
+                                    label={label}
+                                    valueFormatter={valueFormatter}
+                                    categoryColors={categoryColors}
+                                />
+                            ) : <></>}
+                            position={{ y: 0 }}
+                        />
 
                         {categories.map((category) => (
                             <Bar
@@ -194,9 +202,7 @@ export const BarChart: React.FC<BarChartProps> = React.forwardRef<HTMLDivElement
                             />
                         ) : null}
                     </ReChartsBarChart>
-                ) : (
-                    <div>...</div>
-                )}
+                ) : emptyDisplay}
             </ResponsiveContainer>
         </div>
     )

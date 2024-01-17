@@ -1,13 +1,13 @@
 "use client"
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/workshop/accordion"
-import { useIsomorphicLayoutEffect } from "@/workshop/core/hooks"
 import { HoverCard } from "@/workshop/hover-card"
 import { Popover } from "@/workshop/popover"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/workshop/table"
 import kebabCase from "lodash/kebabCase"
 import Link from "next/link"
 import * as React from "react"
+import { useEffect } from "react"
 import { BiInfoCircle } from "react-icons/bi"
 import { ParsedType, ParsedTypeProperty, parseTypes } from "../../lib/type-parser"
 
@@ -23,11 +23,27 @@ export function ComponentAnatomy({
 
     const [parsedTypes, setParsedTypes] = React.useState<ParsedType[]>([])
 
-    useIsomorphicLayoutEffect(() => {
-        // @ts-expect-error
-        let rawString = children[1].props.children.props.__rawString__
-        setParsedTypes(parseTypes(rawString) || [])
+    const Codes = React.Children.toArray(children) as React.ReactElement[]
+
+    // Types
+    useEffect(() => {
+        const CodeEl = Codes[1]
+        if (typeof CodeEl?.props["data-rehype-pretty-code-fragment"] !== "undefined") {
+            const [Code] = React.Children.toArray(CodeEl.props.children) as React.ReactElement[]
+            const rawString = Code?.props?.value || Code?.props?.__rawString__ || null
+            let parsedTypesRes = parseTypes(rawString) || []
+
+            // Replace BaseChartProps with the actual props
+            let i1 = parsedTypesRes.findIndex(type => type.typeValues.find(prop => prop.value === "BaseChartProps"))
+            if (i1 !== -1) {
+                parsedTypesRes[i1].typeValues = [...BaseChartProps.typeValues,
+                    ...parsedTypesRes[i1].typeValues].filter((prop) => prop.value !== "BaseChartProps")
+            }
+
+            setParsedTypes(parsedTypesRes)
+        }
     }, [])
+
 
     return (
         <div className="space-y-4">
@@ -45,7 +61,9 @@ export function ComponentAnatomy({
                         <div className="space-y-6">
                             {parsedTypes.map((type, i) => (
                                 <div key={type.name + type.kind}>
-                                    <p className="font-semibold text-sm tracking-wider w-fit bg-brand-50 dark:bg-gray-800 text-[--brand] dark:text-gray-50 px-3 py-1">{type.name.replace("Props", "")}</p>
+                                    <p className="font-semibold text-sm tracking-wider w-fit bg-brand-50 dark:bg-gray-800 text-[--brand] dark:text-gray-50 px-3 py-1">{type.name.replace(
+                                        "Props",
+                                        "")}</p>
                                     <Table className="rounded-[--radius] table-fixed">
                                         <TableHeader className="bg-[--background] text-md font-medium">
                                             <TableRow className="">
@@ -73,8 +91,7 @@ export function ComponentAnatomy({
                     <AccordionTrigger>Anatomy</AccordionTrigger>
                     <AccordionContent>
                         <div className="relative">
-                            {/*// @ts-expect-error*/}
-                            {children[0]}
+                            {Codes[0]}
                         </div>
                     </AccordionContent>
                 </AccordionItem>
@@ -85,6 +102,7 @@ export function ComponentAnatomy({
 
 export function TypeProperty({ prop }: { prop: ParsedTypeProperty }) {
     const lines = prop.description?.replaceAll("*", "\n\n")?.split("\n\n")?.filter(n => n.trim() !== "")
+    const popoverLines = lines?.filter(n => !n.trim().startsWith("@default"))
     return (
         <div className="flex gap-1 items-center">
             {prop.name} {prop.required && <span className="text-[--red] text-lg">*</span>} {!!prop.description && (
@@ -92,11 +110,11 @@ export function TypeProperty({ prop }: { prop: ParsedTypeProperty }) {
                 trigger={<span className="cursor-pointer"><BiInfoCircle className="text-[--muted] hover:text-[--foreground] text-lg" /></span>}
             >
                 <p className="text-sm">
-                    {lines?.map((line, i) => (
+                    {popoverLines?.map((line, i) => (
                         <span key={i}>
-                            {line}
+                            {line.trim()}
                             <br />
-                            {i !== (lines.length-1) && <br />}
+                            {i !== (popoverLines.length - 1) && <br />}
                         </span>
                     ))}
                 </p>
@@ -161,7 +179,7 @@ export function TypeValue({ value }: { value: string }) {
 
     if (value.includes("VariantProps")) {
         return <HoverCard
-            trigger={<span className="flex items-center gap-1 text-[--blue]">{value} <BiInfoCircle className="text-[--blue] text-lg" /></span>}
+            trigger={<span className="flex items-center gap-1 text-[--blue] w-fit">{value} <BiInfoCircle className="text-[--blue] text-lg" /></span>}
         >
             Check out the Anatomy source code to see the available variants props for this component.
         </HoverCard>
@@ -169,11 +187,127 @@ export function TypeValue({ value }: { value: string }) {
 
     if (value.includes("ComponentAnatomy")) {
         return <HoverCard
-            trigger={<span className="flex items-center gap-1 text-[--brand]">{value} <BiInfoCircle className="text-[--brand] text-lg" /></span>}
+            trigger={<span className="flex items-center gap-1 text-[--brand] w-fit">{value}
+                <BiInfoCircle className="text-[--brand] text-lg" /></span>}
         >
             Check out the Anatomy source code to see the available class properties for this component.
         </HoverCard>
     }
 
     return <code className="border bg-gray-50 dark:bg-gray-900 rounded-[--radius] py-1 px-1.5">{value}</code>
+}
+
+export const BaseChartProps = {
+    "kind": "type",
+    "name": "BaseChartProps",
+    "typeValues": [
+        {
+            "name": "data",
+            "required": true,
+            "description": "* The data to be displayed in the chart. * An array of objects. Each object represents a data point.",
+            "value": "any[] | null | undefined",
+        },
+        {
+            "name": "categories",
+            "required": true,
+            "description": "* Data categories. Each string represents a key in a data object. * e.g. [\"Jan\", \"Feb\", \"Mar\"]",
+            "value": "string[]",
+        },
+        {
+            "name": "index",
+            "required": true,
+            "description": "* The key to map the data to the axis. It should match the key in the data object. * e.g. \"value\"",
+            "value": "string",
+        },
+        {
+            "name": "colors",
+            "required": false,
+            "description": "* Color palette to be used in the chart.",
+            "value": "ChartColor[]",
+        },
+        {
+            "name": "valueFormatter",
+            "required": false,
+            "description": "* Changes the text formatting for the y-axis values.",
+            "value": "ChartValueFormatter",
+        },
+        {
+            "name": "startEndOnly",
+            "required": false,
+            "description": "* Show only the first and last elements in the x-axis. Great for smaller charts or sparklines. * @default false",
+            "value": "boolean",
+        },
+        {
+            "name": "showXAxis",
+            "required": false,
+            "description": "* Controls the visibility of the X axis. * @default true",
+            "value": "boolean",
+        },
+        {
+            "name": "showYAxis",
+            "required": false,
+            "description": "* Controls the visibility of the Y axis. * @default true",
+            "value": "boolean",
+        },
+        {
+            "name": "yAxisWidth",
+            "required": false,
+            "description": "* Controls width of the vertical axis. * @default 56",
+            "value": "number",
+        },
+        {
+            "name": "showAnimation",
+            "required": false,
+            "description": "* Sets an animation to the chart when it is loaded. * @default true",
+            "value": "boolean",
+        },
+        {
+            "name": "showTooltip",
+            "required": false,
+            "description": "* Controls the visibility of the tooltip. * @default true",
+            "value": "boolean",
+        },
+        {
+            "name": "showLegend",
+            "required": false,
+            "description": "* Controls the visibility of the legend. * @default true",
+            "value": "boolean",
+        },
+        {
+            "name": "showGridLines",
+            "required": false,
+            "description": "* Controls the visibility of the grid lines. * @default true",
+            "value": "boolean",
+        },
+        {
+            "name": "autoMinValue",
+            "required": false,
+            "description": "* Adjusts the minimum value in relation to the magnitude of the data. * @default false",
+            "value": "boolean",
+        },
+        {
+            "name": "minValue",
+            "required": false,
+            "description": "* Sets the minimum value of the shown chart data.",
+            "value": "number",
+        },
+        {
+            "name": "maxValue",
+            "required": false,
+            "description": "* Sets the maximum value of the shown chart data.",
+            "value": "number",
+        },
+        {
+            "name": "allowDecimals",
+            "required": false,
+            "description": "* Controls if the ticks of a numeric axis are displayed as decimals or not. * @default true",
+            "value": "boolean",
+        },
+        {
+            "name": "emptyDisplay",
+            "required": false,
+            "description": "* Element to be displayed when there is no data. * @default `<></>`",
+            "value": "React.ReactElement",
+        },
+    ],
 }

@@ -4,7 +4,7 @@ import { cva } from "class-variance-authority"
 import * as React from "react"
 import { ChartValueFormatter } from "../charts/types"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
-import { UIColor } from "./color-theme"
+import { ChartColor } from "./color-theme"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -40,7 +40,7 @@ export const ChartTooltipRowAnatomy = defineStyleAnatomy({
     dot: cva([
         "UI-ChartTooltip__dot",
         "shrink-0",
-        "h-3 w-3 bg-gray rounded-full shadow-sm",
+        "h-3 w-3 bg-[--gray] rounded-full shadow-sm",
     ]),
     value: cva([
         "UI-ChartTooltip__value",
@@ -48,7 +48,7 @@ export const ChartTooltipRowAnatomy = defineStyleAnatomy({
     ]),
     label: cva([
         "UI-ChartTooltip__label",
-        "text-sm text-right whitespace-nowrap font-medium text-[--muted]",
+        "text-sm text-right whitespace-nowrap font-medium text-[--foreground]",
     ]),
 })
 
@@ -71,7 +71,7 @@ export const ChartTooltipFrame = ({ children, className }: ChartTooltipFrameProp
 export type ChartTooltipRowProps = ComponentAnatomy<typeof ChartTooltipRowAnatomy> & {
     value: string
     name: string
-    color: UIColor
+    color: ChartColor
 }
 
 export const ChartTooltipRow = (
@@ -109,7 +109,7 @@ export type ChartTooltipProps = ComponentAnatomy<typeof ChartTooltipAnatomy> & {
     active: boolean | undefined
     payload: any
     label: string
-    categoryColors: Map<string, UIColor>
+    categoryColors: Map<string, ChartColor>
     valueFormatter: ChartValueFormatter
 }
 

@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority"
 import * as React from "react"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
-import { ColorPalette, UIColor } from "./color-theme"
+import { ColorPalette, ChartColor } from "./color-theme"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -33,7 +33,7 @@ export const LegendAnatomy = defineStyleAnatomy({
 
 export type LegendItemProps = {
     name: string
-    color: UIColor
+    color: ChartColor
     dotClass?: string
     labelClass?: string
     legendItemClass?: string
@@ -61,7 +61,7 @@ const LegendItem = ({ name, color, dotClass, legendItemClass, labelClass }: Lege
 
 export type LegendProps = React.ComponentPropsWithRef<"ol"> & ComponentAnatomy<typeof LegendAnatomy> & {
     categories: string[]
-    colors?: UIColor[]
+    colors?: ChartColor[]
 }
 
 export const Legend = React.forwardRef<HTMLOListElement, LegendProps>((props, ref) => {

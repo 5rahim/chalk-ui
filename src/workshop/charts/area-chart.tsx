@@ -16,26 +16,44 @@ import { constructCategoryColors, defaultValueFormatter, getYAxisDomain } from "
 
 export type AreaChartProps = React.ComponentPropsWithoutRef<"div"> &
     BaseChartProps & {
+    /**
+     * Controls the visibility of the gradient.
+     * @default true
+     */
+    showGradient?: boolean
+    /**
+     * If true, the areas will be stacked
+     * @default false
+     */
     stack?: boolean
     /**
      * The type of curve to use for the line
+     * @default "linear"
      */
     curveType?: ChartCurveType
     /**
      * Connect null data points
+     * @default false
      */
     connectNulls?: boolean
     /**
      * Display dots for each data point
+     * @default true
      */
     showDots?: boolean
     /**
      * Angle the x-axis labels
+     * @default false
      */
     angledLabels?: boolean
+    /**
+     * Interval type for x-axis labels
+     * @default "preserveStartEnd"
+     */
+    intervalType?: "preserveStart" | "preserveEnd" | "preserveStartEnd" | "equidistantPreserveStart"
 }
 
-export const AreaChart: React.FC<AreaChartProps> = React.forwardRef<HTMLDivElement, AreaChartProps>((props, ref) => {
+export const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>((props, ref) => {
 
     const {
         className,
@@ -63,7 +81,8 @@ export const AreaChart: React.FC<AreaChartProps> = React.forwardRef<HTMLDivEleme
         maxValue,
         allowDecimals = true,
         showDots = true,
-        noDataText,
+        emptyDisplay = <></>,
+        intervalType = "preserveStartEnd",
         ...rest
     } = props
 
@@ -78,23 +97,24 @@ export const AreaChart: React.FC<AreaChartProps> = React.forwardRef<HTMLDivEleme
             className={cn("w-full h-80", className)}
             {...rest}
         >
-            <ResponsiveContainer width={"100%"} height={"100%"}>
+            <ResponsiveContainer width="100%" height="100%">
                 {data?.length ? (
                     <ReChartsAreaChart data={data}>
                         {showGridLines ? (
-                            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
+                            <CartesianGrid
+                                strokeDasharray="3 3"
+                                horizontal={true}
+                                vertical={false}
+                                className="stroke-gray-300 dark:stroke-gray-600"
+                            />
                         ) : null}
                         <XAxis
                             hide={!showXAxis}
                             dataKey={index}
                             tick={{ transform: "translate(0, 8)" }}
                             ticks={startEndOnly ? [data[0][index], data[data.length - 1][index]] : undefined}
-                            style={{
-                                fontSize: ".75rem",
-                                fontFamily: "Inter; Helvetica",
-                                color: "red",
-                            }}
-                            interval="preserveStartEnd"
+                            className="font-medium text-[--muted] text-xs"
+                            interval={intervalType}
                             axisLine={false}
                             tickLine={false}
                             padding={{ left: 10, right: 10 }}
@@ -111,30 +131,25 @@ export const AreaChart: React.FC<AreaChartProps> = React.forwardRef<HTMLDivEleme
                             type="number"
                             domain={yAxisDomain as AxisDomain}
                             tick={{ transform: "translate(-3, 0)" }}
-                            style={{
-                                fontSize: ".8rem",
-                                fontFamily: "Inter; Helvetica",
-                            }}
+                            className="font-medium text-[--muted] text-xs"
                             tickFormatter={valueFormatter}
                             allowDecimals={allowDecimals}
                         />
-                        {showTooltip ? (
-                            <Tooltip
-                                wrapperStyle={{ outline: "none" }}
-                                isAnimationActive={false}
-                                cursor={{ stroke: "#ddd", strokeWidth: 2 }}
-                                position={{ y: 0 }}
-                                content={({ active, payload, label }) => (
-                                    <ChartTooltip
-                                        active={active}
-                                        payload={payload}
-                                        label={label}
-                                        valueFormatter={valueFormatter}
-                                        categoryColors={categoryColors}
-                                    />
-                                )}
-                            />
-                        ) : null}
+                        <Tooltip
+                            wrapperStyle={{ outline: "none" }}
+                            isAnimationActive={false}
+                            cursor={{ stroke: "var(--gray)", strokeWidth: 1 }}
+                            position={{ y: 0 }}
+                            content={showTooltip ? ({ active, payload, label }) => (
+                                <ChartTooltip
+                                    active={active}
+                                    payload={payload}
+                                    label={label}
+                                    valueFormatter={valueFormatter}
+                                    categoryColors={categoryColors}
+                                />
+                            ) : <></>}
+                        />
 
                         {categories.map((category) => {
                             const hexColor = `var(--${categoryColors.get(category)})`
@@ -179,9 +194,7 @@ export const AreaChart: React.FC<AreaChartProps> = React.forwardRef<HTMLDivEleme
                         ) : null}
 
                     </ReChartsAreaChart>
-                ) : (
-                    <div>...</div>
-                )}
+                ) : emptyDisplay}
             </ResponsiveContainer>
         </div>
     )

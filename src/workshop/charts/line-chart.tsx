@@ -1,9 +1,9 @@
 "use client"
 
-import { cn } from "../core/styling"
 import * as React from "react"
 import { CartesianGrid, Legend, Line, LineChart as ReChartsLineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 import type { AxisDomain } from "recharts/types/util/types"
+import { cn } from "../core/styling"
 import { ChartLegend } from "./chart-legend"
 import { ChartTooltip } from "./chart-tooltip"
 import { ColorPalette } from "./color-theme"
@@ -17,16 +17,24 @@ import { constructCategoryColors, defaultValueFormatter, getYAxisDomain } from "
 export type LineChartProps = React.ComponentPropsWithRef<"div"> & BaseChartProps & {
     /**
      * The type of curve to use for the line
+     * @default "linear"
      */
     curveType?: ChartCurveType
     /**
      * Connect null data points
+     * @default false
      */
     connectNulls?: boolean
     /**
      * Angle the x-axis labels
+     * @default false
      */
     angledLabels?: boolean
+    /**
+     * Interval type for x-axis labels
+     * @default "preserveStartEnd"
+     */
+    intervalType?: "preserveStart" | "preserveEnd" | "preserveStartEnd" | "equidistantPreserveStart"
 }
 
 
@@ -51,12 +59,12 @@ export const LineChart: React.FC<LineChartProps> = React.forwardRef<HTMLDivEleme
         showTooltip = true,
         showLegend = true,
         showGridLines = true,
-        showGradient = true,
         autoMinValue = false,
         minValue,
         maxValue,
         allowDecimals = true,
-        noDataText,
+        intervalType = "preserveStartEnd",
+        emptyDisplay = <></>,
         ...rest
     } = props
 
@@ -71,11 +79,16 @@ export const LineChart: React.FC<LineChartProps> = React.forwardRef<HTMLDivEleme
             className={cn("w-full h-80", className)}
             {...rest}
         >
-            <ResponsiveContainer width={"100%"} height={"100%"}>
+            <ResponsiveContainer width="100%" height="100%">
                 {data?.length ? (
                     <ReChartsLineChart data={data}>
                         {showGridLines ? (
-                            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
+                            <CartesianGrid
+                                strokeDasharray="3 3"
+                                horizontal={true}
+                                vertical={false}
+                                className="stroke-gray-300 dark:stroke-gray-600"
+                            />
                         ) : null}
                         <XAxis
                             hide={!showXAxis}
@@ -87,7 +100,7 @@ export const LineChart: React.FC<LineChartProps> = React.forwardRef<HTMLDivEleme
                                 fontFamily: "Inter; Helvetica",
                                 color: "red",
                             }}
-                            interval="preserveStartEnd"
+                            interval={intervalType}
                             axisLine={false}
                             tickLine={false}
                             padding={{ left: 10, right: 10 }}
@@ -110,23 +123,21 @@ export const LineChart: React.FC<LineChartProps> = React.forwardRef<HTMLDivEleme
                             tickFormatter={valueFormatter}
                             allowDecimals={allowDecimals}
                         />
-                        {showTooltip ? (
-                            <Tooltip
-                                wrapperStyle={{ outline: "none" }}
-                                isAnimationActive={false}
-                                cursor={{ stroke: "#ddd", strokeWidth: 2 }}
-                                position={{ y: 0 }}
-                                content={({ active, payload, label }) => (
-                                    <ChartTooltip
-                                        active={active}
-                                        payload={payload}
-                                        label={label}
-                                        valueFormatter={valueFormatter}
-                                        categoryColors={categoryColors}
-                                    />
-                                )}
-                            />
-                        ) : null}
+                        <Tooltip
+                            wrapperStyle={{ outline: "none" }}
+                            isAnimationActive={false}
+                            cursor={{ stroke: "var(--gray)", strokeWidth: 1 }}
+                            position={{ y: 0 }}
+                            content={showTooltip ? ({ active, payload, label }) => (
+                                <ChartTooltip
+                                    active={active}
+                                    payload={payload}
+                                    label={label}
+                                    valueFormatter={valueFormatter}
+                                    categoryColors={categoryColors}
+                                />
+                            ) : <></>}
+                        />
 
                         {categories.map((category) => (
                             <Line
@@ -151,9 +162,7 @@ export const LineChart: React.FC<LineChartProps> = React.forwardRef<HTMLDivEleme
                         ) : null}
 
                     </ReChartsLineChart>
-                ) : (
-                    <div>...</div>
-                )}
+                ) : emptyDisplay}
             </ResponsiveContainer>
         </div>
     )
