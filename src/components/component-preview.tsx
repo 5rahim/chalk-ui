@@ -143,7 +143,7 @@ export function CopyButton({
 
     return (
         <IconButton
-            intent="white-outline"
+            intent="white-basic"
             size="sm"
             className={cn(
                 className,
