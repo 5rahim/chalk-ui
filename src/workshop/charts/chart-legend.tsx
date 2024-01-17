@@ -16,6 +16,7 @@ export const ChartLegend = (
     const legendRef = React.useRef<HTMLDivElement>(null)
 
     const [windowSize, setWindowSize] = React.useState<undefined | number>(undefined)
+    const deferredWindowSize = React.useDeferredValue(windowSize)
 
     React.useEffect(() => {
         const handleResize = () => {
@@ -30,7 +31,7 @@ export const ChartLegend = (
         window.addEventListener("resize", handleResize)
 
         return () => window.removeEventListener("resize", handleResize)
-    }, [windowSize])
+    }, [deferredWindowSize])
 
     return (
         <div ref={legendRef} className="flex w-full items-center justify-center mt-4">

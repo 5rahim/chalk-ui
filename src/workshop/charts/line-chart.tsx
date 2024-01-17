@@ -95,17 +95,13 @@ export const LineChart: React.FC<LineChartProps> = React.forwardRef<HTMLDivEleme
                             dataKey={index}
                             tick={{ transform: "translate(0, 8)" }}
                             ticks={startEndOnly ? [data[0][index], data[data.length - 1][index]] : undefined}
-                            style={{
-                                fontSize: ".75rem",
-                                fontFamily: "Inter; Helvetica",
-                                color: "red",
-                            }}
+                            className="font-medium text-[--muted] text-xs"
                             interval={intervalType}
                             axisLine={false}
                             tickLine={false}
                             padding={{ left: 10, right: 10 }}
                             minTickGap={5}
-                            textAnchor={angledLabels ? "end" : undefined}
+                            textAnchor={angledLabels ? "end" : "middle"}
                             angle={angledLabels ? -40 : undefined}
                         />
                         <YAxis
@@ -114,12 +110,10 @@ export const LineChart: React.FC<LineChartProps> = React.forwardRef<HTMLDivEleme
                             axisLine={false}
                             tickLine={false}
                             type="number"
+                            textAnchor="end"
                             domain={yAxisDomain as AxisDomain}
                             tick={{ transform: "translate(-3, 0)" }}
-                            style={{
-                                fontSize: ".8rem",
-                                fontFamily: "Inter; Helvetica",
-                            }}
+                            className="font-medium text-[--muted] text-xs"
                             tickFormatter={valueFormatter}
                             allowDecimals={allowDecimals}
                         />

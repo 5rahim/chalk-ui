@@ -100,11 +100,7 @@ export const BarChart: React.FC<BarChartProps> = React.forwardRef<HTMLDivElement
                                 interval="preserveStartEnd"
                                 tick={{ transform: "translate(0, 6)" }} // Padding between labels and axis
                                 ticks={startEndOnly ? [data[0][index], data[data.length - 1][index]] : undefined}
-                                style={{
-                                    fontSize: ".75rem",
-                                    fontFamily: "Inter; Helvetica",
-                                    marginTop: "20px",
-                                }}
+                                className="font-medium text-[--muted] text-xs mt-4"
                                 tickLine={false}
                                 axisLine={false}
                             />
@@ -114,10 +110,7 @@ export const BarChart: React.FC<BarChartProps> = React.forwardRef<HTMLDivElement
                                 type="number"
                                 tick={{ transform: "translate(-3, 0)" }}
                                 domain={yAxisDomain as AxisDomain}
-                                style={{
-                                    fontSize: ".8rem",
-                                    fontFamily: "Inter; Helvetica",
-                                }}
+                                className="font-medium text-[--muted] text-xs"
                                 tickLine={false}
                                 axisLine={false}
                                 tickFormatter={valueFormatter}
@@ -135,10 +128,7 @@ export const BarChart: React.FC<BarChartProps> = React.forwardRef<HTMLDivElement
                                 type="number"
                                 domain={yAxisDomain as AxisDomain}
                                 tick={{ transform: "translate(-3, 0)" }}
-                                style={{
-                                    fontSize: "12px",
-                                    fontFamily: "Inter; Helvetica",
-                                }}
+                                className="font-medium text-[--muted] text-xs"
                                 tickFormatter={
                                     relative ? (value: number) => `${(value * 100).toString()} %` : valueFormatter
                                 }
@@ -155,10 +145,7 @@ export const BarChart: React.FC<BarChartProps> = React.forwardRef<HTMLDivElement
                                 type="category"
                                 interval="preserveStartEnd"
                                 tick={{ transform: "translate(0, 6)" }}
-                                style={{
-                                    fontSize: "12px",
-                                    fontFamily: "Inter; Helvetica",
-                                }}
+                                className="font-medium text-[--muted] text-xs"
                             />
                         )}
                         <Tooltip

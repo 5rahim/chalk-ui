@@ -120,7 +120,7 @@ export const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>((props
                             padding={{ left: 10, right: 10 }}
                             minTickGap={5}
                             spacing={120}
-                            textAnchor={angledLabels ? "end" : undefined}
+                            textAnchor={angledLabels ? "end" : "middle"}
                             angle={angledLabels ? -40 : undefined}
                         />
                         <YAxis
