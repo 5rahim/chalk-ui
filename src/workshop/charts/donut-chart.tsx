@@ -19,20 +19,21 @@ export type DonutChartProps = React.HTMLAttributes<HTMLDivElement> & {
      */
     data: any[]
     /**
-     *  The key containing the quantitative chart values.
-=     */
-    category?: string
+     * The key containing the quantitative chart values.
+     */
+    category: string
     /**
      * The key to map the data to the axis.
      * e.g. "value"
      */
-    index?: string
+    index: string
     /**
      * Color palette to be used in the chart.
      */
     colors?: ChartColor[]
     /**
      * The type of chart to display
+     * @default "donut"
      */
     variant?: "donut" | "pie"
     /**
@@ -69,8 +70,8 @@ export type DonutChartProps = React.HTMLAttributes<HTMLDivElement> & {
 export const DonutChart = React.forwardRef<HTMLDivElement, DonutChartProps>((props, ref) => {
     const {
         data = [],
-        category = "value",
-        index = "name",
+        category,
+        index,
         colors = ColorPalette,
         variant = "donut",
         valueFormatter = defaultValueFormatter,

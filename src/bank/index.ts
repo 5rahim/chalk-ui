@@ -503,6 +503,18 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/bar-chart-demo.tsx"],
     },
+    "bar-chart-grouped-demo": {
+        name: "bar-chart-grouped-demo",
+        component: React.lazy(() => import("@/demo/bar-chart-grouped-demo")),
+        family: [],
+        files: ["src/demo/bar-chart-grouped-demo.tsx"],
+    },
+    "bar-chart-vertical-demo": {
+        name: "bar-chart-vertical-demo",
+        component: React.lazy(() => import("@/demo/bar-chart-vertical-demo")),
+        family: [],
+        files: ["src/demo/bar-chart-vertical-demo.tsx"],
+    },
     "breadcrumbs-demo": {
         name: "breadcrumbs-demo",
         component: React.lazy(() => import("@/demo/breadcrumbs-demo")),
