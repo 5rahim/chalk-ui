@@ -1,6 +1,7 @@
 import { Command } from "commander"
 
 import { defaultUIFolder } from "../info"
+import { handleError } from "../utils/error"
 import { logger } from "../utils/logger"
 import prompts from "prompts"
 import { getAvailableComponentDependencyListFromDir, getAvailableComponents } from "../helpers/components"
@@ -18,97 +19,108 @@ export const remove = new Command()
     .name("remove")
     .description("Remove UI components.")
     .argument("[components...]", "name of components")
-    .action(async (components: string[]) => {
+    .option(
+        "-c, --cwd <cwd>",
+        "the working directory. defaults to the current directory.",
+        process.cwd()
+    )
+    .action(async (components: string[], options) => {
 
-        const packageInfo = await getPackageInfo()
-        const projectInfo = await getProjectInfo()
-        const packageManager = getPackageManager()
+        try {
+            const cwd = path.resolve(options.cwd)
 
-        logger.warn("Make sure you have committed your changes before proceeding.")
-        logger.warn("")
+            const packageInfo = await getPackageInfo()
+            const projectInfo = await getProjectInfo()
+            const packageManager = await getPackageManager(cwd)
 
-        // Allows the user to skip confirmation prompts
-        const { proceed } = await prompts({
-            type: "confirm",
-            name: "proceed",
-            message: "Running this command will overwrite some existing files. Proceed?",
-            initial: false,
-        })
+            logger.warn("Make sure you have committed your changes before proceeding.")
+            logger.warn("")
 
-        if (!proceed) process.exit(0)
-
-        const { dir, depUnProceed } = await prompts([
-            {
-                type: "text",
-                name: "dir",
-                message: "Where are your components located?",
-                initial: projectInfo?.srcDir ? defaultUIFolder : "./components/ui",
-            },
-            {
+            // Allows the user to skip confirmation prompts
+            const { proceed } = await prompts({
                 type: "confirm",
-                name: "depUnProceed",
-                message: `Do you want to uninstall the associated dependencies? ${chalk.dim(chalk.italic("This will not remove shared dependencies."))}`,
-                initial: true,
-            }
-        ])
+                name: "proceed",
+                message: "Running this command will overwrite some existing files. Proceed?",
+                initial: false,
+            })
 
-        // Get available components
-        const availableComponents = await getAvailableComponents()
-        const installedComponentDependencies = await getAvailableComponentDependencyListFromDir(dir)
+            if (!proceed) process.exit(0)
 
-        if (!availableComponents?.length) {
-            logger.error("An error occurred while fetching components. Please try again.",)
-            process.exit(0)
-        }
+            const { dir, depUnProceed } = await prompts([
+                {
+                    type: "text",
+                    name: "dir",
+                    message: "Where are your components located?",
+                    initial: projectInfo?.srcDir ? defaultUIFolder : "./components/ui",
+                },
+                {
+                    type: "confirm",
+                    name: "depUnProceed",
+                    message: `Do you want to uninstall the associated dependencies? ${chalk.dim(chalk.italic("This will not remove shared dependencies."))}`,
+                    initial: true,
+                }
+            ])
 
-        // Filter selected components from the parameters
-        let selectedComponents = availableComponents.filter((component) => components.includes(component.component))
+            // Get available components
+            const availableComponents = await getAvailableComponents()
+            const installedComponentDependencies = await getAvailableComponentDependencyListFromDir(dir)
 
-        if (!selectedComponents?.length) {
-            logger.warn("No components selected.")
-            process.exit(0)
-        }
-
-
-        const selectedComponentDependencies = _.flatten(selectedComponents.map(n => _.flatten(n.dependencies?.map(o => o[0]))))
-
-        // Remove dependencies
-        if (depUnProceed) {
-            const spinner = ora(`Uninstalling dependencies...`).start()
-            // Get dependencies that are used by the components we will remove
-            let dependenciesToRemove = _.intersection(installedComponentDependencies, selectedComponentDependencies)
-
-            // Unused dependencies, meaning dependencies ONLY used by the components we will remove
-            // This basically filters out dependencies that are used by other components
-            const dependencyCounts = _.countBy(installedComponentDependencies)
-            let unusedDependencies = _.filter(dependenciesToRemove, (dependency) => dependencyCounts[dependency] === 1)
-
-            // DEVNOTE - Dev only
-            if (packageInfo.name === "@rahimstack/chalk-ui") {
-                unusedDependencies = unusedDependencies.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
+            if (!availableComponents?.length) {
+                logger.error("An error occurred while fetching components. Please try again.",)
+                process.exit(0)
             }
 
-            if (unusedDependencies.length > 0) {
-                await execa(packageManager, [
-                    packageManager === "npm" ? "uninstall" : "remove",
-                    ...unusedDependencies,
-                ])
+            // Filter selected components from the parameters
+            let selectedComponents = availableComponents.filter((component) => components.includes(component.component))
+
+            if (!selectedComponents?.length) {
+                logger.warn("No components selected.")
+                process.exit(0)
             }
+
+
+            const selectedComponentDependencies = _.flatten(selectedComponents.map(n => _.flatten(n.dependencies?.map(o => o[0]))))
+
+            // Remove dependencies
+            if (depUnProceed) {
+                const spinner = ora(`Uninstalling dependencies...`).start()
+                // Get dependencies that are used by the components we will remove
+                let dependenciesToRemove = _.intersection(installedComponentDependencies, selectedComponentDependencies)
+
+                // Unused dependencies, meaning dependencies ONLY used by the components we will remove
+                // This basically filters out dependencies that are used by other components
+                const dependencyCounts = _.countBy(installedComponentDependencies)
+                let unusedDependencies = _.filter(dependenciesToRemove, (dependency) => dependencyCounts[dependency] === 1)
+
+                // DEVNOTE - Dev only
+                if (packageInfo.name === "@rahimstack/chalk-ui") {
+                    unusedDependencies = unusedDependencies.filter(n => !n?.includes("zod") && !n?.includes("lodash"))
+                }
+
+                if (unusedDependencies.length > 0) {
+                    await execa(packageManager, [
+                        packageManager === "npm" ? "uninstall" : "remove",
+                        ...unusedDependencies,
+                    ])
+                }
+                spinner.succeed()
+            }
+
+            const spinner = ora(`Removing components...`).start()
+
+            for (const component of selectedComponents) {
+                // Delete directory if it exists.
+                const componentDir = path.resolve(dir + "/" + component.component)
+                if (existsSync(componentDir)) {
+                    await fs.rm(componentDir, { recursive: true }) // ./src/components/ui/xxx
+                }
+            }
+
             spinner.succeed()
+
+            logger.success("\n✔ Component(s) removed.")
+        } catch (e) {
+            handleError(e)
         }
-
-        const spinner = ora(`Removing components...`).start()
-
-        for (const component of selectedComponents) {
-            // Delete directory if it exists.
-            const componentDir = path.resolve(dir + "/" + component.component)
-            if (existsSync(componentDir)) {
-                await fs.rm(componentDir, { recursive: true }) // ./src/components/ui/xxx
-            }
-        }
-
-        spinner.succeed()
-
-        logger.success("\n✔ Component(s) removed.")
 
     })

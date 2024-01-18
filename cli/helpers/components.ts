@@ -87,7 +87,7 @@ export async function getInstalledComponentList(dir: string) {
             .map((entry) => entry.name)
     }
     catch (error) {
-        console.error("Error occurred while reading directory names:", error)
+        // console.error("Error occurred while reading directory names:", error)
         return []
     }
 }

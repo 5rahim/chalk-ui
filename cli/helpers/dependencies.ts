@@ -8,7 +8,7 @@ import chalk from "chalk"
 
 export type DependencyDef = string[];
 
-export const script_installDependencies = async (arr: string[][], install: boolean = true, name: string = ``) => {
+export const script_installDependencies = async (arr: string[][], install: boolean = true, name: string = "", cwd: string) => {
 
     const writePackageJSON = () => {
         const packageJsonPath = path.join("package.json")
@@ -34,14 +34,14 @@ export const script_installDependencies = async (arr: string[][], install: boole
     }
 
     if (arr.length > 0) {
-        const pm = getPackageManager()
+        const pm =await  getPackageManager(cwd)
         const normalDeps = arr.filter(n => n[2] === "").map(a => a[0] + "@" + a[1].replace("^", ""))
         const devDeps = arr.filter(n => n[2] === "-D").map(a => a[0] + "@" + a[1].replace("^", ""))
         const text = `${pm} ${pm === "npm" ? "install" : "add"} ${normalDeps.join(" ")}`
         const text2 = `${pm} ${pm === "npm" ? "install" : "add"} ${devDeps.join(" ")} -D`
 
         if (install) {
-            const spinner = ora(`Installing ${name ?? "the"} dependencies...`).start()
+            const spinner = ora(`Installing ${name || "the"} dependencies...`).start()
             try {
                 if (normalDeps.length > 0) {
                     await execa(pm, [
@@ -70,6 +70,6 @@ export const script_installDependencies = async (arr: string[][], install: boole
         }
 
     } else {
-        console.log(`\n${chalk.italic(chalk.dim("No dependencies to install."))}`)
+        console.log(`\n${chalk.italic(chalk.dim("No dependencies installed."))}`)
     }
 }

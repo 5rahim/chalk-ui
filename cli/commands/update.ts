@@ -16,7 +16,14 @@ import { diffLines } from "diff"
 export const update = new Command()
     .name("update")
     .description("Update UI components.")
-    .action(async () => {
+    .option(
+        "-c, --cwd <cwd>",
+        "the working directory. defaults to the current directory.",
+        process.cwd()
+    )
+    .action(async (options) => {
+
+        const cwd = path.resolve(options.cwd)
 
         const projectInfo = await getProjectInfo()
 
@@ -200,7 +207,7 @@ export const update = new Command()
             })
 
             // Install dependencies
-            await script_installDependencies(dependenciesToInstall, willInstall)
+            await script_installDependencies(dependenciesToInstall, willInstall, undefined, cwd)
         }
 
         logger.success("\n✔ Component(s) updated.")

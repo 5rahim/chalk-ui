@@ -1,3 +1,4 @@
+import { detect } from "@antfu/ni"
 import fs from "fs-extra"
 import _ from "lodash"
 import path from "path"
@@ -37,31 +38,45 @@ export async function getComponentDependencyListFromPackage() {
     return _.intersection(_.uniq([...availableComponentsDependencies, ...mainDependencies.map(n => n[0])]), packageJsonDependencies)
 }
 
+// shadcn/ui
+export async function getPackageManager(
+    targetDir: string
+): Promise<"yarn" | "pnpm" | "bun" | "npm"> {
+    const packageManager = await detect({ programmatic: true, cwd: targetDir })
 
-export function getPackageManager() {
-    const agent = process.env.npm_config_user_agent
+    if (packageManager === "yarn@berry") return "yarn"
+    if (packageManager === "pnpm@6") return "pnpm"
+    if (packageManager === "bun") return "bun"
 
-    if (!agent) {
-        const parent = process.env._
-
-        if (!parent) {
-            // No luck, assume npm
-            return "npm"
-        }
-
-        if (parent.endsWith("pnpx") || parent.endsWith("pnpm")) return "pnpm"
-        if (parent.endsWith("yarn")) return "yarn"
-
-        // Assume npm for anything else
-        return "npm"
-    }
-
-    const [program] = agent.split("/")
-
-    if (program === "yarn") return "yarn"
-    if (program === "pnpm") return "pnpm"
-    if (program === "bun") return "bun"
-
-    // Assume npm
-    return "npm"
+    return packageManager ?? "npm"
 }
+
+
+
+// export function getPackageManager() {
+//     const agent = process.env.npm_config_user_agent
+//
+//     if (!agent) {
+//         const parent = process.env._
+//
+//         if (!parent) {
+//             // No luck, assume npm
+//             return "npm"
+//         }
+//
+//         if (parent.endsWith("pnpx") || parent.endsWith("pnpm")) return "pnpm"
+//         if (parent.endsWith("yarn")) return "yarn"
+//
+//         // Assume npm for anything else
+//         return "npm"
+//     }
+//
+//     const [program] = agent.split("/")
+//
+//     if (program === "yarn") return "yarn"
+//     if (program === "pnpm") return "pnpm"
+//     if (program === "bun") return "bun"
+//
+//     // Assume npm
+//     return "npm"
+// }

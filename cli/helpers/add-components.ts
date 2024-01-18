@@ -1,10 +1,10 @@
-import { DependencyDef } from "./dependencies"
+import chalk from "chalk"
+import fs from "fs"
 import _ from "lodash"
 import ora from "ora"
-import fs from "fs"
 import path from "path"
 import { Component, getAvailableComponents, getAvailableComponentsFromDir } from "./components"
-import chalk from "chalk"
+import { DependencyDef } from "./dependencies"
 
 export async function script_addComponents(
     {
@@ -19,7 +19,7 @@ export async function script_addComponents(
         componentDestination: string
         isUpdating?: boolean
         overwrite?: boolean
-    }
+    },
 ) {
 
     const availableComponents = await getAvailableComponents()
@@ -63,7 +63,10 @@ export async function script_addComponents(
 
             // Create dir if it doesn't exist
             if (file.dir) {
-                if (!fs.existsSync(path.resolve(componentDir))) {
+                try {
+                    await fs.promises.access(path.resolve(componentDir))
+                }
+                catch (e) {
                     await fs.promises.mkdir(path.resolve(componentDir), { recursive: true })
                 }
             }
@@ -71,9 +74,6 @@ export async function script_addComponents(
             // Write the content of the component to the directory
             const filePath = path.resolve(componentDir, file.name)
             await fs.promises.writeFile(filePath, file.content, { encoding: "utf-8" })
-            // \/ Might not be needed
-            const fileHandle = await fs.promises.open(filePath, "r")
-            await fileHandle.close()
         }
 
         // Add dependencies to list to install
