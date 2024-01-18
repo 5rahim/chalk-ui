@@ -34,7 +34,6 @@ export const init = new Command()
         // Print ASCII
         console.log(chalk.dim(ChalkASCII))
 
-        logger.warn("Make sure your project meets all prerequisites.")
         logger.warn("Make sure you have committed your changes before proceeding.")
         logger.warn("")
 
@@ -62,8 +61,8 @@ export const init = new Command()
             {
                 type: "text",
                 name: "tailwindConfig",
-                message: `Where is ${chalk.cyanBright("tailwind.config.js")} located?`,
-                initial: "./tailwind.config.js",
+                message: `Where is ${chalk.cyanBright("tailwind.config.ts")} located?`,
+                initial: "./tailwind.config.ts",
             },
             {
                 type: "text",
@@ -100,7 +99,7 @@ export const init = new Command()
 
         // Update tailwind config
         const tailwindDestination = config.tailwindConfig
-        const tailwindSpinner = ora(`Updating ${chalk.italic(`tailwind.config.js`)}...`).start()
+        const tailwindSpinner = ora(`Updating ${chalk.italic(`tailwind.config.ts`)}...`).start()
         await fs.writeFile(tailwindDestination, TAILWIND_CONFIG(projectInfo?.srcDir), "utf8")
         tailwindSpinner.succeed()
 

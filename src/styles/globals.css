@@ -47,7 +47,6 @@
 
     .dark, [data-mode="dark"] {
         --foreground: theme('colors.gray.200');
-        /*--background: #121212;*/
         --background: #0c0c0c;
 
         --brand: theme('colors.brand.400');
@@ -74,7 +73,6 @@
         --pink: theme('colors.pink.400');
         --rose: theme('colors.rose.400');
 
-        /*--border: theme('colors.gray.700');*/
         --border: #313131;
         --ring: theme('colors.brand.200');
 
@@ -110,15 +108,15 @@ h2 {
 }
 
 h3 {
-    @apply scroll-m-20 text-2xl font-bold tracking-tight
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight
 }
 
 h4 {
-    @apply scroll-m-20 text-xl font-bold tracking-tight
+    @apply scroll-m-20 text-xl font-semibold tracking-tight
 }
 
 h5 {
-    @apply scroll-m-20 text-lg font-bold tracking-tight
+    @apply scroll-m-20 text-lg font-semibold tracking-tight
 }
 
 h6 {

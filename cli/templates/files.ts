@@ -6,8 +6,8 @@ export const STYLES = `@tailwind base;
     :root {
         --radius: 0.375rem;
 
-        --text-color: theme('colors.gray.800');
-        --background-color: white;
+        --foreground: theme('colors.gray.800');
+        --background: white;
 
         --brand: theme('colors.brand.500');
         --slate: theme('colors.slate.500');
@@ -33,9 +33,6 @@ export const STYLES = `@tailwind base;
         --pink: theme('colors.pink.500');
         --rose: theme('colors.rose.500');
 
-        --control: theme('colors.gray.300');
-        --control-highlight: theme('colors.gray.400');
-
         --border: theme('colors.gray.200');
         --ring: theme('colors.brand.500');
 
@@ -43,56 +40,59 @@ export const STYLES = `@tailwind base;
         --muted-highlight: theme('colors.gray.700');
 
         --paper: theme('colors.white');
-        --highlight: rgba(0, 0, 0, 0.04);
+        --subtle: rgba(0, 0, 0, 0.04);
+        --subtle-highlight: rgba(0, 0, 0, 0.06);
 
     }
 
-    .dark {
-        --text-color: theme('colors.gray.200');
-        --background-color: #121212;
+    .dark, [data-mode="dark"] {
+        --foreground: theme('colors.gray.200');
+        --background: #0c0c0c;
 
-        --brand: theme('colors.brand.300');
-        --slate: theme('colors.slate.300');
-        --gray: theme('colors.gray.300');
-        --zinc: theme('colors.zinc.300');
-        --neutral: theme('colors.neutral.300');
-        --stone: theme('colors.stone.300');
-        --red: theme('colors.red.300');
-        --orange: theme('colors.orange.300');
-        --amber: theme('colors.amber.300');
-        --yellow: theme('colors.yellow.300');
-        --lime: theme('colors.lime.300');
-        --green: theme('colors.green.300');
-        --emerald: theme('colors.emerald.300');
-        --teal: theme('colors.teal.300');
-        --cyan: theme('colors.cyan.300');
-        --sky: theme('colors.sky.300');
-        --blue: theme('colors.blue.300');
-        --indigo: theme('colors.indigo.300');
-        --violet: theme('colors.violet.300');
-        --purple: theme('colors.purple.300');
-        --fuchsia: theme('colors.fuchsia.300');
-        --pink: theme('colors.pink.300');
-        --rose: theme('colors.rose.300');
+        --brand: theme('colors.brand.400');
+        --slate: theme('colors.slate.400');
+        --gray: theme('colors.gray.400');
+        --zinc: theme('colors.zinc.400');
+        --neutral: theme('colors.neutral.400');
+        --stone: theme('colors.stone.400');
+        --red: theme('colors.red.400');
+        --orange: theme('colors.orange.400');
+        --amber: theme('colors.amber.400');
+        --yellow: theme('colors.yellow.400');
+        --lime: theme('colors.lime.400');
+        --green: theme('colors.green.400');
+        --emerald: theme('colors.emerald.400');
+        --teal: theme('colors.teal.400');
+        --cyan: theme('colors.cyan.400');
+        --sky: theme('colors.sky.400');
+        --blue: theme('colors.blue.400');
+        --indigo: theme('colors.indigo.400');
+        --violet: theme('colors.violet.400');
+        --purple: theme('colors.purple.400');
+        --fuchsia: theme('colors.fuchsia.400');
+        --pink: theme('colors.pink.400');
+        --rose: theme('colors.rose.400');
 
-        --control: theme('colors.gray.700');
-        --control-highlight: theme('colors.gray.600');
-
-        --border: theme('colors.gray.700');
+        --border: #313131;
         --ring: theme('colors.brand.200');
 
         --muted: theme('colors.gray.400');
         --muted-highlight: theme('colors.gray.300');
 
         --paper: theme('colors.gray.900');
-        --highlight: rgba(255, 255, 255, 0.06);
+        --subtle: rgba(255, 255, 255, 0.06);
+        --subtle-highlight: rgba(255, 255, 255, 0.08);
 
     }
 }
 
 html {
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background-color: var(--background);
+    color: var(--foreground);
+}
+
+html * {
+    border-color: var(--border);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -108,86 +108,141 @@ h2 {
 }
 
 h3 {
-    @apply scroll-m-20 text-2xl font-bold tracking-tight
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight
 }
 
 h4 {
-    @apply scroll-m-20 text-xl font-bold tracking-tight
+    @apply scroll-m-20 text-xl font-semibold tracking-tight
 }
 
 h5 {
-    @apply scroll-m-20 text-lg font-bold tracking-tight
+    @apply scroll-m-20 text-lg font-semibold tracking-tight
+}
+
+h6 {
+    @apply scroll-m-20 text-base font-semibold tracking-tight
 }`
 
 // ------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------- //
 
-export const TAILWIND_CONFIG = (srcDir: boolean) => `const {colors} = require("tailwindcss/colors")
-const {fontFamily} = require("tailwindcss/defaultTheme")
+export const TAILWIND_CONFIG = (srcDir: boolean) => `import type { Config } from "tailwindcss"
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-    darkMode: ['class'],
+const config: Config = {
+    darkMode: "class",
     content: [
-        '${srcDir ? "./src/" : "./"}pages/**/*.{ts,tsx}',
-        '${srcDir ? "./src/" : "./"}components/**/*.{ts,tsx}',
-        '${srcDir ? "./src/" : "./"}app/**/*.{ts,tsx}',
+        "./index.html",
+        "${srcDir ? "./src/" : "./"}app/**/*.{ts,tsx,mdx}",
+        "${srcDir ? "./src/" : "./"}pages/**/*.{ts,tsx,mdx}",
+        "${srcDir ? "./src/" : "./"}components/**/*.{ts,tsx,mdx}",
     ],
     theme: {
         container: {
             center: true,
             padding: {
-                DEFAULT: '1rem',
-                sm: '2rem',
-                lg: '4rem',
-                xl: '5rem',
-                '2xl': '6rem',
+                DEFAULT: "1rem",
+                sm: "2rem",
+                lg: "4rem",
+                xl: "5rem",
+                "2xl": "6rem",
+            },
+            screens: {
+                "2xl": "1400px",
             },
         },
         data: {
-            checked: 'checked',
-            selected: 'selected',
-            disabled: 'disabled',
-            highlighted: 'highlighted',
+            checked: "checked",
+            selected: "selected",
+            disabled: "disabled",
+            highlighted: "highlighted",
         },
         extend: {
-            boxShadow: {
-                'md': '0 1px 3px 0 rgba(0, 0, 0, 0.1),0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+            animationDuration: {
+                DEFAULT: "0.25s",
             },
-            fontFamily: {
-                sans: ["var(--font-inter)", ...fontFamily.sans],
+            keyframes: {
+                "accordion-down": {
+                    from: { height: "0" },
+                    to: { height: "var(--radix-accordion-content-height)" },
+                },
+                "accordion-up": {
+                    from: { height: "var(--radix-accordion-content-height)" },
+                    to: { height: "0" },
+                },
+                "slide-down": {
+                    from: { transform: "translateY(-1rem)", opacity: "0" },
+                    to: { transform: "translateY(0)", opacity: "1" },
+                },
+                "slide-up": {
+                    from: { transform: "translateY(0)", opacity: "1" },
+                    to: { transform: "translateY(-1rem)", opacity: "0" },
+                },
+                "indeterminate-progress": {
+                    "0%": { transform: " translateX(0) scaleX(0)" },
+                    "40%": { transform: "translateX(0) scaleX(0.4)" },
+                    "100%": { transform: "translateX(100%) scaleX(0.5)" },
+                },
+            },
+            animation: {
+                "accordion-down": "accordion-down 0.15s linear",
+                "accordion-up": "accordion-up 0.15s linear",
+                "slide-down": "slide-down 0.15s ease-in-out",
+                "slide-up": "slide-up 0.15s ease-in-out",
+                "indeterminate-progress": "indeterminate-progress 1s infinite ease-out",
+            },
+            transformOrigin: {
+                "left-right": "0% 100%",
+            },
+            boxShadow: {
+                "md": "0 1px 3px 0 rgba(0, 0, 0, 0.1),0 1px 2px 0 rgba(0, 0, 0, 0.06)",
             },
             colors: {
-                ...colors,
                 brand: {
-                    50: '#f2f0ff',
-                    100: '#eeebff',
-                    200: '#d4d0ff',
-                    300: '#c7c2ff',
-                    400: '#9f92ff',
-                    500: '#6152df',
-                    600: '#5243cb',
-                    700: '#3f2eb2',
-                    800: '#312887',
-                    900: "#231c6b",
-                    DEFAULT: "#6152df",
+                    50: "#fff5ec",
+                    100: "#ffe9d4",
+                    200: "#ffcea8",
+                    300: "#ffac70",
+                    400: "#ff7d36",
+                    500: "#ff5a0f",
+                    600: "#f03e06",
+                    700: "#c72c07",
+                    800: "#a9260f",
+                    900: "#7f200f",
+                    950: "#450d05",
+                    DEFAULT: "#ff5a0f",
                 },
                 gray: {
-                    50: '#FAFAFA',
-                    100: '#F5F5F5',
-                    200: '#E5E5E5',
-                    300: '#D4D4D4',
-                    400: '#A3A3A3',
-                    500: '#737373',
-                    600: '#525252',
-                    700: '#404040',
-                    800: '#262626',
+                    50: "#FAFAFA",
+                    100: "#F5F5F5",
+                    200: "#E5E5E5",
+                    300: "#D4D4D4",
+                    400: "#A3A3A3",
+                    500: "#737373",
+                    600: "#525252",
+                    700: "#404040",
+                    800: "#262626",
                     900: "#171717",
+                    950: "#101010",
                     DEFAULT: "#737373",
+                },
+                green: {
+                    50: "#e6f7ea",
+                    100: "#cfead6",
+                    200: "#7bd0a7",
+                    300: "#68b695",
+                    400: "#57a181",
+                    500: "#258c60",
+                    600: "#1a6444",
+                    700: "#154f37",
+                    800: "#103b29",
+                    900: "#0a2318",
+                    950: "#05130d",
+                    DEFAULT: "#258c60",
                 },
             },
         },
     },
-    plugins: [require("@tailwindcss/typography"), require('@tailwindcss/forms'), require('@headlessui/tailwindcss')],
-}`
+    plugins: [require("@tailwindcss/typography"), require("@tailwindcss/forms"), require("tailwind-scrollbar-hide"), require("tailwindcss-animate")],
+}
+export default config`

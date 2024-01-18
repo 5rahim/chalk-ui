@@ -33,7 +33,6 @@ export type Component = z.infer<typeof componentSchema>
 export async function getAvailableComponents(): Promise<Component[]> {
     try {
         const res = await fetch(`${URL}/api/bank`, { agent })
-        console.log(URL)
         return await res.json() as Component[]
     }
     catch (error) {

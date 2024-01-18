@@ -50,3 +50,4 @@ dist
 cli/node_modules
 cli/.env
 cli/src
+cli/tailwind.config.ts
