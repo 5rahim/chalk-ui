@@ -150,6 +150,15 @@ export function TypeValue({ value }: { value: string }) {
         >
             {value}
         </Link>
+    } else if(value.includes("Primitive.") && value.includes("Command")) {
+        return <Link
+            href={`https://github.com/pacocoursey/cmdk`}
+            className="text-[--indigo] hover:underline"
+            target="_blank"
+            rel="noreferrer"
+        >
+            {value}
+        </Link>
     }
 
     if (value === "InputStyling" || value === "BasicFieldOptions") {

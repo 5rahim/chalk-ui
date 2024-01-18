@@ -1,5 +1,6 @@
 "use client"
 
+import { Modal, ModalProps } from "@/workshop/modal"
 import { cva } from "class-variance-authority"
 import { Command as CommandPrimitive } from "cmdk"
 import * as React from "react"
@@ -53,6 +54,19 @@ export const CommandAnatomy = defineStyleAnatomy({
     shortcut: cva([
         "UI-Command__shortcut",
         "ml-auto text-xs tracking-widest text-[--muted]",
+    ]),
+})
+
+export const CommandDialogAnatomy = defineStyleAnatomy({
+    content: cva([
+        "UI-CommandDialog__content",
+        "overflow-hidden p-0",
+    ]),
+    command: cva([
+        "UI-CommandDialog__command",
+        "[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-[--muted]",
+        "[&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pb-2 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5",
+        "[&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-2 [&_[cmdk-item]_svg]:h-4 [&_[cmdk-item]_svg]:w-5",
     ]),
 })
 
@@ -300,3 +314,23 @@ export const CommandShortcut = React.forwardRef<HTMLSpanElement, CommandShortcut
     )
 })
 CommandShortcut.displayName = "CommandShortcut"
+
+/* -------------------------------------------------------------------------------------------------
+ * CommandDialog
+ * -----------------------------------------------------------------------------------------------*/
+
+export type CommandDialogProps = ModalProps & ComponentAnatomy<typeof CommandDialogAnatomy>
+
+export const CommandDialog = (props: CommandDialogProps) => {
+    const { children, commandClass, contentClass, ...rest } = props
+    return (
+        <Modal
+            {...rest}
+            contentClass={cn(CommandDialogAnatomy.content(), contentClass)}
+        >
+            <Command className={cn(CommandDialogAnatomy.command(), commandClass)}>
+                {children}
+            </Command>
+        </Modal>
+    )
+}

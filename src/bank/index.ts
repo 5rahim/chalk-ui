@@ -653,6 +653,12 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/command-demo.tsx"],
     },
+    "command-dialog-demo": {
+        name: "command-dialog-demo",
+        component: React.lazy(() => import("@/demo/command-dialog-demo")),
+        family: [],
+        files: ["src/demo/command-dialog-demo.tsx"],
+    },
     "currency-input-demo": {
         name: "currency-input-demo",
         component: React.lazy(() => import("@/demo/currency-input-demo")),
