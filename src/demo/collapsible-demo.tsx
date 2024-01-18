@@ -6,7 +6,7 @@ export default function CollapsibleDemo() {
     return (
         <Collapsible>
             <CollapsibleTrigger>
-                <Button className="data-[state=open]:bg-[--green] mb-2" size="sm">Open</Button>
+                <Button className="data-[state=open]:bg-[--green] mb-2" size="sm">Click here</Button>
             </CollapsibleTrigger>
 
             <div>

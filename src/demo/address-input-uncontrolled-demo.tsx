@@ -3,7 +3,7 @@ import { AddressInput } from "@/workshop/address-input"
 import { Button } from "@/workshop/button"
 import * as React from "react"
 
-export default function AddressInputCustomDemo() {
+export default function AddressInputUncontrolledDemo() {
 
     return (
         <form

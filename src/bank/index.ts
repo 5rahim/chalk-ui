@@ -605,6 +605,24 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/checkbox-group-demo.tsx"],
     },
+    "checkbox-group-state-demo": {
+        name: "checkbox-group-state-demo",
+        component: React.lazy(() => import("@/demo/checkbox-group-state-demo")),
+        family: [],
+        files: ["src/demo/checkbox-group-state-demo.tsx"],
+    },
+    "checkbox-group-uncontrolled-demo": {
+        name: "checkbox-group-uncontrolled-demo",
+        component: React.lazy(() => import("@/demo/checkbox-group-uncontrolled-demo")),
+        family: [],
+        files: ["src/demo/checkbox-group-uncontrolled-demo.tsx"],
+    },
+    "checkbox-state-demo": {
+        name: "checkbox-state-demo",
+        component: React.lazy(() => import("@/demo/checkbox-state-demo")),
+        family: [],
+        files: ["src/demo/checkbox-state-demo.tsx"],
+    },
     "close-button-demo": {
         name: "close-button-demo",
         component: React.lazy(() => import("@/demo/close-button-demo")),
@@ -622,6 +640,12 @@ export const Bank: Bank = {
         component: React.lazy(() => import("@/demo/combobox-demo")),
         family: [],
         files: ["src/demo/combobox-demo.tsx"],
+    },
+    "combobox-multiple-demo": {
+        name: "combobox-multiple-demo",
+        component: React.lazy(() => import("@/demo/combobox-multiple-demo")),
+        family: [],
+        files: ["src/demo/combobox-multiple-demo.tsx"],
     },
     "command-demo": {
         name: "command-demo",

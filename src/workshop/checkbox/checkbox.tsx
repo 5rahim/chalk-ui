@@ -158,6 +158,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((prop
                     className={cn(CheckboxAnatomy.root({ size: _size }), className)}
                     disabled={basicFieldProps.disabled || basicFieldProps.readonly}
                     data-error={!!basicFieldProps.error}
+                    data-disabled={basicFieldProps.disabled}
                     aria-readonly={basicFieldProps.readonly}
                     data-readonly={basicFieldProps.readonly}
                     checked={_value}

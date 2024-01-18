@@ -2,11 +2,12 @@ import { Combobox } from "@/workshop/combobox"
 import * as React from "react"
 import { BiSolidMapPin } from "react-icons/bi"
 
-export default function ComboboxDemo() {
+export default function ComboboxMultipleDemo() {
     const [values, setValues] = React.useState<string[]>([])
 
     return (
         <Combobox
+            multiple
             label="Country"
             value={values}
             onValueChange={setValues}

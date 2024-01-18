@@ -220,7 +220,7 @@ export function rehypeComponent() {
                                     children: [
                                         {
                                             type: "text",
-                                            value: anatomyString || "No anatomy",
+                                            value: anatomyString || "No styles",
                                         },
                                     ],
                                 }),

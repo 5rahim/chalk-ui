@@ -1,6 +1,6 @@
 ---
 title: Combobox
-description: Description
+description: A select or multiselect input component.
 componentName: combobox
 ---
 
@@ -12,6 +12,34 @@ componentName: combobox
 npx @rahimstack@latest add combobox
 ```
 
+## Usage
+
+Unlike [Autocomplete](/docs/components/autocomplete), **Combobox** does not allow arbitrary values. However, it allows multiple selections and custom labels.
+
+### ComboboxOption
+
+A [ComboboxOption](#api-reference) takes a string `value`, a `label` and an optional `textValue`.
+- The `value` prop is used to identify the option just like the `value` prop of a native `option` element.
+- The `label` prop is used to display the option in the dropdown list.
+- The `textValue` prop is used for searching and filtering the options. If not provided, the `value` prop will be used instead.
+- The `textValue` prop is also used instead of the `label` prop when **multiple** options can be selected.
+
+### Multiple
+
+<ComponentPreview name="combobox-multiple-demo" />
+
+```tsx {3}
+<Combobox
+    {...props}
+    multiple
+/>
+```
+
+### Uncontrolled
+
+- Input type: `text`, Ref prop: `inputRef`
+- A stringified array of selected values will be submitted.
+- If not required, a stringified empty array will be submitted if no option is selected.
 
 ## API Reference
 
