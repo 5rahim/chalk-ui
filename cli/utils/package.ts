@@ -1,7 +1,7 @@
 import fs from "fs-extra"
+import _ from "lodash"
 import path from "path"
 import { type PackageJson } from "type-fest"
-import _ from "lodash"
 import { getAvailableComponentDependencyList } from "../helpers/components"
 import { mainDependencies } from "../info"
 
@@ -38,21 +38,30 @@ export async function getComponentDependencyListFromPackage() {
 }
 
 
-
 export function getPackageManager() {
-    const userAgent = process.env.npm_config_user_agent
+    const agent = process.env.npm_config_user_agent
 
-    if (!userAgent) {
+    if (!agent) {
+        const parent = process.env._
+
+        if (!parent) {
+            // No luck, assume npm
+            return "npm"
+        }
+
+        if (parent.endsWith("pnpx") || parent.endsWith("pnpm")) return "pnpm"
+        if (parent.endsWith("yarn")) return "yarn"
+
+        // Assume npm for anything else
         return "npm"
     }
 
-    if (userAgent.startsWith("yarn")) {
-        return "yarn"
-    }
+    const [program] = agent.split("/")
 
-    if (userAgent.startsWith("pnpm")) {
-        return "pnpm"
-    }
+    if (program === "yarn") return "yarn"
+    if (program === "pnpm") return "pnpm"
+    if (program === "bun") return "bun"
 
+    // Assume npm
     return "npm"
 }
