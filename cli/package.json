@@ -1,6 +1,6 @@
 {
   "name": "@rahimstack/chalk-ui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A collection of React and Tailwind components for modern SaaS applications.",
   "publishConfig": {
     "access": "public"

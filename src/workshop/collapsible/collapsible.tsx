@@ -15,19 +15,19 @@ Collapsible.displayName = "Collapsible"
  * CollapsibleTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-export type CollapsibleTriggerProps = React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.CollapsibleTrigger>
+export type CollapsibleTriggerProps = React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Trigger>
 
 export const CollapsibleTrigger = React.forwardRef<HTMLButtonElement, CollapsibleTriggerProps>((props, ref) => {
     const { children, ...rest } = props
 
     return (
-        <CollapsiblePrimitive.CollapsibleTrigger
+        <CollapsiblePrimitive.Trigger
             ref={ref}
             asChild
             {...rest}
         >
             {children}
-        </CollapsiblePrimitive.CollapsibleTrigger>
+        </CollapsiblePrimitive.Trigger>
     )
 })
 
@@ -37,12 +37,12 @@ CollapsibleTrigger.displayName = "CollapsibleTrigger"
  * CollapsibleContent
  * -----------------------------------------------------------------------------------------------*/
 
-export type CollapsibleContentProps = React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.CollapsibleContent>
+export type CollapsibleContentProps = React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Content>
 
 export const CollapsibleContent = React.forwardRef<HTMLDivElement, CollapsibleContentProps>((props, ref) => {
 
     return (
-        <CollapsiblePrimitive.CollapsibleContent
+        <CollapsiblePrimitive.Content
             ref={ref}
             {...props}
         />
