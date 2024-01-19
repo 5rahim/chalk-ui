@@ -45,25 +45,23 @@ npx @rahimstack/chalk-ui add [...components]
 
 - ⚠️ Do not use this command to update components that you have heavily modified the logic or layout of.
 - ⚠️ Changes made to a component's logic or layout will be **overwritten**.
-- ⚠️ Make sure you take note of components with breaking changes. [CHANGELOG.md](https://github.com/5rahim/chalk-ui/blob/main/CHANGELOG.md).
+- ⚠️ Make sure you take note of components with breaking changes. [CHANGELOG.md](/docs/changelog).
 
 ```shell
-npx @rahimstack/chalk-ui@{version} update
+npx @rahimstack/chalk-ui@latest update
 ```
 
-- Run the command, replace `{version}` with the desired version or "latest".
-- You have the option to automatically preserves the changes you've made to the styling.
-- This will preserve all changes made to `defineStyleAnatomy` functions.
-- The command will traverse all files and look for differences.
-- If a file is outdated, the command will create a new, temporary file in the UI directory called `TEMP_<filename>.(tsx,json)`, containing the upcoming changes
-- This approach allows you to verify upcoming changes, modify then **merge** or **skip**.
-- Merging will overwrite the local file's content with the content of the temporary file.
+- The command will traverse all files and look for outdated files.
+- If a file is outdated, the command will create a new, temporary file in the UI directory called `TEMP_<filename>.(ext)`
+- You will see three options: **merge**, **skip** and **show diff**.
+    - You can use the **show diff** option to see the differences between the old and new file.
+    - Modify the temporary file to your liking (e.g. copy/paste your styles) and use the **merge** option to merge the changes.
 
 ## Remove
 
 - ✅ Removes component files and directories.
 - ✅ Uninstalls dependencies that are not used by any other component.
-- It will not remove unused shared components.
+- ✅ It will not remove unused shared components.
 
 ```shell
 npx @rahimstack/chalk-ui remove [...components]
@@ -74,8 +72,8 @@ npx @rahimstack/chalk-ui remove [...components]
 - ✅ This command will remove all components and uninstall their dependencies.
 
 Caveats:
-- ⚠️ This can uninstall dependencies that you use elsewhere (like lodash).
-- ⚠️ The **tailwind.config.js** and **globals.scss** files will stay the same
+- ⚠️ This can uninstall dependencies that you use elsewhere.
+- ⚠️ The **tailwind.config.js** and **globals.scss** files will not be removed.
 
 ```shell
 npx @rahimstack/chalk-ui clean

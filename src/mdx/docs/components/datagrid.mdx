@@ -1,6 +1,6 @@
 ---
-title: Datagrid
-description: Description
+title: DataGrid
+description: Fully-featured data table component. Built on top of Tanstack's React Table.
 componentName: datagrid
 ---
 
@@ -11,7 +11,623 @@ componentName: datagrid
 ```bash
 npx @rahimstack@latest add datagrid
 ```
+## Usage
 
+### Define the type
+
+First, you need to define the type of the data that will be displayed.
+
+#### Example
+
+```ts
+type Product = {
+    id: string
+    name: string
+    image: string
+    visible: boolean
+    availability: "in_stock" | "out_of_stock"
+    price: number
+    category: string | null
+}
+```
+
+### Column definition
+
+- You can define your columns using the `defineDataGridColumns` helper method.
+This method takes a callback function that returns an array of type `ColumnDef`.
+- [Learn more](https://tanstack.com/table/v8/docs/examples/react/basic) about TanStack Table column definition.
+
+<Alert
+    description="It is preferable to use `useMemo` to avoid excessive re-rendering and performance issues."
+/>
+
+#### Example
+
+```tsx /defineDataGridColumns/
+import { defineDataGridColumns } from "@/components/ui/datagrid"
+
+type Product = {
+    // ...
+}
+
+function Demo() {
+    const columns = React.useMemo(() => defineDataGridColumns<Product>(() => [
+        {
+            accessorKey: "name",
+            header: "Name",
+        },
+        {
+            accessorKey: "price",
+            header: "Price",
+            cell: info => "$" + Intl.NumberFormat("en-US").format(info.getValue<number>()),
+        },
+        // ...
+    ]), [])
+
+    return <></>
+}
+```
+
+### Render the table
+
+```tsx
+import { defineDataGridColumns, DataGrid } from "@/components/ui/datagrid"
+import { fetchFakeData } from "./datagrid-fake-api"
+import * as React from "react"
+
+export type Product = {
+    id: string
+    name: string
+    image: string
+    visible: boolean
+    availability: "in_stock" | "out_of_stock"
+    price: number
+    category: string | null
+}
+
+export function DataGridMinimalExample() {
+
+    const [clientData, setClientData] = React.useState<Product[] | undefined>(undefined)
+
+    React.useEffect(() => {
+        (async function() {
+            const res = await fetchFakeData()
+            setClientData(res.rows)
+        })()
+    }, [])
+
+    const columns = React.useMemo(() => defineDataGridColumns<Product>(() => [
+        {
+            accessorKey: "name",
+            header: "Name",
+            size: 60,
+        },
+        {
+            accessorKey: "price",
+            header: "Price",
+            cell: info => "$" + Intl.NumberFormat("en-US").format(info.getValue<number>()),
+            size: 40,
+        },
+        // ...
+    ]), [])
+
+    return (
+        <DataGrid<Product>
+            columns={columns}
+            data={clientData}
+            rowCount={clientData?.length ?? 0}
+            isLoading={!clientData}
+        />
+    )
+
+}
+```
+
+### Loading state
+
+- `isLoading`: When data is coming in for the first time
+- `isDataMutating`: When data is already present
+
+### Initial state
+
+You can pass an initial state to the DataGrid component. This is useful when you want to control the state of the DataGrid from outside.
+
+```tsx
+<DataGrid<T>
+    {...props}
+    initialState={{
+        globalFilter: "",
+        sorting: [],
+        pagination: { pageIndex: 0, pageSize: 5 },
+        rowSelection: {},
+        columnFilters: [],
+        columnVisibility: {},
+    }}
+/>
+```
+
+## Pagination
+
+Pagination is handled on the client by default.
+- `rowCount` is used to calculate the page count based on the `pageSize`. This value should be the number of rows fetched.
+    - If you are using server-side pagination, the value should reflect the total number of rows in the database based on the filters.
+
+
+### Server-side/Manual
+
+- You should update `rowCount` programmatically based on the data fetched.
+- Set `enableManualPagination` to `true` and track the current state manually.
+
+```tsx /enableManualPagination={true}/ /onPaginationChange={setPagination}/
+import { PaginationState } from "@tanstack/react-table"
+
+// ...
+const [pagination, setPagination] = React.useState<PaginationState>({ pageIndex: 0, pageSize: 5 })
+
+// ...
+
+const { data, isLoading } = useFakeQuery({
+    queryKey: ["products", pagination],
+    queryFn: async () => {
+        const fetchURL = new URL(/*...*/)
+        fetchURL.searchParams.set("pageIndex", String(pagination.pageIndex))
+        fetchURL.searchParams.set("limit", String(pagination.pageSize))
+        const res = await fetch(fetchURL.href)
+        return (await res.json())
+    },
+})
+
+return (
+    <DataGrid<T>
+        columns={columns}
+        data={data}
+        rowCount={data?.length ?? 0}
+        isLoading={isLoading}
+        enableManualPagination={true}
+        initialState={{ pagination }}
+        onPaginationChange={setPagination}
+    />
+)
+```
+
+## Sorting
+
+Sorting is automatically handled on a column-to-column basis.
+
+### Disable sorting
+
+#### Column-level
+
+```tsx /enableSorting: false/
+const columns = useMemo(() => defineDataGridColumns<Product>(() => [
+    //...
+    {
+        id: "_actions",
+        enableSorting: false,
+        enableGlobalFilter: false,
+        cell: ({ row }) => <div className={"flex justify-end w-full"}>{/*...*/}</div>
+    },
+    //...
+]), [])
+```
+
+#### Globally
+
+```tsx /enableSorting={false}/
+<DataGrid<Product>
+    {...props}
+    enableSorting={false}
+/>
+```
+
+### Server-side/Manual
+
+```tsx /onSortingChange={setSorting}/
+import { SortingState } from "@tanstack/react-table"
+
+// ...
+const [sorting, setSorting] = useState<SortingState>([])
+
+// ...
+
+const { data, isLoading } = useFakeQuery({
+    queryKey: ["products", sorting],
+    queryFn: async () => {
+        const fetchURL = new URL(/*...*/)
+        // Handle sending the sorting state to the server
+        const res = await fetch(fetchURL.href)
+        return (await res.json())
+    },
+})
+
+return (
+    <DataGrid<T>
+        {...props}
+        initialState={{ sorting }}
+        onSortingChange={setSorting}
+    />
+)
+```
+
+## Row selection
+
+```tsx
+<DataGrid<T>
+    {...props}
+    enableRowSelection={true}
+    onRowSelect={data => {
+        console.log(data)
+    }}
+/>
+```
+
+### Server-side/Manual
+
+By default, row selection only works on rows that are fetched.
+- Set `enablePersistentRowSelection` to `true` to enable row selection on all rows.
+- You will have to provide a `rowSelectionPrimaryKey` in order to uniquely identify the rows.
+
+
+```tsx {5-6}
+<DataGrid<T>
+    {...props}
+    enableManualPagination={true}
+    enableRowSelection={true}
+    enablePersistentRowSelection={true}
+    rowSelectionPrimaryKey="id" // or any other unique key
+    onRowSelect={data => {
+        console.log(data)
+    }}
+/>
+```
+
+## Filtering
+
+By default, filtering is handled on the client, so only the rows that are fetched will be filtered.
+Enable filtering on specific columns using the `withFiltering` and `getFilterFn` helpers.
+
+### Filter types
+
+These are the pre-built filters
+
+- `select`
+- `radio`
+- `checkbox`
+- `boolean`
+- `date-range`
+- ~~`number`~~ 🏗️
+
+You will have to provide both a `filterFn` prop for each column you want to enable filtering on by using the `getFilterFn` helper,
+and a `meta` prop with the filter configuration using the `withFiltering` helper.
+
+```tsx /filterFn: getFilterFn/ /withFiltering/ /meta/
+const columns = useMemo(() => defineDataGridColumns<Product>(({ withValueFormatter, withFiltering, getFilterFn }) => [
+    //...
+    {
+        accessorKey: "category",
+        header: "Category",
+        cell: info => info.getValue(),
+        size: 20,
+        filterFn: getFilterFn("radio"),
+        meta: {
+            ...withFiltering({
+                name: "Category",
+                type: "radio",
+                options: [{ value: "Electronics" }, { value: "Food" }],
+                icon: <BiFolder/>,
+            }),
+        },
+    },
+    {
+        accessorKey: "availability",
+        header: "Availability",
+        cell: info => info.getValue(),
+        size: 20,
+        filterFn: getFilterFn("checkbox"),
+        meta: {
+            ...withValueFormatter<string>(value => { // Format the value for the filter buttons
+                if (value === "out_of_stock") return "Out of stock"
+                else if (value === "in_stock") return "In stock"
+                return value
+            }),
+            ...withFiltering({
+                name: "Availability",
+                type: "checkbox",
+                icon: <BiCheck/>,
+                options: [
+                    { value: "out_of_stock", label: "Out of stock" },
+                    { value: "in_stock", label: "In stock" },
+                ],
+            }),
+        },
+    },
+    {
+        accessorKey: "visible",
+        header: "Visible",
+        cell: info => <Badge intent={info.getValue() === "Visible" ? "success" : "gray"}>{info.getValue<string>()}</Badge>,
+        size: 20,
+        filterFn: getFilterFn("boolean"),
+        meta: {
+            ...withValueFormatter<boolean, string>(value => value ? "Visible" : "Hidden"),
+            ...withFiltering({
+                name: "Visible",
+                type: "boolean",
+                icon: <BiLowVision/>,
+                valueFormatter: (value) => { // Overrides `withValueFormatter`
+                    return value ? "Yes" : "No"
+                },
+            }),
+        },
+    },
+    ...
+]), [])
+```
+
+### Disable filtering
+
+```tsx /enableColumnFilters={false}/ /enableGlobalFilter={false}/
+<DataGrid<Product>
+    {...props}
+    enableColumnFilters={false}
+    enableGlobalFilter={false}
+/>
+```
+
+### Server-side/Manual
+
+Filtering can be done server-side by setting `enableManualFiltering` to `true`.
+
+<Alert
+    intent="warning-basic"
+    className="mt-4"
+    description={"The `rowCount` prop should reflect the total number of rows in the database based on the filters."}
+/>
+
+```tsx /onGlobalFilterChange={setGlobalFilter}/ /onColumnFiltersChange={setColumnFilters}/
+import { ColumnFiltersState } from "@tanstack/react-table"
+
+// ...
+const [globalFilter, setGlobalFilter] = React.useState<string>("")
+const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+
+// ...
+
+const { data, totalCount, isLoading } = useFakeQuery({
+    queryKey: ["products", globalFilter, columnFilters],
+    queryFn: async () => {
+        const fetchURL = new URL(/*...*/)
+        fetchURL.searchParams.set("nameLike", globalFilter)
+        fetchURL.searchParams.set("category", columnFilters.find(f => f.id === "category")?.value as string ?? "")
+        fetchURL.searchParams.set("visibility", String(columnFilters.find(f => f.id === "visibility")?.value ?? ""))
+        // ...
+        const res = await fetch(fetchURL.href)
+        return (await res.json())
+    },
+})
+
+return (
+    <DataGrid<T>
+        columns={columns}
+        data={data}
+        rowCount={totalCount}
+        isLoading={isLoading}
+        enableManualPagination={true}
+        initialState={{ globalFilter, columnFilters }}
+        onGlobalFilterChange={setGlobalFilter}
+        onColumnFiltersChange={setColumnFilters}
+    />
+)
+```
+
+## Responsive
+
+You can hide certain columns below a specific pixel width. The width is based on the table element.
+
+```tsx
+<DataGrid<Product>
+    {...props}
+    hideColumns={[
+        { below: 850, hide: ["availability", "price"] },
+        { below: 600, hide: ["_actions"] },
+        { below: 515, hide: ["category"] },
+        { below: 400, hide: ["visible"] },
+    ]}
+/>
+```
+
+## Editing
+
+### Making a column editable
+
+- Only **one row** can be edited at a time. Users can edit multiple cells in a row simultaneously.
+- Use the `onRowEdit` callback function prop to get access to the updated row data.
+
+```tsx /withEditing/
+const columns = useMemo(() => defineDataGridColumns<Product>(({ withEditing }) => [
+    {
+        accessorKey: "name",
+        header: "Name",
+        cell: info => info.getValue(),
+        meta: {
+            ...withEditing<string>({
+                field: ({ onChange, ...ctx }) => (
+                    <TextInput {...ctx} onTextChange={onChange} intent="unstyled" />
+                ),
+            }),
+        },
+    },
+    // ...
+]), [])
+```
+
+- `withEditing` accepts a `field` prop that is used to render the input field.
+- `field` is a callback function that returns a React element. It has the following parameters:
+    - `context`: An object containing a `ref`, `value`, and `onChange` function to control the input field.
+    - `options`: An object containing the row errors `rowErrors: DataGridValidationRowErrors`, `table`, `row`, and `cell` instances.
+
+You can specify the type of the field using the `zodType` prop on `withEditing` or by using generics.
+
+```tsx /schema.shape.name/ /<string>/
+const schema = defineSchema(({z}) => z.object({
+    name: z.string(),
+    ...
+}))
+
+// Column def
+
+meta: {
+    ...withEditing({
+        zodType: schema.shape.name, // Define type from zod
+        field: (ctx) => {
+            console.log(ctx.value) // string
+        },
+    }),
+}
+
+meta: {
+    ...withEditing<string>({ // Or define it from generics
+        field: (ctx) => {
+            console.log(ctx.value) // string
+        },
+    }),
+}
+```
+
+#### Example
+
+```tsx /withEditing/
+const columns = useMemo(() => defineDataGridColumns<Product>(({ withEditing }) => [
+    {
+        accessorKey: "name",
+        header: "Name",
+        cell: info => info.getValue(),
+        meta: {
+            ...withEditing<string>({
+                field: ({ onChange, ...ctx }, { rowErrors, row }) => {
+                    // Get field's error
+                    const error = rowErrors.find(n => n.key === "name" && n.rowId === row.id)
+                    
+                    return <TextInput {...ctx} onTextChange={onChange} intent="unstyled" />
+                },
+            }),
+        },
+    },
+    // ...
+]), [])
+```
+
+### Validation
+
+- You can pass a zod schema to the DataGrid component using the `validationSchema` prop.
+- By using the zod schema, you can validate the data before `onRowEdit` is called on the client or on the server.
+- You can also use the `onRowValidationError` callback function prop to get access to the validation errors.
+
+```tsx {1-3,21} /name/ /accessorKey: "name"/ /onRowValidationError/
+const schema = defineSchema(({ z }) => z.object({
+    name: z.string().min(3), // The name cell value will be validated against this schema
+}))
+
+const columns = useMemo(() => defineDataGridColumns<Product>(({ withEditing }) => [
+    {
+        accessorKey: "name",
+        header: "Name",
+        meta: {
+            ...withEditing<string>({
+                field: (ctx) => {/*...*/},
+            }),
+        }
+    },
+    ...rest
+]), [])
+
+return (
+    <DataGrid<T>
+        {...props}
+        validationSchema={schema}
+        onRowEdit={({ data, originalData, row }) => {
+            // ...
+        }}
+        onRowValidationError={({ errors }) => {
+            errors.forEach(error => {
+                toast.error(error.path.join("."), {
+                    description: error.message,
+                })
+            })
+        }}
+    />
+)
+```
+
+### Event
+
+`onRowEdit` will be called when the user clicks the save button and the row data is valid.
+
+
+- `data`: The row data containing the updated values
+- `originalData`: The original row data
+- `row`: Row API. [See reference](https://tanstack.com/table/v8/docs/api/core/row#row-api).
+
+```tsx /onRowEdit/
+<DataGrid<T>
+    {...props}
+    onRowEdit={({ data, originalData, row }) => {
+        // ...
+    }}
+/>
+```
+
+### Optimistic updates
+
+1. Set `enableOptimisticUpdates` to `true`
+2. Provide a `optimisticUpdatePrimaryKey` that will be used by the DataGrid to locate the row and perform the optimistic updates
+3. Handle potential errors by refetching/refreshing the data in case of an internal server error
+4. When optimistic updates are enabled, DataGrid will not display a loading state when `isDataMutating` is true
+
+Note: Optimistic updates are paused when server-side validation is done using the zod schema.
+
+### Server-side validation
+
+```tsx showLineNumbers /serverSideNameValidation/ /schema/ /isDataMutating={isMutating || isValidating}/ /validationSchema={schema}/
+const { data, isLoading, refetch } = useFakeQuery({ ...queryOptions })
+
+const { mutate, isMutating } = useFakeMutation({ ...mutationOptions })
+
+const [isValidating, setIsValidating] = useState(false)
+const serverSideNameValidation = React.useCallback(async (value: string) => {
+    setIsValidating(true)
+    const res = await verifyNameIsUnique(value) // Server-side validation
+    setIsValidating(false)
+    return res.isUnique
+}, [])
+
+const schema = defineSchema(({z}) => z.object({
+    name: z.string().refine(value => serverSideNameValidation(value), { message: "Name already exists" }),
+    // ...
+}))
+
+return (
+    <DataGrid<Product>
+        {...props}
+        isLoading={isLoading}
+        isDataMutating={isMutating || isValidating}
+        validationSchema={schema}
+        enableOptimisticUpdates={true}
+        onRowEdit={({ data, originalData, row }) => {
+            mutate(data, {
+                onSuccess: () => refetch(),
+                onError: () => refetch(),
+            })
+        }}
+        onRowValidationError={({ errors }) => {
+            // ...
+        }}
+    />
+)
+```
+
+## Server-side example
+
+<ComponentPreview name="datagrid-server-side-demo" />
 
 ## API Reference
 

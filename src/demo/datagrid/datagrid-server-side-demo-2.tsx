@@ -2,10 +2,14 @@ import { Badge } from "@/workshop/badge"
 import { DataGrid, defineDataGridColumns } from "@/workshop/datagrid"
 import { TextInput } from "@/workshop/text-input"
 import { ColumnFiltersState, ColumnSort, PaginationState, SortingState } from "@tanstack/react-table"
-import isEqual from "lodash/isEqual"
+import _ from "lodash"
 import React, { startTransition, useEffect, useMemo, useState } from "react"
-import { BiFolder } from "react-icons/bi"
+import { BiBasket, BiCalendar, BiCheck, BiFolder, BiLowVision } from "react-icons/bi"
 import { newProduct, Product, range } from "./datagrid-fake-api"
+
+type DataGridServerSideTestProps = {
+    children?: React.ReactNode
+}
 
 type DataGridPaginationModel = { pageIndex: number, limit: number }
 type DataGridFilteringModel = { globalFilterValue: string, filters: { id: string, value: unknown }[] }
@@ -18,7 +22,9 @@ type DataGridServerSideModels = {
 }
 
 
-export const DatagridServerSideDemo = () => {
+export const DatagridServerSideDemo = (props: DataGridServerSideTestProps) => {
+
+    const { children, ...rest } = props
 
     const [globalFilter, setGlobalFilter] = useState<string>("")
     const [sorting, setSorting] = useState<SortingState>([])
@@ -27,8 +33,14 @@ export const DatagridServerSideDemo = () => {
 
     const { data, totalCount, isLoading } = useFakeQuery({
         sorting: sorting,
-        filtering: { globalFilterValue: globalFilter, filters: columnFilters },
-        pagination: { pageIndex: pagination.pageIndex, limit: pagination.pageSize },
+        filtering: {
+            globalFilterValue: globalFilter,
+            filters: columnFilters,
+        },
+        pagination: {
+            pageIndex: pagination.pageIndex,
+            limit: pagination.pageSize,
+        },
     }, { enabled: true })
 
     const columns = useMemo(() => defineDataGridColumns<Product>(({ withFiltering, getFilterFn, withEditing, withValueFormatter }) => [
@@ -40,7 +52,7 @@ export const DatagridServerSideDemo = () => {
             meta: {
                 ...withEditing<string>({
                     field: (ctx) => (
-                        <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent="unstyled" size="sm" />
+                        <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"} />
                     ),
                 }),
             },
@@ -72,11 +84,33 @@ export const DatagridServerSideDemo = () => {
             header: "Availability",
             cell: info => info.renderValue(),
             size: 0,
+            filterFn: getFilterFn("checkbox"),
             meta: {
                 ...withValueFormatter<string>(value => {
                     if (value === "out_of_stock") return "Out of stock"
                     if (value === "in_stock") return "In stock"
                     return value
+                }),
+                ...withFiltering({
+                    name: "Availability",
+                    type: "checkbox",
+                    icon: <BiCheck />,
+                    options: [
+                        {
+                            value: "out_of_stock",
+                            label: <span className="flex items-center gap-2"><BiBasket className={"text-red-500"} /><span>Out of
+                                                                                                                          stock</span></span>,
+                        },
+                        {
+                            value: "in_stock",
+                            label: <span className="flex items-center gap-2"><BiBasket className={"text-green-500"} /><span>In stock</span></span>,
+                        },
+                    ],
+                    valueFormatter: (value) => {
+                        if (value === "out_of_stock") return "Out of stock"
+                        if (value === "in_stock") return "In stock"
+                        return value
+                    },
                 }),
             },
         },
@@ -85,9 +119,15 @@ export const DatagridServerSideDemo = () => {
             header: "Visible",
             cell: info => <Badge intent={info.getValue() ? "success" : "gray"}>{info.renderValue<string>()}</Badge>,
             size: 0,
+            filterFn: getFilterFn("boolean"),
             meta: {
                 ...withValueFormatter<boolean, string>(value => {
                     return value ? "Visible" : "Hidden"
+                }),
+                ...withFiltering({
+                    name: "Visible",
+                    type: "boolean",
+                    icon: <BiLowVision />,
                 }),
             },
         },
@@ -96,6 +136,14 @@ export const DatagridServerSideDemo = () => {
             header: "Date",
             cell: info => Intl.DateTimeFormat("us").format(info.getValue<Date>()),
             size: 30,
+            filterFn: getFilterFn("date-range"),
+            meta: {
+                ...withFiltering({
+                    type: "date-range",
+                    icon: <BiCalendar />,
+                    name: "Date",
+                }),
+            },
         },
     ]), [])
 
@@ -167,7 +215,7 @@ function useFakeQuery(options: DataGridServerSideModels, { enabled }: { enabled?
     const [_options, setOptions] = useState(options)
 
     useEffect(() => {
-        if (!isEqual(options, _options)) {
+        if (!_.isEqual(options, _options)) {
             setOptions(options)
         }
     }, [options])

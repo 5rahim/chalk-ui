@@ -15,8 +15,8 @@ const meta = {
                 <CurrencyInput
                     {...args}
                     value={value}
-                    onValueChange={(value, name, values) => {
-                        console.log("value", value, name, values)
+                    onValueChange={(value, values) => {
+                        console.log("value", value, values)
                         updateArgs({ value })
                     }}
                 />

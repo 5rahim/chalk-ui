@@ -10,20 +10,8 @@ interface DataGridEditingTestProps {
     children?: React.ReactNode
 }
 
-function makeData(...lens: number[]) {
-    const makeDataLevel = (depth = 0): Product[] => {
-        const len = lens[depth]!
-        return range(len).map((d): Product => {
-            return {
-                ...newProduct(),
-            }
-        })
-    }
 
-    return makeDataLevel()
-}
-
-const _data = makeData(6)
+const _data = range(6).map(() => newProduct())
 
 export async function fetchData() {
     // Simulate some network latency
@@ -126,7 +114,7 @@ export const DatagridEditingServerSideValidationDemo: React.FC<DataGridEditingTe
             meta: {
                 ...withEditing({
                     zodType: schema.shape.name, // Assign type using `zodType`
-                    field: (ctx) => (
+                    field: (ctx, options) => (
                         <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"} size="sm" />
                     ),
                 }),

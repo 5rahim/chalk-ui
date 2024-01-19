@@ -42,7 +42,7 @@ export default function AreaChartDemo() {
             categories={["Trend 1", "Trend 2"]}
             colors={["brand", "green"]}
             valueFormatter={(number: number) => {
-                return "$ " + Intl.NumberFormat("us").format(number).toString()
+                return "$" + Intl.NumberFormat("us").format(number).toString()
             }}
             angledLabels
         />

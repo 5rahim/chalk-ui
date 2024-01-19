@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import CurrencyInputPrimitive, { CurrencyInputOnChangeValues } from "react-currency-input-field"
+import CurrencyInputPrimitive from "react-currency-input-field"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { cn } from "../core/styling"
 import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
@@ -10,7 +10,33 @@ import { extractInputPartProps, InputAddon, InputAnatomy, InputContainer, InputI
  * CurrencyInput
  * -----------------------------------------------------------------------------------------------*/
 
-type IntlConfig = { locale: string, currency?: string }
+export type CurrencyInputIntlConfig = {
+    /**
+     * e.g. en-US
+     */
+    locale: string
+    /**
+     * e.g. USD
+     */
+    currency?: string
+}
+
+export type CurrentInputValues = {
+    /**
+     * Value as float or null if empty
+     * e.g. "1.99" -> 1.99 | "" -> null
+     */
+    float: number | null
+    /**
+     * Value after applying formatting
+     * e.g. "1000000" -> "1,000,0000"
+     */
+    formatted: string
+    /**
+     * Non formatted value as string
+     */
+    value: string
+}
 
 export type CurrencyInputProps =
     Omit<React.ComponentPropsWithoutRef<"input">, "size" | "disabled" | "defaultValue"> &
@@ -18,36 +44,26 @@ export type CurrencyInputProps =
     BasicFieldOptions & {
     /**
      * Allow decimals
-     *
-     * Default = true
+     * @default true
      */
     allowDecimals?: boolean
     /**
      * Allow user to enter negative value
-     *
-     * Default = true
+     * @default true
      */
     allowNegativeValue?: boolean
     /**
-     * Component id
-     */
-    id?: string
-    /**
-     *  Maximum characters the user can enter
+     * Maximum characters the user can enter
      */
     maxLength?: number
     /**
      * Limit length of decimals allowed
-     *
-     * Default = 2
+     * @default 2
      */
     decimalsLimit?: number
     /**
      * Specify decimal scale for padding/trimming
-     *
-     * Example:
-     *   1.5 -> 1.50
-     *   1.234 -> 1.23
+     * e.g. 1.5 -> 1.50 | 1.234 -> 1.23
      */
     decimalScale?: number
     /**
@@ -56,10 +72,7 @@ export type CurrencyInputProps =
     defaultValue?: number | string
     /**
      * Value will always have the specified length of decimals
-     *
-     * Example:
-     *   123 -> 1.23
-     *
+     * e.g. 123 -> 1.23
      * Note: This formatting only happens onBlur
      */
     fixedDecimalLength?: number
@@ -68,11 +81,13 @@ export type CurrencyInputProps =
      */
     placeholder?: string
     /**
-     * Include a prefix eg. £
+     * Include a prefix
+     * e.g. £
      */
     prefix?: string
     /**
-     * Include a suffix eg. €
+     * Include a suffix
+     * e.g. €
      */
     suffix?: string
     /**
@@ -81,37 +96,29 @@ export type CurrencyInputProps =
     step?: number
     /**
      * Separator between integer part and fractional part of value.
-     *
-     * This cannot be a number
      */
     decimalSeparator?: string
     /**
-     * Separator between thousand, million and billion
-     *
-     * This cannot be a number
+     * Separator between thousand, million and billion.
      */
     groupSeparator?: string
     /**
-     * Disable auto adding separator between values eg. 1000 -> 1,000
-     *
-     * Default = false
+     * Disable auto adding separator between values
+     * e.g. 1000 -> 1,000
+     * @default false
      */
     disableGroupSeparators?: boolean
     /**
      * Disable abbreviations (m, k, b)
-     *
-     * Default = false
+     * @default false
      */
     disableAbbreviations?: boolean
     /**
-     * International locale config, examples:
-     *   { locale: 'ja-JP', currency: 'JPY' }
-     *   { locale: 'en-IN', currency: 'INR' }
-     *
-     * Any prefix, groupSeparator or decimalSeparator options passed in
-     * will override Intl Locale config
+     * International locale config
+     * e.g. { locale: 'ja-JP', currency: 'JPY' }
+     * Any prefix, groupSeparator or decimalSeparator options passed in will override Intl Locale config
      */
-    intlConfig?: IntlConfig
+    intlConfig?: CurrencyInputIntlConfig
     /**
      * Transform the raw value form the input before parsing
      */
@@ -119,7 +126,7 @@ export type CurrencyInputProps =
     /**
      * Callback invoked when value changes
      */
-    onValueChange?: (value: (string | undefined), name?: string, values?: CurrencyInputOnChangeValues) => void
+    onValueChange?: (value: (string | undefined), values?: CurrentInputValues) => void
 }
 
 export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>((props, ref) => {
@@ -201,7 +208,7 @@ export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputPro
                     data-disabled={basicFieldProps.disabled}
                     required={basicFieldProps.required}
                     value={value}
-                    onValueChange={onValueChange}
+                    onValueChange={(value, _, values) => onValueChange?.(value, values)}
                     transformRawValue={transformRawValue}
                     intlConfig={intlConfig}
                     allowDecimals={allowDecimals}
