@@ -175,17 +175,20 @@ export const SimpleDropzone = React.forwardRef<HTMLInputElement, SimpleDropzoneP
 
     const onDrop = React.useCallback((acceptedFiles: File[]) => {
         // Update files - add the preview
-        onValueChange?.(acceptedFiles)
         setFiles(acceptedFiles.map(file => Object.assign(file, { preview: URL.createObjectURL(file) })))
     }, [])
 
     const handleRemoveFile = React.useCallback((file: number) => {
-        setFiles(p => {
-            const newFiles = p.toSpliced(file, 1)
-            onValueChange?.(newFiles)
-            return newFiles
-        })
+        setFiles(p => p.toSpliced(file, 1))
     }, [])
+
+    React.useEffect(() => {
+        onValueChange?.(files)
+    }, [files])
+
+    React.useEffect(() => () => {
+        files.forEach((file: any) => URL.revokeObjectURL(file.preview))
+    }, [files])
 
     const {
         getRootProps,
@@ -203,9 +206,7 @@ export const SimpleDropzone = React.forwardRef<HTMLInputElement, SimpleDropzoneP
         noDrag,
         validator,
         accept,
-        onError: (e) => {
-            onError?.(e)
-        },
+        onError
     })
 
     return (
@@ -370,7 +371,7 @@ export const SimpleDropzone = React.forwardRef<HTMLInputElement, SimpleDropzoneP
                 })}
             </div>}
 
-            {withImagePreview && <div className={cn(SimpleDropzoneAnatomy.imagePreviewGrid(), imagePreviewGridClass)}>
+            {withImagePreview && !!files.length && <div className={cn(SimpleDropzoneAnatomy.imagePreviewGrid(), imagePreviewGridClass)}>
                 {files?.map((file, index) => {
                     return (
                         <div

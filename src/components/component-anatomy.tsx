@@ -174,6 +174,8 @@ export function TypeValue({ value }: { value: string }) {
         return <Link
             href={`https://www.embla-carousel.com/api/options/#reference`}
             className="text-[--indigo] font-medium hover:underline"
+            target="_blank"
+            rel="noreferrer"
         >
             {value}
         </Link>
@@ -181,6 +183,17 @@ export function TypeValue({ value }: { value: string }) {
         return <Link
             href={`https://www.embla-carousel.com/api/plugins/`}
             className="text-[--indigo] font-medium hover:underline"
+            target="_blank"
+            rel="noreferrer"
+        >
+            {value}
+        </Link>
+    } else if (value.includes("DayPickerBase")) {
+        return <Link
+            href={`https://react-day-picker.js.org/api/interfaces/DayPickerBase`}
+            className="text-[--indigo] font-medium hover:underline"
+            target="_blank"
+            rel="noreferrer"
         >
             {value}
         </Link>

@@ -28,20 +28,23 @@ export const useFormSchema = (): { shape: z.ZodRawShape, schema: z.ZodObject<z.Z
  * Form
  * -----------------------------------------------------------------------------------------------*/
 
-export type FormProps<Schema extends z.ZodObject<z.ZodRawShape> = ZodObject<any>> =
+export type FormProps<Schema extends z.ZodObject<z.ZodRawShape>> =
     UseFormProps<z.infer<Schema>> &
     Omit<React.ComponentPropsWithRef<"form">, "children" | "onChange" | "onSubmit" | "onError" | "ref"> & {
     /**
      * The schema of the form.
      */
     schema: Schema
+    /**
+     * Callback invoked when the form is submitted.
+     */
     onSubmit: SubmitHandler<z.infer<Schema>>
     /**
-     * Triggers when any of the field change.
+     * Callback invoked when any of the field change.
      */
     onChange?: WatchObserver<z.infer<Schema>>
     /**
-     * Triggers when there are validation errors.
+     * Callback invoked when there are validation errors.
      */
     onError?: SubmitErrorHandler<z.infer<Schema>>
     /**
@@ -54,23 +57,12 @@ export type FormProps<Schema extends z.ZodObject<z.ZodRawShape> = ZodObject<any>
      * @default w-full space-y-3
      */
     stackClassName?: string
+    /**
+     * Ref to the form methods.
+     */
     mRef?: React.Ref<UseFormReturn<z.infer<Schema>>>
 }
 
-/**
- * @example
- * <Form
- *     schema={definedSchema}
- *     onSubmit={console.log}
- *     onError={console.log}
- *     onChange={console.log}
- *     defaultValues={undefined}
- *  >
- *     <Field.Submit role="create" />
- *  </Form>
- * @param props
- * @constructor
- */
 export const Form = <Schema extends z.ZodObject<z.ZodRawShape>>(props: FormProps<Schema>) => {
 
     const {

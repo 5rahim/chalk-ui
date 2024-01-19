@@ -57,6 +57,15 @@ export const Locale: Story = {
     },
 }
 
+
+export const Options: Story = {
+    args: {
+        pickerOptions: {
+            disabled: { before: new Date() }
+        }
+    },
+}
+
 export const Uncontrolled: Story = {
     args: {
         value: undefined,

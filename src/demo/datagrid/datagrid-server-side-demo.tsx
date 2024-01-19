@@ -7,17 +7,6 @@ import React, { startTransition, useEffect, useMemo, useState } from "react"
 import { BiFolder } from "react-icons/bi"
 import { newProduct, Product, range } from "./datagrid-fake-api"
 
-type DataGridPaginationModel = { pageIndex: number, limit: number }
-type DataGridFilteringModel = { globalFilterValue: string, filters: { id: string, value: unknown }[] }
-type DataGridSortingModel = ColumnSort[]
-
-type DataGridServerSideModels = {
-    pagination: DataGridPaginationModel
-    filtering: DataGridFilteringModel
-    sorting: DataGridSortingModel
-}
-
-
 export const DatagridServerSideDemo = () => {
 
     const [globalFilter, setGlobalFilter] = useState<string>("")
@@ -138,24 +127,31 @@ export default DatagridServerSideDemo
 
 const _data = range(27).map(() => newProduct())
 
+type DataGridServerSideModels = {
+    pagination: { pageIndex: number, limit: number }
+    filtering: { globalFilterValue: string, filters: { id: string, value: unknown }[] }
+    sorting: ColumnSort[]
+}
+
+
 export async function fetchFakeData(_options: DataGridServerSideModels) {
     let products: Product[] = []
     const options = structuredClone(_options)
     // Simulate some network latency
     await new Promise(r => setTimeout(r, 1000))
     // Filter by name
-    products = _data.filter(n => options.filtering.globalFilterValue !== "" ? n.name.toLowerCase()
-        .trim()
+    products = _data.filter(n => options.filtering.globalFilterValue !== "" ? n.name.toLowerCase().trim()
         .includes(options.filtering.globalFilterValue.toLowerCase().trim()) : true)
     // Filter by other criteria
-    options.filtering.filters.map(v => {
+    options.filtering.filters.forEach(v => {
+        // Filter by category
         if (v.id === "category" && typeof v.value === "string") {
             products = products.filter(n => n.category === v.value)
         }
     })
     return {
         rows: limitOffset(products, options.pagination.limit, options.pagination.pageIndex),
-        rowCount: products.length, // This is needed for pagination
+        rowCount: products.length, // Count after filtering
     }
 }
 

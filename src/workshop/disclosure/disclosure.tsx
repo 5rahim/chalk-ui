@@ -28,7 +28,8 @@ export const DisclosureAnatomy = defineStyleAnatomy({
 
 const __DisclosureAnatomyContext = React.createContext<ComponentAnatomy<typeof DisclosureAnatomy>>({})
 
-export type DisclosureProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> & ComponentAnatomy<typeof DisclosureAnatomy>
+export type DisclosureProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> &
+    ComponentAnatomy<typeof DisclosureAnatomy>
 
 export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>((props, ref) => {
 
@@ -55,12 +56,14 @@ export const Disclosure = React.forwardRef<HTMLDivElement, DisclosureProps>((pro
     )
 
 })
+Disclosure.displayName = "Disclosure"
 
 /* -------------------------------------------------------------------------------------------------
  * DisclosureItem
  * -----------------------------------------------------------------------------------------------*/
 
-export type DisclosureItemProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item> & ComponentAnatomy<typeof DisclosureAnatomy>
+export type DisclosureItemProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item> &
+    ComponentAnatomy<typeof DisclosureAnatomy>
 
 export const DisclosureItem = React.forwardRef<HTMLDivElement, DisclosureItemProps>((props, ref) => {
 
@@ -77,38 +80,29 @@ export const DisclosureItem = React.forwardRef<HTMLDivElement, DisclosureItemPro
     )
 
 })
+DisclosureItem.displayName = "DisclosureItem"
 
 /* -------------------------------------------------------------------------------------------------
  * DisclosureTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-type DisclosureTriggerAnatomyProps = Omit<ComponentAnatomy<typeof DisclosureAnatomy>, "itemClass" | "triggerClass">
-type DisclosureTriggerProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> & DisclosureTriggerAnatomyProps
+export type DisclosureTriggerProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
 
 export const DisclosureTrigger = React.forwardRef<HTMLButtonElement, DisclosureTriggerProps>((props, ref) => {
-
-    const {
-        className,
-        children,
-        ...rest
-    } = props
-
     return (
         <AccordionPrimitive.Header asChild>
-            <AccordionPrimitive.Trigger asChild>
-                {children}
-            </AccordionPrimitive.Trigger>
+            <AccordionPrimitive.Trigger ref={ref} asChild {...props} />
         </AccordionPrimitive.Header>
     )
-
 })
+DisclosureTrigger.displayName = "DisclosureTrigger"
 
 /* -------------------------------------------------------------------------------------------------
  * DisclosureContent
  * -----------------------------------------------------------------------------------------------*/
 
-type DisclosureContentAnatomyProps = Omit<ComponentAnatomy<typeof DisclosureAnatomy>, "contentClass">
-type DisclosureContentProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content> & DisclosureContentAnatomyProps
+export type DisclosureContentProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
+    & Omit<ComponentAnatomy<typeof DisclosureAnatomy>, "contentClass">
 
 export const DisclosureContent = React.forwardRef<HTMLDivElement, DisclosureContentProps>((props, ref) => {
 
@@ -136,8 +130,5 @@ export const DisclosureContent = React.forwardRef<HTMLDivElement, DisclosureCont
         </AccordionPrimitive.Content>
     )
 })
-
-DisclosureItem.displayName = "DisclosureItem"
-DisclosureTrigger.displayName = "DisclosureTrigger"
 DisclosureContent.displayName = "DisclosureContent"
 

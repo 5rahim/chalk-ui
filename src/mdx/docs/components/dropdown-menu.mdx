@@ -1,6 +1,6 @@
 ---
 title: Dropdown Menu
-description: Description
+description: A floating menu component, triggered by a button.
 componentName: dropdown-menu
 ---
 
@@ -12,6 +12,27 @@ componentName: dropdown-menu
 npx @rahimstack@latest add dropdown-menu
 ```
 
+## Usage
+
+```tsx
+<DropdownMenu trigger={/*...*/}>
+
+    <DropdownMenuLabel>Group</DropdownMenuLabel>
+    <DropdownMenuItem>Item</DropdownMenuItem>
+
+    <DropdownMenuSub triggerContent="More">
+        <DropdownMenuItem>Item</DropdownMenuItem>
+    </DropdownMenuSub>
+
+    <DropdownMenuSeparator />
+
+    <DropdownMenuItem>
+        Item
+        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+    </DropdownMenuItem>
+
+</DropdownMenu>
+```
 
 ## API Reference
 

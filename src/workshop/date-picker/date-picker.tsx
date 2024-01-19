@@ -1,12 +1,13 @@
 "use client"
 
-import { mergeRefs } from "../core/utils"
 import { cva } from "class-variance-authority"
 import { format, getYear, setYear } from "date-fns"
 import * as React from "react"
+import { DayPickerBase } from "react-day-picker"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { Calendar } from "../calendar"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { mergeRefs } from "../core/utils"
 import { extractInputPartProps, hiddenInputStyles, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 import { Modal } from "../modal"
 import { Popover } from "../popover"
@@ -59,11 +60,10 @@ export type DatePickerProps = Omit<React.ComponentPropsWithRef<"button">, "size"
      */
     hideYearSelector?: boolean
     /**
-     * Props to pass to the calendar
-     *
-     * This is useful for setting the min and max dates
+     * Props to pass to the date picker
+     * @see https://react-day-picker.js.org/api/interfaces/DayPickerBase
      */
-    pickerOptions?: Partial<Omit<React.ComponentProps<typeof Calendar>, "locale" | "mode">>
+    pickerOptions?: Omit<DayPickerBase, "locale">
     /**
      * Ref to the input element
      */

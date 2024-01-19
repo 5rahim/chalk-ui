@@ -419,7 +419,7 @@ return (
 )
 ```
 
-## Responsive
+## Column Visibility
 
 You can hide certain columns below a specific pixel width. The width is based on the table element.
 
@@ -587,7 +587,7 @@ Note: Optimistic updates are paused when server-side validation is done using th
 
 ### Server-side validation
 
-```tsx showLineNumbers /serverSideNameValidation/ /schema/ /isDataMutating={isMutating || isValidating}/ /validationSchema={schema}/
+```tsx /serverSideNameValidation/ /schema/ /isDataMutating={isMutating || isValidating}/ /validationSchema={schema}/
 const { data, isLoading, refetch } = useFakeQuery({ ...queryOptions })
 
 const { mutate, isMutating } = useFakeMutation({ ...mutationOptions })

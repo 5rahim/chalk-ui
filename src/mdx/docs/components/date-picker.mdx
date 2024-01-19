@@ -1,7 +1,9 @@
 ---
 title: Date Picker
-description: Description
+description: A select component for picking dates.
 componentName: date-picker
+links:
+    api: https://react-day-picker.js.org/api/interfaces/DayPickerSingleProps
 ---
 
 <ComponentPreview name="date-picker-demo" />
@@ -11,6 +13,51 @@ componentName: date-picker
 ```bash
 npx @rahimstack@latest add date-picker
 ```
+
+## Usage
+
+### Locale
+
+The locale is set to `en-US` by default. To change it, you can use the `locale` prop.
+
+```tsx /locale={fr}/ / fr /
+import { DatePicker } from "@/workshop/date-picker"
+import * as React from "react"
+import { fr } from "date-fns/locale"
+
+export default function DatePickerDemo() {
+    const [value, setValue] = React.useState<Date | undefined>(new Date())
+
+    return (
+        <DatePicker
+            value={value}
+            onValueChange={setValue}
+            locale={fr}
+        />
+    )
+}
+```
+
+### Options
+
+You can use the `pickerOptions` prop to set rules for the date picker. These options are passed to the calendar component.
+You can read more about the options [here](https://react-day-picker.js.org/api/interfaces/DayPickerBase).
+
+```tsx {4} title="Example"
+<DatePicker
+    {...props}
+    pickerOptions={{
+        disabled: { before: new Date() } // Disables all dates before today
+    }}
+/>
+```
+
+
+### Uncontrolled
+
+- Input type: `date`, Ref prop: `inputRef`
+- Value type: `date` (`"yyyy-MM-dd"`)
+- If not required, an empty string will be submitted if the input is empty.
 
 
 ## API Reference

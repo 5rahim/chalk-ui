@@ -1,6 +1,6 @@
 ---
 title: Drawer
-description: Description
+description: A panel that slides out from a side of the screen.
 componentName: drawer
 ---
 
@@ -12,6 +12,50 @@ componentName: drawer
 npx @rahimstack@latest add drawer
 ```
 
+## Usage
+
+### Side
+
+You can set the side of the drawer by passing the `side` prop.
+
+```tsx {3} title="Example"
+<Drawer
+    {...props}
+    side="left"
+>
+    {/*...*/}
+</Drawer>
+```
+
+### Outside interactions
+
+You can allow outside interactions like scrolling by setting the `allowOutsideInteraction` prop to `true`.
+This will also make other elements visible to screen readers.
+
+```tsx {3} title="Example"
+<Drawer
+    {...props}
+    allowOutsideInteraction
+>
+    {/*...*/}
+</Drawer>
+```
+
+### Controlled
+
+```tsx
+const [open, setOpen] = React.useState(false)
+
+return (
+    <Drawer
+        {...props}
+        open={open}
+        onOpenChange={setOpen}
+    >
+        {/*...*/}
+    </Drawer>
+)
+```
 
 ## API Reference
 

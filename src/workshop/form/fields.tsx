@@ -289,7 +289,7 @@ const AddressInputField = React.memo(withControlledInput(forwardRef<HTMLInputEle
 )))
 
 const SimpleDropzoneField = React.memo(withControlledInput(forwardRef<HTMLInputElement, FieldComponent<SimpleDropzoneProps>>(
-    ({ onChange, ...props }, ref) => {
+    ({ onChange, value, ...props }, ref) => {
 
         const controller = useController({ name: props.name })
 

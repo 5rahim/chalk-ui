@@ -1,6 +1,6 @@
 ---
 title: Form
-description: Description
+description: Fully-featured form component with validation, error messages, and more. Built on top of React Hook Form and zod.
 componentName: form
 ---
 
@@ -11,6 +11,67 @@ componentName: form
 ```bash
 npx @rahimstack@latest add form
 ```
+
+## Usage
+
+### Define a schema
+
+You can define a schema using the `defineSchema` function. This function takes a callback function that provides you with a `z` object and a `presets` object.
+The `z` object is the zod library, and the `presets` object contains some useful presets for common form fields.
+
+You can see or edit the presets in [`@/components/ui/form/schema-presets.ts`](https://github.com/5rahim/chalk-ui/blob/main/src/workshop/form/schema-presets.ts).
+
+```tsx title="Example"
+import { defineSchema } from "@/components/ui/form"
+
+const schema = defineSchema(({z, presets}) => z.object({
+    name: z.string().min(2),
+    birthday: presets.datePicker,
+    phone: presets.phone,
+    profilePicture: presets.files,
+    // ...
+}))
+```
+
+### Render the form
+
+```tsx /full_name/ /phone/
+import { Form, Field, defineSchema } from "@/components/ui/form"
+
+const schema = defineSchema(({ z, presets }) => z.object({
+    full_name: z.string().min(2),
+    phone: presets.phone,
+}))
+
+export function FormDemo() {
+    return (
+        <Form
+            schema={schema}
+            onSubmit={data => { // `data` is correctly typed
+                console.log("full_name", data.full_name)
+                console.log("phone", data.phone)
+            }}
+        >
+            <Field.Text
+                label="Full name"
+                name="full_name"
+            />
+            <Field.PhoneNumber
+                label="Phone"
+                name="phone"
+            />
+            <Field.Submit>Submit</Field.Submit>
+        </Form>
+    )
+}
+```
+
+## Field
+
+`Field` is a polymorphic component made with pre-built input components.
+
+You can see the implementation of these inputs in `@/components/ui/form/fields.tsx`.
+
 
 
 ## API Reference
