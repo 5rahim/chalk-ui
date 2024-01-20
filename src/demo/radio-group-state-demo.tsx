@@ -1,10 +1,10 @@
-import { CheckboxGroup } from "@/workshop/checkbox"
+import { RadioGroup } from "@/workshop/radio-group"
 import { Switch } from "@/workshop/switch"
 import { TextInput } from "@/workshop/text-input"
 import * as React from "react"
 
-export default function CheckboxGroupDemo() {
-    const [value, setValue] = React.useState<string[]>(["1"])
+export default function RadioGroupStateDemo() {
+    const [value, setValue] = React.useState<string | undefined>("us")
 
     const [disabled, setDisabled] = React.useState(true)
     const [readonly, setReadonly] = React.useState(false)
@@ -13,7 +13,7 @@ export default function CheckboxGroupDemo() {
 
     return (
         <div className="w-full">
-            <CheckboxGroup
+            <RadioGroup
                 label="Country"
                 value={value}
                 onValueChange={setValue}

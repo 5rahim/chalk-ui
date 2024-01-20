@@ -17,13 +17,14 @@ export default function CheckboxGroupUncontrolledDemo() {
         >
             <CheckboxGroup
                 name="group"
-                label="Checkbox Group"
+                label="Country"
                 required
                 options={[
-                    { value: "1", label: "Option 1" },
-                    { value: "2", label: "Option 2" },
-                    { value: "3", label: "Option 3" },
-                    { value: "4", label: "Option 4", disabled: true },
+                    { value: "us", label: "United States" },
+                    { value: "ci", label: "Côte d'Ivoire" },
+                    { value: "ca", label: "Canada" },
+                    { value: "jp", label: "Japan" },
+                    { value: "br", label: "Brazil", disabled: true },
                 ]}
             />
             <Button type="submit" size="sm">Submit</Button>

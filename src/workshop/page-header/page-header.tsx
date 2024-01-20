@@ -41,8 +41,8 @@ export const PageHeaderAnatomy = defineStyleAnatomy({
         "block sm:flex items-start sm:space-x-5",
     ], {
         variants: {
-            withImage: {
-                true: "flex-col gap-2 sm:flex-row sm:gap-6",
+            _withImage: {
+                true: "flex-col sm:flex-row",
                 false: null,
             },
         },
@@ -101,7 +101,7 @@ export const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>((pro
             )}
             {...rest}
         >
-            <div className={cn(PageHeaderAnatomy.detailsContainer(), detailsContainerClass)}>
+            <div className={cn(PageHeaderAnatomy.detailsContainer({ _withImage: !!image }), detailsContainerClass)}>
                 {image && <div className="flex-shrink-0">
                     <div className="relative">
                         {image}

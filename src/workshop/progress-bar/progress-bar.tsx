@@ -1,15 +1,15 @@
 "use client"
 
-import { cn, ComponentAnatomy } from "../core/styling"
 import * as ProgressPrimitive from "@radix-ui/react-progress"
 import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
+import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
  * -----------------------------------------------------------------------------------------------*/
 
-export const ProgressBarAnatomy = {
+export const ProgressBarAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-ProgressBar__root",
         "relative w-full overflow-hidden rounded-full bg-[--subtle] translate-z-0",
@@ -40,7 +40,7 @@ export const ProgressBarAnatomy = {
             isIndeterminate: false,
         },
     }),
-}
+})
 
 /* -------------------------------------------------------------------------------------------------
  * ProgressBar

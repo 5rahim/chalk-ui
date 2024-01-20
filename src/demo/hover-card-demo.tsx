@@ -8,7 +8,7 @@ export default function HoverCardDemo() {
                 <Avatar size="xs" src="/images/wano-luffy.jpg" />
                 <h5>Monkey D. Luffy</h5>
             </div>
-            <p className="mt-2 text-[--muted]">
+            <p className="mt-2 text-[--muted] text-pretty leading-5">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur eaque sequi sit.
             </p>
         </HoverCard>

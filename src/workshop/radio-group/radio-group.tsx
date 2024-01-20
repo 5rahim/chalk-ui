@@ -81,14 +81,6 @@ export type RadioGroupProps = BasicFieldOptions &
     ComponentAnatomy<typeof RadioGroupAnatomy> &
     VariantProps<typeof RadioGroupAnatomy.item> & {
     /**
-     * Stack div class
-     */
-    stackClass?: string
-    /**
-     * Item div class
-     */
-    className?: string
-    /**
      * Selected value
      */
     value?: string | undefined
@@ -112,6 +104,14 @@ export type RadioGroupProps = BasicFieldOptions &
      * Ref to the input element
      */
     inputRef?: React.Ref<HTMLInputElement>
+    /**
+     * Stack div class
+     */
+    stackClass?: string
+    /**
+     * Item div class
+     */
+    className?: string
 }
 
 export const RadioGroup = React.forwardRef<HTMLButtonElement, RadioGroupProps>((props, ref) => {

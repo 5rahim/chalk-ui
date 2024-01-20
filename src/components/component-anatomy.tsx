@@ -203,9 +203,7 @@ export function AnatomyRow({ prop, classes }: { prop: ParsedTypeProperty, classe
 export function VariantPropsRow({ prop, anatomies }: { prop: ParsedTypeProperty, anatomies: ParsedAnatomy[] }) {
 
     const data = React.useMemo(() => {
-        const d = getComponentAnatomyVariants(prop.value, anatomies)
-        console.log(prop.value, d)
-        return d
+        return getComponentAnatomyVariants(prop.value, anatomies)
     }, [])
 
     if (!data.length) return null
@@ -222,7 +220,7 @@ export function VariantPropsRow({ prop, anatomies }: { prop: ParsedTypeProperty,
                         </>
                     )
                 })}</TableCell>
-                <TableCell></TableCell>
+                <TableCell><code>{d.default}</code></TableCell>
             </TableRow>
         )
     })

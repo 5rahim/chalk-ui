@@ -2,18 +2,19 @@ import { CheckboxGroup } from "@/workshop/checkbox"
 import * as React from "react"
 
 export default function CheckboxGroupDemo() {
-    const [value, setValue] = React.useState<string[]>(["1"])
+    const [value, setValue] = React.useState<string[]>(["us"])
 
     return (
         <CheckboxGroup
-            label="Label"
+            label="Country"
             value={value}
             onValueChange={setValue}
             options={[
-                { value: "1", label: "Option 1" },
-                { value: "2", label: "Option 2" },
-                { value: "3", label: "Option 3" },
-                { value: "4", label: "Option 4", disabled: true },
+                { value: "us", label: "United States" },
+                { value: "ci", label: "Côte d'Ivoire" },
+                { value: "ca", label: "Canada" },
+                { value: "jp", label: "Japan" },
+                { value: "br", label: "Brazil", disabled: true },
             ]}
             fieldClass="w-fit"
         />

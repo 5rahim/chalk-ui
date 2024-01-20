@@ -1,11 +1,11 @@
 "use client"
 
-import { mergeRefs } from "../core/utils"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { cva } from "class-variance-authority"
 import * as React from "react"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+import { mergeRefs } from "../core/utils"
 import { extractInputPartProps, hiddenInputStyles, InputAddon, InputAnatomy, InputContainer, InputIcon, InputStyling } from "../input"
 
 /* -------------------------------------------------------------------------------------------------
@@ -38,6 +38,7 @@ export const SelectAnatomy = defineStyleAnatomy({
         "text-base leading-none rounded-[--radius] flex items-center h-8 pr-2 pl-8 relative",
         "select-none disabled:opacity-50 disabled:pointer-events-none",
         "data-highlighted:outline-none data-highlighted:bg-[--subtle]",
+        "data-[disabled=true]:opacity-50 data-[disabled=true]:pointer-events-none",
     ]),
     checkIcon: cva([
         "UI-Select__checkIcon",
@@ -87,7 +88,7 @@ export type SelectProps = InputStyling &
     /**
      * Ref to the input element
      */
-    inputRef?: React.Ref<HTMLInputElement>
+    inputRef?: React.Ref<HTMLSelectElement>
 }
 
 export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, ref) => {
@@ -253,6 +254,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
                                         )}
                                         value={option.value}
                                         disabled={option.disabled}
+                                        data-disabled={option.disabled}
                                     >
                                         <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
                                         <SelectPrimitive.ItemIndicator asChild>
@@ -297,19 +299,27 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
 
                 </SelectPrimitive.Root>
 
-                <input
+                <select
                     ref={inputRef}
-                    type="radio"
                     name={basicFieldProps.name}
                     className={hiddenInputStyles}
-                    value={_value ?? ""}
-                    checked={!!_value}
                     aria-hidden="true"
                     required={basicFieldProps.required}
+                    disabled={basicFieldProps.disabled}
+                    value={_value}
                     tabIndex={-1}
                     onChange={() => {}}
                     onFocusCapture={() => buttonRef.current?.focus()}
-                />
+                >
+                    <option value="" />
+                    {options?.map(option => (
+                        <option
+                            key={option.value}
+                            value={option.value}
+                            disabled={option.disabled}
+                        />
+                    ))}
+                </select>
 
                 <InputAddon {...rightAddonProps} />
                 <InputIcon {...rightIconProps} />

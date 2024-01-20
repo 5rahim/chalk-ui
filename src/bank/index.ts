@@ -785,11 +785,23 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/progress-bar-demo.tsx"],
     },
+    "progress-bar-indeterminate-demo": {
+        name: "progress-bar-indeterminate-demo",
+        component: React.lazy(() => import("@/demo/progress-bar-indeterminate-demo")),
+        family: [],
+        files: ["src/demo/progress-bar-indeterminate-demo.tsx"],
+    },
     "radio-group-demo": {
         name: "radio-group-demo",
         component: React.lazy(() => import("@/demo/radio-group-demo")),
         family: [],
         files: ["src/demo/radio-group-demo.tsx"],
+    },
+    "radio-group-state-demo": {
+        name: "radio-group-state-demo",
+        component: React.lazy(() => import("@/demo/radio-group-state-demo")),
+        family: [],
+        files: ["src/demo/radio-group-state-demo.tsx"],
     },
     "scroll-area-demo": {
         name: "scroll-area-demo",
