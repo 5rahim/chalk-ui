@@ -40,7 +40,7 @@ export type BasicFieldOptions = ComponentAnatomy<typeof BasicFieldAnatomy> & {
     /**
      * Additional props to pass to the label element.
      */
-    labelProps?: { [key: string]: any }
+    labelProps?: React.LabelHTMLAttributes<HTMLLabelElement>
     /**
      * Help or description text to display below the field.
      */
