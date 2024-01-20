@@ -9,7 +9,7 @@
     "build-storybook": "storybook build",
     "snapshot": "tsx scripts/snapshot.ts",
     "generate-bank": "tsx scripts/generate-bank.ts",
-    "test-parse-types": "tsx scripts/parse-anatomy.ts",
+    "test-parse-types": "tsx scripts/parse-anatomies.ts",
     "cli": "tsx cli/index.ts"
   },
   "dependencies": {

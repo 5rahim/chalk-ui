@@ -1,6 +1,7 @@
 "use client"
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/workshop/accordion"
+import { cn } from "@/workshop/core/styling"
 import { HoverCard } from "@/workshop/hover-card"
 import { Popover } from "@/workshop/popover"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/workshop/table"
@@ -8,7 +9,9 @@ import kebabCase from "lodash/kebabCase"
 import Link from "next/link"
 import * as React from "react"
 import { useEffect } from "react"
-import { BiInfoCircle } from "react-icons/bi"
+import { BiInfoCircle, BiPalette } from "react-icons/bi"
+import { LuTextCursorInput } from "react-icons/lu"
+import { getComponentAnatomyClassNames, getComponentAnatomyVariants, parseAnatomies } from "../../lib/anatomy-parser"
 import { ParsedType, ParsedTypeProperty, parseTypes } from "../../lib/type-parser"
 
 interface ComponentAnatomyProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -22,25 +25,41 @@ export function ComponentAnatomy({
 }: ComponentAnatomyProps) {
 
     const [parsedTypes, setParsedTypes] = React.useState<ParsedType[]>([])
+    const [parsedAnatomies, setParsedAnatomies] = React.useState<ParsedAnatomy[]>([])
+
+    const BasicFieldOptonsTypes = React.useMemo(() => {
+        return parseTypes(BasicFieldOptionsStr) || []
+    }, [])
+    const InputStylingStrTypes = React.useMemo(() => {
+        return parseTypes(InputStylingStr) || []
+    }, [])
 
     const Codes = React.Children.toArray(children) as React.ReactElement[]
 
     // Types
     useEffect(() => {
-        const CodeEl = Codes[1]
-        if (typeof CodeEl?.props["data-rehype-pretty-code-fragment"] !== "undefined") {
-            const [Code] = React.Children.toArray(CodeEl.props.children) as React.ReactElement[]
+        const TypeCode = Codes[1]
+        if (typeof TypeCode?.props["data-rehype-pretty-code-fragment"] !== "undefined") {
+            const [Code] = React.Children.toArray(TypeCode.props.children) as React.ReactElement[]
             const rawString = Code?.props?.value || Code?.props?.__rawString__ || null
-            let parsedTypesRes = parseTypes(rawString) || []
+            let res = parseTypes(rawString) || []
 
             // Replace BaseChartProps with the actual props
-            let i1 = parsedTypesRes.findIndex(type => type.typeValues.find(prop => prop.value === "BaseChartProps"))
+            let i1 = res.findIndex(type => type.typeValues.find(prop => prop.value === "BaseChartProps"))
             if (i1 !== -1) {
-                parsedTypesRes[i1].typeValues = [...BaseChartProps.typeValues,
-                    ...parsedTypesRes[i1].typeValues].filter((prop) => prop.value !== "BaseChartProps")
+                res[i1].typeValues = [...BaseChartProps.typeValues,
+                    ...res[i1].typeValues].filter((prop) => prop.value !== "BaseChartProps")
             }
 
-            setParsedTypes(parsedTypesRes)
+            setParsedTypes(res)
+        }
+        const AnatomyCode = Codes[0]
+        if (typeof AnatomyCode?.props["data-rehype-pretty-code-fragment"] !== "undefined") {
+            const [Code] = React.Children.toArray(AnatomyCode.props.children) as React.ReactElement[]
+            const rawString = Code?.props?.value || Code?.props?.__rawString__ || null
+            let res = parseAnatomies(rawString) || []
+
+            setParsedAnatomies(res)
         }
     }, [])
 
@@ -59,31 +78,100 @@ export function ComponentAnatomy({
                     <AccordionTrigger>Types</AccordionTrigger>
                     <AccordionContent>
                         <div className="space-y-6">
-                            {parsedTypes.map((type, i) => (
-                                <div key={type.name + type.kind}>
-                                    <p className="font-semibold text-sm tracking-wider w-fit bg-brand-50 dark:bg-gray-800 text-[--brand] dark:text-gray-50 px-3 py-1">{type.name.replace(
-                                        "Props",
-                                        "")}</p>
-                                    <Table className="rounded-[--radius] table-fixed">
-                                        <TableHeader className="bg-[--background] text-md font-medium">
-                                            <TableRow className="">
-                                                <TableHead className="w-[200px]">Prop</TableHead>
-                                                <TableHead>Type</TableHead>
-                                                <TableHead className="w-[200px]">Default</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {type.typeValues.map((prop, i) => (
-                                                <TableRow key={prop.name + i}>
-                                                    <TableCell><TypeProperty prop={prop} /></TableCell>
-                                                    <TableCell><TypeValue value={prop.value} /></TableCell>
-                                                    <TableCell><TypePropertyDefault prop={prop} /></TableCell>
+                            {parsedTypes.map((type, i) => {
+                                return (
+                                    <div key={type.name + type.kind}>
+                                        <p className="font-semibold text-sm tracking-wider w-fit bg-brand-50 dark:bg-gray-800 text-[--brand] dark:text-gray-50 px-3 py-1">{type.name.replace(
+                                            "Props",
+                                            "")}</p>
+                                        <Table className="rounded-[--radius] table-fixed min-w-[800px]">
+                                            <TableHeader className="bg-[--background] text-md font-medium">
+                                                <TableRow className="">
+                                                    <TableHead className="w-[250px]">Prop</TableHead>
+                                                    <TableHead className="min-w-[200px]">Type</TableHead>
+                                                    <TableHead className="w-[200px]">Default</TableHead>
                                                 </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </div>
-                            ))}
+                                            </TableHeader>
+                                            <TableBody>
+                                                {/*Rest*/}
+                                                {type.typeValues.filter(v => !v.value.includes("ComponentAnatomy") &&
+                                                    !v.value.includes("Pick<ComponentAnatomy") &&
+                                                    !v.value.includes("VariantProps") &&
+                                                    v.value !== ("BasicFieldOptions") &&
+                                                    v.value !== ("InputStyling"),
+                                                ).map((prop, i) => {
+                                                    return (
+                                                        <TableRow key={prop.name + i}>
+                                                            <TableCell className="font-medium"><TypeProperty prop={prop} /></TableCell>
+                                                            <TableCell><TypeValue value={prop.value} /></TableCell>
+                                                            <TableCell><TypePropertyDefault prop={prop} /></TableCell>
+                                                        </TableRow>
+                                                    )
+                                                })}
+                                                {/*Variants*/}
+                                                {type.typeValues.filter(v => v.value.includes("VariantProps")).map((prop, i) => {
+                                                    return <VariantPropsRow key={prop.value} prop={prop} anatomies={parsedAnatomies} />
+                                                })}
+                                                {/*BasicFieldOptions*/}
+                                                {type.typeValues.filter(v => v.value === "BasicFieldOptions").map(() => {
+                                                    return BasicFieldOptonsTypes[0].typeValues.map((prop, i) => {
+                                                        return (
+                                                            <TableRow key={prop.name + i}>
+                                                                <TableCell className="font-medium flex flex-none gap-2 items-center"><LuTextCursorInput
+                                                                    className="text-[--blue]"
+                                                                /> <TypeProperty prop={prop} /></TableCell>
+                                                                <TableCell><TypeValue value={prop.value} /></TableCell>
+                                                                <TableCell><TypePropertyDefault prop={prop} /></TableCell>
+                                                            </TableRow>
+                                                        )
+                                                    })
+                                                })}
+                                                {/*InputStyling*/}
+                                                {type.typeValues.filter(v => v.value === "InputStyling").map(() => {
+                                                    return InputStylingStrTypes[0].typeValues.map((prop, i) => {
+                                                        return (
+                                                            <TableRow key={prop.name + i}>
+                                                                <TableCell className="font-medium flex flex-none gap-2 items-center"><LuTextCursorInput
+                                                                    className="text-[--gray]"
+                                                                /> <TypeProperty prop={prop} /></TableCell>
+                                                                <TableCell><TypeValue value={prop.value} /></TableCell>
+                                                                <TableCell><TypePropertyDefault prop={prop} /></TableCell>
+                                                            </TableRow>
+                                                        )
+                                                    })
+                                                })}
+                                                {/*Anatomy Classes*/}
+                                                {type.typeValues.filter(v => v.value.includes("ComponentAnatomy") ||
+                                                    v.value.includes("Pick<ComponentAnatomy"),
+                                                ).map((prop, i) => {
+                                                    return <AnatomyRow
+                                                        key={prop.value}
+                                                        prop={prop}
+                                                        classes={getComponentAnatomyClassNames(prop.value, parsedAnatomies)}
+                                                    />
+                                                })}
+                                                {/*BasicFieldOptions Classes*/}
+                                                {type.typeValues.filter(v => v.value === "BasicFieldOptions").map((prop, i) => {
+                                                    return <AnatomyRow
+                                                        key={prop.value}
+                                                        prop={prop}
+                                                        classes={["fieldLabel", "fieldAsterisk", "fieldDetails", "field", "fieldHelpText",
+                                                            "fieldErrorText"]}
+                                                    />
+                                                })}
+                                                {/*InputStyling Classes*/}
+                                                {type.typeValues.filter(v => v.value === "InputStyling").map((prop, i) => {
+                                                    return <AnatomyRow
+                                                        key={prop.value}
+                                                        prop={prop}
+                                                        classes={["iconClass", "addonClass"]}
+                                                    />
+                                                })}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                )
+                            })}
                         </div>
                     </AccordionContent>
                 </AccordionItem>
@@ -100,12 +188,65 @@ export function ComponentAnatomy({
     )
 }
 
+const codeStyles = cn("border bg-gray-50 dark:bg-gray-900 rounded-[--radius] py-1 px-1.5")
+
+export function AnatomyRow({ prop, classes }: { prop: ParsedTypeProperty, classes: string[] }) {
+
+    const data = React.useMemo(() => {
+        return classes.map(cn => cn === "rootClass" ? "className" : cn)
+    }, [])
+
+    if (!data.length) return null
+
+    return data.map((d, i) => {
+        return (
+            <TableRow key={d}>
+                <TableCell><span className="flex flex-none gap-2 items-center text-[--muted]"><BiPalette className="text-lg" /> {d}</span></TableCell>
+                <TableCell><code className={codeStyles}>string</code></TableCell>
+                <TableCell></TableCell>
+            </TableRow>
+        )
+    })
+}
+
+export function VariantPropsRow({ prop, anatomies }: { prop: ParsedTypeProperty, anatomies: ParsedAnatomy[] }) {
+
+    const data = React.useMemo(() => {
+        const d = getComponentAnatomyVariants(prop.value, anatomies)
+        console.log(prop.value, d)
+        return d
+    }, [])
+
+    if (!data.length) return null
+
+    return data.map((d, i) => {
+        return (
+            <TableRow key={d.name}>
+                <TableCell>{d.name}</TableCell>
+                <TableCell className="leading-8">{d.type === "boolean" ? <code className={codeStyles}>{d.type}</code> : d.values.map((v, i) => {
+                    return (
+                        <>
+                            {i !== 0 && " | "}
+                            <code key={v} className={codeStyles}>{v}</code>
+                        </>
+                    )
+                })}</TableCell>
+                <TableCell></TableCell>
+            </TableRow>
+        )
+    })
+}
+
 export function TypeProperty({ prop }: { prop: ParsedTypeProperty }) {
     const lines = prop.description?.replaceAll("*", "\n\n")?.split("\n\n")?.filter(n => n.trim() !== "")
     const popoverLines = lines?.filter(n => !n.trim().startsWith("@default"))
     return (
         <div className="flex gap-1 items-center">
-            {prop.name} {prop.required && <span className="text-[--red] text-lg">*</span>} {!!prop.description && (
+            {prop.name.endsWith("Class") ?
+                <span className="flex font-normal flex-none gap-2 items-center text-[--muted]"><BiPalette className="text-lg" /> {prop.name}
+                </span> : prop.name}
+            {" "}{prop.required && <span className="text-[--red] text-lg">*</span>}
+            {" "}{!!prop.description && (
             <Popover
                 trigger={<span className="cursor-pointer"><BiInfoCircle className="text-[--muted] hover:text-[--foreground] text-lg" /></span>}
             >
@@ -150,7 +291,7 @@ export function TypeValue({ value }: { value: string }) {
         >
             {value}
         </Link>
-    } else if(value.includes("Primitive.") && value.includes("Command")) {
+    } else if (value.includes("Primitive.") && value.includes("Command")) {
         return <Link
             href={`https://github.com/pacocoursey/cmdk`}
             className="text-[--indigo] hover:underline"
@@ -216,8 +357,54 @@ export function TypeValue({ value }: { value: string }) {
         </HoverCard>
     }
 
-    return <code className="border bg-gray-50 dark:bg-gray-900 rounded-[--radius] py-1 px-1.5">{value}</code>
+    return <code className={codeStyles}>{value}</code>
 }
+
+const BasicFieldOptionsStr = `type BasicFieldOptions = {
+    /**
+     * The id of the field. If not provided, a unique id will be generated.
+     */
+    id?: string | undefined
+    /**
+     * The form field name.
+     */
+    name?: string
+    /**
+     * The label of the field.
+     */
+    label?: React.ReactNode
+    /**
+     * Additional props to pass to the label element.
+     */
+    labelProps?: { [key: string]: any }
+    /**
+     * Help or description text to display below the field.
+     */
+    help?: React.ReactNode
+    /**
+     * Error text to display below the field.
+     */
+    error?: string
+    /**
+     * If \`true\`, the field will be required.
+     */
+    required?: boolean
+    /**
+     * If \`true\`, the field will be disabled.
+     */
+    disabled?: boolean
+    /**
+     * If \`true\`, the field will be readonly.
+     */
+    readonly?: boolean
+}`
+
+const InputStylingStr = `type InputStyling = {
+    leftAddon?: string
+    leftIcon?: React.ReactNode
+    rightAddon?: string
+    rightIcon?: React.ReactNode
+}`
 
 export const BaseChartProps = {
     "kind": "type",

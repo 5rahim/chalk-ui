@@ -1,6 +1,7 @@
 type ParsedVariant = {
-    type: "string" | "boolean"
+    type: "enum" | "boolean"
     name: string
+    part: string
     values: string[]
     default: string
 }
@@ -8,13 +9,16 @@ type ParsedVariant = {
 type ParsedAnatomy = {
     name: string
     variants: ParsedVariant[]
+    parts: string[]
 }
 
-export function parseAnatomy(input: string) {
+function parseAnatomy(input: string) {
     const lines = input.split("\n")
 
     const anatomyDefRgx = /const\s+(\w+)\s+?=\s+?defineStyleAnatomy\(\{/
     const partDefRgx = /(\w+):\s+?cva\(/
+
+    let anatomies: ParsedAnatomy[] = []
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i]
@@ -74,11 +78,14 @@ export function parseAnatomy(input: string) {
                         }
                     }
 
+                    let defaultVariantsRest: { [key: string]: string } = {}
+
                     // Go through each variant
                     variantDefIndices.forEach((vdi, idx) => {
 
                         let variantLines: string[] = [anatomyLines[vdi.index].trim()]
 
+                        // Collect all lines until the next variant definition
                         for (let k = vdi.index + 1; k < anatomyLines.length; k++) {
                             if (
                                 anatomyLines[k].trim().startsWith("})") ||
@@ -94,23 +101,57 @@ export function parseAnatomy(input: string) {
 
                         const nameRgx = /^(\w+):\s+?/gi
                         const nameMatch = line.match(nameRgx)
-                        const name = nameMatch?.[0]?.trim().slice(0, -1)
-                        const rest = line.replace(nameRgx, "").trim()
+                        const name = nameMatch?.[0]?.trim().slice(0, -1) // Extract the name
+                        const rest = line.replace(nameRgx, "").trim() // Remove the name from the line
+                        const formatted = parseString(rest) // Parse the rest of the line
 
-                        console.log(name, rest)
+                        if(!name) return
 
+                        let keys = Object.keys(formatted).map(key => {
+                            if(!key.startsWith(`"`) && !key.endsWith(`"`) && key !== "true" && key !== "false") {
+                                return `"${key}"`
+                            }
+                            return key
+                        })
 
-                        console.log("---------------")
+                        if(name !== "defaultVariants") {
+                            variants.push({
+                                type: keys.includes("true") || keys.includes("false") ? "boolean" : "enum",
+                                name: name,
+                                values: keys,
+                                part: part.name,
+                                default: "",
+                            })
+                        } else {
+                            defaultVariantsRest = formatted
+                        }
 
+                        // console.log("---------------")
+
+                    })
+
+                    variants = variants.map(v => {
+                        return {
+                            ...v,
+                            default: defaultVariantsRest[v.name] || (v.type === "boolean" ? "false" : "null"),
+                        }
                     })
                 }
 
             }
 
+            anatomies.push({
+                name: anatomyName,
+                variants: variants,
+                parts: parts.map(p => p.name),
+            })
+
         }
     }
 
-    // return anatomy
+    console.log(JSON.stringify(anatomies, null, 2))
+
+    return anatomies
 }
 
 

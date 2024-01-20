@@ -1,14 +1,14 @@
 export type ParsedTypeProperty = {
-    name: string;
-    value: string;
-    description?: string;
-    required?: boolean;
+    name: string
+    value: string
+    description?: string
+    required?: boolean
 }
 
 export type ParsedType = {
-    kind: "type" | "interface";
-    name: string;
-    typeValues: ParsedTypeProperty[];
+    kind: "type" | "interface"
+    name: string
+    typeValues: ParsedTypeProperty[]
 }
 
 

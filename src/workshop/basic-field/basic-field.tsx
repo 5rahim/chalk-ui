@@ -25,14 +25,41 @@ export const BasicFieldAnatomy = defineStyleAnatomy({
  * -----------------------------------------------------------------------------------------------*/
 
 export type BasicFieldOptions = ComponentAnatomy<typeof BasicFieldAnatomy> & {
+    /**
+     * The id of the field. If not provided, a unique id will be generated.
+     */
     id?: string | undefined
+    /**
+     * The form field name.
+     */
     name?: string
+    /**
+     * The label of the field.
+     */
     label?: React.ReactNode
+    /**
+     * Additional props to pass to the label element.
+     */
     labelProps?: { [key: string]: any }
+    /**
+     * Help or description text to display below the field.
+     */
     help?: React.ReactNode
+    /**
+     * Error text to display below the field.
+     */
     error?: string
+    /**
+     * If `true`, the field will be required.
+     */
     required?: boolean
+    /**
+     * If `true`, the field will be disabled.
+     */
     disabled?: boolean
+    /**
+     * If `true`, the field will be readonly.
+     */
     readonly?: boolean
 }
 

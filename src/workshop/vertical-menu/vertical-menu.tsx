@@ -29,14 +29,14 @@ export const VerticalMenuAnatomy = defineStyleAnatomy({
                 md: "px-3 h-10 text-sm",
                 lg: "px-3 h-12 text-base",
             },
-            center: {
+            _center: {
                 true: "justify-center",
                 false: null,
             },
         },
         defaultVariants: {
             size: "md",
-            center: false,
+            _center: false,
         },
     }),
     itemContent: cva([
@@ -44,7 +44,7 @@ export const VerticalMenuAnatomy = defineStyleAnatomy({
         "w-full flex items-center",
     ], {
         variants: {
-            center: {
+            _center: {
                 true: "justify-center",
                 false: null,
             },
@@ -72,7 +72,7 @@ export const VerticalMenuAnatomy = defineStyleAnatomy({
                 md: "size-5",
                 lg: "size-6",
             },
-            center: {
+            _center: {
                 true: "mr-0",
                 false: null,
             },
@@ -148,7 +148,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
 
     const itemProps = (item: VerticalMenuItem) => ({
         className: cn(
-            VerticalMenuAnatomy.item({ size, center: iconsOnly }),
+            VerticalMenuAnatomy.item({ size, _center: iconsOnly }),
             itemClass,
         ),
         "data-current": item.isCurrent,
@@ -166,13 +166,13 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
     const ItemContent = React.useCallback((item: VerticalMenuItem) => (
         <div
             className={cn(
-                VerticalMenuAnatomy.itemContent({ center: iconsOnly }),
+                VerticalMenuAnatomy.itemContent({ _center: iconsOnly }),
                 itemContentClass,
             )}
         >
             {item.iconType && <item.iconType
                 className={cn(
-                    VerticalMenuAnatomy.icon({ size, center: iconsOnly }),
+                    VerticalMenuAnatomy.icon({ size, _center: iconsOnly }),
                     iconClass,
                 )}
                 aria-hidden="true"
@@ -214,7 +214,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
                                             <DisclosureTrigger>
                                                 <button
                                                     className={cn(
-                                                        VerticalMenuAnatomy.item({ size, center: iconsOnly }),
+                                                        VerticalMenuAnatomy.item({ size, _center: iconsOnly }),
                                                         itemClass,
                                                         VerticalMenuAnatomy.parentItem(),
                                                         parentItemClass,

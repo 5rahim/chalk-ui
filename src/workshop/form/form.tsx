@@ -56,7 +56,7 @@ export type FormProps<Schema extends z.ZodObject<z.ZodRawShape>> =
     /**
      * @default w-full space-y-3
      */
-    stackClassName?: string
+    stackClass?: string
     /**
      * Ref to the form methods.
      */
@@ -83,7 +83,7 @@ export const Form = <Schema extends z.ZodObject<z.ZodRawShape>>(props: FormProps
         children,
         mRef,
         /**/
-        stackClassName,
+        stackClass,
         ...rest
     } = props
 
@@ -130,7 +130,7 @@ export const Form = <Schema extends z.ZodObject<z.ZodRawShape>>(props: FormProps
                     onSubmit={handleSubmit(onSubmit, onError)}
                     {...rest}
                 >
-                    <div className={cn("w-full space-y-3", stackClassName)}>
+                    <div className={cn("w-full space-y-3", stackClass)}>
                         {runIfFn(children, methods)}
                     </div>
                 </form>
