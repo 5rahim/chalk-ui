@@ -893,6 +893,12 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/datagrid/datagrid-editing-server-side-validation-demo.tsx"],
     },
+    "datagrid-server-side-demo-2": {
+        name: "datagrid-server-side-demo-2",
+        component: React.lazy(() => import("@/demo/datagrid/datagrid-server-side-demo-2")),
+        family: [],
+        files: ["src/demo/datagrid/datagrid-server-side-demo-2.tsx"],
+    },
     "datagrid-server-side-demo": {
         name: "datagrid-server-side-demo",
         component: React.lazy(() => import("@/demo/datagrid/datagrid-server-side-demo")),
