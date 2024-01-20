@@ -8,7 +8,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import kebabCase from "lodash/kebabCase"
 import Link from "next/link"
 import * as React from "react"
-import { useEffect } from "react"
 import { BiInfoCircle, BiPalette } from "react-icons/bi"
 import { LuTextCursorInput } from "react-icons/lu"
 import { getComponentAnatomyClassNames, getComponentAnatomyVariants, parseAnatomies, ParsedAnatomy } from "../../lib/anatomy-parser"
@@ -27,17 +26,10 @@ export function ComponentAnatomy({
     const [parsedTypes, setParsedTypes] = React.useState<ParsedType[]>([])
     const [parsedAnatomies, setParsedAnatomies] = React.useState<ParsedAnatomy[]>([])
 
-    const BasicFieldOptonsTypes = React.useMemo(() => {
-        return parseTypes(BasicFieldOptionsStr) || []
-    }, [])
-    const InputStylingStrTypes = React.useMemo(() => {
-        return parseTypes(InputStylingStr) || []
-    }, [])
-
     const Codes = React.Children.toArray(children) as React.ReactElement[]
 
     // Types
-    useEffect(() => {
+    React.useEffect(() => {
         const TypeCode = Codes[1]
         if (typeof TypeCode?.props["data-rehype-pretty-code-fragment"] !== "undefined") {
             const [Code] = React.Children.toArray(TypeCode.props.children) as React.ReactElement[]
@@ -47,8 +39,7 @@ export function ComponentAnatomy({
             // Replace BaseChartProps with the actual props
             let i1 = res.findIndex(type => type.typeValues.find(prop => prop.value === "BaseChartProps"))
             if (i1 !== -1) {
-                res[i1].typeValues = [...BaseChartProps.typeValues,
-                    ...res[i1].typeValues].filter((prop) => prop.value !== "BaseChartProps")
+                res[i1].typeValues = [...BaseChartProps.typeValues, ...res[i1].typeValues].filter((prop) => prop.value !== "BaseChartProps")
             }
 
             setParsedTypes(res)
@@ -114,7 +105,7 @@ export function ComponentAnatomy({
                                                 })}
                                                 {/*BasicFieldOptions*/}
                                                 {type.typeValues.filter(v => v.value === "BasicFieldOptions").map(() => {
-                                                    return BasicFieldOptonsTypes[0].typeValues.map((prop, i) => {
+                                                    return BasicFieldOptionsTypes.map((prop, i) => {
                                                         return (
                                                             <TableRow key={prop.name + i}>
                                                                 <TableCell className="font-medium flex flex-none gap-2 items-center"><LuTextCursorInput
@@ -128,7 +119,7 @@ export function ComponentAnatomy({
                                                 })}
                                                 {/*InputStyling*/}
                                                 {type.typeValues.filter(v => v.value === "InputStyling").map(() => {
-                                                    return InputStylingStrTypes[0].typeValues.map((prop, i) => {
+                                                    return InputStylingTypes.map((prop, i) => {
                                                         return (
                                                             <TableRow key={prop.name + i}>
                                                                 <TableCell className="font-medium flex flex-none gap-2 items-center"><LuTextCursorInput
@@ -360,51 +351,90 @@ export function TypeValue({ value }: { value: string }) {
     return <code className={codeStyles}>{value}</code>
 }
 
-const BasicFieldOptionsStr = `type BasicFieldOptions = {
-    /**
-     * The id of the field. If not provided, a unique id will be generated.
-     */
-    id?: string | undefined
-    /**
-     * The form field name.
-     */
-    name?: string
-    /**
-     * The label of the field.
-     */
-    label?: React.ReactNode
-    /**
-     * Additional props to pass to the label element.
-     */
-    labelProps?: React.LabelHTMLAttributes<HTMLLabelElement>
-    /**
-     * Help or description text to display below the field.
-     */
-    help?: React.ReactNode
-    /**
-     * Error text to display below the field.
-     */
-    error?: string
-    /**
-     * If \`true\`, the field will be required.
-     */
-    required?: boolean
-    /**
-     * If \`true\`, the field will be disabled.
-     */
-    disabled?: boolean
-    /**
-     * If \`true\`, the field will be readonly.
-     */
-    readonly?: boolean
-}`
 
-const InputStylingStr = `type InputStyling = {
-    leftAddon?: string
-    leftIcon?: React.ReactNode
-    rightAddon?: string
-    rightIcon?: React.ReactNode
-}`
+const BasicFieldOptionsTypes = [
+    {
+        "name": "id",
+        "required": false,
+        "description": "* The id of the field. If not provided, a unique id will be generated.",
+        "value": "string | undefined"
+    },
+    {
+        "name": "name",
+        "required": false,
+        "description": "* The form field name.",
+        "value": "string"
+    },
+    {
+        "name": "label",
+        "required": false,
+        "description": "* The label of the field.",
+        "value": "React.ReactNode"
+    },
+    {
+        "name": "labelProps",
+        "required": false,
+        "description": "* Additional props to pass to the label element.",
+        "value": "React.LabelHTMLAttributes<HTMLLabelElement>"
+    },
+    {
+        "name": "help",
+        "required": false,
+        "description": "* Help or description text to display below the field.",
+        "value": "React.ReactNode"
+    },
+    {
+        "name": "error",
+        "required": false,
+        "description": "* Error text to display below the field.",
+        "value": "string"
+    },
+    {
+        "name": "required",
+        "required": false,
+        "description": "* If `true`, the field will be required.",
+        "value": "boolean"
+    },
+    {
+        "name": "disabled",
+        "required": false,
+        "description": "* If `true`, the field will be disabled.",
+        "value": "boolean"
+    },
+    {
+        "name": "readonly",
+        "required": false,
+        "description": "* If `true`, the field will be readonly.",
+        "value": "boolean"
+    }
+]
+
+const InputStylingTypes = [
+    {
+        "name": "leftAddon",
+        "required": false,
+        "description": "",
+        "value": "string"
+    },
+    {
+        "name": "leftIcon",
+        "required": false,
+        "description": "",
+        "value": "React.ReactNode"
+    },
+    {
+        "name": "rightAddon",
+        "required": false,
+        "description": "",
+        "value": "string"
+    },
+    {
+        "name": "rightIcon",
+        "required": false,
+        "description": "",
+        "value": "React.ReactNode"
+    }
+]
 
 export const BaseChartProps = {
     "kind": "type",
