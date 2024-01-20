@@ -1,4 +1,4 @@
-type ParsedVariant = {
+export type ParsedVariant = {
     type: "enum" | "boolean"
     name: string
     part: string
@@ -6,7 +6,7 @@ type ParsedVariant = {
     default: string
 }
 
-type ParsedAnatomy = {
+export type ParsedAnatomy = {
     name: string
     parts: string[]
     variants: ParsedVariant[]

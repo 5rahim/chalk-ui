@@ -11,7 +11,7 @@ import * as React from "react"
 import { useEffect } from "react"
 import { BiInfoCircle, BiPalette } from "react-icons/bi"
 import { LuTextCursorInput } from "react-icons/lu"
-import { getComponentAnatomyClassNames, getComponentAnatomyVariants, parseAnatomies } from "../../lib/anatomy-parser"
+import { getComponentAnatomyClassNames, getComponentAnatomyVariants, parseAnatomies, ParsedAnatomy } from "../../lib/anatomy-parser"
 import { ParsedType, ParsedTypeProperty, parseTypes } from "../../lib/type-parser"
 
 interface ComponentAnatomyProps extends React.HTMLAttributes<HTMLDivElement> {
