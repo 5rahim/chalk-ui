@@ -72,7 +72,13 @@ export function FormDemo() {
 
 You can see the implementation of these inputs in `@/components/ui/form/fields.tsx`.
 
+## Submit
 
+`Field.Submit` is a button that submits the form. It has some built-in features:
+- Setting `disableIfInvalid` to `true` will disable the button if the form is invalid.
+- Setting `showLoadingOverlayOnCreate` to `true` will render a loading overlay when the `role` is `"create"` and the form is submitted. (This is `true` by default)
+- Setting `showLoadingOverlayOnSuccess` to `true` will render a loading overlay when the form is submitted.
+- Setting `disableOnSuccess` to `true` will disable the button when the form is submitted. (This is `true` by default when `role` is `"create"`)
 
 ## API Reference
 

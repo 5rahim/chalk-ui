@@ -21,23 +21,40 @@ export const LoadingOverlayAnatomy = defineStyleAnatomy({
 
 export type LoadingOverlayProps = {
     children?: React.ReactNode
-    hideSpinner?: boolean
-    show?: boolean
+    /**
+     * Whether to show the loading spinner
+     */
+    showSpinner?: boolean
+    /**
+     * If true, the loading overlay will be unmounted
+     */
+    hide?: boolean
+    className?: string
 }
 
-export const LoadingOverlay: React.FC<LoadingOverlayProps & React.ComponentPropsWithoutRef<"div">> = (props) => {
+export const LoadingOverlay = React.forwardRef<HTMLDivElement, LoadingOverlayProps>((props, ref) => {
 
-    const { children, show = true, className, hideSpinner = false, ...rest } = props
+    const {
+        children,
+        hide = false,
+        showSpinner = true,
+        className,
+        ...rest
+    } = props
 
-    if (!show) return null
+    if (hide) return null
 
     return (
-        <div className={cn(LoadingOverlayAnatomy.overlay(), className)} {...rest}>
-            {!hideSpinner && <LoadingSpinner className="justify-auto" />}
+        <div
+            ref={ref}
+            className={cn(LoadingOverlayAnatomy.overlay(), className)}
+            {...rest}
+        >
+            {showSpinner && <LoadingSpinner className="justify-auto" />}
             {children}
         </div>
     )
 
-}
+})
 
 LoadingOverlay.displayName = "LoadingOverlay"

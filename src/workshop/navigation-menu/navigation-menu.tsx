@@ -127,7 +127,7 @@ export type NavigationMenuProps = ComponentAnatomy<typeof NavigationMenuAnatomy>
     /**
      * Additional props passed to the mobile drawer
      */
-    mobileDrawerProps?: React.ComponentPropsWithoutRef<typeof Drawer>
+    mobileDrawerProps?: Partial<React.ComponentPropsWithoutRef<typeof Drawer>>
 }
 
 export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuProps>((props, ref) => {
@@ -247,7 +247,7 @@ export const NavigationMenu = React.forwardRef<HTMLDivElement, NavigationMenuPro
                                         stroke="currentColor"
                                         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                                         className={cn(NavigationMenuAnatomy.itemChevron(), itemChevronClass)}
-                                        data-open={`${open}`}
+                                        data-open={`${mobileOpen}`}
                                     >
                                         <polyline points="6 9 12 15 18 9" />
                                     </svg>

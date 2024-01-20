@@ -93,7 +93,7 @@ const meta = {
                     <Field.SimpleDropzone
                         label="Profile picture" name="profilePicture"
                     />
-                    <Field.Submit role="create" />
+                    <Field.Submit role="create">Create</Field.Submit>
                 </Form>
             </div>
         )

@@ -1,6 +1,6 @@
 ---
 title: Modal
-description: Description
+description: A dialog component that is overlaid on the current page.
 componentName: modal
 ---
 
@@ -12,6 +12,37 @@ componentName: modal
 npx @rahimstack@latest add modal
 ```
 
+## Usage
+
+### Outside interactions
+
+You can allow outside interactions like scrolling by setting the `allowOutsideInteraction` prop to `true`.
+This will also make other elements visible to screen readers.
+
+```tsx {3} title="Example"
+<Modal
+    {...props}
+    allowOutsideInteraction
+>
+    {/*...*/}
+</Modal>
+```
+
+### Controlled
+
+```tsx
+const [open, setOpen] = React.useState(false)
+
+return (
+    <Modal
+        {...props}
+        open={open}
+        onOpenChange={setOpen}
+    >
+        {/*...*/}
+    </Modal>
+)
+```
 
 ## API Reference
 

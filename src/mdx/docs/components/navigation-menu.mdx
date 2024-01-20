@@ -1,6 +1,6 @@
 ---
 title: Navigation Menu
-description: Description
+description: A responsive collection of links with optional dropdown menus.
 componentName: navigation-menu
 ---
 
@@ -11,6 +11,14 @@ componentName: navigation-menu
 ```bash
 npx @rahimstack@latest add navigation-menu
 ```
+
+## Usage
+
+NavigationMenu is based on the [NavigationMenu Primitive](https://www.radix-ui.com/primitives/docs/components/navigation-menu) from Radix UI.
+
+On small screens, the menu is collapsed into a hamburger button, which triggers a drawer containing the menu items rendered using a [VerticalMenu](/docs/components/vertical-menu) component.
+- You can customize the drawer by passing a `mobileDrawerProps` prop to the component.
+- Additionally, you can add content to the drawer by passing `mobileDrawerHeader` and `mobileDrawerContent` props to the component.
 
 
 ## API Reference

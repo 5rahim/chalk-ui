@@ -26,6 +26,9 @@ export const ComboboxAnatomy = defineStyleAnatomy({
                 lg: "min-h-12 px-4 py-3 text-md",
             },
         },
+        defaultVariants: {
+            size: "md",
+        }
     }),
     popover: cva([
         "UI-Combobox__popover",

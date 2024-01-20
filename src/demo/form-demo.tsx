@@ -84,7 +84,7 @@ export default function FormDemo() {
                     label="Profile picture" name="profilePicture"
                     withImagePreview
                 />
-                <Field.Submit role="submit" />
+                <Field.Submit role="submit">Submit</Field.Submit>
             </Form>
         </div>
     )

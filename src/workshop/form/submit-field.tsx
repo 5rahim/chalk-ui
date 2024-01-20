@@ -36,10 +36,6 @@ export type SubmitFieldProps = Omit<ButtonProps, "type"> & {
      * A loading overlay to show when the form is submitted.
      */
     loadingOverlay?: React.ReactNode
-    /**
-     * The locale to use.
-     */
-    locale?: "fr" | "en"
 }
 
 export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>((props, ref) => {
@@ -54,7 +50,6 @@ export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>
         showLoadingOverlayOnSuccess = false,
         showLoadingOverlayOnCreate = true,
         loadingOverlay,
-        locale = "en",
         ...rest
     } = props
 
@@ -66,10 +61,10 @@ export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>
     return (
         <>
             {showLoadingOverlayOnSuccess && loadingOverlay || (
-                <LoadingOverlay show={formState.isSubmitSuccessful} />
+                <LoadingOverlay hide={!formState.isSubmitSuccessful} />
             )}
             {role === "create" && loadingOverlay || (
-                <LoadingOverlay show={formState.isSubmitSuccessful} />
+                <LoadingOverlay hide={!formState.isSubmitSuccessful} />
             )}
 
             <Button
@@ -79,7 +74,7 @@ export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>
                 ref={ref}
                 {...rest}
             >
-                {children ? children : locales["form"][role][locale]}
+                {children}
             </Button>
         </>
     )

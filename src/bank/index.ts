@@ -623,12 +623,6 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/checkbox-state-demo.tsx"],
     },
-    "close-button-demo": {
-        name: "close-button-demo",
-        component: React.lazy(() => import("@/demo/close-button-demo")),
-        family: [],
-        files: ["src/demo/close-button-demo.tsx"],
-    },
     "collapsible-demo": {
         name: "collapsible-demo",
         component: React.lazy(() => import("@/demo/collapsible-demo")),
@@ -718,12 +712,6 @@ export const Bank: Bank = {
         component: React.lazy(() => import("@/demo/hover-card-demo")),
         family: [],
         files: ["src/demo/hover-card-demo.tsx"],
-    },
-    "icon-button-demo": {
-        name: "icon-button-demo",
-        component: React.lazy(() => import("@/demo/icon-button-demo")),
-        family: [],
-        files: ["src/demo/icon-button-demo.tsx"],
     },
     "line-chart-demo": {
         name: "line-chart-demo",
