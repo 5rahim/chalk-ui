@@ -83,7 +83,7 @@ export const DangerZone = React.forwardRef<HTMLDivElement, DangerZoneProps>((pro
 
     return (
         <>
-            <LoadingOverlay show={blockScreen} />
+            <LoadingOverlay hide={!blockScreen} />
 
             <div ref={ref} className={cn(DangerZoneAnatomy.root(), className)} {...rest}>
                 <span className={cn(DangerZoneAnatomy.icon(), iconClass)}>
