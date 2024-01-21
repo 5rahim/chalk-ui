@@ -1,6 +1,8 @@
-import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
+"use client"
+import { __AppSidebarContext } from "@/workshop/app-layout/app-sidebar"
 import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
+import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------
  * Anatomy
@@ -143,10 +145,12 @@ export const AppLayout = React.forwardRef<HTMLDivElement, AppLayoutProps>((props
         ...rest
     } = props
 
+    const ctx = React.useContext(__AppSidebarContext)
+
     return (
         <div
             ref={ref}
-            className={cn(AppLayoutAnatomy.root({ withSidebar, sidebarSize }), className)}
+            className={cn(AppLayoutAnatomy.root({ withSidebar, sidebarSize: ctx.size || sidebarSize }), className)}
             {...rest}
         >
             {children}

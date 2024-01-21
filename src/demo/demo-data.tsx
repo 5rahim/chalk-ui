@@ -75,7 +75,7 @@ const barChartData = [
     },
 ]
 
-const lineChartData = [
+export const lineChartData = [
     {
         year: 1970,
         "Downward Trend": 2.04,
@@ -116,7 +116,6 @@ const lineChartData = [
         "Downward Trend": 2.01,
         "Upward Trend": 1.53,
     },
-    // Add more years as needed
     {
         year: 1978,
         "Downward Trend": 1.92 + Math.random() * 0.5,
@@ -330,7 +329,7 @@ const barChartData2 = [
     },
 ]
 
-const cities = [
+export const citiesDemoData = [
     {
         name: "New York",
         sales: 9800,
@@ -362,6 +361,6 @@ export const DemoLineChart = () => <LineChart
     data={lineChartData}
     index="year"
     categories={["Upward Trend", "Downward Trend"]}
-    colors={["green", "yellow"]}
+    colors={["green", "gray"]}
     yAxisWidth={40}
 />

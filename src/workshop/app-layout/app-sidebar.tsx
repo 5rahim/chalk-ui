@@ -1,6 +1,7 @@
 "use client"
 
-import { cva } from "class-variance-authority"
+import { AppLayoutAnatomy } from "@/workshop/app-layout/app-layout"
+import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { Drawer, DrawerProps } from "../drawer"
@@ -9,12 +10,18 @@ import { Drawer, DrawerProps } from "../drawer"
  * Context
  * -----------------------------------------------------------------------------------------------*/
 
-const __AppSidebarContext = React.createContext<{
+export const __AppSidebarContext = React.createContext<{
     open: boolean,
     setOpen: (open: boolean) => void,
+    size: VariantProps<typeof AppLayoutAnatomy.root>["sidebarSize"]
+    setSize: (size: VariantProps<typeof AppLayoutAnatomy.root>["sidebarSize"]) => void,
+    isBelowBreakpoint: boolean,
 }>({
     open: false,
     setOpen: () => {},
+    setSize: () => {},
+    size: "md",
+    isBelowBreakpoint: false,
 })
 
 export function useAppSidebarContext() {
@@ -144,20 +151,26 @@ export type AppSidebarProviderProps = {
     children?: React.ReactNode,
     open?: boolean,
     onOpenChange?: (open: boolean) => void,
+    onSizeChange?: (size: VariantProps<typeof AppLayoutAnatomy.root>["sidebarSize"]) => void,
 }
 
 export const AppSidebarProvider: React.FC<AppSidebarProviderProps> = ({
     children,
-    open: _open,
     onOpenChange,
+    onSizeChange,
 }) => {
 
-    const [open, setOpen] = React.useState(_open ?? false)
+    const [open, setOpen] = React.useState(false)
+    const [size, setSize] = React.useState<VariantProps<typeof AppLayoutAnatomy.root>["sidebarSize"]>(undefined)
+
+    const [isBelowBreakpoint, setIsBelowBreakpoint] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        if (_open !== undefined)
-            setOpen(_open)
-    }, [_open])
+        const handleResize = () => setIsBelowBreakpoint(window.innerWidth <= 1024) // lg breakpoint
+        handleResize()
+        window.addEventListener("resize", handleResize)
+        return () => window.removeEventListener("resize", handleResize)
+    }, [isBelowBreakpoint])
 
     return (
         <__AppSidebarContext.Provider
@@ -167,6 +180,12 @@ export const AppSidebarProvider: React.FC<AppSidebarProviderProps> = ({
                     onOpenChange?.(open)
                     setOpen(open)
                 },
+                setSize: (size: VariantProps<typeof AppLayoutAnatomy.root>["sidebarSize"]) => {
+                    onSizeChange?.(size)
+                    setSize(size)
+                },
+                size: size,
+                isBelowBreakpoint,
             }}
         >
             {children}

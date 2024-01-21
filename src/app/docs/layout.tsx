@@ -35,37 +35,53 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </AppLayoutSidebar>
                 <AppLayout>
                     <AppLayoutHeader className="fixed top-0 w-full right-0 h-16 border-b flex items-center justify-between px-4 bg-[--background] backdrop-blur z-[50] max-w-full overflow-x-auto">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center w-full gap-2">
                             <AppSidebarTrigger />
-                            <Link href="/">
-                                <IconButton
-                                    intent="gray-basic"
-                                    icon={<BiHomeAlt className="text-md" />}
-                                    size="sm"
-                                />
-                            </Link>
-                            <Link
-                                href="https://github.com/5rahim/chalk-ui"
-                                target="_blank"
-                                referrerPolicy="no-referrer"
-                            >
-                                <Button
-                                    intent="gray-basic"
-                                    leftIcon={<BiSolidStar className="text-[--yellow]" />}
-                                    size="sm"
-                                >5rahim/chalk-ui</Button>
-                            </Link>
-                            <Link
-                                href="https://rahim.app"
-                                target="_blank"
-                                referrerPolicy="no-referrer"
-                            >
-                                <Button
-                                    intent="gray-basic"
-                                    leftIcon={<BiLogoGithub />}
-                                    size="sm"
-                                >rahim.app</Button>
-                            </Link>
+                            <div className="flex w-full justify-between items-center">
+                                <div className="flex items-center">
+                                    <Link href="/">
+                                        <IconButton
+                                            intent="gray-basic"
+                                            icon={<BiHomeAlt className="text-md" />}
+                                            size="sm"
+                                        />
+                                    </Link>
+                                    <Link
+                                        href="/examples"
+                                        target="_blank"
+                                        referrerPolicy="no-referrer"
+                                    >
+                                        <Button
+                                            intent="gray-link"
+                                            size="sm"
+                                        >Examples</Button>
+                                    </Link>
+                                </div>
+                                <div>
+                                    <Link
+                                        href="https://github.com/5rahim/chalk-ui"
+                                        target="_blank"
+                                        referrerPolicy="no-referrer"
+                                    >
+                                        <Button
+                                            intent="gray-basic"
+                                            leftIcon={<BiSolidStar className="text-[--yellow]" />}
+                                            size="sm"
+                                        >5rahim/chalk-ui</Button>
+                                    </Link>
+                                    <Link
+                                        href="https://rahim.app"
+                                        target="_blank"
+                                        referrerPolicy="no-referrer"
+                                    >
+                                        <Button
+                                            intent="gray-basic"
+                                            leftIcon={<BiLogoGithub />}
+                                            size="sm"
+                                        >rahim.app</Button>
+                                    </Link>
+                                </div>
+                            </div>
                         </div>
                         <ModeToggle />
                     </AppLayoutHeader>

@@ -6,7 +6,11 @@ import React, { useEffect, useMemo, useState } from "react"
 import { BiBasket, BiCalendar, BiCheck, BiDotsHorizontal, BiEditAlt, BiFolder, BiLowVision } from "react-icons/bi"
 import { newProduct, Product, range } from "./datagrid-fake-api"
 
-export const DatagridDemo = (props: DataGridTestProps) => {
+type DataGridDemoProps = {
+    tableProps?: Partial<DataGridProps<any>>
+}
+
+export const DatagridDemo = (props: DataGridDemoProps) => {
 
     const { tableProps } = props
 
@@ -160,9 +164,6 @@ export const DatagridDemo = (props: DataGridTestProps) => {
 export default DatagridDemo
 
 
-interface DataGridTestProps {
-    tableProps?: Partial<DataGridProps<any>>
-}
 
 const _data = range(30).map(() => newProduct())
 

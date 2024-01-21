@@ -103,7 +103,15 @@ export function CustomSidebar() {
 }
 ```
 
-## Page Layout
+### Sidebar context
+
+You can use the `useAppSidebarContext` hook to access or control the sidebar state.
+
+- `open`: Whether the sidebar is open or closed.
+- `setOpen`: Set the sidebar state to open or closed.
+- `size`: The size of the sidebar. This overrides the `sidebarSize` prop of `AppLayout`.
+- `setSize`: Set the size of the sidebar. This overrides the `sidebarSize` prop of `AppLayout`.
+- `isBelowBreakpoint`: Whether the sidebar is below the `lg` breakpoint.
 
 
 ## API Reference
