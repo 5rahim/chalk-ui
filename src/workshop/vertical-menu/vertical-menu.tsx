@@ -235,7 +235,6 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
                                                         strokeLinecap="round"
                                                         strokeLinejoin="round"
                                                         className={cn(VerticalMenuAnatomy.itemChevron(), itemChevronClass)}
-                                                        data-open={`${open}`}
                                                     >
                                                         <polyline points="9 18 15 12 9 6"></polyline>
                                                     </svg>}
