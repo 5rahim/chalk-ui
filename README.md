@@ -35,8 +35,8 @@ Chalk UI adds a layer of abstraction to provide a consistent design language and
 | Vanilla JS option                               | ⚠️       | ✅         | ✅        | ✅       |
 | Higher order components                         | ✅        | ❌         | ❌        | ✅       |
 | Charts, CurrencyInput, PhoneInput, AddressInput | ✅        | ❌         | ❌        | ❌       |
-| Fully-featured Form API                         | ✅        | ❌         | ❌        | ✅       |
-| Fully-featured DataGrid                         | ✅        | ❌         | ❌        | ✅       |
+| Fully-featured Form API                         | ✅        | ⚠️        | ✅        | ✅       |
+| Fully-featured DataGrid                         | ✅        | ⚠️        | ❌        | ✅       |
 | CLI                                             | ✅        | ✅         | ❌        | ❌       |
 | Completely Open Source                          | Yes      | Yes       | Yes      | No      |
 | Components                                      | 50+      | 46        | 28       | 60+     |
