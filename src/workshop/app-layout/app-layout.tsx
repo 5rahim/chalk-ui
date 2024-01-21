@@ -24,6 +24,10 @@ export const AppLayoutAnatomy = defineStyleAnatomy({
                 xl: "sidebar-xl",
             },
         },
+        defaultVariants: {
+            withSidebar: false,
+            sidebarSize: "md",
+        },
         compoundVariants: [
             { withSidebar: true, sidebarSize: "slim", className: "lg:[&>.appLayout]:pl-20" },
             { withSidebar: true, sidebarSize: "sm", className: "lg:[&>.appLayout]:pl-48" },
@@ -31,10 +35,6 @@ export const AppLayoutAnatomy = defineStyleAnatomy({
             { withSidebar: true, sidebarSize: "lg", className: "lg:[&>.appLayout]:pl-[20rem]" },
             { withSidebar: true, sidebarSize: "xl", className: "lg:[&>.appLayout]:pl-[25rem]" },
         ],
-        defaultVariants: {
-            withSidebar: false,
-            sidebarSize: "md",
-        },
     }),
 })
 

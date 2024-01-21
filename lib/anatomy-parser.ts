@@ -1,3 +1,8 @@
+/**
+ * Guide
+ * - defaultVariants should be defined before "compoundVariants"
+ */
+
 export type ParsedVariant = {
     type: "enum" | "boolean"
     name: string
@@ -97,7 +102,7 @@ export function parseAnatomies(input: string) {
                     if (!line.trim().startsWith("variants:")) continue
 
                     // Find variants
-                    let variantDefIndices: { type: "normal" | "default", index: number }[] = []
+                    let variantDefIndices: { type: "prop" | "default", index: number }[] = []
                     for (let k = cursor + 1; k < anatomyLines.length; k++) {
 
                         if (anatomyLines[k].trim().startsWith("})") ||
@@ -106,7 +111,7 @@ export function parseAnatomies(input: string) {
 
                         if (RegExp(/(\w+):\s+?\{/gi).test(anatomyLines[k].trim())) {
                             variantDefIndices.push({
-                                type: anatomyLines[k].trim().includes("defaultVariants") ? "default" : "normal",
+                                type: anatomyLines[k].trim().includes("defaultVariants") ? "default" : "prop",
                                 index: k,
                             })
                         }
@@ -167,7 +172,7 @@ export function parseAnatomies(input: string) {
                     variants = variants.map(v => {
                         return {
                             ...v,
-                            default: defaultVariantsRest[v.name] || (v.type === "boolean" ? "false" : "null"),
+                            default: defaultVariantsRest[v.name] || (v.type === "boolean" ? "false" : ""),
                         }
                     })
                 }

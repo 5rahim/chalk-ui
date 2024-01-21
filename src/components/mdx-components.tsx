@@ -3,7 +3,7 @@
 // import { CodeBlockWrapper } from "@/components/code-block-wrapper"
 // import { ComponentExample } from "@/components/component-example"
 import { ComponentPreview } from "@/components/component-preview"
-import { ComponentAnatomy } from "@/components/component-anatomy"
+import { ComponentAnatomy } from "@/components/component-anatomy/component-anatomy"
 import { Alert } from "@/workshop/alert"
 import { cn } from "@/workshop/core/styling"
 import { useMDXComponent } from "next-contentlayer/hooks"

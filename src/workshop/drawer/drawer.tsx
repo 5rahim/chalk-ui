@@ -31,6 +31,10 @@ export const DrawerAnatomy = defineStyleAnatomy({
             },
             size: { sm: null, md: null, lg: null, xl: null, full: "w-[90%]" },
         },
+        defaultVariants: {
+            side: "right",
+            size: "md",
+        },
         compoundVariants: [
             { size: "sm", side: "left", className: "sm:max-w-sm" },
             { size: "sm", side: "right", className: "sm:max-w-sm" },
@@ -44,10 +48,6 @@ export const DrawerAnatomy = defineStyleAnatomy({
             { size: "full", side: "top", className: "h-dvh" },
             { size: "full", side: "bottom", className: "h-dvh" },
         ],
-        defaultVariants: {
-            side: "right",
-            size: "md",
-        },
     }),
     close: cva([
         "UI-Drawer__close",

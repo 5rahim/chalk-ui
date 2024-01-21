@@ -8,7 +8,7 @@ export type ParsedTypeProperty = {
 export type ParsedType = {
     kind: "type" | "interface"
     name: string
-    typeValues: ParsedTypeProperty[]
+    typeProps: ParsedTypeProperty[]
 }
 
 
@@ -24,7 +24,7 @@ export function parseTypes(input: string): ParsedType[] {
         types.push({
             kind: "type",
             name: match[1],
-            typeValues: [],
+            typeProps: [],
         })
     }
 
@@ -93,7 +93,7 @@ export function parseTypes(input: string): ParsedType[] {
                     cursor++
                 }
 
-                let typeValues: ParsedTypeProperty[] = []
+                let typeProps: ParsedTypeProperty[] = []
 
                 for (let i = 0; i < propertyTkns.length; i++) {
                     const propertyTkn = propertyTkns[i]
@@ -125,7 +125,7 @@ export function parseTypes(input: string): ParsedType[] {
                     value = value.trim()
                     if(value.endsWith(",")) value = value.slice(0, -1)
 
-                    typeValues.push({
+                    typeProps.push({
                         name,
                         required,
                         description: comment,
@@ -133,10 +133,10 @@ export function parseTypes(input: string): ParsedType[] {
                     })
                 }
 
-                types[i]?.typeValues.push(...typeValues)
+                types[i]?.typeProps.push(...typeProps)
 
             } else {
-                types[i]?.typeValues.push({
+                types[i]?.typeProps.push({
                     name: "",
                     value: el,
                 })
