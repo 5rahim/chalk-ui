@@ -65,10 +65,6 @@ export type BadgeProps = React.ComponentPropsWithRef<"span"> &
     VariantProps<typeof BadgeAnatomy.root> &
     ComponentAnatomy<typeof BadgeAnatomy> & {
     /**
-     * If true, the badge will not be fully rounded.
-     */
-    tag?: boolean,
-    /**
      * If true, a close button will be rendered.
      */
     isClosable?: boolean,

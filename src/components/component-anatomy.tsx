@@ -49,7 +49,6 @@ export function ComponentAnatomy({
             const [Code] = React.Children.toArray(AnatomyCode.props.children) as React.ReactElement[]
             const rawString = Code?.props?.value || Code?.props?.__rawString__ || null
             let res = parseAnatomies(rawString) || []
-
             setParsedAnatomies(res)
         }
     }, [])
@@ -101,7 +100,7 @@ export function ComponentAnatomy({
                                                 })}
                                                 {/*Variants*/}
                                                 {type.typeValues.filter(v => v.value.includes("VariantProps")).map((prop, i) => {
-                                                    return <VariantPropsRow key={prop.value} prop={prop} anatomies={parsedAnatomies} />
+                                                    return <VariantPropsRow key={prop.value + i} prop={prop} anatomies={parsedAnatomies} />
                                                 })}
                                                 {/*BasicFieldOptions*/}
                                                 {type.typeValues.filter(v => v.value === "BasicFieldOptions").map(() => {

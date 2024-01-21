@@ -14,7 +14,7 @@ export type ParsedAnatomy = {
 
 export function getComponentAnatomyClassNames(type: string, anatomies: ParsedAnatomy[]): string[] {
     if (type.startsWith("Pick<")) {
-        const classRgx = /"([a-zA-Z]+)"/gm
+        const classRgx = /"([a-zA-Z]+)"/
         let matches = type.matchAll(classRgx)
         let classNames: string[] = []
         for (const match of matches) {
@@ -22,7 +22,7 @@ export function getComponentAnatomyClassNames(type: string, anatomies: ParsedAna
         }
         return classNames
     } else {
-        const anatomyNameRgx = /typeof (\w+Anatomy)/gm
+        const anatomyNameRgx = /typeof (\w+Anatomy)/
         const matches = type.match(anatomyNameRgx)
         const anatomyName = matches?.[0]?.split(" ")[1]
         if (!anatomyName) return []
@@ -49,8 +49,8 @@ export function getComponentAnatomyVariants(type: string, anatomies: ParsedAnato
 export function parseAnatomies(input: string) {
     const lines = input.split("\n")
 
-    const anatomyDefRgx = /const\s+(\w+)\s+?=\s+?defineStyleAnatomy\(\{/gm
-    const partDefRgx = /(\w+):\s+?cva\(/gm
+    const anatomyDefRgx = /const\s+(\w+)\s+?=\s+?defineStyleAnatomy\(\{/
+    const partDefRgx = /(\w+):\s+?cva\(/
 
     let anatomies: ParsedAnatomy[] = []
 
