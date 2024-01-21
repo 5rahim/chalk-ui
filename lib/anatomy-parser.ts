@@ -14,7 +14,7 @@ export type ParsedAnatomy = {
 
 export function getComponentAnatomyClassNames(type: string, anatomies: ParsedAnatomy[]): string[] {
     if (type.startsWith("Pick<")) {
-        const classRgx = /"([a-zA-Z]+)"/
+        const classRgx = /"([a-zA-Z]+)"/gm
         let matches = type.matchAll(classRgx)
         let classNames: string[] = []
         for (const match of matches) {
