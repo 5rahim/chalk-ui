@@ -80,11 +80,11 @@ ScrollArea.displayName = "ScrollArea"
  * ScrollBar
  * -----------------------------------------------------------------------------------------------*/
 
-export type ScrollBarProps =
+type ScrollBarProps =
     React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar> &
     Pick<ComponentAnatomy<typeof ScrollAreaAnatomy>, "thumbClass">
 
-export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>((props, ref) => {
+const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>((props, ref) => {
     const {
         className,
         thumbClass,

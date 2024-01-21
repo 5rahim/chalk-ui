@@ -3,43 +3,56 @@ title: Dark Mode
 description: Learn how to enable dark mode on your website.
 ---
 
-To support dark mode in your project, you need to install the `next-themes` package.
+You can enable dark mode on your website by using the [`next-themes`](https://github.com/pacocoursey/next-themes) package.
 
-```tsx {14,18}
+```tsx /attribute="class"/ title="src/components/client-prodivers.tsx"
 "use client"
 
 import { ThemeProvider } from "next-themes"
-import React from "react"
+import * as React from "react"
 
-interface ClientProvidersProps {
-   children: React.ReactNode
-}
-
-export const ClientProviders: React.FC<ClientProvidersProps> = ({ children }) => {
-
+export const ClientProviders = ({ children }: { children: React.ReactNode }) => {
     return (
-        <ThemeProvider attribute={"class"}>
+        <ThemeProvider attribute="class">
             {children}
         </ThemeProvider>
     )
+}
+```
 
+```tsx title="src/app/layout.tsx"
+import { Toaster } from "@/components/ui/toaster"
+import { ClientProviders } from "@/components/client-providers"
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body suppressHydrationWarning>
+        <ClientProviders>
+            {children}
+        </ClientProviders>
+        <Toaster />
+      </body>
+    </html>
+  )
 }
 ```
 
 ## Toggle
 
-```tsx showLineNumbers filename="src/components/client-providers.tsx"
+```tsx title="Simple toggle"
 "use client"
 
 import { useTheme } from "next-themes"
-import React from "react"
+import * as React from "react"
 import { Switch } from "@/components/ui/switch"
 
 export function DarkModeToggle() {
     const { theme, setTheme } = useTheme()
 
     return (
-        <div className={"fixed bottom-0 right-0"}>
+        <div className={/*...*/}>
             <Switch checked={theme === "dark"} onChange={(v) => setTheme(v ? "dark" : "light")}/>
         </div>
     )

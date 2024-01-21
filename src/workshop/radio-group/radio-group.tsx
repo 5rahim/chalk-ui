@@ -77,6 +77,8 @@ export const RadioGroupAnatomy = defineStyleAnatomy({
  * RadioGroup
  * -----------------------------------------------------------------------------------------------*/
 
+export type RadioGroupOption = { value: string, label?: React.ReactNode, disabled?: boolean, readonly?: boolean }
+
 export type RadioGroupProps = BasicFieldOptions &
     ComponentAnatomy<typeof RadioGroupAnatomy> &
     VariantProps<typeof RadioGroupAnatomy.item> & {
@@ -95,7 +97,7 @@ export type RadioGroupProps = BasicFieldOptions &
     /**
      * Radio options
      */
-    options: { value: string, label?: React.ReactNode, disabled?: boolean, readonly?: boolean }[]
+    options: RadioGroupOption[]
     /**
      * Replaces the default check icon
      */
