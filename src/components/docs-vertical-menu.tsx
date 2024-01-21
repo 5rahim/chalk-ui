@@ -31,6 +31,16 @@ export function DocsVerticalMenu(props: DocsVerticalMenuProps) {
                         isCurrent: pathname === "/docs",
                     },
                     {
+                        name: "Customization",
+                        href: "/docs/customization",
+                        isCurrent: pathname === "/docs/customization",
+                    },
+                    {
+                        name: "Dark Mode",
+                        href: "/docs/dark-mode",
+                        isCurrent: pathname === "/docs/dark-mode",
+                    },
+                    {
                         name: "CLI",
                         href: "/docs/cli",
                         isCurrent: pathname === "/docs/cli",
