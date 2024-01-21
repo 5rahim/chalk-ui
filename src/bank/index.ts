@@ -917,6 +917,12 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/vertical-menu-demo.tsx"],
     },
+    "vertical-menu-icons-only-demo": {
+        name: "vertical-menu-icons-only-demo",
+        component: React.lazy(() => import("@/demo/vertical-menu-icons-only-demo")),
+        family: [],
+        files: ["src/demo/vertical-menu-icons-only-demo.tsx"],
+    },
     "datagrid-demo": {
         name: "datagrid-demo",
         component: React.lazy(() => import("@/demo/datagrid/datagrid-demo")),

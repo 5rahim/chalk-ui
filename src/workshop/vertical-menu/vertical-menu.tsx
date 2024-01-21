@@ -246,7 +246,6 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
                                                 {item.subContent && item.subContent}
                                             </DisclosureContent>
                                         </DisclosureItem>
-
                                     </Disclosure>
                                 )}
                         </React.Fragment>
