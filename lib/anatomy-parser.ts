@@ -49,8 +49,8 @@ export function getComponentAnatomyVariants(type: string, anatomies: ParsedAnato
 export function parseAnatomies(input: string) {
     const lines = input.split("\n")
 
-    const anatomyDefRgx = /const\s+(\w+)\s+?=\s+?defineStyleAnatomy\(\{/
-    const partDefRgx = /(\w+):\s+?cva\(/
+    const anatomyDefRgx = /const\s+(\w+)\s+?=\s+?defineStyleAnatomy\(\{/gm
+    const partDefRgx = /(\w+):\s+?cva\(/gm
 
     let anatomies: ParsedAnatomy[] = []
 

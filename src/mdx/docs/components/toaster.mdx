@@ -1,7 +1,9 @@
 ---
 title: Toaster
-description: Description
+description: A toaster component for displaying notifications, built on top of Sonner.
 componentName: toaster
+links:
+    api: https://sonner.emilkowal.ski/toaster#api-reference
 ---
 
 <ComponentPreview name="toaster-demo" />
@@ -10,6 +12,24 @@ componentName: toaster
 
 ```bash
 npx @rahimstack@latest add toaster
+```
+
+## Usage
+
+```tsx
+import { Toaster } from "@/components/ui/toaster"
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body>
+        <main>{children}</main>
+        <Toaster />
+      </body>
+    </html>
+  )
+}
 ```
 
 

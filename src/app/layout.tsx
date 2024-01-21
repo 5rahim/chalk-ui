@@ -1,4 +1,5 @@
 import { ClientProviders } from "@/components/client-providers"
+import { Toaster } from "@/workshop/toaster"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "../styles/globals.css"
@@ -50,6 +51,7 @@ export default function RootLayout({
         <ClientProviders>
             {children}
         </ClientProviders>
+        <Toaster />
         </body>
         </html>
     )

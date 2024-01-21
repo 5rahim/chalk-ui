@@ -13,7 +13,7 @@ export const ToasterAnatomy = defineStyleAnatomy({
     toaster: cva(["group toaster"]),
     toast: cva([
         "group/toast",
-        "group-[.toaster]:py-3",
+        "group-[.toaster]:py-3 group-[.toaster]:gap-3",
         "group-[.toaster]:text-base group-[.toaster]:bg-[--paper] group-[.toaster]:text-[--foreground] group-[.toaster]:border-[--border] group-[.toaster]:shadow-lg",
         // Success
         // "group-[.toaster]:data-[type=success]:bg-green-50 group-[.toaster]:data-[type=success]:text-green-500",
@@ -51,20 +51,26 @@ export type ToasterProps = React.ComponentProps<typeof Sonner>
 
 export const Toaster = ({ position = "top-center", ...props }: ToasterProps) => {
 
+    const allProps = React.useMemo(() => ({
+        position,
+        className: cn(ToasterAnatomy.toaster()),
+        toastOptions: {
+            classNames: {
+                toast: cn(ToasterAnatomy.toast()),
+                description: cn(ToasterAnatomy.description()),
+                actionButton: cn(ToasterAnatomy.actionButton()),
+                cancelButton: cn(ToasterAnatomy.cancelButton()),
+            },
+        },
+        ...props,
+    }), [])
+
     return (
-        <Sonner
-            position={position}
-            className={cn(ToasterAnatomy.toaster())}
-            toastOptions={{
-                classNames: {
-                    toast: cn(ToasterAnatomy.toast()),
-                    description: cn(ToasterAnatomy.description()),
-                    actionButton: cn(ToasterAnatomy.actionButton()),
-                    cancelButton: cn(ToasterAnatomy.cancelButton()),
-                },
-            }}
-            {...props}
-        />
+        <>
+            <Sonner theme="light"{...allProps} />
+            <Sonner theme="dark" {...allProps} />
+            <Sonner theme="system" {...allProps} />
+        </>
     )
 }
 

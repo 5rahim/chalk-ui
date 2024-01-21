@@ -93,12 +93,12 @@ const components = {
     li: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
       <li className={cn("mt-2", className)} {...props} />
     ),
-    // blockquote: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    //   <blockquote
-    //     className={cn("mt-6 border-l-2 pl-6 italic", className)}
-    //     {...props}
-    //   />
-    // ),
+    blockquote: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
+      <blockquote
+        className={cn("mt-6 border-l-2 pl-6 italic", className)}
+        {...props}
+      />
+    ),
     // img: ({
     //   className,
     //   alt,

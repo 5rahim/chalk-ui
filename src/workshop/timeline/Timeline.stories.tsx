@@ -30,8 +30,9 @@ export const Customized: Story = {
                 title: "John doe",
                 description: "Locked the thread 2 hours ago",
                 icon: <BiLock className="text-white text-lg font-bold" />,
-                iconClass: "bg-[--violet] border-[--violet]",
-                titleClass: "text-[--violet]",
+                iconClass: "bg-[--zinc] border-[--zinc]",
+                titleClass: "text-[--zinc]",
+                lineClass: "bg-[--zinc] w-1",
             },
             {
                 title: "Jack",
@@ -43,8 +44,8 @@ export const Customized: Story = {
                 icon: <BiUser />,
             },
             {
-                title: <span className="flex items-center text-[--muted] gap-1">
-                    <span className="font-semibold text-[--text-color]">John Doe</span>
+                title: <span className="flex items-center gap-1">
+                    <span className="font-semibold">John Doe</span>
                     <Badge size="sm">Owner</Badge>
                 </span>,
                 description: "Opened the thread 2d ago",

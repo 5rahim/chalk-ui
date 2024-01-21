@@ -845,6 +845,12 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/switch-demo.tsx"],
     },
+    "switch-state-demo": {
+        name: "switch-state-demo",
+        component: React.lazy(() => import("@/demo/switch-state-demo")),
+        family: [],
+        files: ["src/demo/switch-state-demo.tsx"],
+    },
     "table-demo": {
         name: "table-demo",
         component: React.lazy(() => import("@/demo/table-demo")),
@@ -857,11 +863,23 @@ export const Bank: Bank = {
         family: [],
         files: ["src/demo/tabs-demo.tsx"],
     },
+    "text-input-addons-demo": {
+        name: "text-input-addons-demo",
+        component: React.lazy(() => import("@/demo/text-input-addons-demo")),
+        family: [],
+        files: ["src/demo/text-input-addons-demo.tsx"],
+    },
     "text-input-demo": {
         name: "text-input-demo",
         component: React.lazy(() => import("@/demo/text-input-demo")),
         family: [],
         files: ["src/demo/text-input-demo.tsx"],
+    },
+    "text-input-state-demo": {
+        name: "text-input-state-demo",
+        component: React.lazy(() => import("@/demo/text-input-state-demo")),
+        family: [],
+        files: ["src/demo/text-input-state-demo.tsx"],
     },
     "textarea-demo": {
         name: "textarea-demo",
@@ -874,6 +892,12 @@ export const Bank: Bank = {
         component: React.lazy(() => import("@/demo/timeline-demo")),
         family: [],
         files: ["src/demo/timeline-demo.tsx"],
+    },
+    "timeline-example-demo": {
+        name: "timeline-example-demo",
+        component: React.lazy(() => import("@/demo/timeline-example-demo")),
+        family: [],
+        files: ["src/demo/timeline-example-demo.tsx"],
     },
     "toaster-demo": {
         name: "toaster-demo",

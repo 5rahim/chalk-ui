@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import kebabCase from "lodash/kebabCase"
 import Link from "next/link"
 import * as React from "react"
-import { BiInfoCircle, BiPalette } from "react-icons/bi"
+import { BiInfoCircle, BiLinkExternal, BiPalette } from "react-icons/bi"
 import { LuTextCursorInput } from "react-icons/lu"
 import { getComponentAnatomyClassNames, getComponentAnatomyVariants, parseAnatomies, ParsedAnatomy } from "../../lib/anatomy-parser"
 import { ParsedType, ParsedTypeProperty, parseTypes } from "../../lib/type-parser"
@@ -291,41 +291,41 @@ export function TypeValue({ value }: { value: string }) {
         </Link>
     }
 
-    if (value === "InputStyling" || value === "BasicFieldOptions") {
-        return <Link
-            href={`#`}
-            className="text-[--orange] font-medium hover:underline"
-        >
-            {value}
-        </Link>
-    }
-
     if (value === "CarouselOptions") {
         return <Link
             href={`https://www.embla-carousel.com/api/options/#reference`}
-            className="text-[--indigo] font-medium hover:underline"
+            className="text-[--indigo] font-medium hover:underline flex flex-none gap-1 items-center"
             target="_blank"
             rel="noreferrer"
         >
-            {value}
+            {value} <BiLinkExternal />
         </Link>
     } else if (value.startsWith("CarouselPlugin")) {
         return <Link
             href={`https://www.embla-carousel.com/api/plugins/`}
-            className="text-[--indigo] font-medium hover:underline"
+            className="text-[--indigo] font-medium hover:underline flex flex-none gap-1 items-center"
             target="_blank"
             rel="noreferrer"
         >
-            {value}
+            {value} <BiLinkExternal />
         </Link>
     } else if (value.includes("DayPickerBase")) {
         return <Link
             href={`https://react-day-picker.js.org/api/interfaces/DayPickerBase`}
-            className="text-[--indigo] font-medium hover:underline"
+            className="text-[--indigo] font-medium hover:underline flex flex-none gap-1 items-center"
             target="_blank"
             rel="noreferrer"
         >
-            {value}
+            {value} <BiLinkExternal />
+        </Link>
+    } else if (value.includes("Sonner")) {
+        return <Link
+            href={`https://sonner.emilkowal.ski/toaster#api-reference`}
+            className="text-[--indigo] font-medium hover:underline flex flex-none gap-1 items-center"
+            target="_blank"
+            rel="noreferrer"
+        >
+            {value} <BiLinkExternal />
         </Link>
     }
 
@@ -408,6 +408,12 @@ const BasicFieldOptionsTypes = [
 ]
 
 const InputStylingTypes = [
+    {
+        "name": "intent",
+        "required": false,
+        "description": "The style of the input.",
+        "value": '"basic" | "filled" | "unstyled"'
+    },
     {
         "name": "leftAddon",
         "required": false,

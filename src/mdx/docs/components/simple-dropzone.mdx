@@ -1,7 +1,9 @@
 ---
 title: Simple Dropzone
-description: Description
+description: A wrapper around a file input.
 componentName: simple-dropzone
+links:
+    api: https://react-dropzone.js.org/#src
 ---
 
 <ComponentPreview name="simple-dropzone-demo" />
@@ -11,6 +13,15 @@ componentName: simple-dropzone
 ```bash
 npx @rahimstack@latest add simple-dropzone
 ```
+
+## Usage
+
+### Accept
+
+
+Checkout [the docs](https://developer.mozilla.org/en-US/docs/Web/API/window/showOpenFilePicker) for more information on types option.
+> Keep in mind that mime type determination is not reliable across platforms. CSV files, for example, are reported as `text/plain` under macOS but as `application/vnd.ms-excel` under Windows.
+In some cases there might not be a mime type set at all. - React Dropzone
 
 
 ## API Reference
