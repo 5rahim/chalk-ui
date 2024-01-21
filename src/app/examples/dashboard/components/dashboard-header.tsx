@@ -33,7 +33,7 @@ export function DashboardHeader() {
                         </Tooltip>
                     </div>}
                     {/*Show title when sidebar is collapsed*/}
-                    {ctx.size === "slim" || ctx.isBelowBreakpoint && <h3 className="px-4 font-bold">Dashboard</h3>}
+                    {(ctx.size === "slim" || ctx.isBelowBreakpoint) && <h3 className="px-4 font-bold">Dashboard</h3>}
                     <SearchBar />
                 </div>
                 <div className="flex items-center h-full">
