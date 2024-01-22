@@ -16,13 +16,9 @@ export function ExamplesNav(props: ExamplesNavProps) {
 
     const pathname = usePathname()
 
-    const isCurrent = (href: string) => {
-        return pathname === href
-    }
-
     const items = React.useMemo(() => ([
-        { name: "Dashboard", isCurrent: isCurrent("/examples/dashboard"), href: "/examples/dashboard" },
-    ]), [])
+        { name: "Dashboard", isCurrent: pathname === "/examples/dashboard", href: "/examples/dashboard" },
+    ]), [pathname])
 
     return (
         <div className="flex h-16 items-center lg:justify-center">

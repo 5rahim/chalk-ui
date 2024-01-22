@@ -69,7 +69,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
             isCurrent: isCurrent("/calendar"),
             iconType: BiCalendarAlt,
         },
-    ]), [isCollapsed])
+    ]), [isCollapsed, currentPathname])
 
     return (
         <AppSidebar className="p-4">
