@@ -115,6 +115,12 @@ const dependencyCorrections = [
     "recharts",
     "@hookform/resolvers",
 ]
+
+const ignoredDependencies = [
+    "embla-carousel"
+]
+
+
 const devDependencies = [
     {
         dependency: "@googlemaps",
@@ -150,16 +156,24 @@ function findDependencies(fileContent: string): DependencyDef[] {
                 }
             })
 
-            if (!name.startsWith(".", 0) && !name.startsWith("@/",
-                0) && !dependencies.includes(name) && !baseDependencies.some(n => n.includes(name))) {
-                dependencies.push(name)
+            if (
+                !name.startsWith(".", 0) &&
+                !name.startsWith("@/", 0) &&
+                !dependencies.includes(name) &&
+                !baseDependencies.some(n => n.includes(name))
+            ) {
 
-                // Include dev dependencies
-                for (const devDependency of devDependencies) {
-                    if (name.includes(devDependency.dependency)) {
-                        dependenciesArr.push(devDependency.devDependency)
+                if(!ignoredDependencies.includes(name)) {
+                    dependencies.push(name)
+
+                    // Include dev dependencies
+                    for (const devDependency of devDependencies) {
+                        if (name.includes(devDependency.dependency)) {
+                            dependenciesArr.push(devDependency.devDependency)
+                        }
                     }
                 }
+
             }
         }
     }
