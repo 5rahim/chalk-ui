@@ -1,6 +1,6 @@
 "use client"
 
-import { Modal, ModalProps } from "@/workshop/modal"
+import { Modal, ModalProps } from "../modal"
 import { cva } from "class-variance-authority"
 import { Command as CommandPrimitive } from "cmdk"
 import * as React from "react"
