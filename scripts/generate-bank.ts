@@ -48,6 +48,13 @@ const specialDivisions = [
             ["Date Range Picker", "date-range-picker"],
         ],
     },
+    {
+        name: "tabs",
+        parts: [
+            ["Tabs", "tabs"],
+            ["Static Tabs", "static-tabs"],
+        ],
+    },
 ]
 
 export async function createSnapshot() {

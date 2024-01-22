@@ -294,6 +294,11 @@ export function DocsVerticalMenu(props: DocsVerticalMenuProps) {
                         isCurrent: pathname === "/docs/components/skeleton",
                     },
                     {
+                        name: "Static Tabs",
+                        href: "/docs/components/static-tabs",
+                        isCurrent: pathname === "/docs/components/static-tabs",
+                    },
+                    {
                         name: "Stats",
                         href: "/docs/components/stats",
                         isCurrent: pathname === "/docs/components/stats",
@@ -307,6 +312,11 @@ export function DocsVerticalMenu(props: DocsVerticalMenuProps) {
                         name: "Table",
                         href: "/docs/components/table",
                         isCurrent: pathname === "/docs/components/table",
+                    },
+                    {
+                        name: "Tabs",
+                        href: "/docs/components/tabs",
+                        isCurrent: pathname === "/docs/components/tabs",
                     },
                     {
                         name: "Text Input",

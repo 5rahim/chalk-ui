@@ -89,6 +89,18 @@ export const Bank: Bank = {
         family: ["basic-field", "calendar", "input", "modal", "popover", "select"],
         files: ["src/workshop/date-picker/date-picker.tsx", "src/workshop/date-picker/date-range-picker.tsx", "src/workshop/date-picker/index.tsx"],
     },
+    "tabs": {
+        name: "tabs",
+        component: React.lazy(() => import("@/workshop/tabs/tabs")),
+        family: [],
+        files: ["src/workshop/tabs/index.tsx", "src/workshop/tabs/static-tabs.tsx", "src/workshop/tabs/tabs.tsx"],
+    },
+    "static-tabs": {
+        name: "static-tabs",
+        component: React.lazy(() => import("@/workshop/tabs/static-tabs")),
+        family: [],
+        files: ["src/workshop/tabs/index.tsx", "src/workshop/tabs/static-tabs.tsx", "src/workshop/tabs/tabs.tsx"],
+    },
     "accordion": {
         name: "accordion",
         component: React.lazy(() => import("@/workshop/accordion/accordion")),
@@ -328,12 +340,6 @@ export const Bank: Bank = {
         component: React.lazy(() => import("@/workshop/table/table")),
         family: [],
         files: ["src/workshop/table/index.tsx", "src/workshop/table/table.tsx"],
-    },
-    "tabs": {
-        name: "tabs",
-        component: React.lazy(() => import("@/workshop/tabs/tabs")),
-        family: [],
-        files: ["src/workshop/tabs/index.tsx", "src/workshop/tabs/static-tabs.tsx", "src/workshop/tabs/tabs.tsx"],
     },
     "text-input": {
         name: "text-input",
@@ -832,6 +838,12 @@ export const Bank: Bank = {
         component: React.lazy(() => import("@/demo/skeleton-demo")),
         family: [],
         files: ["src/demo/skeleton-demo.tsx"],
+    },
+    "static-tabs-demo": {
+        name: "static-tabs-demo",
+        component: React.lazy(() => import("@/demo/static-tabs-demo")),
+        family: [],
+        files: ["src/demo/static-tabs-demo.tsx"],
     },
     "stats-demo": {
         name: "stats-demo",
