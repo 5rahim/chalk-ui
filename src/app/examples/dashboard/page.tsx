@@ -4,14 +4,15 @@ import DatagridDemo from "@/demo/datagrid/datagrid-demo"
 import { citiesDemoData, lineChartData } from "@/demo/demo-data"
 import { AppLayoutGrid, AppLayoutStack } from "@/workshop/app-layout"
 import { Button, IconButton } from "@/workshop/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/workshop/card"
+import { Card, CardContent } from "@/workshop/card"
 import { DonutChart, LineChart } from "@/workshop/charts"
 import { DropdownMenu, DropdownMenuItem } from "@/workshop/dropdown-menu"
 import { PageHeader } from "@/workshop/page-header"
+import { Separator } from "@/workshop/separator"
 import { Stats } from "@/workshop/stats"
 import { Tooltip } from "@/workshop/tooltip"
 import * as React from "react"
-import { BiCaretDown, BiExpandVertical, BiInfoCircle, BiRefresh } from "react-icons/bi"
+import { BiExpandVertical, BiInfoCircle, BiRefresh } from "react-icons/bi"
 
 export default function Page() {
 
@@ -51,7 +52,7 @@ export default function Page() {
 
                     <div className="flex items-center gap-2">
                         <h4>Performance History</h4>
-                        <Tooltip trigger={<span><BiInfoCircle className={"w-5 h-5 text-[--blue]"} /></span>}>
+                        <Tooltip trigger={<span><BiInfoCircle className={"w-5 h-5 text-[--gray]"} /></span>}>
                             Shows the trends
                         </Tooltip>
                     </div>
@@ -63,13 +64,17 @@ export default function Page() {
                         categories={["Upward Trend", "Downward Trend"]}
                         colors={["brand", "gray"]}
                         yAxisWidth={40}
+                        valueFormatter={(number: number) => number.toFixed(2)}
                     />
+
+                    <Separator />
 
                     <AppLayoutGrid cols={5}>
                         <div className="col-span-2">
 
                             <h4>Products</h4>
                             <p className="text-sm text-[--muted]">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt.
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt.
                             </p>
                         </div>
@@ -107,18 +112,19 @@ export default function Page() {
                         </div>
                     </AppLayoutGrid>
 
-                    <Card className="p-4">
-                        <DatagridDemo
-                            tableProps={{
-                                hideColumns: [
-                                    { below: 850, hide: ["availability", "price"] },
-                                    { below: 600, hide: ["_actions"] },
-                                    { below: 515, hide: ["category"] },
-                                    { below: 400, hide: ["visible"] },
-                                ],
-                            }}
-                        />
-                    </Card>
+                    <Separator />
+
+                    <DatagridDemo
+                        tableProps={{
+                            tdClass: "text-sm",
+                            hideColumns: [
+                                { below: 850, hide: ["availability", "price"] },
+                                { below: 600, hide: ["_actions"] },
+                                { below: 515, hide: ["category"] },
+                                { below: 400, hide: ["visible"] },
+                            ],
+                        }}
+                    />
                 </AppLayoutStack>
 
             </div>

@@ -20,7 +20,7 @@ import translations, { dateFnsLocales } from "./locales"
 export const DataGridFilterAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-DataGridFilter__root",
-        "flex gap-2 items-center",
+        "flex items-center max-w-full gap-2",
     ]),
 })
 
@@ -191,7 +191,11 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
                 </div>
             )}
 
-            <CloseButton onClick={onRemove} size={"sm"} />
+            <CloseButton
+                intent="gray-outline"
+                onClick={onRemove}
+                size="md"
+            />
         </div>
     )
 
