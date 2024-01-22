@@ -4,7 +4,7 @@ import { DropdownMenu, DropdownMenuItem } from "@/workshop/dropdown-menu"
 
 export default function AppLayoutDemo() {
     return (
-        <AppLayout>
+        <AppLayout className="bg-indigo-50 dark:bg-gray-600">
             <AppLayoutHeader>
                 <div className="w-full h-[60px] border-b bg-brand-50 dark:bg-gray-900">
                     <div className="flex h-full w-full justify-between items-center px-4">
@@ -21,7 +21,7 @@ export default function AppLayoutDemo() {
                     </div>
                 </div>
             </AppLayoutHeader>
-            <AppLayoutContent className="container max-w-7xl py-5 h-64 bg-indigo-50 dark:bg-gray-600">
+            <AppLayoutContent className="container max-w-7xl py-5 h-64">
                 <div className="bg-[--background] w-full h-full" />
             </AppLayoutContent>
             <AppLayoutFooter className="bg-green-50 dark:bg-gray-800 text-center text-sm font-medium text-[--muted] py-4">

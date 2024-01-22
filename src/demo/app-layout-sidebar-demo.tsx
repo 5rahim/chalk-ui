@@ -14,7 +14,7 @@ import * as React from "react"
 export default function AppLayoutDemo() {
     return (
         <AppSidebarProvider>
-            <AppLayout withSidebar>
+            <AppLayout withSidebar className="bg-indigo-50 dark:bg-gray-600">
                 <AppLayoutSidebar className="lg:absolute h-full">
                     <AppSidebar className="bg-red-50 dark:bg-gray-900 p-4 mt-4 mb-4 lg:mt-10 lg:mb-10">
                         <div className="font-bold text-2xl mb-4">Dashboard</div>
@@ -40,7 +40,7 @@ export default function AppLayoutDemo() {
                             </div>
                         </div>
                     </AppLayoutHeader>
-                    <AppLayoutContent className="container max-w-7xl py-5 h-64 bg-indigo-50 dark:bg-gray-600">
+                    <AppLayoutContent className="p-5 h-64">
                         <div className="bg-[--background] w-full h-full" />
                     </AppLayoutContent>
                     <AppLayoutFooter className="bg-green-50 dark:bg-gray-800 text-center text-sm font-medium text-[--muted] py-4">

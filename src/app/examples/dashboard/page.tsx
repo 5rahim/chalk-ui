@@ -75,7 +75,7 @@ export default function Page() {
                             <h4>Products</h4>
                             <p className="text-sm text-[--muted]">
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt.
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt.
+                                Consectetur adipisicing elit. Ad alias amet architecto culpa debitis deserunt.
                             </p>
                         </div>
                         <div className="col-span-3">
