@@ -9,7 +9,7 @@ import * as React from "react"
 import { BiCheck, BiCopy } from "react-icons/bi"
 import { Event, trackEvent } from "../../lib/events"
 
-interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
+type ComponentPreviewProps = React.HTMLAttributes<HTMLDivElement> & {
     name: string
     extractClassname?: boolean
     extractedClassNames?: string

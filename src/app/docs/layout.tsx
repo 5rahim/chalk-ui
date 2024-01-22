@@ -14,7 +14,7 @@ import { Button, IconButton } from "@/workshop/button"
 import { ScrollArea } from "@/workshop/scroll-area"
 import Link from "next/link"
 import React from "react"
-import { BiHomeAlt, BiLogoGithub, BiSolidStar, BiStar } from "react-icons/bi"
+import { BiHomeAlt, BiLogoGithub, BiSolidStar } from "react-icons/bi"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
@@ -26,7 +26,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             <img src="/images/logo.png" className="size-16 w-auto" />
                             <div className="font-bold text-2xl ">Chalk UI</div>
                         </div>
-                        <ScrollArea className="h-[calc(100vh-150px)] lg:h-dvh p-4">
+                        <ScrollArea className="h-[calc(100vh-300px)] lg:h-dvh p-4">
                             <div>
                                 <DocsVerticalMenu />
                             </div>
@@ -57,7 +57,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                         >Examples</Button>
                                     </Link>
                                 </div>
-                                <div>
+                                <div className="flex-none flex items-center">
                                     <Link
                                         href="https://github.com/5rahim/chalk-ui"
                                         target="_blank"
@@ -80,10 +80,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                             size="sm"
                                         >rahim.app</Button>
                                     </Link>
+                                    <ModeToggle />
                                 </div>
                             </div>
                         </div>
-                        <ModeToggle />
                     </AppLayoutHeader>
                     <AppLayoutContent className="pt-16">
                         {children}
