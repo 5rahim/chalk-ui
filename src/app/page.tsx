@@ -15,7 +15,7 @@ export default function Home() {
     return (
         <AppLayoutContent className="bg-gray-50 dark:bg-black">
             <svg
-                className="absolute inset-0 z-[0] h-full w-full stroke-gray-200 dark:stroke-gray-700 [mask-image:radial-gradient(100%_100%_at_top_left,black,transparent)]"
+                className="absolute inset-0 z-[0] h-full w-full stroke-gray-200 dark:stroke-gray-700 [mask-image:radial-gradient(70%_100%_at_top_left,black,transparent)]"
                 aria-hidden="true"
             >
                 <defs>
@@ -33,7 +33,7 @@ export default function Home() {
                 <rect width="100%" height="100%" strokeWidth={0} fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" />
             </svg>
             <AppLayout className="relative z-[1] items-center justify-center w-full md:max-w-[500px] mx-auto gap-4 py-4 lg:py-10">
-                <div className="relative size-16">
+                <div className="relative size-20">
                     <Image
                         src="/images/logo.png"
                         alt="Chalk UI Logo"
@@ -85,10 +85,10 @@ export default function Home() {
 
             <div className="text-center z-[2] relative">
                 <h2 className="text-center mb-4">And more...</h2>
-                <Link href="/docs"><Button size="lg" rounded leftIcon={<BiBook className="text-xl" />}>Get started</Button></Link>
+                <Link href="/docs"><Button size="lg" rounded>Get started</Button></Link>
             </div>
 
-            <AppLayout className="items-center justify-center w-full md:max-w-[500px] mx-auto gap-4 py-10">
+            <AppLayout className="items-center justify-center w-full md:max-w-[500px] mx-auto gap-4 py-10 relative z-[1]">
                 <p className="text-[--muted]">Made by <Link
                     href="https://rahim.app"
                     target="_blank"
@@ -101,7 +101,7 @@ export default function Home() {
 
 
             <svg
-                className="fixed inset-0 z-[0] h-[800px] bottom-0 right-0 w-full stroke-gray-200 dark:stroke-gray-700 [mask-image:radial-gradient(100%_50%_at_bottom_right,black,transparent)]"
+                className="fixed inset-0 z-[0] h-[800px] bottom-0 right-0 w-full stroke-gray-200 dark:stroke-gray-700 [mask-image:radial-gradient(70%_50%_at_bottom_right,black,transparent)]"
                 aria-hidden="true"
             >
                 <defs>

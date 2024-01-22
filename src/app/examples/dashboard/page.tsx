@@ -41,7 +41,7 @@ export default function Page() {
                         <div>
                             <PageHeader
                                 className="p-4 border-b"
-                                title="Public shops"
+                                title="Shops"
                                 size="md"
                                 action={<Button
                                     intent="gray-outline"

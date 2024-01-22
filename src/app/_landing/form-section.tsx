@@ -29,7 +29,7 @@ export function FormSection() {
                         data-theme="default"
                     >
   <code
-      className="relative rounded bg-[--subtle] px-[0.3rem] py-[0.2rem] font-mono text-sm"
+      className="relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm"
       data-language="tsx"
       data-theme="default"
   >
