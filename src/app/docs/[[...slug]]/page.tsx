@@ -9,7 +9,6 @@ import { ExternalLinkIcon } from "lucide-react"
 import { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import Balancer from "react-wrap-balancer"
 import { getTableOfContents } from "../../../../lib/toc"
 import { absoluteUrl } from "../../../../lib/utils"
 
@@ -77,8 +76,8 @@ export default async function DocPage({ params }: DocPageProps) {
                         {doc.title}
                     </h1>
                     {doc.description && (
-                        <p className="text-lg text-[--muted]">
-                            <Balancer>{doc.description}</Balancer>
+                        <p className="text-lg text-[--muted] text-pretty">
+                            {doc.description}
                         </p>
                     )}
                 </div>

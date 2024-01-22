@@ -1,8 +1,8 @@
 import { Column, ColumnFiltersState, Table } from "@tanstack/react-table"
 import * as React from "react"
 import { getColumnHelperMeta } from "./helpers"
-import addDays from "date-fns/addDays"
-import isSameDay from "date-fns/isSameDay"
+import { addDays } from "date-fns/addDays"
+import { isSameDay } from "date-fns/isSameDay"
 
 interface DataGridFilteringHookProps<T> {
     table: Table<T>,

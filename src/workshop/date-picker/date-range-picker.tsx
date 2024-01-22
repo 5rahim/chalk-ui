@@ -1,7 +1,7 @@
 "use client"
 
 import { cva } from "class-variance-authority"
-import { format } from "date-fns"
+import { format, Locale } from "date-fns"
 import * as React from "react"
 import { DateRange, DayPickerBase } from "react-day-picker"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"

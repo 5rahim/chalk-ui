@@ -10,7 +10,7 @@ import { BiBook, BiLogoGithub } from "react-icons/bi"
 
 export const metadata: Metadata = {
     title: "Examples",
-    description: "See examples of Chalk UI components in action.",
+    description: "Browse examples of Chalk UI components in action.",
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -43,9 +43,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         className="object-center object-contain"
                     />
                 </div>
-                <h3 className="text-3xl md:text-4xl -mt-4 font-bold">Examples</h3>
+                <h3 className="text-3xl md:text-4xl -mt-4 font-bold">Chalk UI</h3>
                 <p className="text-[--muted] md:text-lg text-pretty text-center">
-                    Opinionated and flexible React components, styled with TailwindCSS, built for Next.js SaaS applications.
+                    Browse examples of Chalk UI components in action.
                 </p>
                 <div className="flex gap-2">
                     <Link href="/docs" target="_blank"><Button leftIcon={<BiBook />}>Docs</Button></Link>

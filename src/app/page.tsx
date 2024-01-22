@@ -36,7 +36,7 @@ export default function Home() {
                     />
                 </div>
                 <h1 className="text-3xl md:text-5xl font-bold">Chalk UI</h1>
-                <p className="text-[--muted] md:text-lg text-pretty text-center">
+                <p className="text-[--muted] md:text-lg text-pretty text-center px-4">
                     Opinionated and flexible React components, styled with TailwindCSS, built for Next.js SaaS applications.
                 </p>
                 <div className="flex gap-2">

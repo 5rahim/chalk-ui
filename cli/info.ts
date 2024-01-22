@@ -2,7 +2,7 @@ export const defaultUIFolder = "./src/components/ui"
 export const mainDependencies: DependencyDef[] = [
     ["class-variance-authority", "^0.7.0", ""],
     ["clsx", "^2.1.0", ""],
-    ["tailwind-merge", "^1.14.0", ""],
+    ["tailwind-merge", "^2.2.0", ""],
     ["@tailwindcss/typography", "^0.5.10", ""],
     ["@tailwindcss/forms", "^0.5.7", ""],
     ["tailwind-scrollbar-hide", "^1.1.7", ""],

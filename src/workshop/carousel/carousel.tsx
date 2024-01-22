@@ -1,11 +1,8 @@
 "use client"
 
 import { cva } from "class-variance-authority"
-import useEmblaCarousel, {
-    type EmblaCarouselType as CarouselApi,
-    type EmblaOptionsType as CarouselOptions,
-    type EmblaPluginType as CarouselPlugin,
-} from "embla-carousel-react"
+import { EmblaCarouselType, EmblaOptionsType, EmblaPluginType } from "embla-carousel"
+import useEmblaCarousel from "embla-carousel-react"
 import * as React from "react"
 import { IconButton } from "../button"
 import { cn, defineStyleAnatomy } from "../core/styling"
@@ -105,11 +102,11 @@ function useCarousel() {
 }
 
 export type CarouselProps = {
-    opts?: CarouselOptions
-    plugins?: CarouselPlugin[]
+    opts?: EmblaOptionsType
+    plugins?: EmblaPluginType[]
     orientation?: "horizontal" | "vertical"
     gap?: "none" | "sm" | "md" | "lg" | "xl"
-    setApi?: (api: CarouselApi) => void
+    setApi?: (api: EmblaCarouselType) => void
 }
 
 type CarouselContextProps = {
@@ -138,7 +135,7 @@ export const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HT
     const [canScrollPrev, setCanScrollPrev] = React.useState(false)
     const [canScrollNext, setCanScrollNext] = React.useState(false)
 
-    const onSelect = React.useCallback((api: CarouselApi) => {
+    const onSelect = React.useCallback((api: EmblaCarouselType) => {
         if (!api) return
 
         setCanScrollPrev(api.canScrollPrev())
