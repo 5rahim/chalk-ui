@@ -1,8 +1,8 @@
 "use client"
 
-import { AppLayoutAnatomy } from "@/workshop/app-layout/app-layout"
 import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
+import { AppLayoutAnatomy } from "."
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 import { Drawer, DrawerProps } from "../drawer"
 

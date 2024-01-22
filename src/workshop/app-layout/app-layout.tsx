@@ -1,7 +1,7 @@
 "use client"
-import { __AppSidebarContext } from "@/workshop/app-layout/app-sidebar"
 import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
+import { __AppSidebarContext } from "."
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
 
 /* -------------------------------------------------------------------------------------------------

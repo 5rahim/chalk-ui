@@ -1,5 +1,5 @@
-import { ChartColor } from "@/workshop/charts/color-theme"
 import * as React from "react"
+import { ChartColor } from "./color-theme"
 
 export type ChartValueFormatter = {
     (value: number): string
