@@ -55,14 +55,13 @@ export default function Page() {
                                 <Stats
                                     items={[
                                         {
-                                            name: "Total Subscribers",
-                                            value: "71,897",
-                                            unit: "from 70,946",
-                                            change: "12%",
+                                            name: "Revenue",
+                                            value: "$71,897",
+                                            change: "2.54%",
                                             trend: "up",
                                         },
-                                        { name: "Avg. Open Rate", value: "58.16%", unit: "from 56.14%", change: "2.02%", trend: "up" },
-                                        { name: "Avg. Click Rate", value: "24.57%" },
+                                        { name: "Customers", value: "1,752", unit: "1662 last month", change: "5.08%", trend: "up" },
+                                        { name: "Avg. Completion Rate", value: "54.30%", change: "4.50%", trend: "down" },
                                     ]}
                                     className="border-b"
                                 />
@@ -82,7 +81,7 @@ export default function Page() {
                                         className="h-64 mt-6"
                                         data={lineChartData}
                                         index="year"
-                                        categories={["Upward Trend", "Downward Trend"]}
+                                        categories={["Public", "Private"]}
                                         colors={["brand", "gray"]}
                                         yAxisWidth={40}
                                         valueFormatter={(number: number) => number.toFixed(2)}

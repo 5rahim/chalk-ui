@@ -1,10 +1,14 @@
 <p align="center">
-<img src="public/images/logo.png" alt="preview" width="75px"/>
+<img src="public/images/logo.png" alt="logo" width="75px"/>
 </p>
 
 <h2 align="center">Chalk UI</h2>
 
 <h4 align="center">Opinionated and flexible React components, styled with TailwindCSS, built for Next.js SaaS applications.</h4>
+
+<p align="center">
+<img src="public/images/img.png" alt="preview" width="100%"/>
+</p>
 
 ## Why?
 

@@ -101,7 +101,7 @@ export default function Home() {
 
 
             <svg
-                className="fixed inset-0 z-[0] h-[800px] bottom-0 right-0 w-full stroke-gray-200 dark:stroke-gray-700 [mask-image:radial-gradient(70%_50%_at_bottom_right,black,transparent)]"
+                className="fixed inset-0 z-[0] h-full bottom-0 right-0 w-full stroke-gray-200 dark:stroke-gray-700 [mask-image:radial-gradient(70%_50%_at_bottom_right,black,transparent)]"
                 aria-hidden="true"
             >
                 <defs>
