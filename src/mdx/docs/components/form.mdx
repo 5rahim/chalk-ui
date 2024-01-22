@@ -14,6 +14,39 @@ npx @rahimstack@latest add form
 
 ## Usage
 
+```tsx
+import {defineSchema, Field, Form} from "@/workshop/form"
+
+const schema = defineSchema(({ z, presets }) => z.object({
+    name: z.string().min(2),
+    birthday: presets.datePicker,
+    bounty: z.string()
+        .refine(v => Number(v) >= 3_000_000_000,
+            { message: "Bounty must be at least ฿3,000,000,000" })
+}))
+
+export function FormDemo() {
+    return (
+        <Form
+            schema={schema}
+            onSubmit={data => {/* ... */}}
+            defaultValues={/* ... */}
+        >
+            <div className="flex gap-3">
+                <Field.Text name="name" label="Name" />
+                <Field.DatePicker name="birthday" label="Birthday" />
+            </div>
+            <Field.Currency
+                name="bounty"
+                label="Bounty"
+                prefix="฿"
+            />
+            <Field.Submit role="save">Save</Field.Submit>
+        </Form>
+    )
+}
+```
+
 ### Define a schema
 
 You can define a schema using the `defineSchema` function. This function takes a callback function that provides you with a `z` object and a `presets` object.

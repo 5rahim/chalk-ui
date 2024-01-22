@@ -49,8 +49,8 @@ export function DashboardHeader() {
                 className="border-b px-4 py-2"
                 items={[
                     { name: "All", href: "#", isCurrent: false },
-                    { name: "Private shops", href: "#", isCurrent: false },
-                    { name: "Public shops", href: "#", isCurrent: true },
+                    { name: "Shops", href: "#", isCurrent: true },
+                    { name: "Subscriptions", href: "#", isCurrent: false },
                     { name: "Transactions", href: "#", iconType: BiReceipt, isCurrent: false },
                 ]}
             />

@@ -95,14 +95,14 @@ export const AppLayoutStackAnatomy = defineStyleAnatomy({
 export const AppLayoutGridAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-AppLayoutGrid__root",
-        "relative block",
+        "relative grid grid-cols-1",
     ], {
         variants: {
             breakBelow: {
-                sm: "sm:grid sm:space-y-0",
-                md: "md:grid md:space-y-0",
-                lg: "lg:grid lg:space-y-0",
-                xl: "xl:grid xl:space-y-0",
+                sm: "sm:space-y-0",
+                md: "md:space-y-0",
+                lg: "lg:space-y-0",
+                xl: "xl:space-y-0",
             },
             spacing: {
                 sm: "space-y-2 gap-2",
@@ -110,20 +110,39 @@ export const AppLayoutGridAnatomy = defineStyleAnatomy({
                 lg: "space-y-8 gap-8",
                 xl: "space-y-10 gap-10",
             },
-            cols: {
-                1: "grid-cols-1",
-                2: "grid-cols-2",
-                3: "grid-cols-3",
-                4: "grid-cols-4",
-                5: "grid-cols-5",
-                6: "grid-cols-6",
-            },
+            cols: { 1: null, 2: null, 3: null, 4: null, 5: null, 6: null },
         },
         defaultVariants: {
             breakBelow: "xl",
             spacing: "md",
             cols: 3,
         },
+        compoundVariants: [
+            { breakBelow: "sm", cols: 1, className: "sm:grid-cols-1" },
+            { breakBelow: "sm", cols: 2, className: "sm:grid-cols-2" },
+            { breakBelow: "sm", cols: 3, className: "sm:grid-cols-3" },
+            { breakBelow: "sm", cols: 4, className: "sm:grid-cols-4" },
+            { breakBelow: "sm", cols: 5, className: "sm:grid-cols-5" },
+            { breakBelow: "sm", cols: 6, className: "sm:grid-cols-6" },
+            { breakBelow: "md", cols: 1, className: "md:grid-cols-1" },
+            { breakBelow: "md", cols: 2, className: "md:grid-cols-2" },
+            { breakBelow: "md", cols: 3, className: "md:grid-cols-3" },
+            { breakBelow: "md", cols: 4, className: "md:grid-cols-4" },
+            { breakBelow: "md", cols: 5, className: "md:grid-cols-5" },
+            { breakBelow: "md", cols: 6, className: "md:grid-cols-6" },
+            { breakBelow: "lg", cols: 1, className: "lg:grid-cols-1" },
+            { breakBelow: "lg", cols: 2, className: "lg:grid-cols-2" },
+            { breakBelow: "lg", cols: 3, className: "lg:grid-cols-3" },
+            { breakBelow: "lg", cols: 4, className: "lg:grid-cols-4" },
+            { breakBelow: "lg", cols: 5, className: "lg:grid-cols-5" },
+            { breakBelow: "lg", cols: 6, className: "lg:grid-cols-6" },
+            { breakBelow: "xl", cols: 1, className: "xl:grid-cols-1" },
+            { breakBelow: "xl", cols: 2, className: "xl:grid-cols-2" },
+            { breakBelow: "xl", cols: 3, className: "xl:grid-cols-3" },
+            { breakBelow: "xl", cols: 4, className: "xl:grid-cols-4" },
+            { breakBelow: "xl", cols: 5, className: "xl:grid-cols-5" },
+            { breakBelow: "xl", cols: 6, className: "xl:grid-cols-6" },
+        ],
     }),
 })
 

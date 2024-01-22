@@ -26,55 +26,6 @@ export const DemoNavigationItems = [
     { name: "Calendar", href: "#", isCurrent: false },
 ]
 
-
-const areaChartData = [
-    {
-        date: "Jan 25",
-        SemiAnalysis: 2890,
-        "The Pragmatic Engineer": 2338,
-    },
-    {
-        date: "Feb 25",
-        SemiAnalysis: 2756,
-        "The Pragmatic Engineer": 2103,
-    },
-    {
-        date: "Mar 25",
-        SemiAnalysis: 3325,
-        "The Pragmatic Engineer": 2194,
-    },
-    {
-        date: "Apr 25",
-        SemiAnalysis: 2500,
-        "The Pragmatic Engineer": 2108,
-    },
-    {
-        date: "May 25",
-        SemiAnalysis: 3475,
-        "The Pragmatic Engineer": 1812,
-    },
-    {
-        date: "Jun 25",
-        SemiAnalysis: 3129,
-        "The Pragmatic Engineer": 1726,
-    },
-]
-
-const barChartData = [
-    {
-        name: "Amphibians",
-        "Number of threatened species": 2488,
-    },
-    {
-        name: "Birds",
-        "Number of threatened species": 1445,
-    },
-    {
-        name: "Crustaceans",
-        "Number of threatened species": 743,
-    },
-]
-
 export const lineChartData = [
     {
         year: 1970,
@@ -335,11 +286,11 @@ export const citiesDemoData = [
         sales: 9800,
     },
     {
-        name: "London",
+        name: "Minneapolis",
         sales: 4567,
     },
     {
-        name: "Hong Kong",
+        name: "Baltimore",
         sales: 3908,
     },
     {
@@ -347,11 +298,11 @@ export const citiesDemoData = [
         sales: 2400,
     },
     {
-        name: "Singapore",
+        name: "Austin",
         sales: 1908,
     },
     {
-        name: "Zurich",
+        name: "Seattle",
         sales: 1398,
     },
 ]

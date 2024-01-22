@@ -5,7 +5,7 @@ import { defineSchema } from "@/workshop/form"
 
 const testSchema = defineSchema(({ z, presets }) => z.object({
     name: z.string().min(2),
-    birthday: presets.datePicker,
+    birthday: z.date(),
     booking: presets.dateRangePicker,
     price: z.string(),
     number: z.number(),

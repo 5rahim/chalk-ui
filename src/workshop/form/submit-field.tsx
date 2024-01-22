@@ -60,10 +60,10 @@ export const SubmitField = React.forwardRef<HTMLButtonElement, SubmitFieldProps>
 
     return (
         <>
-            {showLoadingOverlayOnSuccess && loadingOverlay || (
+            {(showLoadingOverlayOnSuccess && loadingOverlay) && (
                 <LoadingOverlay hide={!formState.isSubmitSuccessful} />
             )}
-            {role === "create" && loadingOverlay || (
+            {(role === "create" && loadingOverlay) && (
                 <LoadingOverlay hide={!formState.isSubmitSuccessful} />
             )}
 

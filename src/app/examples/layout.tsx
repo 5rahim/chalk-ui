@@ -1,12 +1,12 @@
 import { ExamplesNav } from "@/app/examples/examples-nav"
 import { ModeToggle } from "@/components/client-providers"
 import { AppLayout, AppLayoutContent } from "@/workshop/app-layout"
-import { Button } from "@/workshop/button"
+import { Button, IconButton } from "@/workshop/button"
 import { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
-import { BiBook, BiLogoGithub } from "react-icons/bi"
+import { BiBook, BiHome, BiLogoGithub } from "react-icons/bi"
 
 export const metadata: Metadata = {
     title: "Examples",
@@ -43,12 +43,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         className="object-center object-contain"
                     />
                 </div>
-                <h3 className="text-3xl md:text-4xl -mt-4 font-bold">Chalk UI</h3>
+                <h3 className="text-3xl md:text-4xl -mt-3 font-bold">Chalk UI Examples</h3>
                 <p className="text-[--muted] md:text-lg text-pretty text-center">
                     Browse examples of Chalk UI components in action.
                 </p>
                 <div className="flex gap-2">
-                    <Link href="/docs" target="_blank"><Button leftIcon={<BiBook />}>Docs</Button></Link>
+                    <Link href="/"><IconButton intent="primary-basic" icon={<BiHome className="text-md" />} /></Link>
+                    <Link href="/docs" target="_blank"><Button intent="primary-basic" leftIcon={<BiBook className="text-xl" />}>Docs</Button></Link>
                     <Link
                         href="https://github.com/5rahim/chalk-ui"
                         target="_blank"
@@ -56,8 +57,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     >
                         <Button
                             intent="gray-basic"
-                            leftIcon={<BiLogoGithub />}
-                        >Github</Button>
+                            leftIcon={<BiLogoGithub className="text-xl" />}
+                        >GitHub</Button>
                     </Link>
                     <ModeToggle />
                 </div>

@@ -3,7 +3,7 @@ import { ScrollArea } from "@/workshop/scroll-area"
 
 const schema = defineSchema(({ z, presets }) => z.object({
     name: z.string().min(2),
-    birthday: presets.datePicker,
+    birthday: z.date(),
     booking: presets.dateRangePicker,
     price: z.string(),
     number: z.number(),

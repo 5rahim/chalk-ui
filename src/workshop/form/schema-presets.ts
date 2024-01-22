@@ -14,7 +14,6 @@ export const schemaPresets = {
     }),
     time: z.object({ hour: z.number().min(0).max(23), minute: z.number().min(0).max(59) }),
     phone: z.string().min(10, "Invalid phone number"),
-    boolean: z.boolean(),
     files: z
         .array(z.custom<File>())
         .refine((files) => files.every((file) => file instanceof File), { message: "Expected a file" }),

@@ -1,7 +1,4 @@
 "use client"
-// import { Callout } from "@/components/callout"
-// import { CodeBlockWrapper } from "@/components/code-block-wrapper"
-// import { ComponentExample } from "@/components/component-example"
 import { ComponentPreview } from "@/components/component-preview"
 import { ComponentAnatomy } from "@/components/component-anatomy/component-anatomy"
 import { Alert } from "@/workshop/alert"
@@ -11,13 +8,7 @@ import * as React from "react"
 
 
 const components = {
-    // Accordion,
-    // AccordionContent,
-    // AccordionItem,
-    // AccordionTrigger,
     Alert,
-    // AlertTitle,
-    // AlertDescription,
     h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
         <h1
             className={cn(
