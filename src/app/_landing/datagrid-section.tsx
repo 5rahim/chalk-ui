@@ -1,8 +1,10 @@
 "use client"
 import DatagridServerSideDemo from "@/demo/datagrid/datagrid-server-side-demo"
 import { AppLayoutStack } from "@/workshop/app-layout"
+import { Button } from "@/workshop/button"
 import { Card } from "@/workshop/card"
 import { defineSchema } from "@/workshop/form"
+import Link from "next/link"
 import React from "react"
 import { BiCheckCircle } from "react-icons/bi"
 
@@ -23,7 +25,7 @@ export function DatagridSection() {
 
                 <h1 className="text-pretty text-center">DataGrid</h1>
                 <p className="text-center text-pretty text-lg lg:text-xl font-medium text-[--muted]">
-                    Data Table with built-in features and server-side support. Powered by Tanstack's React Table.
+                    Data Table with built-in features and server-side support. Powered by Tanstack's React Table. <Link href="/docs/components/datagrid" target="_blank"><Button size="sm" intent="primary-link">Learn more</Button></Link>
                 </p>
 
                 <ul className="flex w-full items-center justify-center gap-4 flex-wrap">

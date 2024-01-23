@@ -1,10 +1,12 @@
 "use client"
 import { AppLayoutGrid, AppLayoutStack } from "@/workshop/app-layout"
+import { Button } from "@/workshop/button"
 import { Card } from "@/workshop/card"
 import { defineSchema, Field, Form } from "@/workshop/form"
 import { setDate, setMonth, setYear } from "date-fns"
+import Link from "next/link"
 import React from "react"
-import { BiCheck, BiCheckCircle } from "react-icons/bi"
+import { BiBook, BiCheck, BiCheckCircle } from "react-icons/bi"
 import { toast } from "sonner"
 
 const schema = defineSchema(({ z, presets }) => z.object({
@@ -41,7 +43,7 @@ export function FormSection() {
       </span>
       <span style={{ color: "rgb(126, 203, 199)" }}>from</span>
       <span style={{ color: "rgb(202, 202, 202)" }}> </span>
-      <span style={{ color: "rgb(222, 160, 96)" }}>"@/workshop/form"</span>
+      <span style={{ color: "rgb(222, 160, 96)" }}>"@/components/ui/form"</span>
     </span>
       {"\n"}
       <span className="line"> </span>
@@ -288,7 +290,7 @@ export function FormSection() {
 
                     <h1 className="text-pretty">Fully-featured Form</h1>
                     <p className="text-lg lg:text-xl font-medium text-[--muted] text-pretty">Build forms effortlessly with little to no boilerplate.
-                    Powered by React Hook Form and Zod.</p>
+                    Powered by React Hook Form and Zod. <Link href="/docs/components/form" target="_blank"><Button size="sm" intent="primary-link">Learn more</Button></Link></p>
 
                     <ul className="space-y-1">
                       <li className="flex items-center gap-1"><BiCheckCircle className="text-[--green] text-lg"/>Type safe</li>
@@ -321,6 +323,8 @@ export function FormSection() {
                             <Field.Submit className="w-full" intent="gray-outline" role="save">Save</Field.Submit>
                         </Form>
                     </Card>
+
+
 
                 </AppLayoutStack>
 
