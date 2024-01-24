@@ -37,8 +37,8 @@ export function rehypeComponent() {
                         src = fileName
                             ? component.files.find((file: string) => {
                             return (
-                                file.endsWith(`${fileName}.tsx`) ||
-                                file.endsWith(`${fileName}.ts`)
+                                file.endsWith(`/${fileName}.tsx`) ||
+                                file.endsWith(`/${fileName}.ts`)
                             )
                         }) || component.files[0]
                             : component.files[0]
@@ -110,8 +110,8 @@ export function rehypeComponent() {
                         src = fileName
                             ? component.files.find((file: string) => {
                             return (
-                                file.endsWith(`${fileName}.tsx`) ||
-                                file.endsWith(`${fileName}.ts`)
+                                file.endsWith(`/${fileName}.tsx`) ||
+                                file.endsWith(`/${fileName}.ts`)
                             )
                         }) || component.files[0]
                             : component.files[0]
