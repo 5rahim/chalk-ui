@@ -20,7 +20,7 @@ import { Popover } from "../popover"
 export const DateRangePickerAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-DateRangePicker__root",
-        "line-clamp-1",
+        "line-clamp-1 text-left",
     ]),
     placeholder: cva([
         "UI-DateRangePicker__placeholder",

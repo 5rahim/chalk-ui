@@ -20,7 +20,7 @@ import { Select } from "../select"
 export const DatePickerAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-DatePicker__root",
-        "line-clamp-1"
+        "line-clamp-1 text-left"
     ]),
     placeholder: cva([
         "UI-DatePicker__placeholder",
