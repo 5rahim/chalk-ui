@@ -72,11 +72,12 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
     ]), [isCollapsed, currentPathname])
 
     return (
-        <AppSidebar className="p-4">
+        <AppSidebar className="p-4 bg-gray-50 dark:bg-gray-950">
             {!isCollapsed && <div className="font-bold text-2xl mb-4">Dashboard</div>}
             <VerticalMenu
                 iconsOnly={isCollapsed}
                 items={items}
+                onLinkItemClick={() => ctx.setOpen(false)}
             />
         </AppSidebar>
     )

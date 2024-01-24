@@ -18,11 +18,16 @@ export function ExamplesNav(props: ExamplesNavProps) {
 
     const items = React.useMemo(() => ([
         { name: "Dashboard", isCurrent: pathname === "/examples/dashboard", href: "/examples/dashboard" },
+        { name: "Settings", isCurrent: pathname === "/examples/settings", href: "/examples/settings" },
     ]), [pathname])
 
     return (
         <div className="flex h-16 items-center lg:justify-center">
-            <NavigationMenu items={items} />
+            <NavigationMenu
+                className="border bg-[--background] rounded-full shadow-sm overflow-hidden"
+                itemClass="rounded-none"
+                items={items}
+            />
         </div>
     )
 }

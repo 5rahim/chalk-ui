@@ -32,6 +32,10 @@ export const PageHeaderAnatomy = defineStyleAnatomy({
         "justify-stretch flex flex-col-reverse space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end",
         "sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3",
     ]),
+    textContainer: cva([
+        "UI-PageHeader__textContainer",
+        "space-y-1"
+    ]),
     description: cva([
         "UI-PageHeader__description",
         "text-sm font-medium text-gray-500 dark:text-gray-400",
@@ -88,6 +92,7 @@ export const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>((pro
         actionContainerClass,
         descriptionClass,
         detailsContainerClass,
+        textContainerClass,
         ...rest
     } = props
 
@@ -107,7 +112,7 @@ export const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>((pro
                         {image}
                     </div>
                 </div>}
-                <div className="">
+                <div className={cn(PageHeaderAnatomy.textContainer(), textContainerClass)}>
                     <h1 className={cn(PageHeaderAnatomy.title({ size }), titleClass)}>{title}</h1>
                     {description && <p className={cn(PageHeaderAnatomy.description(), descriptionClass)}>
                         {description}

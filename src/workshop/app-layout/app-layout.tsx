@@ -95,20 +95,20 @@ export const AppLayoutStackAnatomy = defineStyleAnatomy({
 export const AppLayoutGridAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-AppLayoutGrid__root",
-        "relative grid grid-cols-1",
+        "relative flex flex-col",
     ], {
         variants: {
             breakBelow: {
-                sm: "sm:space-y-0",
-                md: "md:space-y-0",
-                lg: "lg:space-y-0",
-                xl: "xl:space-y-0",
+                sm: "sm:grid sm:space-y-0",
+                md: "md:grid md:space-y-0",
+                lg: "lg:grid lg:space-y-0",
+                xl: "xl:grid xl:space-y-0",
             },
             spacing: {
-                sm: "space-y-2 gap-2",
-                md: "space-y-4 gap-4",
-                lg: "space-y-8 gap-8",
-                xl: "space-y-10 gap-10",
+                sm: "gap-2",
+                md: "gap-4",
+                lg: "gap-8",
+                xl: "gap-10",
             },
             cols: { 1: null, 2: null, 3: null, 4: null, 5: null, 6: null },
         },

@@ -14,7 +14,7 @@ import { Disclosure, DisclosureContent, DisclosureItem, DisclosureTrigger } from
 export const VerticalMenuAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-VerticalMenu__root",
-        "block space-y-1",
+        "flex flex-col gap-1",
     ]),
     item: cva([
         "UI-VerticalMenu__item",
@@ -59,8 +59,8 @@ export const VerticalMenuAnatomy = defineStyleAnatomy({
         "UI-VerticalMenu__itemChevron",
         "size-4 transition-transform group-data-[state=open]/verticalMenu_parentItem:rotate-90",
     ]),
-    icon: cva([
-        "UI-VerticalMenu__icon",
+    itemIcon: cva([
+        "UI-VerticalMenu__itemIcon",
         "flex-shrink-0 mr-3",
         "text-[--muted]",
         "group-hover/verticalMenu_item:text-[--foreground]", // Item Hover
@@ -131,7 +131,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
         onLinkItemClick,
         /**/
         itemClass,
-        iconClass,
+        itemIconClass,
         parentItemClass,
         subContentClass,
         itemChevronClass,
@@ -172,8 +172,8 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
         >
             {item.iconType && <item.iconType
                 className={cn(
-                    VerticalMenuAnatomy.icon({ size, _center: iconsOnly }),
-                    iconClass,
+                    VerticalMenuAnatomy.itemIcon({ size, _center: iconsOnly }),
+                    itemIconClass,
                 )}
                 aria-hidden="true"
                 data-current={item.isCurrent}
@@ -181,7 +181,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
             {!iconsOnly && <span>{item.name}</span>}
             {item.addon}
         </div>
-    ), [iconsOnly, size, itemContentClass, iconClass])
+    ), [iconsOnly, size, itemContentClass, itemIconClass])
 
     return (
         <nav
