@@ -20,7 +20,7 @@ import { Popover } from "../popover"
 export const DateRangePickerAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-DateRangePicker__root",
-        "truncate",
+        "line-clamp-1",
     ]),
     placeholder: cva([
         "UI-DateRangePicker__placeholder",
@@ -164,7 +164,7 @@ export const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePick
             {...rest}
         >
             {date?.from ? (
-                date.to ? <span className="line-clamp-1">{`${format(date.from, "PPP")} - ${format(date.to, "PPP")}`}</span> : format(date.from, "PPP")
+                date.to ? <span className="line-clamp-1">{`${format(date.from, "P")} - ${format(date.to, "P")}`}</span> : format(date.from, "PPP")
             ) : <span className={cn(DateRangePickerAnatomy.placeholder(), placeholderClass)}>{placeholder || "Select a date"}</span>}
         </button>
     )

@@ -20,6 +20,7 @@ import { Select } from "../select"
 export const DatePickerAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-DatePicker__root",
+        "line-clamp-1"
     ]),
     placeholder: cva([
         "UI-DatePicker__placeholder",
@@ -169,7 +170,7 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>((
             {...rest}
         >
             {date ?
-                format(date, "PPP", { locale: locale }) :
+                format(date, "P", { locale: locale }) :
                 <span className={cn(DatePickerAnatomy.placeholder(), placeholderClass)}>{placeholder || "Select a date"}</span>}
         </button>
     )
