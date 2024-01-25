@@ -43,7 +43,6 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
             isCurrent: isCurrentContainer("/analytics"),
             iconType: BiBarChart,
             subContent: <VerticalMenu
-                collapsed={isCollapsed}
                 items={[
                     { name: "Company", href: "#", iconType: BiBriefcase, isCurrent: isCurrent("/analytics/company") },
                     { name: "Shops", href: "#", iconType: BiReceipt, isCurrent: isCurrent("/analytics/shops") },

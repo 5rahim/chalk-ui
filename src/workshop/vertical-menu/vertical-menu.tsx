@@ -111,7 +111,7 @@ export const VerticalMenuAnatomy = defineStyleAnatomy({
  * VerticalMenu
  * -----------------------------------------------------------------------------------------------*/
 
-const __VerticalMenuContext = React.createContext<Pick<VerticalMenuProps, "onAnyItemClick" | "onLinkItemClick">>({})
+const __VerticalMenuContext = React.createContext<Pick<VerticalMenuProps, "onAnyItemClick" | "onLinkItemClick"> & { collapsed?: boolean }>({})
 
 export type VerticalMenuItem = {
     name: string
@@ -149,7 +149,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
     const {
         children,
         size = "md",
-        collapsed,
+        collapsed: _collapsed1,
         onAnyItemClick,
         onLinkItemClick,
         /**/
@@ -168,7 +168,10 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
     const {
         onLinkItemClick: _onLinkItemClick,
         onAnyItemClick: _onAnyItemClick,
+        collapsed: _collapsed2,
     } = useContext(__VerticalMenuContext)
+
+    const collapsed = _collapsed1 ?? _collapsed2 ?? false
 
     const itemProps = (item: VerticalMenuItem) => ({
         className: cn(
@@ -228,6 +231,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
                 value={{
                     onAnyItemClick,
                     onLinkItemClick,
+                    collapsed: _collapsed1 ?? false,
                 }}
             >
                 {items.map((item, idx) => {

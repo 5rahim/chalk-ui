@@ -11,7 +11,6 @@ export default function VerticalMenuDemo() {
                     {
                         name: "My Account", iconType: BiUser, isCurrent: true,
                         subContent: <VerticalMenu
-                            collapsed
                             items={[
                                 { name: "Profile", href: "#", iconType: BiUser },
                                 { name: "Orders", href: "#", iconType: BiReceipt, isCurrent: true },
@@ -22,7 +21,6 @@ export default function VerticalMenuDemo() {
                     {
                         name: "Products", iconType: BiBox,
                         subContent: <VerticalMenu
-                            collapsed
                             items={[
                                 { name: "DataGrid", href: "#", iconType: BiTable },
                                 { name: "Form", href: "#", iconType: BiSolidKeyboard },

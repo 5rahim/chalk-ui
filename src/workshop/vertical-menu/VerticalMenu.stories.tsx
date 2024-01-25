@@ -63,7 +63,6 @@ export const collapsed: Story = {
             {
                 name: "My Account", href: "#", iconType: BiUser,
                 subContent: <VerticalMenu
-                    collapsed
                     items={[
                         { name: "Information", href: "#", iconType: BiUser },
                         { name: "Security", href: "#", iconType: BiCog },
