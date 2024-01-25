@@ -181,7 +181,7 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>((
                 <Select
                     size="sm"
                     intent="filled"
-                    options={Array(getYear(new Date()) - 1899).fill(0).map((_, i) => (
+                    options={Array(getYear(new Date()) - 1699).fill(0).map((_, i) => (
                         { label: String(getYear(new Date()) + 100 - i), value: String(getYear(new Date()) + 100 - i) }
                     ))}
                     value={String(getYear(date ?? new Date()))}
