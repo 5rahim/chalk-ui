@@ -42,9 +42,9 @@ export const ButtonAnatomy = defineStyleAnatomy({
 
                 "gray": "bg-gray-500 hover:bg-gray-600 active:bg-gray-700 border border-transparent",
                 "gray-outline": "text-gray-600 border border-[--border] bg-transparent hover:bg-gray-100 active:border-transparent active:bg-gray-200 dark:text-gray-300 dark:border-[--border] dark:hover:bg-gray-800 dark:active:bg-gray-700 dark:active:border-transparent dark:hover:text-gray-100",
-                "gray-subtle": "shadow-none text-gray-600 border bg-gray-100 border-transparent hover:bg-gray-200 active:bg-gray-300 dark:text-gray-300 dark:bg-opacity-10 dark:hover:bg-opacity-20",
-                "gray-link": "shadow-none text-gray-500 border border-transparent bg-transparent hover:underline active:text-gray-700 dark:text-gray-300 dark:active:text-gray-300",
-                "gray-basic": "shadow-none text-gray-500 border border-transparent bg-transparent hover:bg-gray-100 active:bg-gray-200 dark:active:bg-opacity-20 dark:text-gray-200 dark:hover:bg-opacity-10 dark:active:text-gray-200",
+                "gray-subtle": "shadow-none text-[--gray] border bg-gray-100 border-transparent hover:bg-gray-200 active:bg-gray-300 dark:text-gray-300 dark:bg-opacity-10 dark:hover:bg-opacity-20",
+                "gray-link": "shadow-none text-[--gray] border border-transparent bg-transparent hover:underline active:text-gray-700 dark:text-gray-300 dark:active:text-gray-200",
+                "gray-basic": "shadow-none text-[--gray] border border-transparent bg-transparent hover:bg-gray-100 active:bg-gray-200 dark:active:bg-opacity-20 dark:text-gray-200 dark:hover:bg-opacity-10 dark:active:text-gray-200",
 
                 "white": "text-black bg-white hover:bg-gray-200 active:bg-gray-300 border border-transparent",
                 "white-outline": "text-white border border-gray-200 bg-transparent hover:bg-white hover:text-black active:bg-gray-100 active:text-black",
