@@ -19,7 +19,7 @@ export const DrawerAnatomy = defineStyleAnatomy({
     ]),
     content: cva([
         "UI-Drawer__content",
-        "fixed z-50 w-full gap-4 bg-[--background] p-6 shadow-lg",
+        "fixed z-50 w-full gap-4 bg-[--background] p-6 shadow-lg overflow-y-auto",
         "transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-500 data-[state=open]:duration-500",
     ], {
         variants: {

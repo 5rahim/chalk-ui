@@ -26,7 +26,7 @@ export function FormSection() {
                 <AppLayoutStack className="col-span-2">
 
                     <pre
-                        className="max-h-[850px] p-4 lg:p-8 overflow-x-auto rounded-lg border bg-gray-900 dark:bg-gray-950 relative"
+                        className="max-h-[850px] p-4 lg:p-6 overflow-x-auto rounded-lg border bg-gray-900 dark:bg-gray-950 relative"
                         data-language="tsx"
                         data-theme="default"
                     >

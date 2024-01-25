@@ -88,7 +88,7 @@ export default function Home() {
                 <Link href="/docs"><Button size="lg" rounded>Get started</Button></Link>
             </div>
 
-            <AppLayout className="items-center justify-center w-full md:max-w-[500px] mx-auto gap-4 py-10 relative z-[1]">
+            <AppLayout className="items-center justify-center w-full md:max-w-[500px] mx-auto gap-4 py-10 relative z-[2]">
                 <p className="text-[--muted]">Made by <Link
                     href="https://rahim.app"
                     target="_blank"

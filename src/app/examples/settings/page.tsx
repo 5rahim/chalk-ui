@@ -97,7 +97,7 @@ export default function Page() {
                                 { value: "public", label: <><BiLockOpenAlt className="text-3xl" /> <span>Public</span></> },
                                 { value: "private", label: <><BiLockAlt className="text-3xl" /> <span>Private</span></> },
                             ]}
-                            stackClass="flex flex-row gap-2"
+                            stackClass="flex flex-row gap-2 space-y-0"
                             itemContainerClass={cn(
                                 "cursor-pointer aspect-square transition border-transparent rounded-[--radius] p-4 w-32 justify-center",
                                 "bg-gray-50 hover:bg-[--subtle] dark:bg-gray-900",
