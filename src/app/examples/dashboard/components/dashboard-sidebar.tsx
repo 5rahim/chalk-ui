@@ -43,7 +43,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
             isCurrent: isCurrentContainer("/analytics"),
             iconType: BiBarChart,
             subContent: <VerticalMenu
-                iconsOnly={isCollapsed}
+                collapsed={isCollapsed}
                 items={[
                     { name: "Company", href: "#", iconType: BiBriefcase, isCurrent: isCurrent("/analytics/company") },
                     { name: "Shops", href: "#", iconType: BiReceipt, isCurrent: isCurrent("/analytics/shops") },
@@ -75,7 +75,7 @@ export function DashboardSidebar(props: DashboardSidebarProps) {
         <AppSidebar className="p-4 bg-gray-50 dark:bg-gray-950">
             {!isCollapsed && <div className="font-bold text-2xl mb-4">Dashboard</div>}
             <VerticalMenu
-                iconsOnly={isCollapsed}
+                collapsed={isCollapsed}
                 items={items}
                 onLinkItemClick={() => ctx.setOpen(false)}
             />

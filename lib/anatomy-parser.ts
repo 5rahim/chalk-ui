@@ -38,7 +38,7 @@ export function getComponentAnatomyClassNames(type: string, anatomies: ParsedAna
 }
 
 export function getComponentAnatomyVariants(type: string, anatomies: ParsedAnatomy[]): ParsedVariant[] {
-    if (type.startsWith("VariantProps<")) {
+    if (type.startsWith("VariantProps<") || type.startsWith("Pick<VariantProps<")) {
         const classRgx = /typeof \w+Anatomy.(\w+)>/gm
         let matches = type.matchAll(classRgx)
         let partName: string = ""

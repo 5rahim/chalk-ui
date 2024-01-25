@@ -6,12 +6,12 @@ export default function VerticalMenuDemo() {
     return (
         <div className="max-w-[50px] w-full">
             <VerticalMenu
-                iconsOnly
+                collapsed
                 items={[
                     {
                         name: "My Account", iconType: BiUser, isCurrent: true,
                         subContent: <VerticalMenu
-                            iconsOnly
+                            collapsed
                             items={[
                                 { name: "Profile", href: "#", iconType: BiUser },
                                 { name: "Orders", href: "#", iconType: BiReceipt, isCurrent: true },
@@ -22,7 +22,7 @@ export default function VerticalMenuDemo() {
                     {
                         name: "Products", iconType: BiBox,
                         subContent: <VerticalMenu
-                            iconsOnly
+                            collapsed
                             items={[
                                 { name: "DataGrid", href: "#", iconType: BiTable },
                                 { name: "Form", href: "#", iconType: BiSolidKeyboard },

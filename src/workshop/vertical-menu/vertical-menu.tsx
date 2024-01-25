@@ -1,5 +1,6 @@
 "use client"
 
+import { Tooltip, TooltipProps } from "@/workshop/tooltip"
 import { cva, VariantProps } from "class-variance-authority"
 import Link from "next/link"
 import * as React from "react"
@@ -24,30 +25,33 @@ export const VerticalMenuAnatomy = defineStyleAnatomy({
         "data-[current=true]:bg-[--subtle] data-[current=true]:text-[--foreground]",
     ], {
         variants: {
+            collapsed: {
+                true: "justify-center",
+                false: null,
+            },
+        },
+        defaultVariants: {
+            collapsed: false,
+        },
+    }),
+    itemContent: cva([
+        "UI-VerticalMenu__itemContent",
+        "w-full flex items-center relative",
+    ], {
+        variants: {
             size: {
                 sm: "px-3 h-8 text-sm",
                 md: "px-3 h-10 text-sm",
                 lg: "px-3 h-12 text-base",
             },
-            _center: {
+            collapsed: {
                 true: "justify-center",
                 false: null,
             },
         },
         defaultVariants: {
             size: "md",
-            _center: false,
-        },
-    }),
-    itemContent: cva([
-        "UI-VerticalMenu__itemContent",
-        "w-full flex items-center",
-    ], {
-        variants: {
-            _center: {
-                true: "justify-center",
-                false: null,
-            },
+            collapsed: false,
         },
     }),
     parentItem: cva([
@@ -57,8 +61,24 @@ export const VerticalMenuAnatomy = defineStyleAnatomy({
     ]),
     itemChevron: cva([
         "UI-VerticalMenu__itemChevron",
-        "size-4 transition-transform group-data-[state=open]/verticalMenu_parentItem:rotate-90",
-    ]),
+        "size-4 absolute transition-transform group-data-[state=open]/verticalMenu_parentItem:rotate-90",
+    ], {
+        variants: {
+            size: {
+                sm: "right-3",
+                md: "right-3",
+                lg: "right-3",
+            },
+            collapsed: {
+                true: "top-1 left-1 size-3",
+                false: null,
+            },
+        },
+        defaultVariants: {
+            size: "md",
+            collapsed: false,
+        },
+    }),
     itemIcon: cva([
         "UI-VerticalMenu__itemIcon",
         "flex-shrink-0 mr-3",
@@ -72,7 +92,7 @@ export const VerticalMenuAnatomy = defineStyleAnatomy({
                 md: "size-5",
                 lg: "size-6",
             },
-            _center: {
+            collapsed: {
                 true: "mr-0",
                 false: null,
             },
@@ -105,18 +125,21 @@ export type VerticalMenuItem = {
 
 export type VerticalMenuProps = React.ComponentPropsWithRef<"div"> &
     ComponentAnatomy<typeof VerticalMenuAnatomy> &
-    VariantProps<typeof VerticalMenuAnatomy.item> & {
+    VariantProps<typeof VerticalMenuAnatomy.itemContent> & {
     /**
-     * If true, the nav will be rendered as a line of icons.
+     * The items to render.
      */
-    iconsOnly?: boolean
     items: VerticalMenuItem[]
     /**
-     * Callback when any item is clicked.
+     * Props passed to each item tooltip that is shown when the menu is collapsed.
+     */
+    itemTooltipProps?: Omit<TooltipProps, "trigger">
+    /**
+     * Callback fired when any item is clicked.
      */
     onAnyItemClick?: React.MouseEventHandler<HTMLElement>
     /**
-     * Callback when a link item is clicked.
+     * Callback fired when a link item is clicked.
      */
     onLinkItemClick?: React.MouseEventHandler<HTMLElement>
 }
@@ -125,8 +148,8 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
 
     const {
         children,
-        size,
-        iconsOnly,
+        size = "md",
+        collapsed,
         onAnyItemClick,
         onLinkItemClick,
         /**/
@@ -136,6 +159,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
         subContentClass,
         itemChevronClass,
         itemContentClass,
+        itemTooltipProps,
         className,
         items,
         ...rest
@@ -148,7 +172,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
 
     const itemProps = (item: VerticalMenuItem) => ({
         className: cn(
-            VerticalMenuAnatomy.item({ size, _center: iconsOnly }),
+            VerticalMenuAnatomy.item({ collapsed }),
             itemClass,
         ),
         "data-current": item.isCurrent,
@@ -163,25 +187,35 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
         },
     })
 
+    const ItemContentWrapper = React.useCallback((props: { children: React.ReactElement, name: string }) => {
+        return !collapsed ? props.children : (
+            <Tooltip trigger={props.children} side="right" {...itemTooltipProps}>
+                {props.name}
+            </Tooltip>
+        )
+    }, [collapsed, itemTooltipProps])
+
     const ItemContent = React.useCallback((item: VerticalMenuItem) => (
-        <div
-            className={cn(
-                VerticalMenuAnatomy.itemContent({ _center: iconsOnly }),
-                itemContentClass,
-            )}
-        >
-            {item.iconType && <item.iconType
+        <ItemContentWrapper name={item.name}>
+            <div
                 className={cn(
-                    VerticalMenuAnatomy.itemIcon({ size, _center: iconsOnly }),
-                    itemIconClass,
+                    VerticalMenuAnatomy.itemContent({ size, collapsed }),
+                    itemContentClass,
                 )}
-                aria-hidden="true"
-                data-current={item.isCurrent}
-            />}
-            {!iconsOnly && <span>{item.name}</span>}
-            {item.addon}
-        </div>
-    ), [iconsOnly, size, itemContentClass, itemIconClass])
+            >
+                {item.iconType && <item.iconType
+                    className={cn(
+                        VerticalMenuAnatomy.itemIcon({ size, collapsed }),
+                        itemIconClass,
+                    )}
+                    aria-hidden="true"
+                    data-current={item.isCurrent}
+                />}
+                {!collapsed && <span>{item.name}</span>}
+                {item.addon}
+            </div>
+        </ItemContentWrapper>
+    ), [collapsed, size, itemContentClass, itemIconClass])
 
     return (
         <nav
@@ -214,7 +248,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
                                             <DisclosureTrigger>
                                                 <button
                                                     className={cn(
-                                                        VerticalMenuAnatomy.item({ size, _center: iconsOnly }),
+                                                        VerticalMenuAnatomy.item({ collapsed }),
                                                         itemClass,
                                                         VerticalMenuAnatomy.parentItem(),
                                                         parentItemClass,
@@ -224,7 +258,7 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
                                                     onClick={item.onClick}
                                                 >
                                                     <ItemContent {...item} />
-                                                    {!iconsOnly && <svg
+                                                    <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         width="24"
                                                         height="24"
@@ -234,10 +268,10 @@ export const VerticalMenu = React.forwardRef<HTMLDivElement, VerticalMenuProps>(
                                                         strokeWidth="2"
                                                         strokeLinecap="round"
                                                         strokeLinejoin="round"
-                                                        className={cn(VerticalMenuAnatomy.itemChevron(), itemChevronClass)}
+                                                        className={cn(VerticalMenuAnatomy.itemChevron({ size, collapsed }), itemChevronClass)}
                                                     >
                                                         <polyline points="9 18 15 12 9 6"></polyline>
-                                                    </svg>}
+                                                    </svg>
                                                 </button>
                                             </DisclosureTrigger>
 

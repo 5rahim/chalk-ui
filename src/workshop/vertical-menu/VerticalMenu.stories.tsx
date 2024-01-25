@@ -56,14 +56,14 @@ export const Small: Story = {
     },
 }
 
-export const IconsOnly: Story = {
+export const collapsed: Story = {
     args: {
-        iconsOnly: true,
+        collapsed: true,
         items: [
             {
                 name: "My Account", href: "#", iconType: BiUser,
                 subContent: <VerticalMenu
-                    iconsOnly
+                    collapsed
                     items={[
                         { name: "Information", href: "#", iconType: BiUser },
                         { name: "Security", href: "#", iconType: BiCog },
