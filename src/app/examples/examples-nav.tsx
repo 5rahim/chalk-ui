@@ -22,6 +22,7 @@ export function ExamplesNav(props: ExamplesNavProps) {
     const items = React.useMemo(() => ([
         { name: "Dashboard", isCurrent: pathname === "/examples/dashboard", href: "/examples/dashboard" },
         { name: "Settings", isCurrent: pathname === "/examples/settings", href: "/examples/settings" },
+        { name: "Authentication", isCurrent: pathname === "/examples/authentication", href: "/examples/authentication" },
     ]), [pathname])
 
     return (
