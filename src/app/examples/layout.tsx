@@ -65,7 +65,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </AppLayout>
             <div className="container relative">
                 <ExamplesNav />
-                <div className="overflow-hidden relative rounded-[0.5rem] border bg-[--background] min-h-[800px] shadow-md">
+                <div className="overflow-hidden relative rounded-[0.5rem] border bg-[--background] h-[800px] shadow-md">
                     {children}
                 </div>
             </div>

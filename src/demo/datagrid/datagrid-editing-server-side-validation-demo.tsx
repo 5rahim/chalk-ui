@@ -1,9 +1,9 @@
-import { toast } from "sonner"
+import { CurrencyInput } from "@/workshop/currency-input"
 import { DataGridWithApi, defineDataGridColumns, useDataGrid } from "@/workshop/datagrid"
 import { defineSchema } from "@/workshop/form"
-import { NumberInput } from "@/workshop/number-input"
 import { TextInput } from "@/workshop/text-input"
 import * as React from "react"
+import { toast } from "sonner"
 import { newProduct, Product, range } from "./datagrid-fake-api"
 
 interface DataGridEditingTestProps {
@@ -11,7 +11,7 @@ interface DataGridEditingTestProps {
 }
 
 
-const _data = range(6).map(() => newProduct())
+const _data = range(32).map(() => newProduct())
 
 export async function fetchData() {
     // Simulate some network latency
@@ -85,10 +85,6 @@ export const DatagridEditingServerSideValidationDemo: React.FC<DataGridEditingTe
     const schema = defineSchema(({ z }) => z.object({
         name: z.string().refine(value => nameVerification(value), { message: "Invalid name" }),
         price: z.number().min(3),
-        category: z.string().nullable(),
-        availability: z.string(),
-        visible: z.boolean(),
-        random_date: z.date(),
     }))
 
     React.useEffect(() => {
@@ -102,10 +98,7 @@ export const DatagridEditingServerSideValidationDemo: React.FC<DataGridEditingTe
 
     const columns = React.useMemo(() => defineDataGridColumns<Product>((
         {
-            withFiltering,
-            getFilterFn,
             withEditing,
-            withValueFormatter,
         }) => [
         {
             accessorKey: "name",
@@ -115,7 +108,7 @@ export const DatagridEditingServerSideValidationDemo: React.FC<DataGridEditingTe
                 ...withEditing({
                     zodType: schema.shape.name, // Assign type using `zodType`
                     field: (ctx, options) => (
-                        <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent={"unstyled"} size="sm" />
+                        <TextInput {...ctx} onChange={e => ctx.onChange(e.target.value ?? "")} intent="unstyled" size="sm" />
                     ),
                 }),
             },
@@ -128,15 +121,11 @@ export const DatagridEditingServerSideValidationDemo: React.FC<DataGridEditingTe
             meta: {
                 ...withEditing<number>({ // Assign type using generics
                     field: ({ onChange, ...ctx }) => (
-                        <NumberInput
+                        <CurrencyInput
                             {...ctx}
-                            onValueChange={onChange}
-                            step={1}
-                            hideControls
-                            formatOptions={{
-                                maximumFractionDigits: 0,
-                            }}
-                            intent={"unstyled"}
+                            onValueChange={(_, values) => onChange(values?.float ?? 0)}
+                            intlConfig={{ locale: "en-US", currency: "USD" }}
+                            intent="unstyled"
                             size="sm"
                         />
                     ),
@@ -162,6 +151,13 @@ export const DatagridEditingServerSideValidationDemo: React.FC<DataGridEditingTe
         onRowEdit: (event) => {
             console.log("editing", event)
             mutate(event.data)
+            toast("Form submitted successfully!", {
+                description:
+                    <pre className="max-w-full w-[calc(var(--width)-35px)] overflow-x-hidden p-1 rounded-[--radius] bg-[--subtle] border text-xs">
+                                        {JSON.stringify(event.data, null, 2)}
+                                    </pre>,
+                position: "bottom-right",
+            })
         },
         onRowValidationError: (event) => {
             console.log("validation error", event)

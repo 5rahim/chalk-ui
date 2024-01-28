@@ -298,15 +298,15 @@ export function useDataGrid<T extends Record<string, any>>(props: DataGridInstan
         return table.getRowModel().rows.slice(pn.pageIndex * pn.pageSize, (pn.pageIndex + 1) * pn.pageSize)
     }, [table.getRowModel().rows, table.getState().pagination])
 
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         table.setPageIndex(0)
-    }, [table.getState().globalFilter])
+    }, [table.getState().globalFilter, table.getState().columnFilters])
 
     React.useEffect(() => {
         if (!enableManualPagination) {
             setRowCount(table.getRowModel().rows.length)
         }
-    }, [table.getRowModel().rows])
+    }, [table.getRowModel().rows.length])
 
     return {
         ...rest,
