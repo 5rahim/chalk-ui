@@ -37,7 +37,6 @@ export const CalendarAnatomy = defineStyleAnatomy({
     ]),
     navButton: cva([
         "UI-Calendar__navButton",
-        // "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
     ]),
     navButtonPrevious: cva([
         "UI-Calendar__navButtonPrevious",
@@ -88,13 +87,12 @@ export const CalendarAnatomy = defineStyleAnatomy({
     ]),
     dayToday: cva([
         "UI-Calendar__dayToday",
-        "bg-[--subtle] text-[--text] rounded-[--radius]",
+        "bg-[--subtle] text-[--foreground] rounded-[--radius]",
     ]),
     dayOutside: cva([
         "UI-Calendar__dayOutside",
-        "day-outside text-[--muted] opacity-30",
-        "aria-selected:bg-[--subtle]/50",
-        "aria-selected:text-white",
+        "day-outside !text-[--muted] opacity-20",
+        "aria-selected:bg-transparent",
         "aria-selected:opacity-30",
     ]),
     dayDisabled: cva([
@@ -125,7 +123,6 @@ export function Calendar(props: CalendarProps) {
     const {
         className,
         classNames,
-        showOutsideDays = true,
         monthsClass,
         monthClass,
         captionClass,
@@ -153,7 +150,6 @@ export function Calendar(props: CalendarProps) {
     return (
         <DayPicker
             fixedWeeks
-            showOutsideDays={showOutsideDays}
             className={cn(CalendarAnatomy.root(), className)}
             classNames={{
                 months: cn(CalendarAnatomy.months(), monthsClass),

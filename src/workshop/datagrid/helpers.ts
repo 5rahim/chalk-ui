@@ -34,11 +34,7 @@ function withEditing<T extends any = unknown, ZodType extends ZodTypeAny = ZodAn
  * Filtering
  * -----------------------------------------------------------------------------------------------*/
 
-export type DataGridFilteringType = "select" | "radio" | "checkbox" | "boolean" | "date-range"
-
-export interface FilterFns {
-    dateRangeFilter: any
-}
+export type DataGridFilteringType = "select" | "radio" | "checkbox" | "boolean" | "date-range" | "number-range"
 
 type _DefaultFilteringProps = {
     type: DataGridFilteringType
@@ -65,9 +61,7 @@ export type DataGridFilteringHelper<T extends DataGridFilteringType = "select"> 
 /**
  * Built-in filter functions supported DataGrid
  */
-export type DataGridSupportedFilterFn =
-    Extract<BuiltInFilterFn, "equals" | "equalsString" | "arrIncludesSome" | "inNumberRange">
-    | "dateRangeFilter"
+export type DataGridSupportedFilterFn = "equals" | "equalsString" | "arrIncludesSome" | "inNumberRange" | "dateRangeFilter"
 
 function withFiltering<T extends DataGridFilteringType>(params: DataGridFilteringHelper<T>) {
     return {
@@ -81,9 +75,11 @@ const getFilterFn = (type: DataGridFilteringType) => {
     const fns: { [key: string]: DataGridSupportedFilterFn } = {
         select: "equalsString",
         boolean: "equals",
+        "number-range": "inNumberRange",
         checkbox: "arrIncludesSome",
         radio: "equalsString",
         "date-range": "dateRangeFilter",
+
     }
     return fns[type] as any
 }

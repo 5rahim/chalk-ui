@@ -34,10 +34,16 @@ export const DatagridDemo = (props: DataGridDemoProps) => {
             header: "Price",
             cell: info => info.renderValue(),
             size: 10,
+            filterFn: getFilterFn("number-range"),
             meta: {
                 ...withValueFormatter<number>(value => {
                     return "$" + Intl.NumberFormat("en-US").format(value)
                 }),
+                ...withFiltering({
+                    type: "number-range",
+                    icon: <BiDotsHorizontal />,
+                    name: "Price",
+                })
             },
         },
         {

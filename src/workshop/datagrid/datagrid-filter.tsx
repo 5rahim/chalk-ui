@@ -1,5 +1,6 @@
 "use client"
 
+import { NumberInput } from "@/workshop/number-input"
 import { Column } from "@tanstack/react-table"
 import { cva } from "class-variance-authority"
 import * as React from "react"
@@ -92,7 +93,7 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
                     leftAddon={filterParams.name}
                     options={[...options.map(n => ({ value: n.value, label: valueFormatter(n.value) }))]}
                     onValueChange={v => handleUpdate(v.trim().toLowerCase())}
-                    size={"sm"}
+                    size="sm"
                     fieldClass="w-fit"
                     className="sm:w-auto pr-8 md:max-w-sm"
                 />
@@ -181,12 +182,35 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
                             to: filterValue.end,
                         } : undefined}
                         onValueChange={value => handleUpdate({
-                            start: value?.from,
-                            end: value?.to,
+                            from: value?.from,
+                            to: value?.to,
                         })}
                         placeholder={translations["date-range-placeholder"][lng]}
-                        intent={"unstyled"}
+                        intent="unstyled"
                         locale={dateFnsLocales[lng]}
+                    />
+                </div>
+            )}
+            {/*Number Range*/}
+            {filterParams.type === "number-range" && (
+                <div className={cn(DataGridAnatomy.filterDropdownButton(), "truncate overflow-ellipsis")}>
+                    {filterParams.icon && <span>{filterParams.icon}</span>}
+                    <span>{filterParams.name}:</span>
+                    <NumberInput
+                        value={filterValue.min}
+                        onValueChange={value => handleUpdate({
+                            min: value,
+                            max: filterValue?.max,
+                        })}
+                        intent="unstyled"
+                    />
+                    <NumberInput
+                        value={filterValue.max}
+                        onValueChange={value => handleUpdate({
+                            min: filterValue?.min,
+                            max: value,
+                        })}
+                        intent="unstyled"
                     />
                 </div>
             )}
@@ -204,8 +228,8 @@ export function DataGridFilter<T extends Record<string, any>>(props: DataGridFil
 DataGridFilter.displayName = "DataGridFilter"
 
 
-interface DataGridActiveFilterProps extends Omit<React.ComponentPropsWithRef<"button">, "value">,
-    ComponentAnatomy<typeof DataGridActiveFilterAnatomy> {
+type DataGridActiveFilterProps = Omit<React.ComponentPropsWithRef<"button">, "value"> &
+    ComponentAnatomy<typeof DataGridActiveFilterAnatomy> & {
     children?: React.ReactNode
     options: DataGridFilteringHelper<any>
     value: unknown
@@ -221,7 +245,8 @@ export const DataGridActiveFilter = React.forwardRef<HTMLButtonElement, DataGrid
     return (
         <button
             ref={ref}
-            className={cn(DataGridAnatomy.filterDropdownButton(), "truncate overflow-ellipsis")} {...rest}
+            className={cn(DataGridAnatomy.filterDropdownButton(), "truncate overflow-ellipsis")}
+            {...rest}
         >
             {options.icon && <span>{options.icon}</span>}
             <span>{options.name}:</span>

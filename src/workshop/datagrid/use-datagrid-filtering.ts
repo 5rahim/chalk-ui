@@ -40,6 +40,8 @@ export function useDataGridFiltering<T>(props: DataGridFilteringHookProps<T>) {
                 return options.options?.map(n => n.value) ?? []
             } else if (options.type === "date-range") {
                 return { from: new Date(), to: addDays(new Date(), 7) }
+            } else if (options.type === "number-range") {
+                return { min: 0, max: 1 }
             }
         }
         return null
