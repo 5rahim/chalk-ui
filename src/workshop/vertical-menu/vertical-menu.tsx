@@ -1,6 +1,6 @@
 "use client"
 
-import { Tooltip, TooltipProps } from "@/workshop/tooltip"
+import { Tooltip, TooltipProps } from "../tooltip"
 import { cva, VariantProps } from "class-variance-authority"
 import Link from "next/link"
 import * as React from "react"

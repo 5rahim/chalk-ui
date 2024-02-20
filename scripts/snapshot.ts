@@ -25,12 +25,12 @@ import { createBankSnapshot } from "./create-bank-snapshot"
         process.exit(0)
     }
 
-    const snapshotPath = path.join(snapshotDir, "/bank/bank.json")
+    // const snapshotPath = path.join(snapshotDir, "/bank/bank.json")
     const snapshotWebPath = path.join(process.cwd(), "/src/pages/api/bank.json")
 
     const jsonData = await createBankSnapshot()
     const jsonOutput = JSON.stringify(jsonData.filter(n => n.name.length > 0), null, 2)
-    await fs.writeFile(snapshotPath, jsonOutput, { encoding: "utf-8" })
+    // await fs.writeFile(snapshotPath, jsonOutput, { encoding: "utf-8" })
     await fs.writeFile(snapshotWebPath, jsonOutput, { encoding: "utf-8" })
     logger.success(`✔ Snapshot created`)
 
