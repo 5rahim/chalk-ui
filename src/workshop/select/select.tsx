@@ -15,7 +15,7 @@ import { extractInputPartProps, hiddenInputStyles, InputAddon, InputAnatomy, Inp
 export const SelectAnatomy = defineStyleAnatomy({
     root: cva([
         "UI-Select__root",
-        "inline-flex items-center justify-between relative",
+        "inline-flex items-center justify-between relative whitespace-nowrap truncate",
     ]),
     chevronIcon: cva([
         "UI-Combobox__chevronIcon",
