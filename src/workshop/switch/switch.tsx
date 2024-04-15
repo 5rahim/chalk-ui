@@ -155,7 +155,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>((props, r
                     value={_value ? "on" : "off"}
                     checked={basicFieldProps.required ? _value : true}
                     aria-hidden="true"
-                    required={basicFieldProps.required}
+                    required={controlledValue === undefined && basicFieldProps.required}
                     tabIndex={-1}
                     onChange={() => {}}
                     onFocusCapture={() => buttonRef.current?.focus()}
