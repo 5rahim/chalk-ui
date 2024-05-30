@@ -182,7 +182,7 @@ export const Bank: Bank = {
     "command": {
         name: "command",
         component: React.lazy(() => import("@/workshop/command/command")),
-        family: ["input"],
+        family: ["modal", "input"],
         files: ["src/workshop/command/command.tsx", "src/workshop/command/index.tsx"],
     },
     "currency-input": {
@@ -374,7 +374,7 @@ export const Bank: Bank = {
     "vertical-menu": {
         name: "vertical-menu",
         component: React.lazy(() => import("@/workshop/vertical-menu/vertical-menu")),
-        family: ["disclosure"],
+        family: ["tooltip", "disclosure"],
         files: ["src/workshop/vertical-menu/index.tsx", "src/workshop/vertical-menu/vertical-menu.tsx"],
     },
     "accordion-demo": {
