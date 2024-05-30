@@ -46,7 +46,7 @@ export const DataGridAnatomy = defineStyleAnatomy({
     ]),
     table: cva([
         "UI-DataGrid__table",
-        "w-full relative table-auto md:table-fixed",
+        "w-full relative table-fixed",
     ]),
     tableHead: cva([
         "UI-DataGrid__tableHead",
@@ -71,7 +71,7 @@ export const DataGridAnatomy = defineStyleAnatomy({
     ]),
     td: cva([
         "UI-DataGrid__td",
-        "px-2 py-2 w-full whitespace-nowrap text-base font-normal text-[--text-color]",
+        "px-2 py-2 w-full whitespace-nowrap text-base font-normal text-[--foreground]",
         "data-[is-selection-col=true]:px-2 data-[is-selection-col=true]:sm:px-0 data-[is-selection-col=true]:text-center",
         "data-[action-col=false]:truncate data-[action-col=false]:overflow-ellipsis",
         "data-[row-selected=true]:bg-brand-50 dark:data-[row-selected=true]:bg-gray-800",
@@ -182,7 +182,7 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
         persistent: enablePersistentRowSelection,
         onRowSelect: onRowSelect,
         rowSelectionPrimaryKey: rowSelectionPrimaryKey,
-        enabled: enableRowSelection,
+        enabled: !!enableRowSelection,
     })
 
     const {
@@ -350,10 +350,10 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                                     colSpan={header.colSpan}
                                     scope="col"
                                     className={cn(DataGridAnatomy.th(), thClass)}
-                                    data-is-selection-col={`${index === 0 && enableRowSelection}`}
+                                    data-is-selection-col={`${index === 0 && !!enableRowSelection}`}
                                     style={{ width: header.getSize() }}
                                 >
-                                    {((index !== 0 && enableRowSelection) || !enableRowSelection) ? <div
+                                    {((index !== 0 && !!enableRowSelection) || !enableRowSelection) ? <div
                                         className={cn(
                                             "flex items-center justify-between",
                                             {
@@ -545,23 +545,23 @@ export function DataGrid<T extends Record<string, any>>(props: DataGridProps<T>)
                         direction="previous"
                         isChevrons
                         onClick={() => table.setPageIndex(0)}
-                        isDisabled={!table.getCanPreviousPage() || isInLoadingState}
+                        disabled={!table.getCanPreviousPage() || isInLoadingState}
                     />
                     <PaginationTrigger
                         direction="previous"
                         onClick={() => table.previousPage()}
-                        isDisabled={!table.getCanPreviousPage() || isInLoadingState}
+                        disabled={!table.getCanPreviousPage() || isInLoadingState}
                     />
                     <PaginationTrigger
                         direction="next"
                         onClick={() => table.nextPage()}
-                        isDisabled={!table.getCanNextPage() || isInLoadingState}
+                        disabled={!table.getCanNextPage() || isInLoadingState}
                     />
                     <PaginationTrigger
                         direction="next"
                         isChevrons
                         onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                        isDisabled={!table.getCanNextPage() || isInLoadingState}
+                        disabled={!table.getCanNextPage() || isInLoadingState}
                     />
                 </Pagination>
 
