@@ -229,7 +229,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     return (
         <BasicField
             {...basicFieldProps}
-            id={api.inputProps.id}
+            id={api.getInputProps().id}
         >
             <InputContainer {...inputContainerProps}>
                 <InputAddon {...leftAddonProps} />
@@ -259,7 +259,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                     data-readonly={basicFieldProps.readonly}
                     aria-readonly={basicFieldProps.readonly}
                     required={basicFieldProps.required}
-                    {...api.inputProps}
+                    {...api.getInputProps()}
                     {...rest}
                 />
 
@@ -289,10 +289,10 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                             NumberInputAnatomy.control(),
                             controlClass,
                         )}
-                        {...api.incrementTriggerProps}
+                        {...api.getIncrementTriggerProps()}
                         data-readonly={basicFieldProps.readonly}
-                        data-disabled={basicFieldProps.disabled || api.incrementTriggerProps.disabled}
-                        disabled={basicFieldProps.disabled || basicFieldProps.readonly || api.incrementTriggerProps.disabled}
+                        data-disabled={basicFieldProps.disabled || api.getIncrementTriggerProps().disabled}
+                        disabled={basicFieldProps.disabled || basicFieldProps.readonly || api.getIncrementTriggerProps().disabled}
                         tabIndex={0}
                         icon={<svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -314,10 +314,10 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                             NumberInputAnatomy.control(),
                             controlClass,
                         )}
-                        {...api.decrementTriggerProps}
+                        {...api.getDecrementTriggerProps()}
                         data-readonly={basicFieldProps.readonly}
-                        data-disabled={basicFieldProps.disabled || api.decrementTriggerProps.disabled}
-                        disabled={basicFieldProps.disabled || basicFieldProps.readonly || api.decrementTriggerProps.disabled}
+                        data-disabled={basicFieldProps.disabled || api.getDecrementTriggerProps().disabled}
+                        disabled={basicFieldProps.disabled || basicFieldProps.readonly || api.getDecrementTriggerProps().disabled}
                         tabIndex={0}
                         icon={<svg
                             xmlns="http://www.w3.org/2000/svg"
