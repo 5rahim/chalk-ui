@@ -4,7 +4,7 @@
  */
 import { promises as fs } from "fs"
 import path from "path"
-import _jsonBank from "../cli/bank/bank.json"
+import _jsonBank from "../src/pages/api/bank.json"
 import { DirectoryData } from "../cli/info"
 
 let jsonBank = _jsonBank as DirectoryData[]
