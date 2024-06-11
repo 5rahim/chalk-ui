@@ -141,7 +141,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>((p
         }
     }, [])
 
-    const [_value, _setValue] = React.useState<E164Number | undefined>(_defaults.phoneNumber)
+    const [_value, _setValue] = React.useState<string | undefined>(_defaults.phoneNumber)
 
     const handleOnValueChange = React.useCallback((value: E164Number | undefined) => {
         _setValue(value)
