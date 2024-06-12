@@ -11,7 +11,7 @@ export const InputAnatomy = defineStyleAnatomy({
         "UI-Input__root",
         "flex items-center",
         "w-full rounded-[--radius]",
-        "bg-[--paper] border border-[--border] placeholder-gray-400 dark:placeholder-gray-600",
+        "bg-[--paper] border border-[--border] placeholder-gray-400 dark:placeholder-gray-500",
         "disabled:cursor-not-allowed",
         "data-[disable=true]:shadow-none data-[disable=true]:opacity-50",
         "focus:border-brand focus:ring-1 focus:ring-[--ring]",
@@ -109,9 +109,9 @@ export type InputStyling = Omit<VariantProps<typeof InputAnatomy.root>,
     "isDisabled" | "hasError" | "hasLeftAddon" | "hasRightAddon" | "hasLeftIcon" | "hasRightIcon"> &
     ComponentAnatomy<typeof InputAddonsAnatomy> &
     ComponentAnatomy<typeof InputContainerAnatomy> & {
-    leftAddon?: string
+    leftAddon?: React.ReactNode
     leftIcon?: React.ReactNode
-    rightAddon?: string
+    rightAddon?: React.ReactNode
     rightIcon?: React.ReactNode
 }
 

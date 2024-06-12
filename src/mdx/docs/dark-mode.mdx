@@ -31,8 +31,8 @@ export default function RootLayout({ children }) {
       <body suppressHydrationWarning>
         <ClientProviders>
             {children}
+            <Toaster />
         </ClientProviders>
-        <Toaster />
       </body>
     </html>
   )

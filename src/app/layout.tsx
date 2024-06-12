@@ -50,8 +50,8 @@ export default function RootLayout({
         <body className={inter.className} suppressHydrationWarning>
         <ClientProviders>
             {children}
+            <Toaster />
         </ClientProviders>
-        <Toaster />
         </body>
         </html>
     )

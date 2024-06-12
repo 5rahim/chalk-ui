@@ -1,6 +1,7 @@
 "use client"
 
 import { cva } from "class-variance-authority"
+import { useTheme } from "next-themes"
 import * as React from "react"
 import { Toaster as Sonner } from "sonner"
 import { cn, defineStyleAnatomy } from "../core/styling"
@@ -57,11 +58,13 @@ export const Toaster = ({ position = "top-center", ...props }: ToasterProps) => 
         ...props,
     }), [])
 
+    const { theme = "light" } = useTheme()
+
     return (
         <>
-            <Sonner theme="light"{...allProps} />
-            <Sonner theme="dark" {...allProps} />
-            <Sonner theme="system" {...allProps} />
+            {theme === "light" && <Sonner theme="light" {...allProps} />}
+            {theme === "dark" && <Sonner theme="dark" {...allProps} />}
+            {theme === "system" && <Sonner theme="system" {...allProps} />}
         </>
     )
 }

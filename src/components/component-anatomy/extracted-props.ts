@@ -65,7 +65,7 @@ export const InputStylingProps = [
         "name": "leftAddon",
         "required": false,
         "description": "",
-        "value": "string",
+        "value": "React.ReactNode",
     },
     {
         "name": "leftIcon",
@@ -77,7 +77,7 @@ export const InputStylingProps = [
         "name": "rightAddon",
         "required": false,
         "description": "",
-        "value": "string",
+        "value": "React.ReactNode",
     },
     {
         "name": "rightIcon",
