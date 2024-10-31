@@ -40,6 +40,10 @@ export const SelectAnatomy = defineStyleAnatomy({
         "data-highlighted:outline-none data-highlighted:bg-[--subtle]",
         "data-[disabled=true]:opacity-50 data-[disabled=true]:pointer-events-none",
     ]),
+    itemText: cva([
+        "UI-Select__itemText",
+        "flex-none whitespace-nowrap truncate",
+    ]),
     checkIcon: cva([
         "UI-Select__checkIcon",
         "absolute left-2 w-4 inline-flex items-center justify-center",
@@ -112,6 +116,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
         viewportClass,
         checkIconClass,
         itemClass,
+        itemTextClass,
         /**/
         dir,
         value: controlledValue,
@@ -256,7 +261,10 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>((props, r
                                         disabled={option.disabled}
                                         data-disabled={option.disabled}
                                     >
-                                        <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
+                                        <SelectPrimitive.ItemText className={cn(
+                                            SelectAnatomy.itemText(),
+                                            itemTextClass,
+                                        )}>{option.label}</SelectPrimitive.ItemText>
                                         <SelectPrimitive.ItemIndicator asChild>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"

@@ -9,7 +9,7 @@ import {rehypeComponent}                                   from "./lib/rehype-co
 import {getHighlighter, loadTheme}                         from "shiki";
 import path                                                from "path";
 
-/** @type {import('contentlayer/source-files').ComputedFields} */
+/** @type {import('contentlayer2/source-files').ComputedFields} */
 const computedFields = {
     slug: {
         type: "string",

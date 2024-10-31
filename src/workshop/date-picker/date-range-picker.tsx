@@ -3,7 +3,7 @@
 import { cva } from "class-variance-authority"
 import { format, Locale } from "date-fns"
 import * as React from "react"
-import { DateRange, DayPickerBase } from "react-day-picker"
+import { DateRange, DayPickerProps } from "react-day-picker"
 import { BasicField, BasicFieldOptions, extractBasicFieldProps } from "../basic-field"
 import { Calendar } from "../calendar"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
@@ -58,9 +58,9 @@ export type DateRangePickerProps = Omit<React.ComponentPropsWithRef<"button">, "
     locale?: Locale
     /**
      * Props to pass to the date picker
-     * @see https://react-day-picker.js.org/api/interfaces/DayPickerBase
+     * @see https://react-day-picker.js.org/api/interfaces/DayPickerProps
      */
-    pickerOptions?: Omit<DayPickerBase, "locale">
+    pickerOptions?: Omit<DayPickerProps, "locale">
     /**
      * Ref to the input element
      */
@@ -171,14 +171,12 @@ export const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePick
 
     const Picker = (
         <Calendar
-            captionLayout="dropdown-buttons"
             mode="range"
             defaultMonth={date?.from ?? new Date()}
             selected={date}
             onSelect={handleOnSelect}
             locale={locale}
-            initialFocus
-            tableClass="w-auto mx-auto"
+            monthGridClass="w-auto mx-auto"
             numberOfMonths={2}
         />
     )

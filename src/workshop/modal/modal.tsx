@@ -1,7 +1,8 @@
 "use client"
 
+import { DrawerAnatomy } from "@/workshop/drawer"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { cva } from "class-variance-authority"
+import { cva, VariantProps } from "class-variance-authority"
 import * as React from "react"
 import { CloseButton } from "../button"
 import { cn, ComponentAnatomy, defineStyleAnatomy } from "../core/styling"
@@ -16,20 +17,34 @@ export const ModalAnatomy = defineStyleAnatomy({
         "fixed inset-0 z-50 bg-black/80",
         "data-[state=open]:animate-in data-[state=closed]:animate-out",
         "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        "overflow-y-auto p-0 md:p-4 grid place-items-center",
     ]),
     content: cva([
         "UI-Modal__content",
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-[--background] p-6 shadow-lg duration-200",
+        "z-50 grid relative w-full w-full shadow-xl border border-[rgb(255_255_255_/_5%)] max-w-lg gap-4 bg-[--background] p-6 shadow-xl duration-200",
         "data-[state=open]:animate-in data-[state=closed]:animate-out",
         "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-        "data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]",
-        "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]",
-        "sm:rounded-[--radius]",
-    ]),
+        "sm:rounded-lg",
+    ], {
+        variants: {
+            size: { sm: null, md: null, lg: null, xl: null, full: "w-[90%]" },
+        },
+        defaultVariants: {
+            size: "md",
+        },
+        compoundVariants: [
+            { size: "sm", className: "sm:max-w-sm" },
+            { size: "md", className: "sm:max-w-lg" },
+            { size: "lg", className: "sm:max-w-2xl" },
+            { size: "xl", className: "sm:max-w-5xl" },
+            { size: "full", className: "max-w-full w-full" },
+            { size: "full", className: "max-w-full w-full" },
+        ],
+    }),
     close: cva([
         "UI-Modal__close",
-        "absolute right-4 top-4",
+        "absolute right-4 top-4 !mt-0",
     ]),
     header: cva([
         "UI-Modal__header",
@@ -59,6 +74,8 @@ export type ModalProps =
     Pick<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>, "onOpenAutoFocus" | "onCloseAutoFocus" | "onEscapeKeyDown" | "onPointerDownCapture" | "onInteractOutside">
     &
     ComponentAnatomy<typeof ModalAnatomy>
+    &
+    VariantProps<typeof DrawerAnatomy.content>
     & {
     /**
      * Interaction with outside elements will be enabled and other elements will be visible to screen readers.
@@ -108,6 +125,7 @@ export function Modal(props: ModalProps) {
         titleClass,
         descriptionClass,
         hideCloseButton,
+        size,
         // Content
         onOpenAutoFocus,
         onCloseAutoFocus,
@@ -121,40 +139,44 @@ export function Modal(props: ModalProps) {
 
         {trigger && <DialogPrimitive.Trigger asChild>{trigger}</DialogPrimitive.Trigger>}
 
-        <DialogPrimitive.Overlay className={cn(ModalAnatomy.overlay(), overlayClass)} />
-
         <DialogPrimitive.Portal>
+            <DialogPrimitive.Overlay className={cn(ModalAnatomy.overlay(), overlayClass)}>
 
-            <DialogPrimitive.Content
-                className={cn(ModalAnatomy.content(), contentClass)}
-                onOpenAutoFocus={onOpenAutoFocus}
-                onCloseAutoFocus={onCloseAutoFocus}
-                onEscapeKeyDown={onEscapeKeyDown}
-                onPointerDownCapture={onPointerDownCapture}
-                onInteractOutside={onInteractOutside}
-            >
 
-                {(title || description) && <div className={cn(ModalAnatomy.header(), headerClass)}>
-                    {title && <DialogPrimitive.Title className={cn(ModalAnatomy.title(), titleClass)}>
-                        {title}
-                    </DialogPrimitive.Title>}
-                    {description && <DialogPrimitive.Description className={cn(ModalAnatomy.description(), descriptionClass)}>
-                        {description}
-                    </DialogPrimitive.Description>}
-                </div>}
+                {/*<div className="flex w-full justify-center h-full items-center">*/}
+                <DialogPrimitive.Content
+                    className={cn(ModalAnatomy.content({ size }), contentClass)}
+                    onOpenAutoFocus={onOpenAutoFocus}
+                    onCloseAutoFocus={onCloseAutoFocus}
+                    onEscapeKeyDown={onEscapeKeyDown}
+                    onPointerDownCapture={onPointerDownCapture}
+                    onInteractOutside={onInteractOutside}
+                >
 
-                {children}
+                    {(title || description) && <div className={cn(ModalAnatomy.header(), headerClass)}>
+                        {title && <DialogPrimitive.Title className={cn(ModalAnatomy.title(), titleClass)}>
+                            {title}
+                        </DialogPrimitive.Title>}
+                        {description && <DialogPrimitive.Description className={cn(ModalAnatomy.description(), descriptionClass)}>
+                            {description}
+                        </DialogPrimitive.Description>}
+                    </div>}
 
-                {footer && <div className={cn(ModalAnatomy.footer(), footerClass)}>
-                    {footer}
-                </div>}
+                    {children}
 
-                {!hideCloseButton && <DialogPrimitive.Close className={cn(ModalAnatomy.close(), closeClass)} asChild>
-                    {closeButton ? closeButton : <CloseButton />}
-                </DialogPrimitive.Close>}
+                    {footer && <div className={cn(ModalAnatomy.footer(), footerClass)}>
+                        {footer}
+                    </div>}
 
-            </DialogPrimitive.Content>
+                    {!hideCloseButton && <DialogPrimitive.Close className={cn(ModalAnatomy.close(), closeClass)} asChild>
+                        {closeButton ? closeButton : <CloseButton />}
+                    </DialogPrimitive.Close>}
 
+                </DialogPrimitive.Content>
+                {/*</div>*/}
+
+
+            </DialogPrimitive.Overlay>
         </DialogPrimitive.Portal>
 
     </DialogPrimitive.Root>
